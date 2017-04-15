@@ -1,0 +1,14 @@
+create_word:
+    path: /create
+    defaults: { _controller: AdminBundle:Word:create }
+    methods: [POST]
+
+remove_word:
+    path: /remove
+    defaults: { _controller: AdminBundle:Word:remove }
+    methods: [POST]
+
+schedule_removal:
+    path: /schedule-removal
+    defaults: { _controller: AdminBundle:Word:scheduleRemoval }
+    methods: [POST]

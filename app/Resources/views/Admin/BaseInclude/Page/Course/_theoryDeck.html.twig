@@ -1,0 +1,99 @@
+<script type="text/ng-template" id="theoryDeck.html">
+    <div class="full-width align-left">
+        <div class="full-width align-left">
+            <button ng-click="theory_deck.open()" class="full-width align-left class-button margin-bottom-10"><i class="fa fa-folder-o"></i>{[{ theory_deck.name }]}</button>
+        </div>
+
+        <div ng-if="page.open" ng-init="deck.initDeck()" class="full-width align-left margin-bottom-10">
+            <div class="full-width align-left generic-page">
+                <form name="renameTheoryForm" method="POST">
+                    <p ng-repeat="error in page.serverErrors track by $index" class="error margin-bottom-10 align-left">{[{ error }]}</p>
+
+                    <input class="block align-left" ng-model="theory_deck.newName" ng-value="theory_deck.name" type="text" name="class" placeholder="rename theory ..."/>
+
+                    <div class="align-left relative button-wrapper">
+                        <img src="{{ asset('images/loading.gif') }}" ng-show="page.loading" class="loading absolute">
+                        <b class="fa fa-check fa-lg success absolute" ng-show="page.success"></b>
+                        <button class="align-right" ng-click="theory_deck.rename()">Rename theory</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="full-width align-left generic-page">
+                <div class="align-left full-width margin-bottom-30">
+                    <div dropdown-select="deck.deckOptions"
+                         dropdown-model="deck.deckSelected"
+                         dropdown-item-label="text"
+                         class="dropdown-deck block align-left full-width" >
+                    </div>
+                </div>
+
+                <div class="full-width align-left margin-bottom-30">
+                    <button class="small-button" ng-click="page.showSounds()">Show sound files</button>
+
+                    <p class="error" ng-show="page.noSounds">There are no sounds for this deck</p>
+
+                    <div ng-show="page.openSoundsList" class="full-width align-left">
+                        <div ng-repeat="sound in deck.deckSounds" class="full-width align-left margin-bottom-10 course-deck-sounds">
+                            <div class="full-width align-left margin-bottom-10">
+                                <label>Original name: </label><label>{[{sound.client_original_name}]}</label>
+                            </div>
+
+                            <div class="full-width align-left">
+                                <label>Filesystem name: </label><label>{[{sound.relative_full_path}]}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p ng-repeat="error in page.deck_errors track by $index" class="error margin-bottom-10 align-left">{[{ error }]}</p>
+
+                <form name="createDeck" method="POST" enctype="multipart/form-data">
+                    <div class="full-width align-left margin-bottom-30">
+                        <input ng-model="deck.internal_name" type="text" name="internal-name" placeholder="internal name ..."/>
+                    </div>
+
+                    <div class="full-width align-left margin-bottom-30">
+                        <textarea id="deck-editor" class="full-width block align-left"></textarea>
+                    </div>
+
+                    <div class="full-width align-left margin-bottom-30">
+                        <div class="full-width align-right margin-top-20 margin-bottom-20">
+                            <textarea class="block" rows="10" ng-model="deck.internal_description" placeholder="short description ..."></textarea>
+                        </div>
+
+                        <div class="full-width align-left margin-top-20 margin-bottom-20">
+                            <div class="full-width align-left">
+                                <h1 class="modal-highlight-breakpoint">Associate a sound</h1>
+                                <div class="full-width align-left margin-bottom-20 margin-top-20">
+                                    <input type="file" multiple ngf-select ng-model="deck.soundFile" name="file" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="deck-option align-right margin-bottom-10">
+                            <label>Show on page</label>
+                            <input ng-model="deck.show_on_page" type="checkbox" name="showOnPage">
+                        </div>
+
+                        <div class="deck-option align-right">
+                            <input ng-model="deck.ordering" type="text" class="block full-width" placeholder="order ..." name="ordering">
+                        </div>
+                    </div>
+
+                    <p ng-repeat="error in page.deck_errors track by $index" class="error margin-bottom-10 align-left">{[{ error }]}</p>
+
+                    <div class="align-right relative button-wrapper">
+                        <img src="{{ asset('images/loading.gif') }}" ng-show="page.deck_loading" class="loading absolute">
+                        <b class="fa fa-check fa-lg success absolute" ng-show="page.deck_success"></b>
+                        <button class="align-right" ng-click="theory_deck.save(deck.soundFile)">Save</button>
+                    </div>
+
+                    <div class="align-right relative button-wrapper">
+                        <button class="align-right" ng-click="theory_deck.reset()">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</script>

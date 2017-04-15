@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}LangLand{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Farsan" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Palanquin+Dark:400,700" rel="stylesheet">
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/public.css') ~ '?v=dfksaghwaoirjw2542345' }}" />
+    {% endblock %}
+
+</head>
+
+<body>
+
+<div class="container-full-width">
+
+    {% block content %}{% endblock %}
+
+    {% include '::Public/footer.html.twig' %}
+</div>
+
+{% block javascripts %}
+    <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/public/public.js') }}"></script>
+{%  endblock %}
+
+</body>
+</html>

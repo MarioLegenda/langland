@@ -1,0 +1,14 @@
+public:
+    resource: "@PublicBundle/Resources/config/routing/routing.yml"
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Resources/config/routing/routing.yml"
+    prefix:   /
+
+armor:
+    resource: "@ArmorBundle/Resources/config/routing/routing.xml"
+    prefix:   /
+
+admin:
+    resource: '@AdminBundle/Resources/config/routing/routing.yml'

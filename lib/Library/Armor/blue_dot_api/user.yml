@@ -1,0 +1,13 @@
+configuration:
+    simple:
+        select:
+            find_user_by_username:
+                sql: "SELECT * FROM users WHERE username = :username"
+                parameters: [username]
+                model:
+                    object: ArmorBundle\Entity\User
+
+        insert:
+            create_user:
+                sql: "INSERT INTO users (name, lastname, username, password, gender, roles) VALUES (:name, :lastname, :username, :password, :gender, :roles)"
+                parameters: [name, lastname, username, password, gender, roles]

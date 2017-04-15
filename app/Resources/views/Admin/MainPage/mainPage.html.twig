@@ -1,0 +1,9 @@
+<div>
+    <nav>
+        {% include '::Admin/MainPage/includes/_mainMenu.html.twig' %}
+    </nav>
+
+    <div ng-if="mainPage.languageDetected == true" class="fluid-container search">
+        <main-search></main-search>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<script type="text/ng-template" id="wordModal.html">
+    <div class="align-left modal-container">
+    <form class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
+        <div class="collapseable margin-top-50 align-left full-width">
+            <p ng-repeat="error in serverErrors track by $index" class="language-error margin-top-10 align-left">{[{ error }]}</p>
+
+            <p ng-show="error.translation.status" class="language-error margin-top-10 align-left">{[{ error.translation.message }]}</p>
+
+            <div class="full-width align-left margin-bottom-20">
+                <input ng-model="word" type="text" name="word" ng-class="{ 'input-text-error': error.invalid }" class="nav-text-input align-left" required placeholder="a word to be translated..."/>
+            </div>
+
+            <div class="full-width align-left margin-bottom-20">
+                <input ng-model="type" type="text" name="type" class="nav-text-input align-left" required placeholder="word type..."/>
+                <i>(i.e is it a noun, an adjective...)</i>
+            </div>
+
+            <div class="full-width align-left">
+                <h1 class="modal-highlight-breakpoint">
+                    Add category to a word
+                    <i class="margin-top-10">* for example, a translation for 'tree' could go into category 'nature'</i>
+                </h1>
+            </div>
+
+            <div class="full-width align-left margin-bottom-20 margin-top-20">
+                <category-dropdown></category-dropdown>
+            </div>
+
+            <div class="full-width align-left">
+                <h1 class="modal-highlight-breakpoint">Associate an image to this word</h1>
+                <div class="full-width align-left margin-bottom-20 margin-top-20">
+                    <input type="file" ngf-select ng-model="imageFile" name="file" accept="image/*" />
+                </div>
+            </div>
+
+            <div ng-repeat="item in numberOfTranslations" class="relative full-width align-left">
+                <input type="text" class="nav-text-input align-left margin-top-20 translation" placeholder="translate...">
+                <a ng-if="$index != 0" href="#" ng-click="removeTranslation($event, item)" class="fa fa-remove absolute remove-translation"></a>
+            </div>
+            <i>(at least one is needed...)</i>
+
+            <div class="full-width align-left">
+                <button class="nav-button-small align-right margin-top-10" ng-click="addTranslationField()">add translation</button>
+            </div>
+
+            <div class="align-right relative margin-top-50 margin-bottom-20 button-wrapper">
+                <img src="{{ asset('images/loading.gif') }}" ng-show="loading" class="loading absolute">
+                <b class="fa fa-check fa-lg success absolute" ng-show="success"></b>
+                <button type="submit" class="align-right" ng-click="addWord(imageFile)">Add</button>
+            </div>
+
+            <i>* You can translate from any language you want to the language that you specified in the 'Choose language' dropdown menu</i>
+        </div>
+    </form>
+</div>
+    </script>

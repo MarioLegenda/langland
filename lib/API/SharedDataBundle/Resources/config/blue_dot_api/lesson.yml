@@ -1,0 +1,28 @@
+configuration:
+
+    sql_import: imports/lesson.yml
+
+    simple:
+        select:
+            find_lesson_by_class:
+                sql: find_lesson
+                parameters: [class_id, name]
+            find_all_lessons_by_class:
+                sql: find_all_lessons_by_class
+                parameters: [class_id]
+            find_lesson_by_id:
+                sql: find_lesson_by_id
+                parameters: [lesson_id]
+            find_lesson_complete:
+                sql: find_lesson_complete
+                parameters: [lesson_id, name, class_id]
+
+        insert:
+            create_lesson:
+                sql: create_lesson
+                parameters: [class_id, name]
+
+        update:
+            rename_lesson:
+                sql: rename_lesson
+                parameters: [lesson_id, name]

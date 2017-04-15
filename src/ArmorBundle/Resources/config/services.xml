@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="armor.auth_subscriber.class">ArmorBundle\Listener\AuthListener</parameter>
+        <parameter key="armor.user_provider.class">ArmorBundle\Provider\UserProvider</parameter>
+        <parameter key="armor.repository.user_repository.class">ArmorBundle\Repository\UserRepository</parameter>
+        <parameter key="armor.email.class">ArmorBundle\Email\Email</parameter>
+    </parameters>
+
+    <services>
+        <service id="armor.auth_subscriber" class="%armor.auth_subscriber.class%">
+            <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="router" />
+
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="armor.user_provider" class="%armor.user_provider.class%">
+            <argument type="service" id="armor.repository.user_repository" />
+        </service>
+
+        <!--
+        repositories
+        -->
+
+        <service id="armor.repository.user_repository" class="%armor.repository.user_repository.class%">
+            <argument type="service" id="app.blue_dot" />
+        </service>
+
+        <!--
+            email
+        -->
+
+        <service id="armor.email" class="%armor.email.class%">
+            <argument type="service" id="mailer" />
+            <argument type="service" id="templating" />
+            <argument>%email_config%</argument>
+        </service>
+    </services>
+</container>

@@ -1,0 +1,10 @@
+find_word_by_word: "SELECT * FROM words WHERE word = :word"
+find_word_by_id: "SELECT * FROM words WHERE id = :word_id"
+find_image_by_word: "SELECT * FROM word_images WHERE word_id = :word_id"
+find_last_words: "SELECT id, language_id, type, word FROM words AS w WHERE language_id = :language_id AND schedule_removal = 0 ORDER BY word LIMIT 12 OFFSET :offset"
+
+scenario:
+    insert_word: "INSERT INTO words (language_id, word, type) VALUES (:language_id, :word, :type)"
+    insert_translation: "INSERT INTO translations (word_id, translation) VALUES(:word_id, :translation)"
+    insert_word_category: "INSERT INTO word_category (word_id, category_id) VALUES (:word_id, :category_id)"
+    insert_word_image: "INSERT INTO word_images (word_id, relative_path, absolute_path, file_name, absolute_full_path, relative_full_path) VALUES (:word_id, :relative_path, :absolute_path, :file_name, :absolute_full_path, :relative_full_path)"

@@ -1,0 +1,15 @@
+<script type="text/ng-template" id="mainPage.html">
+    <div class="admin-main-page">
+        <div ng-if="mainPage.waiting == true" class="fluid-container">
+            <p class="waiting margin-top-50">Please wait...</p>
+        </div>
+
+        <div ng-if="mainPage.show == true" class="main-page">
+            <div ng-if="mainPage.internalError" class="fluid-container ng-cloak">
+                <p class="internal-error full-width margin-top-50">Something went wrong. Please, refresh the page and try again</p>
+            </div>
+
+            {% include '::Admin/MainPage/mainPage.html.twig' %}
+        </div>
+    </div>
+</script>

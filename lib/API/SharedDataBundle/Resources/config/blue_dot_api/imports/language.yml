@@ -1,0 +1,10 @@
+find_language_by_language: "SELECT language FROM languages WHERE language = :language"
+find_all_languages: "SELECT * FROM languages ORDER BY language"
+find_language_by_id: "SELECT * FROM languages WHERE id = :language_id"
+create_language: "INSERT INTO languages (language) VALUES (:language)"
+update_language_name: "UPDATE languages SET language = :language WHERE id = :language_id"
+
+scenario:
+    language:
+        remove_working_language: "UPDATE languages SET working_language = 0 WHERE working_language = 1"
+        update_working_language: "UPDATE languages SET working_language = :working_language AND id = :language_id"

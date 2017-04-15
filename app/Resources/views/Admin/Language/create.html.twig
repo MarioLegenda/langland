@@ -1,0 +1,35 @@
+{% extends '::Admin/base.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Languages - create new language</h1>
+        </div>
+
+        <div class="full-width align-left margin-top-30 page-content form">
+            <form action="{{ path('language_create') }}" method="POST" class="form" name="addLanguageForm" novalidate>
+                <div class="margin-top-40 align-left full-width">
+                    <div class="full-width align-left form-field field-break">
+                        {{ form_label(form.language) }}
+                        {{ form_widget(form.language) }}
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form.language) }}
+                        </div>
+
+                        {% if internal_error is defined %}
+                            <div class="form-error full-width align-right">
+                                {{ internal_error }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="align-right relative margin-top-50 relative button-wrapper">
+                        <button type="submit" class="align-right">Create</button>
+                    </div>
+                </div>
+
+                {{ form_rest(form) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

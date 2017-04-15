@@ -1,0 +1,17 @@
+create_course:
+    path: /create
+    defaults: { _controller: AdminBundle:Course:create }
+    methods: [POST]
+
+get_all_courses:
+    path: /get-all
+    defaults: { _controller: AdminBundle:Course:getAll }
+    methods: [POST]
+
+initial_course_info:
+    path: /get-initial-course-info
+    defaults: { _controller: AdminBundle:Course:getInitialCourseInfo }
+
+course_page:
+    path: /page/{id}
+    defaults: { _controller: AdminBundle:Main:home }

@@ -1,0 +1,112 @@
+.ngdialog-content {
+  overflow: hidden;
+  background: white;
+  -webkit-backface-visibility: hidden;
+  -webkit-animation: ngdialog-fadein 0.5s;
+  animation: ngdialog-fadein 0.5s;
+  pointer-events: all;
+}
+
+.ngdialog-overlay {
+  position: fixed;
+  background: rgba(252, 87, 27, 0.7);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  -webkit-animation: ngdialog-fadein 0.5s;
+  animation: ngdialog-fadein 0.5s;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+  -webkit-animation: ngdialog-flyin .5s;
+  animation: ngdialog-flyin .5s;
+  background: white;
+  border-radius: 5px;
+  color: #444;
+  font-family: 'Helvetica',sans-serif;
+  font-size: 1.1em;
+  line-height: 1.5em;
+  margin: 0 auto;
+  max-width: 100%;
+  padding: 1em;
+  position: relative;
+  width: 450px;
+}
+
+.wrap-dd-select {
+  position: relative;
+  width: 175px;
+  margin: 0 auto;
+  padding: 10px;
+
+  border: none;
+
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  user-select:none;
+
+  background: #fff;
+  border-bottom: 1px solid $highlight-gray;
+  box-shadow: none;
+  cursor: pointer;
+  outline: none;
+  font-weight: normal;
+  border-radius: 0 0 0 0;
+  color: $text-color-gray;
+}
+
+.wrap-dd-select:hover {
+  background: $main-color;
+  color:white;
+}
+
+.wrap-dd-select .dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: white;
+  padding: 0;
+  border-radius: 0 0 0 0;
+  border: none;
+
+  border-bottom: 1px solid $highlight-gray;
+
+  box-shadow: none;
+  font-weight: normal;
+  list-style: none;
+  visibility: hidden;
+  max-height: 300px;
+  overflow-y: auto; /*Provide an auto overflow to display scroll*/
+
+  margin-top: 10px;
+}
+
+.wrap-dd-select .dropdown li a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: $text-color-gray;
+  border-bottom: 1px solid $highlight-gray;
+  box-shadow: none;
+  cursor: pointer;
+
+  font-family: $app-font;
+}
+
+.wrap-dd-select .dropdown li:first-of-type a {
+  border-radius: 0 0 0 0;
+}
+
+.wrap-dd-select .dropdown li:last-of-type a {
+  border-radius: 0 0 0 0;
+  border: none;
+}
+
+.wrap-dd-select .dropdown li:hover a {
+  background: $main-color;
+  color:white;
+}

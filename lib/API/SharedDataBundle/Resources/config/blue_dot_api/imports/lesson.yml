@@ -1,0 +1,6 @@
+find_lesson: "SELECT * FROM lessons WHERE class_id = :class_id AND name = :name"
+find_all_lessons_by_class: "SELECT * FROM lessons WHERE class_id = :class_id"
+find_lesson_by_id: "SELECT * FROM lessons WHERE id = :lesson_id"
+find_lesson_complete: "SELECT * FROM lessons WHERE id = :lesson_id AND name = :name AND class_id = :class_id"
+create_lesson: "INSERT INTO lessons (class_id, name) VALUES (:class_id, :name)"
+rename_lesson: "UPDATE lessons SET name = :name WHERE id = :lesson_id"

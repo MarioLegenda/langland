@@ -1,0 +1,20 @@
+
+    <div class="modal-container">
+        <form class="form" name="addLanguageForm" ng-submit="addLanguage()" novalidate>
+            <div class="collapseable margin-top-40 align-left full-width">
+                <p ng-repeat="error in serverErrors track by $index" class="language-error margin-top-10 align-left">{[{ error }]}</p>
+
+                <div class="full-width align-left">
+                    {{ form_widget(language_form.name, {'attr': {'ng-model': 'language'}}) }}
+                </div>
+
+                <div class="align-right relative margin-top-50 relative button-wrapper">
+                    <img src="{{ asset('images/loading.gif') }}" ng-show="loading" class="loading absolute">
+                    <b class="fa fa-check fa-lg success absolute" ng-show="success"></b>
+                    <button ng-disabled="disableButton" type="submit" class="align-right" ng-click="addLanguage()">Add</button>
+                </div>
+            </div>
+
+            {{ form_widget(language_form._token, {'attr': {'ng-model': '_token'}}) }}
+        </form>
+    </div>

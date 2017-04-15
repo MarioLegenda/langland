@@ -1,0 +1,61 @@
+security:
+    encoders:
+        ArmorBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+
+    providers:
+        blue_dot_provider:
+            id: armor.user_provider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin:
+            pattern: ^/admin
+            provider: blue_dot_provider
+            http_basic: ~
+            form_login:
+                default_target_path: admin_panel
+                login_path: armor_admin_login
+                check_path: armor_admin_login
+
+            logout:
+                path: armor_admin_logout
+                target: armor_admin_login
+
+            anonymous: ~
+
+        vocallo:
+            pattern: ^/langland
+            provider: blue_dot_provider
+            form_login:
+                default_target_path: user_panel
+                login_path: armor_user_login
+                check_path: armor_user_login
+
+            logout:
+                path: armor_user_logout
+                target: armor_user_login
+
+            anonymous: ~
+
+        app:
+            pattern: ^/
+            anonymous: true
+
+    access_control:
+        - { path: ^/*$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/*, role: ROLE_DEVELOPER }
+
+        - { path: ^/langland/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/*, role: ROLE_USER }
+
+
+

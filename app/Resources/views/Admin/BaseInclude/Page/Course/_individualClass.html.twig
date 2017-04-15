@@ -1,0 +1,45 @@
+<script type="text/ng-template" id="individualClass.html">
+    <div class="full-width align-left margin-bottom-10 course-class">
+        <div class="full-width align-left updateable-wrapper">
+            <button ng-click="thisClass.open()" class="full-width align-left class-button"><i class="fa fa-bell"></i>{[{ thisClass.class.name }]}</button>
+        </div>
+
+        <div ng-if="thisClass.mainMenu" class="level align-right margin-top-30 margin-bottom-30">
+            <div class="full-width align-left generic-page">
+                <form name="renameClassForm" method="POST">
+                    <p ng-repeat="error in thisClass.class.serverErrors track by $index" class="error margin-bottom-10 align-left">{[{ error }]}</p>
+
+                    <input class="block align-left" ng-model="thisClass.class.newName" ng-value="thisClass.class.name" type="text" name="class" placeholder="class name ..."/>
+
+                    <div class="align-left relative button-wrapper">
+                        <img src="{{ asset('images/loading.gif') }}" ng-show="thisClass.class.loading" class="loading absolute">
+                        <b class="fa fa-check fa-lg success absolute" ng-show="thisClass.class.success"></b>
+                        <button class="align-right" ng-click="thisClass.class.renameClass()">Rename class</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="full-width align-left generic-page">
+                <form name="createLessonForm" method="POST">
+                    <p ng-repeat="error in thisClass.serverErrors track by $index" class="error margin-bottom-10 align-left">{[{ error }]}</p>
+
+                    <input class="block align-left" type="text" name="lesson" ng-model="thisClass.lesson.name" placeholder="lesson name ..."/>
+
+                    <div class="align-left relative button-wrapper">
+                        <img src="{{ asset('images/loading.gif') }}" ng-show="thisClass.loading" class="loading absolute">
+                        <b class="fa fa-check fa-lg success absolute" ng-show="thisClass.success"></b>
+                        <button class="align-right" ng-click="thisClass.createLesson()">Create lesson</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div ng-if="thisClass.mainMenu && thisClass.lesson.waiting" class="full-width align-left margin-bottom-30">
+            <p class="no-data-message">... please wait ... </p>
+        </div>
+
+        <div ng-if="thisClass.mainMenu" ng-repeat="individualLesson in thisClass.lesson.list" class="level align-right">
+            <individual-lesson></individual-lesson>
+        </div>
+    </div>
+</script>

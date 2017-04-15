@@ -1,0 +1,15 @@
+.header {
+  background: $main-color;
+
+  padding: 20px;
+
+  .header-logo {
+    width: 200px;
+
+    color:white;
+
+    font-size: 2em;
+
+    font-family: $language-font;
+  }
+}

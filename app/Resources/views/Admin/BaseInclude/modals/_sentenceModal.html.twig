@@ -1,0 +1,37 @@
+<script type="text/ng-template" id="sentenceModal.html">
+    <div class="modal-container">
+    <form class="form" name="addSentenceForm" novalidate>
+        <div class="collapseable margin-top-40 align-left full-width">
+            <p ng-repeat="error in serverErrors track by $index" class="language-error margin-top-10 align-left">{[{ error }]}</p>
+
+            <textarea
+                    rows="7"
+                    cols="5"
+                    ng-model="sentence"
+                    name="sentence"
+                    ng-class="{ 'input-text-error': error.invalid }"
+                    class="nav-text-input align-left margin-top-20"
+                    required
+                    placeholder="add a sentence...">
+                        </textarea>
+
+            <textarea
+                    rows="7"
+                    cols="5"
+                    ng-model="sentenceTranslation"
+                    name="sentence"
+                    ng-class="{ 'input-text-error': error.invalid }"
+                    class="nav-text-input align-left margin-top-20"
+                    required
+                    placeholder="add a translation for the sentence...">
+                        </textarea>
+
+            <div class="full-width align-left relative margin-top-50 relative">
+                <img src="{{ asset('images/loading.gif') }}" ng-show="loading" class="loading absolute">
+                <b class="fa fa-check fa-lg success absolute" ng-show="success"></b>
+                <button ng-disabled="disableButton" type="submit" class="nav-button-main align-right" ng-click="addSentence()">Add</button>
+            </div>
+        </div>
+    </form>
+</div>
+</script>

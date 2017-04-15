@@ -1,0 +1,3 @@
+public_homepage:
+    path:     /
+    defaults: { _controller: PublicBundle:Main:home }

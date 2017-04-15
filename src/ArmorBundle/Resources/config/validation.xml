@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="ArmorBundle\Entity\User">
+        <property name="username">
+            <constraint name="NotNull">
+                <option name="message">You have to provide a valid email</option>
+            </constraint>
+
+            <constraint name="Email">
+                <option name="message">You have to provide a valid email</option>
+            </constraint>
+        </property>
+
+        <property name="name">
+            <constraint name="NotNull">
+                <option name="message">You have to provide your name</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">255</option>
+                <option name="maxMessage">
+                    Your name cannot be longer than {{ limit }} characters
+                </option>
+            </constraint>
+        </property>
+
+        <property name="lastname">
+            <constraint name="NotNull">
+                <option name="message">You have to provide your lastname</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">255</option>
+                <option name="maxMessage">
+                    Your last name cannot be longer than {{ limit }} characters
+                </option>
+            </constraint>
+        </property>
+
+        <property name="plainPassword">
+            <constraint name="NotNull">
+                <option name="message">You have to provide a password</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">4096</option>
+                <option name="maxMessage">
+                    Your password cannot be longer than {{ limit }} characters
+                </option>
+            </constraint>
+        </property>
+
+        <property name="gender">
+            <constraint name="NotNull">
+                <option name="message">Gender can only be male or female</option>
+            </constraint>
+            <constraint name="Choice">
+                <option name="choices">
+                    <value>male</value>
+                    <value>female</value>
+                </option>
+                <option name="message">Gender can only be male or female</option>
+            </constraint>
+        </property>
+
+        <!-- ... -->
+    </class>
+</constraint-mapping>

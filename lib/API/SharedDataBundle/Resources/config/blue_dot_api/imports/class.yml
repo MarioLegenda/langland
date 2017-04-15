@@ -1,0 +1,5 @@
+find_class_by_name: "SELECT * FROM classes WHERE course_id = :course_id AND name = :name"
+find_classes_by_course: "SELECT * FROM classes WHERE course_id = :course_id"
+find_class_by_id: "SELECT * FROM classes WHERE id = :class_id"
+create_class: "INSERT INTO classes (course_id, name) VALUES (:course_id, :name)"
+update_class: "UPDATE classes SET name = :name WHERE id = :class_id"

@@ -1,0 +1,20 @@
+configuration:
+
+    sql_import: imports/category.yml
+
+    simple:
+        select:
+            find_category:
+                sql: find_category
+                parameters: [category, language_id]
+            find_all_categories:
+                sql: find_all_categories
+                parameters: [language_id]
+            find_category_by_word:
+                sql: find_category_by_word
+                parameters: [word_id]
+
+        insert:
+            create_category:
+                sql: create_category
+                parameters: [category, language_id]

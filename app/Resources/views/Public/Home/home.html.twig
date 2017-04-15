@@ -1,0 +1,15 @@
+{% extends '::Public/base.html.twig' %}
+
+{% block content %}
+    <div class="container-full-width align-left landing-page">
+
+        <div class="action">
+            <h1 class="full-width align-left sign-up-title margin-bottom-50">KEEP CALM AND LEARN A LANGUAGE</h1>
+
+            <div class="sign-up-buttons margin-bottom-10">
+                <a href="{{ path('armor_user_register') ~ '?action=sign-up' }}" class="sign-up">SIGN UP</a>
+                <a href="{{ path('armor_user_login') ~ '?action=sign-in' }}" class="sign-in">SIGN IN</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

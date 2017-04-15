@@ -1,0 +1,129 @@
+.course-menu {
+  width: 300px;
+}
+
+.course-class {
+  .generic-page {
+    padding: 15px;
+    background: white;
+
+    .course-deck-sounds {
+        border-bottom: 1px solid $highlight-gray;
+
+        font-family: $app-font;
+
+        color: $text-color-gray;
+
+        padding: 10px;
+    }
+
+    input[type="text"] {
+      font-size: 1.2em;
+      font-family: $app-font;
+
+      padding: 5px;
+
+      border: 1px solid $highlight-gray;
+    }
+
+    .button-wrapper {
+      margin-top:1px;
+    }
+
+    textarea {
+      width: 100%;
+      resize: none;
+
+      font-size: 1em;
+    }
+
+    .collapseable-fields {
+      .remove-translation {
+        top: 10px;
+        right: 10px;
+
+        color: $highlight-gray;
+      }
+
+      .remove-translation:hover {
+        cursor: pointer;
+        color: $main-color;
+      }
+
+      .mark-checked {
+        top: 40px;
+        right: 10px;
+
+        color:$highlight-gray;
+      }
+
+      .update-translation {
+        top: 70px;
+        right: 10px;
+
+        color:$highlight-gray;
+      }
+
+      .update-translation:hover {
+        color: blue;
+      }
+
+      .mark-checked:hover {
+        color: green;
+      }
+
+      .button-small {
+        width: 150px;
+        font-size: 1em;
+
+        background:none;
+        border:none;
+
+        padding: 3px;
+
+        text-align: right;
+        color: $highlight-gray;
+        border-bottom: 1px solid $highlight-gray;
+
+        &:hover {
+          cursor: pointer;
+          color: $text-color-gray;
+          border-bottom: 1px solid $text-color-gray;
+        }
+      }
+
+      i {
+        display:block;
+        width: 100%;
+        float:left;
+
+        font-size: 0.8em;
+        font-style: italic;
+
+        line-height: 1.4em;
+      }
+    }
+
+    .separator {
+      padding: 10px 10px 10px 0;
+
+      font-size: 1.2em;
+      border-bottom: 1px solid $highlight-gray;
+    }
+
+    .ace_editor {
+      border: 1px solid $highlight-gray;
+
+      height: 400px;
+    }
+
+    .deck-option {
+      width: 15%;
+      margin-left: 10px;
+    }
+
+    .dropdown-deck {
+      width: 220px;
+    }
+  }
+}

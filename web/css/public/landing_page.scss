@@ -1,0 +1,68 @@
+.landing-page {
+  background-image: url("../images/cover3.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  height: 1000px;
+
+  .action {
+    width: 70%;
+    overflow: hidden;
+
+    margin: 0 auto;
+    margin-top: 15%;
+
+    .sign-up-title {
+      font-family: $palaquin;
+      color: white;
+      font-size: 4em;
+      text-align: center;
+    }
+
+    .sign-up-buttons {
+
+      width: 500px;
+
+      margin: 0 auto;
+
+      margin-bottom: 20px;
+
+      a {
+        display:block;
+        float:left;
+
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+
+        width: 230px;
+
+        font-family: $palaquin;
+        background: none;
+
+        padding: 15px;
+
+        color:white;
+
+        text-align: center;
+
+        margin-left: 10px;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+
+      .sign-up {
+        background: $main-color;
+        color:white;
+      }
+
+      .sign-in {
+        background-color: white;
+        color: $text-color-gray;
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+<div class="actions">
+    <a href="{{ path('armor_user_login') }}" class="sign-in-button">
+        <span class="{% if app.request.attributes.get('_route') == 'armor_user_login' %}highlight{% endif %}">SIGN IN</span>
+    </a>
+    <a href="{{ path('armor_user_register') }}" class="sign-up-button">
+        <span class="{% if app.request.attributes.get('_route') == 'armor_user_register' %}highlight{% endif %}">SIGN UP</span>
+    </a>
+</div>

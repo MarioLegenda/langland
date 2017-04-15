@@ -1,0 +1,25 @@
+{% extends '::Admin/base.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Categories</h1>
+            <a href="{{ path('language_create') }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
+        {% if internal_error is defined %}
+            <p class="no-data-message">No languages have been added</p>
+        {% endif %}
+
+        {% if languages is defined %}
+            <div class="full-width align-left margin-top-30 page-content">
+                {% for language in languages %}
+                    <div class="card full-width align-left margin-bottom-10">
+                        <a class="base-action-link align-left" href="#">{{ language.language }}</a>
+                        <a class="sub-base-action-link align-right" href="{{ path('language_edit', {'id': language.id}) }}">Edit</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

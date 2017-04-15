@@ -1,0 +1,31 @@
+$language-font: 'Farsan', cursive;
+$app-font: 'Inconsolata', monospace;
+$palaquin: 'Palanquin Dark', sans-serif;
+
+$main-color: #fc571b;
+$highlight-gray: #b5b3b3;
+$text-color-gray: #2d2d2d;
+$start-font-size: 16px;
+$background-color: #efefef;
+$error: #f40909;
+$subBaseLinkColor: #47c1ff;
+$subBaseLinkHoverColor: #008db5;
+
+$min-width: 480px;
+$max-width: 1024px;
+
+$max-full-width: 1920px;
+
+$frontend-main: #e3ea09;
+
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+body {
+  font-family: $app-font;
+  font-size: $start-font-size;
+  background-color: $background-color;
+}

@@ -1,0 +1,20 @@
+services:
+    app.blue_dot_factory:
+        class: Library\App\Factory\BlueDotFactory
+        public: false
+
+    app.image_resize:
+        class: Library\App\ImageResize
+
+    app.blue_dot:
+         class: BlueDot\BlueDot
+         factory: 'app.blue_dot_factory:createBlueDot'
+         arguments: ["@doctrine.dbal.default_connection"]
+
+    app.manual_validator:
+        class: Library\App\ManualValidator
+        arguments: ["@validator"]
+
+    app.deck_creator:
+        class: Library\Admin\DeckCreator
+        arguments: ["%deck_files_dir%"]

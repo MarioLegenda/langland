@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <base href="/web/app_dev.php/">
+        <meta charset="UTF-8" />
+        <title>{% block title %}LangLand{% endblock %}</title>
+
+        <link href="https://fonts.googleapis.com/css?family=Farsan" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Inconsolata&amp;subset=latin-ext" rel="stylesheet">
+
+        {% block stylesheets %}
+            <link href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
+            <link href="{{ asset('css/admin.css') }}?v=32h4rwnkerwkjer" rel="stylesheet"/>
+        {% endblock %}
+    </head>
+
+    <body>
+
+        <div class="content">
+            {% include '::Admin/_header.html.twig' %}
+
+            {% include '::Admin/_navigation.html.twig'%}
+
+            {% block content %} {% endblock %}
+        </div>
+
+        {% block javascripts %}
+            <script src="{{ asset('js/lib/ace.min.js') }}"></script>
+            <script src="{{ asset('js/lib/ace-html-mode.min.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

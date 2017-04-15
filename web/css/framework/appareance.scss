@@ -1,0 +1,107 @@
+.container {
+  width: $max-width;
+
+  position:relative;
+
+  overflow: hidden;
+  margin: 0 auto;
+
+  min-width: $min-width;
+  max-width: $max-width;
+}
+
+.container-full-width {
+  width: 100%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  max-width: $max-full-width;
+}
+
+.fluid-container {
+  @extend .container;
+
+  width: 75%;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.block {
+  display:block;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.input-text-error {
+  border: 1px solid $main-color;
+}
+
+.align-left {
+  float:left;
+}
+
+.align-right {
+  float: right;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.margin-top-30 {
+  margin-top: 30px;
+}
+
+.margin-top-40 {
+  margin-top: 40px;
+}
+
+.margin-top-50 {
+  margin-top: 50px;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
+.margin-bottom-30 {
+  margin-bottom: 30px;
+}
+
+.margin-bottom-40 {
+  margin-bottom: 40px;
+}
+
+.margin-bottom-50 {
+  margin-bottom: 50px;
+}

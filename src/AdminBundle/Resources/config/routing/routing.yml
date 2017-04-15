@@ -1,0 +1,40 @@
+admin_panel:
+    path:     /admin
+    defaults: { _controller: AdminBundle:Main:home }
+
+language:
+  resource: "@AdminBundle/Resources/config/routing/api/language.yml"
+  prefix: /admin/language
+
+word:
+  resource: "@AdminBundle/Resources/config/routing/api/word.yml"
+  prefix: /admin/word
+
+category:
+  resource: "@AdminBundle/Resources/config/routing/api/category.yml"
+  prefix: /admin/category
+  host: '%host%'
+
+sentence:
+  resource: "@AdminBundle/Resources/config/routing/api/sentence.yml"
+  prefix: /admin/sentence
+
+search:
+  resource: "@AdminBundle/Resources/config/routing/api/search.yml"
+  prefix: /admin/search
+
+course:
+  resource: "@AdminBundle/Resources/config/routing/api/course.yml"
+  prefix: /admin/course
+
+class:
+  resource: "@AdminBundle/Resources/config/routing/api/class.yml"
+  prefix: /admin/class
+
+lesson:
+  resource: "@AdminBundle/Resources/config/routing/api/lesson.yml"
+  prefix: /admin/lesson
+
+theory:
+  resource: "@AdminBundle/Resources/config/routing/api/theory.yml"
+  prefix: /admin/theory

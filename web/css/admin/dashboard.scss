@@ -1,0 +1,63 @@
+.dashboard {
+  .button-wrapper {
+    button {
+      width: 150px;
+    }
+
+    .loading {
+      left: 20px;
+    }
+
+    .success {
+      left: 20px;
+    }
+  }
+
+  .class-button {
+    background: white;
+    color: $text-color-gray;
+    border: none;
+    border-bottom: 1px solid $highlight-gray;
+    padding: 10px;
+
+    font-size: 1.2em;
+    text-align: left;
+
+    font-family: $app-font;
+
+    &:hover {
+      cursor: pointer;
+      border-bottom: 1px solid $main-color;
+    }
+
+    i {
+      margin-right: 15px;
+      color: $main-color;
+    }
+  }
+
+  .lesson-button {
+    border:none;
+    background: white;
+    color: $text-color-gray;
+    padding: 30px;
+    text-align: center;
+    font-family: $app-font;
+    font-size: 1.3em;
+    border-bottom: 1px solid $highlight-gray;
+
+    &:hover {
+      color: white;
+      background: $main-color;
+      cursor: pointer;
+    }
+  }
+
+  .level {
+    width: 98%;
+
+    padding-left: 10px;
+
+    border-left: 1px solid $highlight-gray;
+  }
+}

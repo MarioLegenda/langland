@@ -1,0 +1,27 @@
+<script type="text/ng-template" id="theoryMenu.html">
+    <div class="full-width align-left">
+        <div class="full-width align-left">
+            <button ng-click="theory.open()" class="full-width align-left class-button margin-bottom-10"><i class="fa fa-bicycle"></i>Theory</button>
+        </div>
+
+        <div ng-if="page.open" class="level align-right margin-top-30 margin-bottom-30">
+            <div class="full-width align-left generic-page">
+                <form name="theoryForm" method="POST">
+                    <p ng-repeat="error in page.serverErrors track by $index" class="error margin-bottom-10 align-left">{[{ error }]}</p>
+
+                    <input class="block align-left" ng-model="theory.name" type="text" name="theory_name" placeholder="theory name ..."/>
+
+                    <div class="align-left relative button-wrapper">
+                        <img src="{{ asset('images/loading.gif') }}" ng-show="page.loading" class="loading absolute">
+                        <b class="fa fa-check fa-lg success absolute" ng-show="page.success"></b>
+                        <button class="align-right" ng-click="theory.create()">Create theory</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div ng-if="page.open" class="level align-right margin-bottom-50">
+            <theory-deck ng-repeat="deck in theory.decks"></theory-deck>
+        </div>
+    </div>
+</script>

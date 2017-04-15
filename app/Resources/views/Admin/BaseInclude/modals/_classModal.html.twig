@@ -1,0 +1,17 @@
+<script type="text/ng-template" id="classModal.html">
+        <div class="modal-container">
+        <form class="form" name="createClassForm" method="POST" novalidate>
+            <div class="collapseable margin-top-40 align-left full-width">
+                <p ng-repeat="error in class.serverErrors track by $index" class="language-error margin-top-10 align-left">{[{ error }]}</p>
+
+                <input ng-model="class.name" type="text" name="className" class="nav-text-input align-left margin-top-20" required placeholder="class name ..."/>
+
+                <div class="align-right relative margin-top-50 button-wrapper">
+                    <img src="{{ asset('images/loading.gif') }}" ng-show="class.loading" class="loading absolute">
+                    <b class="fa fa-check fa-lg success absolute" ng-show="class.success"></b>
+                    <button ng-disabled="disableButton" class="align-right" ng-click="class.createClass($event)">Add</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>

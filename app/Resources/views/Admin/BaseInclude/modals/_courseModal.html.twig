@@ -1,0 +1,38 @@
+<script type="text/ng-template" id="courseModal.html">
+    <div class="modal-container">
+            <div class="nav-menu-container course-menu center">
+                <div class="align-left nav-menu-container">
+                    <a href="#" ng-click="course.show('new')" class="nav-link">New</a>
+                    <a href="#" ng-click="course.loadCourses()" class="nav-link">Load</a>
+                </div>
+            </div>
+
+            <form ng-if="course.new" class="form" name="createCourseForm" method="POST" novalidate>
+                <div class="collapseable full-width align-left margin-top-30">
+                    <h1 class="modal-highlight-breakpoint margin-bottom-30">Create new course</h1>
+
+                    <p ng-repeat="error in course.serverErrors track by $index" class="language-error margin-top-10 align-left">{[{ error }]}</p>
+
+                    <input ng-model="course.courseName" type="text" name="courseName" class="nav-text-input align-left margin-top-20" required placeholder="course name ..."/>
+
+                    <div class="align-right relative margin-top-50 margin-bottom-20 button-wrapper">
+                        <img src="{{ asset('images/loading.gif') }}" ng-show="course.loading" class="loading absolute">
+                        <b class="fa fa-check fa-lg success absolute" ng-show="course.success"></b>
+                        <button type="submit" ng-click="course.newCourse($event)" class="align-right">Add</button>
+                    </div>
+                </div>
+            </form>
+
+        <form ng-if="course.load" class="form" name="loadCourseForm" method="POST" novalidate>
+            <div class="full-width align-left margin-top-30 time-trial-game">
+                <h1 class="modal-highlight-breakpoint margin-bottom-30">Choose a course to load</h1>
+
+                <p ng-if="course.noCourses == true" class="text-center">There are not courses to load</p>
+
+                <div class="full-width align-left margin-top-30 nav-menu-container">
+                    <a href="#" class="nav-link" ng-repeat="c in course.courses" ng-click="course.loadCourse(c.id)">{[{ c.name }]}</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>

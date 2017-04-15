@@ -1,0 +1,29 @@
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: langland
+    database_user: root
+    database_password: root
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: cf16d1d0e5788fb5f30d32b3e36268b44241e3da
+
+    host: 33.33.33.10
+
+    blue_dot_service_name: app.blue_dot
+
+    uploads_relative_path: /uploads/
+    uploads_absolute_path: '%kernel.root_dir%/../web/uploads'
+
+    upload_dirs:
+        sounds_relative_path: /sounds/
+        sounds_absolute_path: '%kernel.root_dir%/../web/sounds'
+
+    deck_files_dir: '%kernel.root_dir%/Resources/views/Admin/BaseInclude/Page/Course/Decks'
+
+    security_admin_redirect: armor_admin_login
+    security_app_redirect: app_login
+
+    email_config: '%kernel.root_dir%/config.email.yml'

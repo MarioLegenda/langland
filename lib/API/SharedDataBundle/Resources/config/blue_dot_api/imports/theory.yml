@@ -1,0 +1,32 @@
+find_theory_by_name: "SELECT id FROM theories WHERE name = :name AND lesson_id = :lesson_id"
+find_all_theories_by_lesson: "SELECT * FROM theories WHERE lesson_id = :lesson_id"
+find_theory_by_id:  "SELECT * FROM theories WHERE id = :id"
+find_decks_by_theory: "SELECT id, internal_name FROM theory_decks WHERE theory_id = :theory_id"
+find_deck_by_internal_name: "SELECT * FROM theory_decks WHERE theory_id = :theory_id AND internal_name = :internal_name"
+find_deck_by_id: "SELECT * FROM theory_decks WHERE id = :deck_id"
+find_sound_by_filename: "SELECT * FROM sounds WHERE file_name = :file_name"
+find_sounds_by_deck: "SELECT s.relative_full_path, s.client_original_name FROM sounds AS s INNER JOIN theory_sounds AS ts ON s.id = ts.sound_id WHERE ts.deck_id = :deck_id"
+
+create_theory: "INSERT INTO theories (name, lesson_id) VALUE (:name, :lesson_id)"
+create_theory_deck: "INSERT INTO theory_decks (theory_id, internal_name, deck_data, internal_description, show_on_page, ordering) VALUES (:theory_id, :internal_name, :deck_data, :internal_description, :show_on_page, :ordering)"
+create_sound: "INSERT INTO sounds (relative_path, absolute_path, file_name, absolute_full_path, relative_full_path) VALUES (:relative_path, :absolute_path, :file_name, :absolute_full_path, :relative_full_path)"
+create_deck_sound: "INSERT INTO theory_sounds (sound_id, theory_id, deck_id) VALUES (:sound_id, :theory_id, :deck_id)"
+
+rename_theory: "UPDATE theories SET name = :name WHERE id = :theory_id"
+rename_theory_deck: "UPDATE theory_decks SET internal_name = :internal_name, deck_data = :deck_data, internal_description = :internal_description, show_on_page = :show_on_page, ordering = :ordering WHERE id = :deck_id"
+
+scenario:
+    create_theory_deck:
+        create_sound: "INSERT INTO sounds (relative_path, absolute_path, file_name, absolute_full_path, relative_full_path, client_original_name) VALUES (:relative_path, :absolute_path, :file_name, :absolute_full_path, :relative_full_path, :client_original_name)"
+        create_theory_deck: "INSERT INTO theory_decks (theory_id, internal_name, deck_data, internal_description, show_on_page, ordering) VALUES (:theory_id, :internal_name, :deck_data, :internal_description, :show_on_page, :ordering)"
+        create_deck_sound: "INSERT INTO theory_sounds (sound_id, theory_id, deck_id) VALUES (:sound_id, :theory_id, :deck_id)"
+        select_inserted_deck: "SELECT id, theory_id FROM theory_decks WHERE id = :deck_id"
+
+    update_theory_deck:
+        select_sounds: "SELECT s.absolute_full_path FROM sounds AS s INNER JOIN theory_sounds AS ts ON s.id = ts.sound_id AND ts.deck_id = :deck_id"
+        remove_deck_sounds: "DELETE s.* FROM sounds AS s INNER JOIN theory_sounds AS ts ON s.id = ts.sound_id AND ts.deck_id = :deck_id"
+        remove_theory_sounds: "DELETE FROM theory_sounds WHERE deck_id = :deck_id"
+        update_theory_deck: "UPDATE theory_decks SET internal_name = :internal_name, deck_data = :deck_data, internal_description = :internal_description, show_on_page = :show_on_page, ordering = :ordering WHERE id = :deck_id"
+        create_sounds: "INSERT INTO sounds (relative_path, absolute_path, file_name, absolute_full_path, relative_full_path, client_original_name) VALUES (:relative_path, :absolute_path, :file_name, :absolute_full_path, :relative_full_path, :client_original_name)"
+        create_deck_sound: "INSERT INTO theory_sounds (sound_id, theory_id, deck_id) VALUES (:sound_id, :theory_id, :deck_id)"
+        select_deck: "SELECT id, theory_id FROM theory_decks WHERE id = :deck_id"

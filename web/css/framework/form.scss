@@ -1,0 +1,33 @@
+.form {
+  .form-field {
+    padding: 10px;
+  }
+
+  .field-break {
+    border-bottom: 1px solid $highlight-gray;
+  }
+
+  label, input[type="text"] {
+    font-size: 1.2em;
+    font-family: $app-font;
+  }
+
+  label {
+    width: 100%;
+    display:block;
+    float:left;
+
+    margin-bottom: 20px;
+  }
+
+  input[type="text"] {
+    border:none;
+
+    padding: 10px 10px 10px 0px;
+  }
+
+  .form-error {
+    color: $main-color;
+    padding: 10px 10px 10px 0;
+  }
+}

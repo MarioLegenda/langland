@@ -1,0 +1,30 @@
+<script type="text/ng-template" id="lessonMenu.html">
+    <div class="full-width align-left">
+        <div class="full-width align-left">
+            <button ng-click="lesson.open()" class="full-width align-left class-button margin-bottom-10"><i class="fa fa-folder-o"></i>{[{ lesson.name }]}</button>
+        </div>
+
+        <div ng-if="page.open" class="level align-right margin-top-30 margin-bottom-30">
+            <div class="full-width align-left generic-page">
+                <form name="renameLessonForm" method="POST">
+                    <p ng-repeat="error in page.serverErrors track by $index" class="error margin-bottom-10 align-left">{[{ error }]}</p>
+
+                    <input class="block align-left" ng-model="lesson.newName" ng-value="lesson.name" type="text" name="class" placeholder="lesson name ..."/>
+
+                    <div class="align-left relative button-wrapper">
+                        <img src="{{ asset('images/loading.gif') }}" ng-show="page.loading" class="loading absolute">
+                        <b class="fa fa-check fa-lg success absolute" ng-show="page.success"></b>
+                        <button class="align-right" ng-click="lesson.rename()">Rename lesson</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div ng-if="page.open" class="level full-width align-right margin-bottom-30 margin-top-30">
+            <theory lesson="lesson"></theory>
+            <sentence-learning lesson="lesson"></sentence-learning>
+            <button class="full-width align-left class-button margin-bottom-10"><i class="fa fa-file-text-o"></i>Word pool</button>
+            <button class="full-width align-left class-button margin-bottom-10"><i class="fa fa-cubes"></i>Tests</button>
+        </div>
+    </div>
+</script>

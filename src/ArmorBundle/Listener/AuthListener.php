@@ -135,7 +135,7 @@ class AuthListener implements EventSubscriberInterface
             'LessonController::renameLessonAction' => array('class_id', 'name', 'lesson_id'),
             'LessonController::findLessonsByClassAction' => array('class_id'),
 
-            'CategoryController::createAction' => array('language_id', 'category'),
+            'CategoryController::createAction' => array('category'),
             'CategoryController::getAllAction' => array('language_id'),
 
             'ClassController::createAction' => array('name', 'course_id'),

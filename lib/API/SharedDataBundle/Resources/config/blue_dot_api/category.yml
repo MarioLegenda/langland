@@ -4,17 +4,29 @@ configuration:
 
     simple:
         select:
-            find_category:
-                sql: find_category
-                parameters: [category, language_id]
-            find_all_categories:
-                sql: find_all_categories
-                parameters: [language_id]
-            find_category_by_word:
-                sql: find_category_by_word
-                parameters: [word_id]
+            find_all_in_working_language:
+                sql: find_all_in_working_language
+            find_by_name_in_working_language:
+                sql: find_by_name_in_working_language
+                parameters: [category]
+            find_category_by_id:
+                sql: find_category_by_id
+                parameters: [category_id]
 
-        insert:
-            create_category:
-                sql: create_category
-                parameters: [category, language_id]
+        update:
+            update_category_name:
+                sql: update_category_name
+                parameters: [category, category_id]
+
+    scenario:
+        create_category:
+            atomic: true
+            statements:
+                find_working_language:
+                    sql: scenario.create_category.find_working_language
+                create_category:
+                    sql: scenario.create_category.create_category
+                    parameters: [category]
+                    use:
+                        statement_name: find_working_language
+                        values: { find_working_language.id: language_id }

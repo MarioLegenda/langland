@@ -1,8 +1,14 @@
-create_category:
+category_create:
     path: /create
     defaults: { _controller: AdminBundle:Category:create }
-    methods: [POST]
+    methods: [POST, GET]
 
 category_index:
-    path: /{languageId}
+    path: /
     defaults: { _controller: AdminBundle:Category:index }
+    methods: [GET]
+
+category_edit:
+    path: /edit/{id}
+    defaults: { _controller: AdminBundle:Category:edit }
+    methods: [GET, POST]

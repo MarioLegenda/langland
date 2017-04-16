@@ -1,8 +1,9 @@
-find_category: "SELECT category FROM categories WHERE category = :category AND language_id = :language_id"
-find_all_categories: "SELECT id, category FROM categories WHERE language_id = :language_id"
-find_category_by_word: "SELECT s.category FROM categories AS s INNER JOIN word_category AS ws WHERE s.id = ws.category_id AND ws.word_id = :word_id"
-create_category: "INSERT INTO categories (category, language_id) VALUES (:category, :language_id)"
+find_all_in_working_language: "SELECT c.* FROM categories AS c INNER JOIN languages AS l ON c.language_id = l.id AND l.working_language = 1 ORDER BY category"
+find_by_name_in_working_language: "SELECT c.* FROM categories AS c INNER JOIN languages AS l ON c.language_id = l.id AND l.working_language = 1 WHERE c.category = :category"
+find_category_by_id: "SELECT * FROM categories WHERE id = :category_id"
+update_category_name: "UPDATE categories SET category = :category WHERE id = :category_id"
 
 scenario:
-    find_category: "SELECT category FROM categories WHERE category = :category AND language_id = :language_id"
-    create_category: "INSERT INTO categories (category, language_id) VALUES (:category, :language_id)"
+    create_category:
+        find_working_language: "SELECT id FROM languages WHERE working_language = 1"
+        create_category: "INSERT INTO categories (category, language_id) VALUES (:category, :language_id)"

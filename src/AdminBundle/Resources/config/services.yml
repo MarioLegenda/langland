@@ -4,3 +4,9 @@ services:
         arguments: ['@api.shared.language_repository']
         tags:
             - { name: validator.constraint_validator }
+
+    admin.validator.category_exists_validator:
+        class: AdminBundle\Validator\Constraint\CategoryExistsConstraintValidator
+        arguments: ['@api.shared.category_repository']
+        tags:
+            - { name: validator.constraint_validator }

@@ -6,8 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class MainController extends Controller
 {
-    public function homeAction()
+    public function dashboardAction()
     {
-        return $this->render('::Admin/dashboard.html.twig');
+        return array(
+            'template' => '::Admin/dashboard.html.twig',
+            'data' => array(),
+        );
     }
 }

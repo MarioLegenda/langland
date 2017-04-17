@@ -18,7 +18,7 @@ security:
             provider: blue_dot_provider
             http_basic: ~
             form_login:
-                default_target_path: admin_panel
+                default_target_path: admin_dashboard
                 login_path: armor_admin_login
                 check_path: armor_admin_login
 

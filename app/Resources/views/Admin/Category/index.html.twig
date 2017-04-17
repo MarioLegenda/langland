@@ -2,24 +2,28 @@
 
 {% block content %}
     <div class="fluid-container page">
-        <div class="full-width align-left">
-            <h1 class="full-width page-title margin-top-30 align-left">Categories</h1>
-            <a href="{{ path('category_create') }}" class="main-action-link align-right margin-top-30">Create</a>
-        </div>
-
-        {% if internal_error is defined %}
-            <p class="no-data-message">No categories have been added</p>
-        {% endif %}
-
-        {% if categories is defined %}
-            <div class="full-width align-left margin-top-30 page-content">
-                {% for category in categories %}
-                    <div class="card full-width align-left margin-bottom-10">
-                        <a class="base-action-link align-left" href="#">{{ category.category }}</a>
-                        <a class="sub-base-action-link align-right" href="{{ path('category_edit', {'id': category.id}) }}">Edit</a>
-                    </div>
-                {% endfor %}
+        {% if working_language is not empty %}
+            <div class="full-width align-left">
+                <h1 class="full-width page-title margin-top-30 align-left">Categories</h1>
+                <a href="{{ path('category_create') }}" class="main-action-link align-right margin-top-30">Create</a>
             </div>
+
+            {% if internal_error is defined %}
+                <p class="no-data-message">No categories have been added</p>
+            {% endif %}
+
+            {% if categories is defined %}
+                <div class="full-width align-left margin-top-30 page-content">
+                    {% for category in categories %}
+                        <div class="card full-width align-left margin-bottom-10">
+                            <a class="base-action-link align-left" href="#">{{ category.category }}</a>
+                            <a class="sub-base-action-link align-right" href="{{ path('category_edit', {'id': category.id}) }}">Edit</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="no-data-message margin-top-30">Working language has not been selected</p>
         {% endif %}
     </div>
 {% endblock %}

@@ -18,14 +18,26 @@ class LanguageController extends Controller implements AdminAuthInterface
         $resultResolver = $languageRepo->findAll();
 
         if ($resultResolver->getStatus() === Status::FAILURE) {
-            return $this->render('::Admin/Language/index.html.twig', array(
-                'internal_error' => 'No languages have been added'
-            ));
+            return array(
+                'template' => '::Admin/Language/index.html.twig',
+                'data' => array(
+                    'internal_error' => 'No languages have been added'
+                )
+            );
         }
 
-        return $this->render('::Admin/Language/index.html.twig', array(
-            'languages' => $resultResolver->getData(),
-        ));
+        $data = $resultResolver->getData();
+
+        if (is_string(array_keys($data)[0])) {
+            $data = array($data);
+        }
+
+        return array(
+            'template' => '::Admin/Language/index.html.twig',
+            'data' => array(
+                'languages' => $data,
+            ),
+        );
     }
 
     public function createAction(Request $request)
@@ -33,9 +45,12 @@ class LanguageController extends Controller implements AdminAuthInterface
         $form = $this->createForm(LanguageType::class);
 
         if ($request->getMethod() === 'GET') {
-            return $this->render('::Admin/Language/create.html.twig', array(
-                'form' => $form->createView()
-            ));
+            return array(
+                'template' => '::Admin/Language/create.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                ),
+            );
         }
 
         if ($request->getMethod() === 'POST') {
@@ -48,18 +63,23 @@ class LanguageController extends Controller implements AdminAuthInterface
                     ->create(array('language' => $language));
 
                 if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return $this->render('::Admin/Language/create.html.twig', array(
-                        'form' => $form->createView(),
-                        'internal_error' => sprintf('Language %s could not be created', $language)
-                    ));
+                    return array(
+                        'template' => '::Admin/Language/create.html.twig',
+                        'data' => array(
+                            'internal_error' => sprintf('Language %s could not be created', $language),
+                        ),
+                    );
                 }
 
                 return $this->redirectToRoute('language_index');
             }
 
-            return $this->render('::Admin/Language/create.html.twig', array(
-                'form' => $form->createView()
-            ));
+            return array(
+                'template' => '::Admin/Language/create.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                )
+            );
         }
 
         return $this->createAccessDeniedException();
@@ -74,7 +94,7 @@ class LanguageController extends Controller implements AdminAuthInterface
         ));
 
         if ($resultResolver->getStatus() === Status::FAILURE) {
-            $this->createNotFoundException();
+            throw $this->createNotFoundException();
         }
 
         $languageData = $resultResolver->getData();
@@ -84,10 +104,13 @@ class LanguageController extends Controller implements AdminAuthInterface
                 'language' => $languageData['language'],
             ));
 
-            return $this->render('::Admin/Language/edit.html.twig', array(
-                'form' => $form->createView(),
-                'language' => $languageData,
-            ));
+            return array(
+                'template' => '::Admin/Language/edit.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                    'language' => $languageData,
+                ),
+            );
         }
 
         if ($request->isMethod('post')) {
@@ -106,36 +129,40 @@ class LanguageController extends Controller implements AdminAuthInterface
                 ));
 
                 if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return $this->render('::Admin/Language/edit.html.twig', array(
-                        'form' => $form->createView(),
-                        'internal_error' => sprintf('There has been an internal error'),
-                    ));
+                    return array(
+                        'template' => '::Admin/Language/edit.html.twig',
+                        'data' => array(
+                            'internal_error' => sprintf('There has been an internal error'),
+                        )
+                    );
                 }
 
                 return $this->redirectToRoute('language_index');
             }
 
-            return $this->render('::Admin/Language/edit.html.twig', array(
-                'form' => $form->createView(),
-                'language' => $languageData,
-            ));
+            return array(
+                'template' => '::Admin/Language/edit.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                    'language' => $languageData,
+                )
+            );
         }
 
         return $this->createAccessDeniedException();
     }
 
-    public function findLanguageByIdAction()
+    public function updateWorkingLanguageAction(Request $request, $id)
     {
-        return parent::findLanguageByIdAction($request);
-    }
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
-    public function findAllAction()
-    {
-        return parent::findAllAction();
-    }
+        $data = array(
+            'user_id' => $user->getId(),
+            'language_id' => $id
+        );
 
-    public function updateWorkingLanguageAction()
-    {
-        return parent::updateWorkingLanguageAction($request);
+        $this->get('api.shared.language_repository')->updateWorkingLanguage($data);
+
+        return $this->redirectToRoute('language_index');
     }
 }

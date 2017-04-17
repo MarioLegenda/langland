@@ -10,7 +10,16 @@
         </div>
 
         <div class="full-width nav-menu nav-menu-container align-left language-dropdown">
-            <language-dropdown></language-dropdown>
+            <div class="align-left margin-top-10 full-width">
+                <h1 class="nav-highlighted">Working language</h1>
+
+                {% set workingLanguageName = 'Select' %}
+                {% if working_language is not empty %}
+                    {% set workingLanguageName = working_language.language %}
+                {% endif %}
+
+                <a href="{{ path('language_index') }}" class="full-width align-right main-action-link">{{ workingLanguageName }}</a>
+            </div>
         </div>
     </div>
 </nav>

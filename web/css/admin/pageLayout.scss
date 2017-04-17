@@ -12,6 +12,42 @@ header {
   }
 }
 
+
+.main-action-link {
+  padding: 10px 30px 10px 30px;
+
+  font-size: 1.1em;
+
+  background-color: white;
+  color: $text-color-gray;
+
+  border-bottom: 4px solid $highlight-gray;
+
+  &:hover {
+    border-bottom: 4px solid $main-color;
+    color: $main-color;
+  }
+}
+
+.base-action-link {
+  display:block;
+  padding: 10px;
+
+  color: $text-color-gray;
+}
+
+.sub-base-action-link {
+  color: $subBaseLinkColor;
+
+  padding: 10px;
+
+  margin-left: 20px;
+
+  &:hover {
+    color: $subBaseLinkHoverColor;
+  }
+}
+
 .page {
   .page-title {
     font-size: 1.5em;
@@ -40,41 +76,6 @@ header {
 
     &:hover .base-action-link {
       color: $main-color;
-    }
-  }
-
-  .main-action-link {
-    padding: 10px 30px 10px 30px;
-
-    font-size: 1.1em;
-
-    background-color: white;
-    color: $text-color-gray;
-
-    border-bottom: 4px solid $highlight-gray;
-
-    &:hover {
-      border-bottom: 4px solid $main-color;
-      color: $main-color;
-    }
-  }
-
-  .base-action-link {
-    display:block;
-    padding: 10px;
-
-    color: $text-color-gray;
-  }
-
-  .sub-base-action-link {
-    color: $subBaseLinkColor;
-
-    padding: 10px;
-
-    margin-left: 20px;
-
-    &:hover {
-      color: $subBaseLinkHoverColor;
     }
   }
 }

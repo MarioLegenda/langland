@@ -195,13 +195,6 @@ class SeedCommand extends ContainerAwareCommand
 
         $finish = time() - $start;
 
-        $inserts++;
-
-        $blueDot->execute('simple.update.update_working_language', array(
-            'working_language' => 1,
-            'id' => 1,
-        ));
-
         $output->writeln('<info>Clearing symfony cache</info>');
         $output->writeln('');
 

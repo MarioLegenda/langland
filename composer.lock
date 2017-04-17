@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7842fef8c5a05ea322c32fbc539dca03",
+    "content-hash": "f0fcee90e28d30903d85ed01129e1660",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -936,16 +936,16 @@
         },
         {
             "name": "mario-legenda/blue-dot",
-            "version": "1.2.0",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/MarioLegenda/blue-dot.git",
-                "reference": "2695b1efc99b0b83d5f39396efa4b389d03c39b6"
+                "reference": "0fbc0ca3959c4f71a79bc25c08854cfc8e2b00cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MarioLegenda/blue-dot/zipball/2695b1efc99b0b83d5f39396efa4b389d03c39b6",
-                "reference": "2695b1efc99b0b83d5f39396efa4b389d03c39b6",
+                "url": "https://api.github.com/repos/MarioLegenda/blue-dot/zipball/0fbc0ca3959c4f71a79bc25c08854cfc8e2b00cb",
+                "reference": "0fbc0ca3959c4f71a79bc25c08854cfc8e2b00cb",
                 "shasum": ""
             },
             "require": {
@@ -982,7 +982,7 @@
                 "mysql",
                 "sql"
             ],
-            "time": "2017-04-16T13:48:21+00:00"
+            "time": "2017-04-17T16:55:42+00:00"
         },
         {
             "name": "monolog/monolog",

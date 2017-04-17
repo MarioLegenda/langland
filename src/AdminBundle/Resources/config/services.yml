@@ -10,3 +10,9 @@ services:
         arguments: ['@api.shared.category_repository']
         tags:
             - { name: validator.constraint_validator }
+
+    admin.event.view_subscriber:
+        class: AdminBundle\Listener\ViewSubscriber
+        arguments: ['@templating', '@api.shared.language_repository', '@security.token_storage']
+        tags:
+            - { name: kernel.event_subscriber }

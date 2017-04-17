@@ -1,7 +1,7 @@
 update_working_language:
-    path: /update-working-language
+    path: /update-working-language/{id}
     defaults: { _controller: AdminBundle:Language:updateWorkingLanguage }
-    methods: [POST]
+    methods: [GET]
 
 language_index:
     path: /

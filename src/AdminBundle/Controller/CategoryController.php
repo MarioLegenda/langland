@@ -3,7 +3,6 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Form\Type\CategoryType;
-use API\SharedDataBundle\Repository\CategoryRepository;
 use API\SharedDataBundle\Repository\Status;
 use ArmorBundle\Controller\MasterSecurityController;
 use ArmorBundle\Admin\AdminAuthInterface;
@@ -16,9 +15,12 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
         $form = $this->createForm(CategoryType::class);
 
         if ($request->getMethod() === 'GET') {
-            return $this->render('::Admin/Category/create.html.twig', array(
-                'form' => $form->createView()
-            ));
+            return array(
+                'template' => '::Admin/Category/create.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                ),
+            );
         }
 
         if ($request->getMethod() === 'POST') {
@@ -30,18 +32,23 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
                 $resultResolver = $this->get('api.shared.category_repository')->create(array('category' => $category));
 
                 if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return $this->render('::Admin/Category/create.html.twig', array(
-                        'form' => $form->createView(),
-                        'internal_error' => sprintf('Category %s could not be created', $category)
-                    ));
+                    return array(
+                        'template' => '::Admin/Category/create.html.twig',
+                        'data' => array(
+                            'internal_error' => sprintf('Category %s could not be created', $category),
+                        ),
+                    );
                 }
 
                 return $this->redirectToRoute('category_index');
             }
 
-            return $this->render('::Admin/Category/create.html.twig', array(
-                'form' => $form->createView()
-            ));
+            return array(
+                'template' => '::Admin/Category/create.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                ),
+            );
         }
 
         return $this->createAccessDeniedException();
@@ -54,14 +61,26 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
         $resultResolver = $categoryRepo->findAllForWorkingLanguage();
 
         if ($resultResolver->getStatus() === Status::FAILURE) {
-            return $this->render('::Admin/Category/index.html.twig', array(
-                'internal_error' => 'No categories were found',
-            ));
+            return array(
+                'template' => '::Admin/Category/index.html.twig',
+                'data' => array(
+                    'internal_error' => 'No categories were found',
+                ),
+            );
         }
 
-        return $this->render('::Admin/Category/index.html.twig', array(
-            'categories' => $resultResolver->getData(),
-        ));
+        $data = $resultResolver->getData();
+
+        if (is_string(array_keys($data)[0])) {
+            $data = array($data);
+        }
+
+        return array(
+            'template' => '::Admin/Category/index.html.twig',
+            'data' => array(
+                'categories' => $data,
+            ),
+        );
     }
 
     public function editAction(Request $request, $id)
@@ -73,7 +92,7 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
         ));
 
         if ($resultResolver->getStatus() === Status::FAILURE) {
-            $this->createNotFoundException();
+            throw $this->createNotFoundException();
         }
 
         $categoryData = $resultResolver->getData();
@@ -83,10 +102,13 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
                 'category' => $categoryData['category'],
             ));
 
-            return $this->render('::Admin/Category/edit.html.twig', array(
-                'form' => $form->createView(),
-                'category' => $categoryData,
-            ));
+            return array(
+                'template' => '::Admin/Category/edit.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                    'category' => $categoryData,
+                ),
+            );
         }
 
         if ($request->isMethod('post')) {
@@ -104,19 +126,25 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
                 ));
 
                 if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return $this->render('::Admin/Category/edit.html.twig', array(
-                        'form' => $form->createView(),
-                        'internal_error' => sprintf('There has been an internal error'),
-                    ));
+                    return array(
+                        'template' => '::Admin/Category/edit.html.twig',
+                        'data' => array(
+                            'form' => $form->createView(),
+                            'internal_error' => sprintf('There has been an internal error'),
+                        ),
+                    );
                 }
 
                 return $this->redirectToRoute('category_index');
             }
 
-            return $this->render('::Admin/Category/edit.html.twig', array(
-                'form' => $form->createView(),
-                'category' => $categoryData,
-            ));
+            return array(
+                'template' => '::Admin/Category/edit.html.twig',
+                'data' => array(
+                    'form' => $form->createView(),
+                    'category' => $categoryData,
+                ),
+            );
         }
 
         return $this->createAccessDeniedException();

@@ -1,10 +1,7 @@
 <script type="text/ng-template" id="languageDropdown.html">
     <div class="align-left margin-top-10 full-width">
-        <h1 class="nav-highlighted">Choose language</h1>
+        <h1 class="nav-highlighted">Working language</h1>
 
-        <div dropdown-select="languageOptions"
-             dropdown-model="languageSelected"
-             dropdown-item-label="text">
-        </div>
+        <a href="#" ng-click="chooseLanguage($event)" class="full-width align-right main-action-link">{[{ workingLanguage }]}</a>
     </div>
 </script>

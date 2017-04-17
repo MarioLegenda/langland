@@ -63,10 +63,27 @@ class LanguageRepository extends AbstractRepository
      * @param array $data
      * @return ResultResolver
      */
+    public function findWorkingLanguageByUser(array $data)
+    {
+        $promise = $this->blueDot->execute('simple.select.find_working_language_by_user', $data);
+
+        return $this->createResultResolver($promise);
+    }
+    /**
+     * @param array $data
+     * @return ResultResolver
+     */
     public function updateWorkingLanguage(array $data) : ResultResolver
     {
         $promise = $this->blueDot->execute('scenario.update_working_language', array(
-            'update_working_language' => $data
+            'find_working_language' => array(
+                'user_id' => $data['user_id'],
+            ),
+            'create_working_language' => $data,
+            'remove_working_language' => array(
+                'user_id' => $data['user_id'],
+            ),
+            'update_working_language' => $data,
         ));
 
         return $this->createResultResolver($promise);

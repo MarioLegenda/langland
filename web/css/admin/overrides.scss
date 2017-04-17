@@ -1,3 +1,34 @@
+.language {
+  .non-working-language {
+    color: $highlight-gray;
+  }
+
+  .working-language {
+    color: green;
+  }
+}
+
+
+.ngdialog {
+  box-sizing: border-box;
+}
+
+.ngdialog *,
+.ngdialog *:before,
+.ngdialog *:after {
+  box-sizing: inherit;
+}
+
+.ngdialog {
+  position: absolute;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 10000;
+  top: 40px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
 .ngdialog-content {
   overflow: hidden;
   background: white;

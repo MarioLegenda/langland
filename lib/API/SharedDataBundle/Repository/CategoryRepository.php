@@ -62,7 +62,10 @@ class CategoryRepository extends AbstractRepository
 
         return $this->createResultResolver($promise);
     }
-
+    /**
+     * @param array $data
+     * @return ResultResolver
+     */
     public function findCategoryById(array $data)
     {
         $promise = $this->blueDot->execute('simple.select.find_category_by_id', $data);

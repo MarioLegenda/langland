@@ -1,6 +1,6 @@
-admin_panel:
+admin_dashboard:
     path:     /admin
-    defaults: { _controller: AdminBundle:Main:home }
+    defaults: { _controller: AdminBundle:Main:dashboard }
 
 language:
   resource: "@AdminBundle/Resources/config/routing/api/language.yml"

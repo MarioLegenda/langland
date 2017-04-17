@@ -167,6 +167,28 @@ header {
     header .main-title a {
       color: white; }
 
+.main-action-link {
+  padding: 10px 30px 10px 30px;
+  font-size: 1.1em;
+  background-color: white;
+  color: #2d2d2d;
+  border-bottom: 4px solid #b5b3b3; }
+  .main-action-link:hover {
+    border-bottom: 4px solid #fc571b;
+    color: #fc571b; }
+
+.base-action-link {
+  display: block;
+  padding: 10px;
+  color: #2d2d2d; }
+
+.sub-base-action-link {
+  color: #47c1ff;
+  padding: 10px;
+  margin-left: 20px; }
+  .sub-base-action-link:hover {
+    color: #008db5; }
+
 .page .page-title {
   font-size: 1.5em;
   padding: 10px;
@@ -182,25 +204,6 @@ header {
     border-bottom: 1px solid #b5b3b3; }
   .page .card:hover .base-action-link {
     color: #fc571b; }
-.page .main-action-link {
-  padding: 10px 30px 10px 30px;
-  font-size: 1.1em;
-  background-color: white;
-  color: #2d2d2d;
-  border-bottom: 4px solid #b5b3b3; }
-  .page .main-action-link:hover {
-    border-bottom: 4px solid #fc571b;
-    color: #fc571b; }
-.page .base-action-link {
-  display: block;
-  padding: 10px;
-  color: #2d2d2d; }
-.page .sub-base-action-link {
-  color: #47c1ff;
-  padding: 10px;
-  margin-left: 20px; }
-  .page .sub-base-action-link:hover {
-    color: #008db5; }
 
 .modal-container {
   width: 100%; }
@@ -465,6 +468,29 @@ header {
   width: 98%;
   padding-left: 10px;
   border-left: 1px solid #b5b3b3; }
+
+.language .non-working-language {
+  color: #b5b3b3; }
+.language .working-language {
+  color: green; }
+
+.ngdialog {
+  box-sizing: border-box; }
+
+.ngdialog *,
+.ngdialog *:before,
+.ngdialog *:after {
+  box-sizing: inherit; }
+
+.ngdialog {
+  position: absolute;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 10000;
+  top: 40px;
+  right: 0;
+  bottom: 0;
+  left: 0; }
 
 .ngdialog-content {
   overflow: hidden;

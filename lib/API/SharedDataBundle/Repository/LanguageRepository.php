@@ -23,6 +23,8 @@ class LanguageRepository extends AbstractRepository
     /**
      * @param array $data
      * @return ResultResolver
+     *
+     * $data expects array('language' => 'french')
      */
     public function create(array $data) : ResultResolver
     {
@@ -72,6 +74,8 @@ class LanguageRepository extends AbstractRepository
     /**
      * @param array $data
      * @return ResultResolver
+     *
+     * $data array('user_id' => 1, 'language_id' => 1)
      */
     public function updateWorkingLanguage(array $data) : ResultResolver
     {

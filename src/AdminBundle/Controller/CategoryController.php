@@ -51,7 +51,7 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
             );
         }
 
-        return $this->createAccessDeniedException();
+        throw $this->createAccessDeniedException();
     }
 
     public function indexAction()
@@ -147,6 +147,6 @@ class CategoryController extends MasterSecurityController implements AdminAuthIn
             );
         }
 
-        return $this->createAccessDeniedException();
+        throw $this->createAccessDeniedException();
     }
 }

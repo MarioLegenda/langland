@@ -1,14 +1,14 @@
-create_word:
+word_create:
     path: /create
     defaults: { _controller: AdminBundle:Word:create }
-    methods: [POST]
+    methods: [GET, POST]
 
-remove_word:
-    path: /remove
-    defaults: { _controller: AdminBundle:Word:remove }
-    methods: [POST]
+word_edit:
+    path: /edit/{id}
+    defaults: { _controller: AdminBundle:Word:edit }
+    methods: [GET, POST]
 
-schedule_removal:
-    path: /schedule-removal
-    defaults: { _controller: AdminBundle:Word:scheduleRemoval }
-    methods: [POST]
+word_index:
+    path: /
+    defaults: { _controller: AdminBundle:Word:index }
+    methods: [GET]

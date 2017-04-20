@@ -82,7 +82,7 @@ class LanguageController extends Controller implements AdminAuthInterface
             );
         }
 
-        return $this->createAccessDeniedException();
+        throw $this->createAccessDeniedException();
     }
 
     public function editAction(Request $request, $id)
@@ -149,7 +149,7 @@ class LanguageController extends Controller implements AdminAuthInterface
             );
         }
 
-        return $this->createAccessDeniedException();
+        throw $this->createAccessDeniedException();
     }
 
     public function updateWorkingLanguageAction(Request $request, $id)

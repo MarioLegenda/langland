@@ -1,0 +1,47 @@
+configuration:
+    scenario:
+        seed:
+            atomic: true
+            statements:
+                drop_database:
+                    sql: "DROP DATABASE IF EXISTS langland"
+                create_database:
+                    sql: "CREATE DATABASE IF NOT EXISTS langland"
+                use_langland:
+                    sql: "USE langland"
+                create_users_table:
+                    sql: "CREATE TABLE users (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, gender CHAR(6) NOT NULL, password VARCHAR(255) NOT NULL, roles TEXT, account_confirmation VARCHAR(255) NULL, enabled TINYINT NOT NULL DEFAULT 0, created_at TIMESTAMP) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_user_working_language:
+                    sql: "CREATE TABLE user_working_languages (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, user_id INT(6) NOT NULL, language_id INT(6) NOT NULL, working_language TINYINT DEFAULT 0)  CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_languages_table:
+                    sql: "CREATE TABLE languages (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, language VARCHAR(256) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_word_table:
+                    sql: "CREATE TABLE words (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, language_id INT(6) NOT NULL, word VARCHAR(256) NOT NULL, type VARCHAR(256) DEFAULT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_translations_table:
+                    sql: "CREATE TABLE translations (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, word_id INT(6) NOT NULL, translation VARCHAR(256) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_category_table:
+                    sql: "CREATE TABLE categories (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, language_id INT(6) NOT NULL, category VARCHAR(256) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_word_category_table:
+                    sql: "CREATE TABLE word_category (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, word_id INT(6) NOT NULL, category_id INT(6) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_course_table:
+                    sql: "CREATE TABLE courses (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, language_id INT(6) NOT NULL, name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_class_table:
+                    sql: "CREATE TABLE classes (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, course_id INT(6) NOT NULL, name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_lesson_table:
+                    sql: "CREATE TABLE lessons (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, class_id INT(6) NOT NULL, name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_images_table:
+                    sql: "CREATE TABLE word_images (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, word_id INT(6) NOT NULL, relative_path VARCHAR(255) DEFAULT NULL, absolute_path VARCHAR(255) DEFAULT NULL, file_name VARCHAR(255) DEFAULT NULL, absolute_full_path VARCHAR(255) DEFAULT NULL, relative_full_path VARCHAR(255) DEFAULT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_theory_table:
+                    sql: "CREATE TABLE theories (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, lesson_id INT(6) NOT NULL, name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_theory_deck:
+                    sql: "CREATE TABLE theory_decks (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, theory_id INT(6) NOT NULL, internal_name VARCHAR(255) NOT NULL, internal_description TEXT DEFAULT NULL, deck_data TEXT DEFAULT NULL, show_on_page TINYINT DEFAULT 0, ordering INT(6) DEFAULT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_sounds_table:
+                    sql: "CREATE TABLE sounds (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, relative_path VARCHAR(255) NOT NULL, absolute_path VARCHAR(255) NOT NULL, file_name VARCHAR(255) NOT NULL, absolute_full_path VARCHAR(255) NOT NULL, relative_full_path VARCHAR(255) NOT NULL, client_original_name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_theory_sounds_table:
+                    sql: "CREATE TABLE theory_sounds (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, sound_id INT(6) NOT NULL, theory_id INT(6) NOT NULL, deck_id INT(6) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_sentences_table:
+                    sql: "CREATE TABLE sentences (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, sentence VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_lesson_sentence_table:
+                    sql: "CREATE TABLE lesson_sentences (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, internal_name VARCHAR(255) NOT NULL, sentence_id INT(6) NOT NULL, lesson_id INT(6) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                create_lesson_sentence_translation_table:
+                    sql: "CREATE TABLE lesson_sentences_translations (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, lesson_sentence_id VARCHAR(255) NOT NULL, translation VARCHAR(255) NOT NULL, mark_correct TINYINT DEFAULT 0) CHARACTER SET utf8 COLLATE utf8_general_ci"

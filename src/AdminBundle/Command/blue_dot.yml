@@ -404,8 +404,6 @@ configuration:
 
         seed:
             atomic: true
-            rules: { return_entity: false }
-            return_entity: []
             statements:
                 create_users_table:
                     sql: "CREATE TABLE users (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, gender CHAR(6) NOT NULL, password VARCHAR(255) NOT NULL, roles TEXT, account_confirmation VARCHAR(255) NULL, enabled TINYINT NOT NULL DEFAULT 0, created_at TIMESTAMP) CHARACTER SET utf8 COLLATE utf8_general_ci"
@@ -414,7 +412,7 @@ configuration:
                 create_languages_table:
                     sql: "CREATE TABLE languages (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, language VARCHAR(256) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
                 create_word_table:
-                    sql: "CREATE TABLE words (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, language_id INT(6) NOT NULL, image_id INT(6) DEFAULT NULL, word VARCHAR(256) NOT NULL, type VARCHAR(256) DEFAULT NULL, schedule_removal TINYINT DEFAULT 0) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                    sql: "CREATE TABLE words (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, language_id INT(6) NOT NULL, word VARCHAR(256) NOT NULL, type VARCHAR(256) DEFAULT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
                 create_translations_table:
                     sql: "CREATE TABLE translations (id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY, word_id INT(6) NOT NULL, translation VARCHAR(256) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
                 create_category_table:

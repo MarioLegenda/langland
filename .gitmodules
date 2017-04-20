@@ -1,0 +1,3 @@
+[submodule "lib/bluedot"]
+	path = lib/bluedot
+	url = https://github.com/MarioLegenda/blue-dot

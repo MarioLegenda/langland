@@ -143,17 +143,22 @@ body {
   padding: 10px; }
 .form .field-break {
   border-bottom: 1px solid #b5b3b3; }
-.form label, .form input[type="text"] {
+.form label, .form input[type="text"], .form select {
   font-size: 1.2em;
-  font-family: "Inconsolata", monospace; }
+  font-family: "Inconsolata", monospace;
+  padding: 10px; }
+.form select {
+  background-color: white;
+  border: 1px solid #b5b3b3;
+  border-bottom: 4px solid #fc571b; }
 .form label {
   width: 100%;
   display: block;
   float: left;
   margin-bottom: 20px; }
 .form input[type="text"] {
-  border: none;
-  padding: 10px 10px 10px 0px; }
+  padding: 10px 10px 10px 0;
+  border: 1px solid #b5b3b3; }
 .form .form-error {
   color: #fc571b;
   padding: 10px 10px 10px 0; }

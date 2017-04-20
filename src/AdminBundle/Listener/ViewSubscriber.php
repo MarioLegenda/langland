@@ -27,7 +27,6 @@ class ViewSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        // return the subscribed events, their methods and priorities
         return array(
             KernelEvents::VIEW => array(
                 array('processWorkingLanguage', 10),

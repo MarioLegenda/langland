@@ -7,9 +7,19 @@
     border-bottom: 1px solid $highlight-gray;
   }
 
-  label, input[type="text"] {
+  label, input[type="text"], select {
     font-size: 1.2em;
     font-family: $app-font;
+
+    padding: 10px;
+  }
+
+  select {
+    background-color: white;
+
+    border: 1px solid $highlight-gray;
+
+    border-bottom: 4px solid $main-color;
   }
 
   label {
@@ -21,9 +31,9 @@
   }
 
   input[type="text"] {
-    border:none;
+    padding: 10px 10px 10px 0;
 
-    padding: 10px 10px 10px 0px;
+    border: 1px solid $highlight-gray;
   }
 
   .form-error {

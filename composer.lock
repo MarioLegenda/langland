@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0fcee90e28d30903d85ed01129e1660",
+    "content-hash": "1f55b24a2dcad8aada522968ab35a494",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -933,56 +933,6 @@
                 "sql"
             ],
             "time": "2014-01-12T16:20:24+00:00"
-        },
-        {
-            "name": "mario-legenda/blue-dot",
-            "version": "1.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/MarioLegenda/blue-dot.git",
-                "reference": "0fbc0ca3959c4f71a79bc25c08854cfc8e2b00cb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/MarioLegenda/blue-dot/zipball/0fbc0ca3959c4f71a79bc25c08854cfc8e2b00cb",
-                "reference": "0fbc0ca3959c4f71a79bc25c08854cfc8e2b00cb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0",
-                "symfony/yaml": ">=2.8.0"
-            },
-            "require-dev": {
-                "fzaninotto/faker": "^1.6",
-                "phpunit/phpunit": "4.8.*",
-                "raveren/kint": "^1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "BlueDot": "src/",
-                    "Test": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Mario Skrlec",
-                    "email": "whitepostmail@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Pure Sql Database abstraction layer",
-            "keywords": [
-                "abstraction",
-                "database",
-                "mysql",
-                "sql"
-            ],
-            "time": "2017-04-17T16:55:42+00:00"
         },
         {
             "name": "monolog/monolog",

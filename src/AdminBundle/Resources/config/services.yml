@@ -11,6 +11,18 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    admin.validator.word_exists_validator:
+        class: AdminBundle\Validator\Constraint\WordExistsConstraintValidator
+        arguments: ['@api.shared.word_repository']
+        tags:
+            - { name: validator.constraint_validator }
+
+    issue.form:
+        class: AdminBundle\Form\Type\WordType
+        arguments: ['@api.shared.category_repository']
+        tags:
+            - { name: form.type }
+
     admin.event.view_subscriber:
         class: AdminBundle\Listener\ViewSubscriber
         arguments: ['@templating', '@api.shared.language_repository', '@security.token_storage']

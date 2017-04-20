@@ -1,0 +1,73 @@
+{% extends '::Admin/base.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Words - create new word</h1>
+        </div>
+
+        <div class="full-width align-left margin-top-30 page-content form">
+            <form action="{{ path('word_create') }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
+                <div class="margin-top-40 align-left full-width">
+                    <div class="form-error full-width align-right">
+                        {{ form_errors(form) }}
+                    </div>
+
+                    <div class="full-width align-left form-field field-break">
+                        {{ form_label(form.word) }}
+                        {{ form_widget(form.word) }}
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form.word) }}
+                        </div>
+                    </div>
+
+                    <div class="full-width align-left form-field field-break">
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type) }}
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form.type) }}
+                        </div>
+                    </div>
+
+                    <div class="full-width align-left form-field field-break">
+                        {{ form_label(form.category) }}
+                        {{ form_widget(form.category) }}
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form.category) }}
+                        </div>
+                    </div>
+
+                    <div class="full-width align-left form-field field-break">
+                        {{ form_label(form.image) }}
+                        {{ form_widget(form.image) }}
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form.image) }}
+                        </div>
+                    </div>
+
+                    <div class="full-width align-left form-field field-break">
+                        {{ form_label(form.translations) }}
+
+                        <div class="form-field translations" data-prototype="{{ form_widget(form.translations.vars.prototype)|e('html_attr') }}">
+                            {% for translation in form.translations %}
+                                {{ form_widget(translation) }}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if internal_error is defined %}
+                        <div class="form-error full-width align-right">
+                            {{ internal_error }}
+                        </div>
+                    {% endif %}
+
+                    <div class="align-right relative margin-top-50 relative button-wrapper">
+                        <button type="submit" class="align-right">Create</button>
+                    </div>
+                </div>
+
+                {{ form_widget(form._token) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

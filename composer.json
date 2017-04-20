@@ -5,7 +5,9 @@
     "autoload": {
         "psr-0": {
             "Library": "lib/",
-            "API": "lib/"
+            "API": "lib/",
+            "BlueDot": "lib/bluedot/src",
+            "Test": "tests/"
         },
         "psr-4": {
             "": "src/"
@@ -29,7 +31,6 @@
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/orm": "^2.5",
         "incenteev/composer-parameter-handler": "^2.0",
-        "mario-legenda/blue-dot": "1.2.3",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "symfony/monolog-bundle": "^3.0.2",

@@ -1,25 +1,25 @@
 {% extends '::Admin/base.html.twig' %}
 
 {% block content %}
-    <div class="fluid-container page">
+    <div class="fluid-container page language">
         <div class="full-width align-left">
-            <h1 class="full-width page-title margin-top-30 align-left">Categories</h1>
+            <h1 class="full-width page-title margin-top-30 align-left">Words</h1>
             {% if working_language is not empty %}
-                <a href="{{ path('category_create') }}" class="main-action-link align-right margin-top-30">Create</a>
+                <a href="{{ path('word_create') }}" class="main-action-link align-right margin-top-30">Create</a>
             {% endif %}
         </div>
 
         {% if working_language is not empty %}
             {% if internal_error is defined %}
-                <p class="no-data-message">No categories have been added</p>
+                <p class="no-data-message">No words have been added</p>
             {% endif %}
 
-            {% if categories is defined %}
+            {% if words is defined %}
                 <div class="full-width align-left margin-top-30 page-content">
-                    {% for category in categories %}
+                    {% for word in words %}
                         <div class="card full-width align-left margin-bottom-10">
-                            <a class="base-action-link align-left" href="#">{{ category.category }}</a>
-                            <a class="sub-base-action-link align-right" href="{{ path('category_edit', {'id': category.id}) }}">Edit</a>
+                            <a class="base-action-link align-left" href="#">{{ word.word }}</a>
+                            <a class="sub-base-action-link align-right" href="{{ path('word_edit', {'id': word.id}) }}">Edit</a>
                         </div>
                     {% endfor %}
                 </div>

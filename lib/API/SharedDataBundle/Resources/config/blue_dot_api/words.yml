@@ -4,92 +4,86 @@ configuration:
 
     simple:
         select:
-            find_single_word_translation:
-                sql: "SELECT w.id, w.word, w.type FROM words AS w WHERE language_id = :language_id AND word = :search_word ORDER BY id ASC LIMIT 12 OFFSET :offset"
-                parameters: [language_id, search_word, offset]
-            find_word_by_pattern:
-                sql: "SELECT w.id, w.word, w.type FROM words AS w WHERE language_id = :language_id AND word LIKE :search_word ORDER BY w.id ASC LIMIT 12 OFFSET :offset"
-                parameters: [language_id, search_word, offset]
-            find_translations_by_word:
-                sql: "SELECT translation FROM translations WHERE word_id = :word_id"
-                parameters: [word_id]
-            find_last_words:
-                sql: find_last_words
-                parameters: [language_id, offset]
-            find_translation_by_word:
-                sql: "SELECT * FROM translations WHERE word_id = :word_id"
-                parameters: [word_id]
-            find_translations_by_word_id:
-                sql: "This sql is injected"
-            find_word_by_word:
-                sql: find_word_by_word
-                parameters: [word]
-            find_word_by_id:
-                sql: find_word_by_id
-                parameters: [word_id]
-            find_image_by_word:
-                sql: find_image_by_word
-                parameters: [word_id]
             find_word_image_by_filename:
-                sql: "SELECT id FROM word_images WHERE file_name = :file_name"
+                sql: "SELECT * FROM word_images WHERE file_name = :file_name"
                 parameters: [file_name]
 
-        update:
-            schedule_word_removal:
-                sql: "UPDATE words SET schedule_removal = 1 WHERE id = :word_id"
-                parameters: [word_id]
-
     scenario:
-        insert_word:
+        create_word:
             atomic: true
-            rules: { return_entity: false }
-            return_entity: []
             statements:
-                insert_word:
-                    sql: scenario.insert_word
-                    parameters: [language_id, word, type]
-                insert_translation:
-                    sql: scenario.insert_translation
-                    parameters: [translation]
-                    foreign_key:
-                        statement_name: insert_word
-                        bind_to: word_id
-                insert_word_category:
-                    sql: scenario.insert_word_category
-                    parameters: [category_id]
-                    foreign_key:
-                        statement_name: insert_word
-                        bind_to: word_id
-                insert_word_image:
-                    sql: scenario.insert_word_image
+                find_working_language:
+                    sql: "SELECT language_id FROM user_working_languages WHERE user_id = :user_id AND working_language = 1"
+                    parameters: [user_id]
+                create_word:
+                    sql: "INSERT INTO words (language_id, word, type) VALUES (:language_id, :word, :type)"
+                    parameters: [word, type]
+                    use:
+                        statement_name: find_working_language
+                        values: { find_working_language.language_id: language_id }
+                create_image:
+                    sql: "INSERT INTO word_images (word_id, relative_path, absolute_path, file_name, absolute_full_path, relative_full_path) VALUES (:word_id, :relative_path, :absolute_path, :file_name, :absolute_full_path, :relative_full_path)"
                     parameters: [relative_path, absolute_path, file_name, absolute_full_path, relative_full_path]
                     foreign_key:
-                        statement_name: insert_word
+                        statement_name: create_word
                         bind_to: word_id
-        remove_word:
+                create_word_categories:
+                    sql: "INSERT INTO word_category (word_id, category_id) VALUES (:word_id, :category_id)"
+                    parameters: [category_id]
+                    foreign_key:
+                        statement_name: create_word
+                        bind_to: word_id
+                create_translations:
+                    sql: "INSERT INTO translations (word_id, translation) VALUES (:word_id, :translation)"
+                    parameters: [translation]
+                    foreign_key:
+                        statement_name: create_word
+                        bind_to: word_id
+        # word index scenario group
+        find_words_complex:
             atomic: true
-            rules: { return_entity: false }
-            return_entity: []
+            return_data: [select_all_words]
             statements:
-                remove_translations:
-                    sql: "DELETE t FROM translations AS t INNER JOIN words AS w WHERE t.word_id = :word_id AND t.word_id = w.id AND w.schedule_removal = 1"
+                find_working_language:
+                    sql: "SELECT language_id FROM user_working_languages WHERE user_id = :user_id AND working_language = 1"
+                    parameters: [user_id]
+                select_all_words:
+                    sql: "SELECT w.*, c.category, t.translation FROM words AS w INNER JOIN categories AS c INNER JOIN word_category AS wc INNER JOIN translations AS t ON w.id = wc.word_id AND wc.category_id = c.id AND t.word_id = w.id AND w.language_id = :language_id"
+                    use:
+                        statement_name: find_working_language
+                        values: { find_working_language.language_id: language_id }
+
+        find_single_word_complex:
+            atomic: true
+            return_data: [select_word]
+            statements:
+                find_working_language:
+                    sql: "SELECT language_id FROM user_working_languages WHERE user_id = :user_id AND working_language = 1"
+                    parameters: [user_id]
+                select_word:
+                    sql: "SELECT w.id, w.word, w.type, wc.category_id AS category, t.translation FROM words AS w INNER JOIN word_category AS wc INNER JOIN translations AS t ON w.id = wc.word_id AND t.word_id = w.id AND w.language_id = :language_id WHERE w.id = :word_id"
                     parameters: [word_id]
-                remove_word_category:
-                    sql: "DELETE wc FROM word_category AS wc INNER JOIN words AS w WHERE wc.word_id = :word_id AND w.id = wc.word_id AND w.schedule_removal = 1"
-                    can_be_empty_result: true
-                    parameters: [word_id]
-                remove_word_image:
-                    sql: "DELETE wi FROM word_images AS wi INNER JOIN words AS w WHERE wi.word_id = :word_id AND w.id = wi.word_id AND w.schedule_removal = 1"
-                    can_be_empty_result: true
-                    parameters: [word_id]
-                remove_word:
-                    sql: "DELETE FROM words WHERE id = :word_id AND schedule_removal = 1"
-                    parameters: [word_id]
+                    use:
+                        statement_name: find_working_language
+                        values: { find_working_language.language_id: language_id }
+
+        find_words_simple:
+            atomic: true
+            return_data: [select_all_words]
+            statements:
+                find_working_language:
+                    sql: "SELECT language_id FROM user_working_languages WHERE user_id = :user_id AND working_language = 1"
+                    parameters: [user_id]
+                select_all_words:
+                    sql: "SELECT * FROM words WHERE language_id = :language_id"
+                    use:
+                        statement_name: find_working_language
+                        values: { find_working_language.language_id: language_id }
 
     callable:
-        last_words:
+        find_single_word_complex:
             type: object
-            name: AdminBundle\BlueDotCallable\LastWordsCallable
-        search_callable:
+            name: AdminBundle\BlueDotCallable\SingleWordComplexCallable
+        find_words_complex:
             type: object
-            name: AdminBundle\BlueDotCallable\SearchCallable
+            name: AdminBundle\BlueDotCallable\WordListCallable

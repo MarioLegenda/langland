@@ -6,6 +6,7 @@ use Library\App\ImageResize;
 use BlueDot\BlueDotInterface;
 use BlueDot\Entity\Entity;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class WordRepository extends AbstractRepository
 {
@@ -52,41 +53,49 @@ class WordRepository extends AbstractRepository
      */
     public function create(array $data) : ResultResolver
     {
-        $fileName = null;
+        $findWorkingLanguageParam = array(
+            'user_id' => $data['user_id'],
+        );
 
-        $insertWordParam = array(
-            'language_id' => $data['language_id'],
+        $createWordParam = array(
             'word' => $data['word'],
             'type' => $data['type'],
         );
 
-        $wordImageParam = null;
+        $createImageParam = null;
 
-        if ($data['image'] instanceof File) {
-            $wordImageParam = array(
+        if ($data['image'] instanceof UploadedFile) {
+            $image = $data['image'];
+            $fileName = $this->generateImageFilename($image);
+
+            $createImageParam = array(
                 'relative_path' => $this->uploadsRelativePath,
                 'absolute_path' => $this->uploadsAbsPath,
                 'file_name' => $fileName,
                 'absolute_full_path' => $this->uploadsAbsPath.$fileName,
-                'relative_full_path' => $this->uploadsRelativePath.$fileName,
+                'relative_full_path' => $this->uploadsRelativePath,
             );
         }
 
-        $translationsParam = array(
-            'translation' => $data['translations'],
-        );
+        $createWordCategoryParam = null;
 
-        $categoryParam = null;
-
-        if (!is_null($data['category_id'])) {
-            $categoryParam = array('category_id' => $data['category_id']);
+        if (array_key_exists('category', $data)) {
+            $createWordCategoryParam = array(
+                'category_id' => $data['category'],
+            );
         }
 
-        $promise = $this->blueDot->execute('scenario.insert_word', array(
-            'insert_word' => $insertWordParam,
-            'insert_word_image' => $wordImageParam,
-            'insert_translation' => $translationsParam,
-            'insert_word_category' => $categoryParam,
+        $createTranslationsParam = array();
+        foreach ($data['translations'] as $translation) {
+            $createTranslationsParam['translation'][] = $translation['translation'];
+        }
+
+        $promise = $this->blueDot->execute('scenario.create_word', array(
+            'find_working_language' => $findWorkingLanguageParam,
+            'create_word' => $createWordParam,
+            'create_image' => $createImageParam,
+            'create_word_categories' => $createWordCategoryParam,
+            'create_translations' => $createTranslationsParam,
         ));
 
         if ($promise->isSuccess()) {
@@ -142,40 +151,38 @@ class WordRepository extends AbstractRepository
     /**
      * @param array $data
      * @return ResultResolver
+     *
+     * Receives array('user_id' => 1)
      */
-    public function findImageByWord(array $data) : ResultResolver
+    public function findAllWordsByWorkingLanguageComplex(array $data)
     {
-        $promise = $this->blueDot->execute('simple.select.find_image_by_word', $data);
+        $promise = $this->blueDot->execute('callable.find_words_complex', $data);
 
         return $this->createResultResolver($promise);
     }
     /**
      * @param array $data
      * @return ResultResolver
+     *
+     * Receives array('user_id' => 1)
      */
-    public function findWordByWord(array $data) : ResultResolver
+    public function findAllWordsByWorkingLanguageSimple(array $data)
     {
-        $promise = $this->blueDot->execute('simple.select.find_word_by_word', $data);
+        $promise = $this->blueDot->execute('scenario.find_words_simple', array(
+            'find_working_language' => $data,
+        ));
 
         return $this->createResultResolver($promise);
     }
     /**
      * @param array $data
      * @return ResultResolver
+     *
+     * Receives array('user_id' => 1, 'word_id' => 1)
      */
-    public function findWordById(array $data) : ResultResolver
+    public function findSingleWordByWorkingLanguageComplex(array $data)
     {
-        $promise = $this->blueDot->execute('simple.select.find_word_by_id', $data);
-
-        return $this->createResultResolver($promise);
-    }
-    /**
-     * @param array $data
-     * @return ResultResolver
-     */
-    public function scheduleRemoval(array $data) : ResultResolver
-    {
-        $promise = $this->blueDot->execute('simple.update.schedule_word_removal', $data);
+        $promise = $this->blueDot->execute('callable.find_single_word_complex', $data);
 
         return $this->createResultResolver($promise);
     }

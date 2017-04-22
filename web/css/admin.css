@@ -143,6 +143,9 @@ body {
   padding: 10px; }
 .form .field-break {
   border-bottom: 1px solid #b5b3b3; }
+.form .success {
+  color: green;
+  padding: 10px; }
 .form label, .form input[type="text"], .form select {
   font-size: 1.2em;
   font-family: "Inconsolata", monospace;

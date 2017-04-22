@@ -103,6 +103,7 @@ class BlueDotTestCase extends WebTestCase
                 'file_name' => 'file_name',
                 'absolute_full_path' => 'absolute_full_path',
                 'relative_full_path' => 'relative_full_path',
+                'original_name' => 'original name'
             ),
             'create_word_categories' => array(
                 'category_id' => array(1, 2, 3),
@@ -131,6 +132,7 @@ class BlueDotTestCase extends WebTestCase
                 'file_name' => 'file_name',
                 'absolute_full_path' => 'absolute_full_path',
                 'relative_full_path' => 'relative_full_path',
+                'original_name' => 'original name',
             ),
             'create_word_categories' => array(
                 'category_id' => array(3, 4, 1),
@@ -157,6 +159,7 @@ class BlueDotTestCase extends WebTestCase
                 'file_name' => 'file_name',
                 'absolute_full_path' => 'absolute_full_path',
                 'relative_full_path' => 'relative_full_path',
+                'original_name' => 'original name',
             ),
             'create_word_categories' => array(
                 'category_id' => array(1, 5),

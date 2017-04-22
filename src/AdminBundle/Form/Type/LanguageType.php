@@ -2,38 +2,47 @@
 
 namespace AdminBundle\Form\Type;
 
+use AdminBundle\Entity\Language;
 use AdminBundle\Validator\Constraint\LanguageExistsConstraint;
+use AdminBundle\Validator\Constraint\UniqueConstraint;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LanguageType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('language', TextType::class, array(
+            ->add('name', TextType::class, array(
                 'label' => 'Language: ',
                 'attr' => array(
                     'placeholder' => '... click \'n type',
                 ),
-                'constraints' => array(
-                    new NotBlank(array(
-                        'message' => 'Language name cannot be empty',
-                    )),
-                    new Length(array(
-                        'max' => 50,
-                        'maxMessage' => 'Language name can have up to {{ limit }} characters',
-                    )),
-                    new LanguageExistsConstraint(),
-                ),
             ));
     }
-
+    /**
+     * @return string
+     */
     public function getBlockPrefix()
     {
-        return 'language';
+        return 'form';
+    }
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => Language::class,
+        ));
     }
 }

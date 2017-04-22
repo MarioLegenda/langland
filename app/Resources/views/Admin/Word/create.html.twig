@@ -6,68 +6,39 @@
             <h1 class="full-width page-title margin-top-30 align-left">Words - create new word</h1>
         </div>
 
-        <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('word_create') }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
-                <div class="margin-top-40 align-left full-width">
-                    <div class="form-error full-width align-right">
-                        {{ form_errors(form) }}
-                    </div>
+        {% if no_language is defined %}
+            <p class="full-width align-left no-data-message margin-top-30">There are no created languages</p>
+        {% endif %}
 
-                    <div class="full-width align-left form-field field-break">
-                        {{ form_label(form.word) }}
-                        {{ form_widget(form.word) }}
+        {% if form is defined %}
+            <div class="full-width align-left margin-top-30 page-content form">
+                <form action="{{ path('word_create') }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
+                    <div class="margin-top-40 align-left full-width">
                         <div class="form-error full-width align-right">
-                            {{ form_errors(form.word) }}
+                            {{ form_errors(form) }}
+                        </div>
+
+                        {% include '::Admin/Form/_include/flashNotice.html.twig' %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.language } only %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.type } only %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.categories } only %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.wordImage } only %}
+
+
+                        <div class="align-right relative margin-top-50 relative button-wrapper">
+                            <button type="submit" class="align-right">Create</button>
                         </div>
                     </div>
 
-                    <div class="full-width align-left form-field field-break">
-                        {{ form_label(form.type) }}
-                        {{ form_widget(form.type) }}
-                        <div class="form-error full-width align-right">
-                            {{ form_errors(form.type) }}
-                        </div>
-                    </div>
-
-                    <div class="full-width align-left form-field field-break">
-                        {{ form_label(form.category) }}
-                        {{ form_widget(form.category) }}
-                        <div class="form-error full-width align-right">
-                            {{ form_errors(form.category) }}
-                        </div>
-                    </div>
-
-                    <div class="full-width align-left form-field field-break">
-                        {{ form_label(form.image) }}
-                        {{ form_widget(form.image) }}
-                        <div class="form-error full-width align-right">
-                            {{ form_errors(form.image) }}
-                        </div>
-                    </div>
-
-                    <div class="full-width align-left form-field field-break">
-                        {{ form_label(form.translations) }}
-
-                        <div class="form-field translations" data-prototype="{{ form_widget(form.translations.vars.prototype)|e('html_attr') }}">
-                            {% for translation in form.translations %}
-                                {{ form_widget(translation) }}
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    {% if internal_error is defined %}
-                        <div class="form-error full-width align-right">
-                            {{ internal_error }}
-                        </div>
-                    {% endif %}
-
-                    <div class="align-right relative margin-top-50 relative button-wrapper">
-                        <button type="submit" class="align-right">Create</button>
-                    </div>
-                </div>
-
-                {{ form_widget(form._token) }}
-            </form>
-        </div>
+                    {{ form_widget(form._token) }}
+                </form>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

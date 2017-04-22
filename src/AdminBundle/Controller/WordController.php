@@ -2,101 +2,120 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Entity\Word;
 use AdminBundle\Form\Type\WordType;
-use API\SharedDataBundle\Repository\Status;
-use ArmorBundle\Admin\AdminAuthInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class WordController extends Controller implements AdminAuthInterface
+class WordController extends RepositoryController
 {
+    public function indexAction()
+    {
+        $words = $this->getRepository('AdminBundle:Word')->findAll();
+
+        return $this->render('::Admin/Word/index.html.twig', array(
+            'words' => $words,
+        ));
+    }
+
     public function createAction(Request $request)
     {
-        $form = $this->createForm(WordType::class);
+        $language = $this->getRepository('AdminBundle:Language')->find(1);
 
-        if ($request->isMethod('get')) {
-            return array(
-                'template' => '::Admin/Word/create.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                ),
-            );
+        if (empty($language)) {
+            return $this->render('::Admin/Word/create.html.twig', array(
+                'no_language' => true,
+            ));
         }
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
+        $word = new Word();
+        $form = $this->createForm(WordType::class, $word, array(
+            'word' => $word,
+        ));
 
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $wordRepository = $this->get('api.shared.word_repository');
-                $data = $request->request->get('form');
-                $image = $request->files->get('form')['image'];
+                $em = $this->get('doctrine')->getManager();
 
-                $data['image'] = $image;
-                $data['user_id'] = $this->getUser()->getId();
+                if ($word->hasWordImage()) {
+                    $this->uploadWordImage($word);
+                }
 
-                $resultResolver = $wordRepository->create($data);
+                $em->persist($word);
+                $em->flush();
 
-                return $this->redirectToRoute('word_index');
+                $this->addFlash(
+                    'notice',
+                    sprintf('Word created successfully')
+                );
+
+                return $this->redirectToRoute('word_create');
             }
-
-            return array(
-                'template' => '::Admin/Word/create.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                ),
-            );
         }
 
-        throw $this->createAccessDeniedException();
+        return $this->render('::Admin/Word/create.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     public function editAction(Request $request, $id)
     {
-        $wordRepo = $this->get('api.shared.word_repository');
+        $word = $this->getRepository('AdminBundle:Word')->find($id);
 
-        $resultResolver = $wordRepo->findSingleWordByWorkingLanguageComplex(array(
-            'user_id' => $this->getUser()->getId(),
-            'word_id' => $id,
+        $wordImage = $this->get('doctrine')->getRepository('AdminBundle:WordImage')->findBy(array(
+            'word' => $word,
         ));
 
-        if ($resultResolver->getStatus() === Status::FAILURE) {
-            throw $this->createNotFoundException();
+        $word->setViewImage((!empty($wordImage)) ? $wordImage[0] : null);
+
+        $form = $this->createForm(WordType::class, $word, array(
+            'word' => $word,
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->get('doctrine')->getManager();
+
+                if ($word->hasWordImage()) {
+                    $this->uploadWordImage($word);
+                }
+
+                $em->persist($word);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    sprintf('Word edited successfully')
+                );
+
+                return $this->redirectToRoute('word_edit', array(
+                    'id' => $word->getId(),
+                ));
+            }
         }
 
-        if ($request->isMethod('get')) {
-            $form = $this->createForm(WordType::class, $resultResolver->getData());
-
-            return array(
-                'template' => '::Admin/Word/edit.html.twig',
-                'data' => array(
-                    'form' => $form->createView()
-                )
-            );
-        }
+        return $this->render('::Admin/Word/edit.html.twig', array(
+            'form' => $form->createView(),
+            'word' => $word,
+        ));
     }
 
-    public function indexAction()
+    private function uploadWordImage(Word $word)
     {
-        $wordRepo = $this->get('api.shared.word_repository');
+        $fileUploader = $this->get('admin.file_uploader');
 
-        $resultResolver = $wordRepo->findAllWordsByWorkingLanguageSimple(array(
-            'user_id' => $this->getUser()->getId(),
+        $fileUploader->upload($word->getWordImage(true)->getImageFile(), array(
+            'repository' => 'AdminBundle:WordImage',
+            'field' => 'name',
         ));
 
-        if ($resultResolver->getStatus() === Status::FAILURE) {
-            return array(
-                'template' => '::Admin/Word/index.html.twig',
-                'data' => array(
-                    'internal_error' => true,
-                )
-            );
-        }
-
-        return array(
-            'template' => '::Admin/Word/index.html.twig',
-            'data' => array(
-                'words' => $resultResolver->getData()['select_all_words'],
-            ),
-        );
+        $word->getWordImage()
+            ->setName($fileUploader->getFileName())
+            ->setOriginalName($fileUploader->getOriginalName())
+            ->setTargetDir($fileUploader->getTargetDir());
     }
 }

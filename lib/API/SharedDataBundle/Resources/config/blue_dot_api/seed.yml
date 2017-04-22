@@ -30,7 +30,7 @@ configuration:
                 create_lesson_table:
                     sql: "CREATE TABLE lessons (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, class_id INT(6) NOT NULL, name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
                 create_images_table:
-                    sql: "CREATE TABLE word_images (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, word_id INT(6) NOT NULL, relative_path VARCHAR(255) DEFAULT NULL, absolute_path VARCHAR(255) DEFAULT NULL, file_name VARCHAR(255) DEFAULT NULL, absolute_full_path VARCHAR(255) DEFAULT NULL, relative_full_path VARCHAR(255) DEFAULT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
+                    sql: "CREATE TABLE word_images (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, word_id INT(6) NOT NULL, relative_path VARCHAR(255) DEFAULT NULL, absolute_path VARCHAR(255) DEFAULT NULL, file_name VARCHAR(255) DEFAULT NULL, absolute_full_path VARCHAR(255) DEFAULT NULL, relative_full_path VARCHAR(255) DEFAULT NULL, original_name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
                 create_theory_table:
                     sql: "CREATE TABLE theories (id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY, lesson_id INT(6) NOT NULL, name VARCHAR(255) NOT NULL) CHARACTER SET utf8 COLLATE utf8_general_ci"
                 create_theory_deck:

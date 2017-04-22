@@ -2,151 +2,83 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Entity\Category;
 use AdminBundle\Form\Type\CategoryType;
-use API\SharedDataBundle\Repository\Status;
-use ArmorBundle\Controller\MasterSecurityController;
-use ArmorBundle\Admin\AdminAuthInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class CategoryController extends MasterSecurityController implements AdminAuthInterface
+class CategoryController extends RepositoryController
 {
-    public function createAction(Request $request)
-    {
-        $form = $this->createForm(CategoryType::class);
-
-        if ($request->getMethod() === 'GET') {
-            return array(
-                'template' => '::Admin/Category/create.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                ),
-            );
-        }
-
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $category = $request->request->get('form')['category'];
-
-                $resultResolver = $this->get('api.shared.category_repository')->create(array('category' => $category));
-
-                if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return array(
-                        'template' => '::Admin/Category/create.html.twig',
-                        'data' => array(
-                            'internal_error' => sprintf('Category %s could not be created', $category),
-                        ),
-                    );
-                }
-
-                return $this->redirectToRoute('category_index');
-            }
-
-            return array(
-                'template' => '::Admin/Category/create.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                ),
-            );
-        }
-
-        throw $this->createAccessDeniedException();
-    }
-
     public function indexAction()
     {
-        $categoryRepo = $this->get('api.shared.category_repository');
+        $categories = $this->getRepository('AdminBundle:Category')->findAll();
 
-        $resultResolver = $categoryRepo->findAllForWorkingLanguage();
+        return $this->render('::Admin/Category/index.html.twig', array(
+            'categories' => $categories,
+        ));
+    }
 
-        if ($resultResolver->getStatus() === Status::FAILURE) {
-            return array(
-                'template' => '::Admin/Category/index.html.twig',
-                'data' => array(
-                    'internal_error' => 'No categories were found',
-                ),
-            );
+    public function createAction(Request $request)
+    {
+        $category = new Category();
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->get('doctrine')->getManager();
+
+                $em->persist($category);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    sprintf('Category created successfully')
+                );
+
+                return $this->redirectToRoute('category_create');
+            }
         }
 
-        $data = $resultResolver->getData();
-
-        if (is_string(array_keys($data)[0])) {
-            $data = array($data);
-        }
-
-        return array(
-            'template' => '::Admin/Category/index.html.twig',
-            'data' => array(
-                'categories' => $data,
-            ),
-        );
+        return $this->render('::Admin/Category/create.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     public function editAction(Request $request, $id)
     {
-        $categoryRepo = $this->get('api.shared.category_repository');
+        $category = $this->getRepository('AdminBundle:Category')->find($id);
 
-        $resultResolver = $categoryRepo->findCategoryById(array(
-            'category_id' => $id,
-        ));
-
-        if ($resultResolver->getStatus() === Status::FAILURE) {
+        if (!$category instanceof Category) {
             throw $this->createNotFoundException();
         }
 
-        $categoryData = $resultResolver->getData();
+        $form = $this->createForm(CategoryType::class, $category);
 
-        if ($request->isMethod('get')) {
-            $form = $this->createForm(CategoryType::class, array(
-                'category' => $categoryData['category'],
-            ));
+        $form->handleRequest($request);
 
-            return array(
-                'template' => '::Admin/Category/edit.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                    'category' => $categoryData,
-                ),
-            );
-        }
-
-        if ($request->isMethod('post')) {
-            $category = $request->request->get('form')['category'];
-            $data = array('category' => $category);
-
-            $form = $this->createForm(CategoryType::class, $data);
-
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $resultResolver = $categoryRepo->updateCategoryName(array(
-                    'category' => $category,
-                    'category_id' => $id,
+                $em = $this->get('doctrine')->getManager();
+
+                $em->persist($category);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    sprintf('Category edited successfully')
+                );
+
+                return $this->redirectToRoute('category_edit', array(
+                    'id' => $id,
                 ));
-
-                if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return array(
-                        'template' => '::Admin/Category/edit.html.twig',
-                        'data' => array(
-                            'form' => $form->createView(),
-                            'internal_error' => sprintf('There has been an internal error'),
-                        ),
-                    );
-                }
-
-                return $this->redirectToRoute('category_index');
             }
-
-            return array(
-                'template' => '::Admin/Category/edit.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                    'category' => $categoryData,
-                ),
-            );
         }
 
-        throw $this->createAccessDeniedException();
+        return $this->render('::Admin/Category/edit.html.twig', array(
+            'form' => $form->createView(),
+            'category' => $category,
+        ));
     }
 }

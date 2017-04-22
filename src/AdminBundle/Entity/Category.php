@@ -2,23 +2,22 @@
 
 namespace AdminBundle\Entity;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
-
 class Category
 {
     private $id;
     /**
      * @var string $category
      */
-    private $category;
+    private $name;
     /**
-     * @var int $languageId
+     * @var \DateTime $createdAt
      */
-    private $languageId;
-    /**
-     * @var $language
-     */
-    private $language;
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
     /**
      * @return mixed
      */
@@ -48,46 +47,34 @@ class Category
         $this->category = $category;
     }
     /**
-     * @return mixed
+     * @return \DateTime
      */
-    public function getLanguageId()
+    public function getCreatedAt(): \DateTime
     {
-        return $this->languageId;
+        return $this->createdAt;
     }
     /**
-     * @param mixed $languageId
+     * @param \DateTime $createdAt
      */
-    public function setLanguageId($languageId)
+    public function setCreatedAt(\DateTime $createdAt)
     {
-        $this->languageId = $languageId;
+        $this->createdAt = $createdAt;
     }
     /**
-     * @param ParameterBag $request
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * @param string $name
      * @return Category
      */
-    public static function createFromRequest(ParameterBag $request) : Category
+    public function setName(string $name) : Category
     {
-        $category = new Category();
-        $category->setCategory($request->get('category'));
-        $category->setLanguageId($request->get('language'));
-        $category->setId($request->get('category_id'));
+        $this->name = $name;
 
-        return $category;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param mixed $language
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
+        return $this;
     }
 }

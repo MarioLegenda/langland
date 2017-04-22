@@ -23,6 +23,14 @@ class SingleWordComplexCallable extends AbstractCallable
 
             $result = $result[0];
 
+            $result['db_image'] = array(
+                'relative_full_path' => $result['relative_full_path'],
+                'original_name' => $result['original_name'],
+            );
+
+            unset($result['relative_full_path']);
+            unset($result['original_name']);
+
             $translations = $result['translation'];
             $realTranslations = array();
             foreach ($translations as $translation) {

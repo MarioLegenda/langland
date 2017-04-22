@@ -7,28 +7,16 @@
             <a href="{{ path('language_create') }}" class="main-action-link align-right margin-top-30">Create</a>
         </div>
 
-        {% if internal_error is defined %}
+        {% if languages is empty %}
             <p class="no-data-message">No languages have been added</p>
         {% endif %}
 
-        {% if languages is defined %}
+        {% if languages is not empty %}
             <div class="full-width align-left margin-top-30 page-content">
                 {% for language in languages %}
                     <div class="card full-width align-left margin-bottom-10">
-                        <a class="base-action-link align-left" href="#">{{ language.language }}</a>
+                        <a class="base-action-link align-left" href="#">{{ language.name }}</a>
                         <a class="sub-base-action-link align-right" href="{{ path('language_edit', {'id': language.id}) }}">Edit</a>
-
-                        {% set workingLanguageId = null %}
-                        {% set workingLanguageClass = 'non-working-language' %}
-                        {% if working_language is not empty %}
-                            {% set workingLanguageId = working_language.language_id %}
-                        {% endif %}
-
-                        {% if language.id == workingLanguageId %}
-                            {% set workingLanguageClass = 'working-language' %}
-                        {% endif %}
-
-                        <a class="sub-base-action-link align-right {{ workingLanguageClass }}" href="{{ path('update_working_language', {'id': language.id}) }}"><i class="fa fa-check"></i></a>
                     </div>
                 {% endfor %}
             </div>

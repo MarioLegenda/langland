@@ -2,8 +2,8 @@
 
 namespace AdminBundle\Entity;
 
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Word
@@ -13,13 +13,9 @@ class Word
      */
     private $id;
     /**
-     * @var string $word
+     * @var string $name
      */
-    private $word;
-    /**
-     * @var string $category
-     */
-    private $category;
+    private $name;
     /**
      * @var string $type
      */
@@ -29,13 +25,28 @@ class Word
      */
     private $language;
     /**
-     * @var array $translations
+     * @var ArrayCollection $categories
      */
-    private $translations = array();
+    private $categories;
     /**
-     * @var File|mixed $image
+     * @var WordImage $wordImage
      */
-    private $image;
+    private $wordImage;
+    /**
+     * @var WordImage $viewImage
+     */
+    private $viewImage;
+    /**
+     * @var \DateTime $createdAt
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->categories = new ArrayCollection();
+        $this->images = new ArrayCollection();
+    }
     /**
      * @return mixed
      */
@@ -44,25 +55,21 @@ class Word
         return $this->id;
     }
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    /**
      * @return mixed
      */
-    public function getWord()
+    public function getName()
     {
-        return $this->word;
+        return $this->name;
     }
     /**
-     * @param mixed $word
+     * @param string $name
+     * @return Word
      */
-    public function setWord($word)
+    public function setName($name) : Word
     {
-        $this->word = $word;
+        $this->name = $name;
+
+        return $this;
     }
     /**
      * @return mixed
@@ -73,25 +80,11 @@ class Word
     }
     /**
      * @param mixed $language
+     * @return Word
      */
-    public function setLanguage($language)
+    public function setLanguage($language) : Word
     {
         $this->language = $language;
-    }
-    /**
-     * @return mixed
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-    /**
-     * @param string $translation
-     * @return $this
-     */
-    public function addTranslation($translation)
-    {
-        $this->translations[] = $translation;
 
         return $this;
     }
@@ -105,38 +98,82 @@ class Word
 
     /**
      * @param mixed $type
+     * @return Word
      */
-    public function setType($type)
+    public function setType($type) : Word
     {
         $this->type = $type;
-    }
-    /**
-     * @return string
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-    /**
-     * @param string $category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
+
+        return $this;
     }
     /**
      * @return mixed
      */
-    public function getImage()
+    public function getCreatedAt()
     {
-        return $this->image;
+        return $this->createdAt;
     }
     /**
-     * @param mixed $image
+     * @param mixed $createdAt
+     * @return Word
      */
-    public function setImage(File $image)
+    public function setCreatedAt($createdAt) : Word
     {
-        $this->image = $image;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+    /**
+     * @param mixed $categories
+     * @return Word
+     */
+    public function setCategories($categories) : Word
+    {
+        $this->categories = $categories;
+
+        return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function hasWordImage() : bool
+    {
+        return $this->wordImage->getImageFile() instanceof UploadedFile;
+    }
+    /**
+     * @return mixed
+     */
+    public function getWordImage()
+    {
+        return $this->wordImage;
+    }
+    /**
+     * @param mixed $wordImage
+     */
+    public function setWordImage($wordImage)
+    {
+        $this->wordImage = $wordImage;
+    }
+    /**
+     * @return WordImage
+     */
+    public function getViewImage(): WordImage
+    {
+        return $this->viewImage;
+    }
+    /**
+     * @param WordImage $viewImage
+     */
+    public function setViewImage(WordImage $viewImage = null)
+    {
+        $this->viewImage = $viewImage;
     }
     /**
      * @param ExecutionContextInterface $context
@@ -148,43 +185,5 @@ class Word
                 ->atPath('translations')
                 ->addViolation();
         }
-    }
-    /**
-     * @param Request $request
-     * @return Word
-     */
-    public static function createFromRequest(Request $request) : Word
-    {
-        $word = new Word();
-
-        $word->setWord($request->request->get('word'));
-        $word->setType($request->request->get('type'));
-        $word->setLanguage($request->request->get('language_id'));
-        $word->setCategory($request->request->get('category'));
-
-        $translations = $request->request->get('translations');
-        foreach ($translations as $translation) {
-            $word->addTranslation($translation);
-        }
-
-        if ($request->files->has('image')) {
-            $word->setImage($request->files->get('image'));
-        }
-
-        return $word;
-    }
-    /**
-     * @return array
-     */
-    public function toArray() : array
-    {
-        return array(
-            'word' => $this->getWord(),
-            'type' => $this->getType(),
-            'language_id' => $this->getLanguage(),
-            'category_id' => $this->getCategory(),
-            'translations' => $this->getTranslations(),
-            'image' => $this->getImage(),
-        );
     }
 }

@@ -4,6 +4,8 @@ namespace ArmorBundle\Provider;
 
 use ArmorBundle\Repository\UserRepository;
 use BlueDot\BlueDotInterface;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -13,16 +15,16 @@ use ArmorBundle\Entity\User;
 class UserProvider implements UserProviderInterface
 {
     /**
-     * @var BlueDotInterface $blueDot
+     * @var EntityManager $em
      */
-    private $userRepository;
+    private $em;
     /**
      * UserProvider constructor.
-     * @param UserRepository $repo
+     * @param EntityManager $em
      */
-    public function __construct(UserRepository $repo)
+    public function __construct(EntityManager $em)
     {
-        $this->userRepository = $repo;
+        $this->em = $em;
     }
     /**
      * @param string $username
@@ -31,12 +33,12 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->userRepository->findUserByUsername($username)->getResult();
+        $user = $this->em->getRepository('ArmorBundle:User')->findBy(array(
+            'username' => $username,
+        ));
 
-        if ($user instanceof User) {
-            $user->setRoles(unserialize($user->getRoles()));
-
-            return $user;
+        if ($user[0] instanceof User) {
+            return $user[0];
         }
 
         throw new UsernameNotFoundException(

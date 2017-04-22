@@ -2,6 +2,7 @@
 
 namespace ArmorBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
@@ -37,31 +38,19 @@ class User implements UserInterface
      */
     private $enabled;
     /**
-     * @var array $roles
+     * @var ArrayCollection $roles
      */
-    private $roles = array();
+    private $roles;
     /**
      * @var string $gender
      */
     private $gender;
-    /**
-     * User constructor.
-     * @param array $userData
-     */
-    public function __construct(array $userData = array())
-    {
-        if (!empty($userData)) {
-            $this->id = (array_key_exists('id', $userData)) ? $userData['id'] : null;
-            $this->username = $userData['username'];
-            $this->name = $userData['name'];
-            $this->lastname = $userData['lastname'];
-            $this->password = $userData['password'];
-            $this->roles = $userData['roles'];
-            $this->enabled = $userData['enabled'];
-            $this->gender = $userData['gender'];
-        }
-    }
 
+    public function __construct()
+    {
+        $this->dateCreated = new \DateTime();
+        $this->roles = new ArrayCollection();
+    }
     /**
      * @return mixed
      */
@@ -192,16 +181,18 @@ class User implements UserInterface
         return null;
     }
     /**
-     * @param string $role
+     * @param Role $role
      * @return $this
      */
-    public function addRole(string $role)
+    public function addRole(Role $role)
     {
-        if (in_array($role, $this->roles) === false) {
-            $this->roles[] = $role;
-
+        if ($this->roles->contains($role)) {
             return $this;
         }
+
+        $role->setUser($this);
+
+        $this->roles->add($role);
 
         return $this;
     }
@@ -210,22 +201,30 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        return $this->roles;
+        return $this->roles->toArray();
     }
     /**
-     * @param string $role
+     * @param Role $role
      * @return bool
      */
-    public function hasRole(string $role) : bool
+    public function hasRole(Role $role) : bool
     {
-        return in_array($role, $this->getRoles()) === true;
+        return $this->roles->contains($role);
     }
     /**
      * @param array $roles
      */
-    public function setRoles($roles)
+    public function setRoles(array $roles)
     {
-        $this->roles = $roles;
+        foreach ($roles as $role) {
+            if (!$role instanceof Role) {
+                continue;
+            }
+
+            if (!$this->hasRole($role)) {
+                $this->addRole($role);
+            }
+        }
     }
     /**
      * @return mixed

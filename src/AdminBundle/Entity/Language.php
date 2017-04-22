@@ -2,23 +2,25 @@
 
 namespace AdminBundle\Entity;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
-
 class Language
 {
+    /**
+     * @var int $id
+     */
     private $id;
     /**
-     * @var string $language
+     * @var string $name
      */
-    private $language;
+    private $name;
     /**
-     * @var int $workingLanguage
+     * @var \DateTime $createdAt
      */
-    private $workingLanguage = 0;
-    /**
-     * @var Category $category
-     */
-    private $category;
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
     /**
      * @return mixed
      */
@@ -34,72 +36,35 @@ class Language
         $this->id = $id;
     }
     /**
-     * @param string $language
-     * @return Language
+     * @return \DateTime
      */
-    public function setLanguage($language) : Language
+    public function getCreatedAt(): \DateTime
     {
-        $this->language = $language;
+        return $this->createdAt;
+    }
 
-        return $this;
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
     }
     /**
      * @return string
      */
-    public function getLanguage()
+    public function getName()
     {
-        return $this->language;
+        return $this->name;
     }
     /**
-     * @return int
-     */
-    public function getWorkingLanguage()
-    {
-        return $this->workingLanguage;
-    }
-    /**
-     * @param int $workingLanguage
+     * @param string $name
      * @return Language
      */
-    public function setWorkingLanguage($workingLanguage) : Language
+    public function setName(string $name) : Language
     {
-        $this->workingLanguage = $workingLanguage;
+        $this->name = $name;
 
         return $this;
-    }
-    /**
-     * @param $request
-     * @return Language
-     */
-    public static function createFromRequest(ParameterBag $request) : Language
-    {
-        $language = new Language();
-        $language->setLanguage($request->get('language'));
-
-        if ($request->has('language_id')) {
-            $language->setId($request->get('language_id'));
-        }
-
-        if ($request->has('working_language')) {
-            $language->setWorkingLanguage($request->get('working_language'));
-        }
-
-        return $language;
-    }
-
-    /**
-     * @return Category
-     */
-    public function getCategory(): Category
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param Category $category
-     */
-    public function setCategory(Category $category)
-    {
-        $this->category = $category;
     }
 }

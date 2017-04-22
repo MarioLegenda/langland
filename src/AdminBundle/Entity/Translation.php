@@ -5,6 +5,10 @@ namespace AdminBundle\Entity;
 class Translation
 {
     /**
+     * @var int $id
+     */
+    private $id;
+    /**
      * @var string $translation
      */
     private $translation;
@@ -15,6 +19,20 @@ class Translation
     public function __construct($translation)
     {
         $this->translation = $translation;
+    }
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
     /**
      * @return mixed

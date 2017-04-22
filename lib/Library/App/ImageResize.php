@@ -14,7 +14,11 @@ class ImageResize
      * @var int $height
      */
     private $height;
-
+    /**
+     * @param File $image
+     * @param string $path
+     * @return bool
+     */
     public function resizeAndSave(File $image, string $path)
     {
         if ($this->height === null or $this->width === null) {

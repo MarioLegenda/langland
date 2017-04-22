@@ -2,6 +2,8 @@
 
 namespace API\SharedDataBundle\Repository;
 
+use BlueDot\Entity\Promise;
+use BlueDot\Exception\BlueDotRuntimeException;
 use Library\App\ImageResize;
 use BlueDot\BlueDotInterface;
 use BlueDot\Entity\Entity;
@@ -26,27 +28,6 @@ class WordRepository extends AbstractRepository
      * @var string $uploadsAbsPath
      */
     private $uploadsAbsPath;
-    /**
-     * WordRepository constructor.
-     * @param BlueDotInterface $blueDot
-     * @param ImageResize $imageResize
-     * @param string $uploadsRelativePath
-     * @param string $uploadsAbsPath
-     */
-    public function __construct(
-        BlueDotInterface $blueDot,
-        ImageResize $imageResize,
-        string $uploadsRelativePath,
-        string $uploadsAbsPath
-    )
-    {
-        $blueDot->useApi('words');
-
-        $this->blueDot = $blueDot;
-        $this->imageResize = $imageResize;
-        $this->uploadsRelativePath = $uploadsRelativePath;
-        $this->uploadsAbsPath = realpath($uploadsAbsPath).'/';
-    }
     /**
      * @param array $data
      * @return ResultResolver
@@ -73,7 +54,8 @@ class WordRepository extends AbstractRepository
                 'absolute_path' => $this->uploadsAbsPath,
                 'file_name' => $fileName,
                 'absolute_full_path' => $this->uploadsAbsPath.$fileName,
-                'relative_full_path' => $this->uploadsRelativePath,
+                'relative_full_path' => $this->uploadsRelativePath.$fileName,
+                'original_name' => $image->getClientOriginalName(),
             );
         }
 
@@ -114,43 +96,6 @@ class WordRepository extends AbstractRepository
     /**
      * @param array $data
      * @return ResultResolver
-     */
-    public function remove(array $data) : ResultResolver
-    {
-        $resultResolver = $this->findWordById($data);
-
-        if ($resultResolver->getStatus() === Status::FAILURE) {
-            return $resultResolver;
-        }
-
-        $data = array(
-            'word_id' => $resultResolver->getData()['id']
-        );
-
-        $resultResolver = $this->findImageByWord($data);
-
-        if ($resultResolver->getStatus() === Status::SUCCESS) {
-            $imageData = $resultResolver->getData();
-
-            $fullPath = $imageData['absolute_full_path'];
-
-            if (is_readable($fullPath)) {
-                unlink($fullPath);
-            }
-        }
-
-        $promise = $this->blueDot->execute('scenario.remove_word', array(
-            'remove_translations' => $data,
-            'remove_word' => $data,
-            'remove_word_category' => $data,
-            'remove_word_image' => $data,
-        ));
-
-        return $this->createResultResolver($promise);
-    }
-    /**
-     * @param array $data
-     * @return ResultResolver
      *
      * Receives array('user_id' => 1)
      */
@@ -168,11 +113,23 @@ class WordRepository extends AbstractRepository
      */
     public function findAllWordsByWorkingLanguageSimple(array $data)
     {
-        $promise = $this->blueDot->execute('scenario.find_words_simple', array(
-            'find_working_language' => $data,
-        ));
+        try {
+            $result = $this->blueDot->execute('scenario.find_words_simple', array(
+                'find_working_language' => $data,
+            ))->getResult();
+        } catch (BlueDotRuntimeException $e) {
+            return $this->createResultResolver(new Promise(array()));
+        }
 
-        return $this->createResultResolver($promise);
+        $words = $result['select_all_words'];
+
+        if (is_array($words)) {
+            return $this->createResultResolver(new Promise($words));
+        }
+
+        if ($words instanceof Entity) {
+            return $this->createResultResolver(new Promise($words->toArray()));
+        }
     }
     /**
      * @param array $data

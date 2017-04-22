@@ -2,167 +2,85 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Entity\Language;
 use AdminBundle\Form\Type\LanguageType;
-use API\SharedDataBundle\Repository\Status;
 use ArmorBundle\Admin\AdminAuthInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class LanguageController extends Controller implements AdminAuthInterface
+class LanguageController extends RepositoryController
 {
     public function indexAction()
     {
-        $languageRepo = $this->get('api.shared.language_repository');
+        $languages = $this->getRepository('AdminBundle:Language')->findAll();
 
-        $resultResolver = $languageRepo->findAll();
-
-        if ($resultResolver->getStatus() === Status::FAILURE) {
-            return array(
-                'template' => '::Admin/Language/index.html.twig',
-                'data' => array(
-                    'internal_error' => 'No languages have been added'
-                )
-            );
-        }
-
-        $data = $resultResolver->getData();
-
-        if (is_string(array_keys($data)[0])) {
-            $data = array($data);
-        }
-
-        return array(
-            'template' => '::Admin/Language/index.html.twig',
-            'data' => array(
-                'languages' => $data,
-            ),
-        );
+        return $this->render('::Admin/Language/index.html.twig', array(
+            'languages' => $languages,
+        ));
     }
 
     public function createAction(Request $request)
     {
-        $form = $this->createForm(LanguageType::class);
+        $language = new Language();
+        $form = $this->createForm(LanguageType::class, $language);
 
-        if ($request->getMethod() === 'GET') {
-            return array(
-                'template' => '::Admin/Language/create.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                ),
-            );
-        }
+        $form->handleRequest($request);
 
-        if ($request->getMethod() === 'POST') {
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $language = $request->request->get('language')['language'];
+                $em = $this->get('doctrine')->getManager();
 
-                $resultResolver = $this->get('api.shared.language_repository')
-                    ->create(array('language' => $language));
+                $em->persist($language);
+                $em->flush();
 
-                if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return array(
-                        'template' => '::Admin/Language/create.html.twig',
-                        'data' => array(
-                            'internal_error' => sprintf('Language %s could not be created', $language),
-                        ),
-                    );
-                }
+                $this->addFlash(
+                    'notice',
+                    sprintf('Language created successfully')
+                );
 
-                return $this->redirectToRoute('language_index');
+                return $this->redirectToRoute('language_create');
             }
-
-            return array(
-                'template' => '::Admin/Language/create.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                )
-            );
         }
 
-        throw $this->createAccessDeniedException();
+        return $this->render('::Admin/Language/create.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     public function editAction(Request $request, $id)
     {
-        $languageRepo = $this->get('api.shared.language_repository');
+        $language = $this->getRepository('AdminBundle:Language')->find($id);
 
-        $resultResolver = $languageRepo->findLanguageById(array(
-            'language_id' => $id,
-        ));
-
-        if ($resultResolver->getStatus() === Status::FAILURE) {
+        if (!$language instanceof Language) {
             throw $this->createNotFoundException();
         }
 
-        $languageData = $resultResolver->getData();
+        $form = $this->createForm(LanguageType::class, $language);
 
-        if ($request->isMethod('get')) {
-            $form = $this->createForm(LanguageType::class, array(
-                'language' => $languageData['language'],
-            ));
+        $form->handleRequest($request);
 
-            return array(
-                'template' => '::Admin/Language/edit.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                    'language' => $languageData,
-                ),
-            );
-        }
-
-        if ($request->isMethod('post')) {
-            $language = $request->request->get('language')['language'];
-            $data = array('language' => $language);
-
-
-            $form = $this->createForm(LanguageType::class, $data);
-
-            $form->handleRequest($request);
-
+        if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $resultResolver = $languageRepo->updateLanguageName(array(
-                    'language' => $language,
-                    'language_id' => $id,
+                $em = $this->get('doctrine')->getManager();
+
+                $em->persist($language);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    sprintf('Language edited successfully')
+                );
+
+                return $this->redirectToRoute('language_edit', array(
+                    'id' => $id,
                 ));
-
-                if ($resultResolver->getStatus() === Status::FAILURE) {
-                    return array(
-                        'template' => '::Admin/Language/edit.html.twig',
-                        'data' => array(
-                            'internal_error' => sprintf('There has been an internal error'),
-                        )
-                    );
-                }
-
-                return $this->redirectToRoute('language_index');
             }
-
-            return array(
-                'template' => '::Admin/Language/edit.html.twig',
-                'data' => array(
-                    'form' => $form->createView(),
-                    'language' => $languageData,
-                )
-            );
         }
 
-        throw $this->createAccessDeniedException();
-    }
-
-    public function updateWorkingLanguageAction(Request $request, $id)
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        $data = array(
-            'user_id' => $user->getId(),
-            'language_id' => $id
-        );
-
-        $this->get('api.shared.language_repository')->updateWorkingLanguage($data);
-
-        return $this->redirectToRoute('language_index');
+        return $this->render('::Admin/Language/edit.html.twig', array(
+            'form' => $form->createView(),
+            'language' => $language,
+        ));
     }
 }

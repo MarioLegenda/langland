@@ -8,9 +8,6 @@ class MainController extends Controller
 {
     public function dashboardAction()
     {
-        return array(
-            'template' => '::Admin/dashboard.html.twig',
-            'data' => array(),
-        );
+        return $this->render('::Admin/dashboard.html.twig');
     }
 }

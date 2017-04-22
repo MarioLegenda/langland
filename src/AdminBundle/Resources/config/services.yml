@@ -1,30 +1,28 @@
 services:
-    admin.validator.language_exists_validator:
-        class: AdminBundle\Validator\Constraint\LanguageExistsConstraintValidator
-        arguments: ['@api.shared.language_repository']
+    admin.validator.unique_constraint_validator:
+        class: AdminBundle\Validator\Constraint\UniqueConstraintValidator
+        arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: validator.constraint_validator }
 
-    admin.validator.category_exists_validator:
-        class: AdminBundle\Validator\Constraint\CategoryExistsConstraintValidator
-        arguments: ['@api.shared.category_repository']
-        tags:
-            - { name: validator.constraint_validator }
-
-    admin.validator.word_exists_validator:
-        class: AdminBundle\Validator\Constraint\WordExistsConstraintValidator
-        arguments: ['@api.shared.word_repository']
-        tags:
-            - { name: validator.constraint_validator }
-
-    issue.form:
+    word.form:
         class: AdminBundle\Form\Type\WordType
-        arguments: ['@api.shared.category_repository']
+        arguments: ['@doctrine.orm.entity_manager']
         tags:
             - { name: form.type }
 
-    admin.event.view_subscriber:
-        class: AdminBundle\Listener\ViewSubscriber
-        arguments: ['@templating', '@api.shared.language_repository', '@security.token_storage']
+    admin.pre_persist:
+        class: AdminBundle\Listener\EntityEventSubscriber
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: doctrine.event_subscriber }
+
+    admin.file_namer:
+        class: Library\App\FileNamer
+        arguments: ['@doctrine.orm.entity_manager']
+
+    admin.image_resizer:
+        class: Library\App\ImageResize
+
+    admin.file_uploader:
+        class: AdminBundle\Helper\FileUploader
+        arguments: ['%image_upload_dir%', '@admin.image_resizer', '@admin.file_namer']

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+        http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="ArmorBundle\Entity\User" table="user" repository-class="ArmorBundle\Repository\UserRepository">
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="name" type="string" length="255" />
+        <field name="lastname" type="string" length="255" />
+        <field name="username" type="string" length="255" />
+        <field name="password" type="string" length="255" />
+        <field name="enabled" type="boolean" />
+        <field name="gender" type="string" length="255" />
+
+        <one-to-many field="roles" target-entity="ArmorBundle\Entity\Role" mapped-by="user">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
+    </entity>
+</doctrine-mapping>

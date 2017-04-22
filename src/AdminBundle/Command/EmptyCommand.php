@@ -21,8 +21,6 @@ class EmptyCommand extends ContainerAwareCommand
     {
         $blueDot = $this->getContainer()->get('app.blue_dot');
 
-        $blueDot->setConfiguration(__DIR__.'/blue_dot.yml');
-
         $output->writeln('');
         $output->writeln('<info>Script started</info>');
         $output->writeln('');
@@ -72,9 +70,10 @@ class EmptyCommand extends ContainerAwareCommand
 
         $output->writeln('<info>Creating database and initial users</info>');
 
-        $blueDot->execute('scenario.database');
+        $blueDot->useApi('seed');
         $blueDot->execute('scenario.seed');
 
+        $blueDot->useApi('user');
         $this->createAdminUser($blueDot, 'root', 'root');
         $this->createAdminUser($blueDot, 'mile', 'root');
         $this->createRegularUser($blueDot);

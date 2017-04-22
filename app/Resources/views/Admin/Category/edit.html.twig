@@ -3,26 +3,16 @@
 {% block content %}
     <div class="fluid-container page">
         <div class="full-width align-left">
-            <h1 class="full-width page-title margin-top-30 align-left">Categories - edit <span class="text-highlight">{{ category.category }}</span> category</h1>
+            <h1 class="full-width page-title margin-top-30 align-left">Categories - edit <span class="text-highlight">{{ category.name }}</span> category</h1>
         </div>
 
-        {% if working_language is not empty %}
             <div class="full-width align-left margin-top-30 page-content form">
                 <form action="{{ path('category_edit', { 'id': category.id }) }}" method="POST" class="form" name="editCategoryForm" novalidate>
                     <div class="margin-top-40 align-left full-width">
-                        <div class="full-width align-left form-field field-break">
-                            {{ form_label(form.category) }}
-                            {{ form_widget(form.category) }}
-                            <div class="form-error full-width align-right">
-                                {{ form_errors(form.category) }}
-                            </div>
 
-                            {% if internal_error is defined %}
-                                <div class="form-error full-width align-right">
-                                    {{ internal_error }}
-                                </div>
-                            {% endif %}
-                        </div>
+                        {% include '::Admin/Form/_include/flashNotice.html.twig' %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
 
                         <div class="align-right relative margin-top-50 relative button-wrapper">
                             <button type="submit" class="align-right">Edit</button>
@@ -32,8 +22,5 @@
                     {{ form_rest(form) }}
                 </form>
             </div>
-        {% else %}
-            <p class="no-data-message full-width align-left margin-top-30">Working language has not been selected</p>
-        {% endif %}
     </div>
 {% endblock %}

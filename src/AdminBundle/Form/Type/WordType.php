@@ -2,21 +2,14 @@
 
 namespace AdminBundle\Form\Type;
 
-use AdminBundle\Entity\Category;
 use AdminBundle\Entity\Language;
-use AdminBundle\Repository\LanguageRepository;
-use AdminBundle\Transformer\CollectionNullableTransformer;
 use AdminBundle\Transformer\MultipleChoiceTransformer;
 use AdminBundle\Transformer\SingleChoiceTransformer;
-use AdminBundle\Validator\Constraint\UniqueConstraint;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AdminBundle\Entity\Word;
 

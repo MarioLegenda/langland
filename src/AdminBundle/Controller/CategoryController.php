@@ -4,7 +4,6 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Category;
 use AdminBundle\Form\Type\CategoryType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class CategoryController extends RepositoryController

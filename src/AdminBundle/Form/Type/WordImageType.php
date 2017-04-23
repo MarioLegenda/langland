@@ -2,7 +2,6 @@
 
 namespace AdminBundle\Form\Type;
 
-
 use AdminBundle\Entity\WordImage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

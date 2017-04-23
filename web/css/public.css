@@ -136,6 +136,9 @@ body {
 .margin-bottom-50 {
   margin-bottom: 50px; }
 
+.text-highlight {
+  color: #fc571b; }
+
 .landing-page {
   background-image: url("../images/cover3.jpg");
   background-repeat: no-repeat;

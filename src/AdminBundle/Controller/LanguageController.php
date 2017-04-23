@@ -4,8 +4,6 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Language;
 use AdminBundle\Form\Type\LanguageType;
-use ArmorBundle\Admin\AdminAuthInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 

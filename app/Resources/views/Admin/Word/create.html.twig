@@ -30,10 +30,7 @@
 
                         {% include '::Admin/Form/_include/field.html.twig' with {'field': form.wordImage } only %}
 
-
-                        <div class="align-right relative margin-top-50 relative button-wrapper">
-                            <button type="submit" class="align-right">Create</button>
-                        </div>
+                        {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
                     </div>
 
                     {{ form_widget(form._token) }}

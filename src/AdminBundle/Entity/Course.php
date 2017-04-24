@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Entity;
 
+use Symfony\Component\Validator\Context\ExecutionContext;
+
 class Course
 {
     /**

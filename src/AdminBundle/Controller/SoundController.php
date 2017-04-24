@@ -27,7 +27,7 @@ class SoundController extends RepositoryController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $em = $this->get('doctrine')->getEntityManager();
+                $em = $this->get('doctrine')->getManager();
 
                 $this->uploadSound($sound, $em);
 

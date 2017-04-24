@@ -12,3 +12,8 @@ course_edit:
     path: /edit/{id}
     defaults: { _controller: AdminBundle:Course:edit }
     methods: [GET, POST]
+
+course_manage:
+    path: /manage/{id}
+    defaults: { _controller: AdminBundle:Course:manage }
+    methods: [GET]

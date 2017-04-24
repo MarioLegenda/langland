@@ -1,0 +1,11 @@
+{% extends '::Admin/base.html.twig' %}
+
+{% block base %}
+    <div class="content">
+        {% include '::Admin/_header.html.twig' %}
+
+        {% include '::Admin/_navigation.html.twig'%}
+
+        {% block content %} {% endblock %}
+    </div>
+{% endblock %}

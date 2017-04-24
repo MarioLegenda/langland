@@ -120,7 +120,7 @@ class WordController extends RepositoryController
             throw $this->createNotFoundException();
         }
 
-        $em = $this->get('doctrine')->getEntityManager();
+        $em = $this->get('doctrine')->getManager();
         $wordImage = $this->getRepository('AdminBundle:WordImage')->findBy(array(
             'word' => $word,
         ));

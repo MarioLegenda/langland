@@ -81,15 +81,6 @@
                 <option name="max">50</option>
                 <option name="maxMessage">Course name can have up to {{ limit }} characters</option>
             </constraint>
-
-            <constraint name="AdminBundle\Validator\Constraint\UniqueConstraint">
-                <option name="repository">AdminBundle:Course</option>
-                <option name="field">name</option>
-
-                <option name="groups">
-                    <value>create</value>
-                </option>
-            </constraint>
         </property>
     </class>
 </constraint-mapping>

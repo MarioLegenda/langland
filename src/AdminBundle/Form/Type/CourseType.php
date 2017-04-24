@@ -3,7 +3,6 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Course;
-use AdminBundle\ValidationGroupResolver\GroupResolver;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -20,18 +19,12 @@ class CourseType extends AbstractType
      */
     private $em;
     /**
-     * @var GroupResolver $groupResolver
-     */
-    private $groupResolver;
-    /**
      * CourseType constructor.
      * @param EntityManager $em
-     * @param GroupResolver $groupResolver
      */
-    public function __construct(EntityManager $em, GroupResolver $groupResolver)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->groupResolver = $groupResolver;
     }
     /**
      * @param FormBuilderInterface $builder
@@ -51,6 +44,7 @@ class CourseType extends AbstractType
                 'label' => 'Name: ',
                 'attr' => array(
                     'placeholder' => 'click \'n type ...',
+                    'autofocus' => true,
                 )
             ));
 
@@ -73,7 +67,6 @@ class CourseType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Course::class,
-            'validation_groups' => $this->groupResolver->resolveValidationGroups(),
         ));
 
         $resolver->setRequired('course');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="admin">
+<html>
     <head>
         <base href="/web/app_dev.php/">
         <meta charset="UTF-8" />
@@ -17,13 +17,7 @@
 
     <body>
 
-        <div class="content">
-            {% include '::Admin/_header.html.twig' %}
-
-            {% include '::Admin/_navigation.html.twig'%}
-
-            {% block content %} {% endblock %}
-        </div>
+        {% block base %}{% endblock %}
 
         {% block javascripts %}
             <script src="{{ asset('js/lib/ace.min.js') }}"></script>

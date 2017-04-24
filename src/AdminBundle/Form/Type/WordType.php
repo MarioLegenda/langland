@@ -12,13 +12,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use AdminBundle\Entity\Word;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class WordType extends AbstractType
 {
     /**
-     * @var \Doctrine\ORM\EntityRepository
+     * @var EntityManager $em
      */
     private $em;
     /**
@@ -39,9 +39,9 @@ class WordType extends AbstractType
 
         $builder
             ->add('language', ChoiceType::class, array(
-                    'label' => 'Language: ',
-                    'placeholder' => 'Choose language',
-                    'choices' => $this->createLanguageChoices(),
+                'label' => 'Language: ',
+                'placeholder' => 'Choose language',
+                'choices' => $this->createLanguageChoices(),
             ))
             ->add('name', TextType::class, array(
                 'label' => 'Word: ',
@@ -63,10 +63,10 @@ class WordType extends AbstractType
                 ),
             ))
             ->add('categories', ChoiceType::class, array(
-                    'label' => 'Choose categories: ',
-                    'placeholder' => 'Choose categories',
-                    'multiple' => true,
-                    'choices' => $this->createCategoryChoices(),
+                'label' => 'Choose categories: ',
+                'placeholder' => 'Choose categories',
+                'multiple' => true,
+                'choices' => $this->createCategoryChoices(),
             ))
             ->add('wordImage', WordImageType::class, array(
                 'label' => false,

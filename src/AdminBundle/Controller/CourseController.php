@@ -4,6 +4,8 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Form\Type\CourseType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class CourseController extends RepositoryController
@@ -12,7 +14,7 @@ class CourseController extends RepositoryController
     {
         $courses = $this->getRepository('AdminBundle:Course')->findAll();
 
-        return $this->render('::Admin/Course/index.html.twig', array(
+        return $this->render('::Admin/Course/CRUD/index.html.twig', array(
             'courses' => $courses,
         ));
     }
@@ -22,7 +24,7 @@ class CourseController extends RepositoryController
         $language = $this->getRepository('AdminBundle:Language')->find(1);
 
         if (empty($language)) {
-            return $this->render('::Admin/Word/create.html.twig', array(
+            return $this->render('::Admin/Word/CRUD/create.html.twig', array(
                 'no_language' => true,
             ));
         }
@@ -36,7 +38,15 @@ class CourseController extends RepositoryController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $em = $this->get('doctrine')->getEntityManager();
+                $em = $this->get('doctrine')->getManager();
+
+                $potencionalForm = $this->checkExistingCourse($course, $form);
+
+                if ($potencionalForm instanceof FormInterface) {
+                    return $this->render('::Admin/Course/CRUD/create.html.twig', array(
+                        'form' => $form->createView(),
+                    ));
+                }
 
                 $em->persist($course);
                 $em->flush();
@@ -50,7 +60,7 @@ class CourseController extends RepositoryController
             }
         }
 
-        return $this->render('::Admin/Course/create.html.twig', array(
+        return $this->render('::Admin/Course/CRUD/create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -71,7 +81,15 @@ class CourseController extends RepositoryController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $em = $this->get('doctrine')->getEntityManager();
+                $em = $this->get('doctrine')->getManager();
+
+                $potencionalForm = $this->checkExistingCourse($course, $form);
+
+                if ($potencionalForm instanceof FormInterface) {
+                    return $this->render('::Admin/Course/CRUD/create.html.twig', array(
+                        'form' => $form->createView(),
+                    ));
+                }
 
                 $em->persist($course);
                 $em->flush();
@@ -87,9 +105,44 @@ class CourseController extends RepositoryController
             }
         }
 
-        return $this->render('::Admin/Course/edit.html.twig', array(
+        return $this->render('::Admin/Course/CRUD/edit.html.twig', array(
             'form' => $form->createView(),
             'course' => $course,
         ));
+    }
+
+    public function manageAction(Request $request, $id)
+    {
+        $course = $this->getRepository('AdminBundle:Course')->find($id);
+
+        if (empty($course)) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('::Admin/Course/dashboard.html.twig', array(
+            'course' => $course,
+        ));
+    }
+
+    private function checkExistingCourse(Course $course, $form)
+    {
+        $existingCourse = $this->getRepository('AdminBundle:Course')->findBy(array(
+            'language' => $course->getLanguage(),
+            'name' => $course->getName(),
+        ));
+
+        if (!empty($existingCourse)) {
+            $form->addError(new FormError(
+                sprintf(
+                    'A course for language \'%s\' with name \'%s\' already exists',
+                    $existingCourse[0]->getLanguage()->getName(),
+                    $existingCourse[0]->getName()
+                )
+            ));
+
+            return $form;
+        }
+
+        return null;
     }
 }

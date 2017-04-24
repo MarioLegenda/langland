@@ -21,6 +21,7 @@ class LanguageType extends AbstractType
                 'label' => 'Language: ',
                 'attr' => array(
                     'placeholder' => '... click \'n type',
+                    'autofocus' => true,
                 ),
             ));
     }

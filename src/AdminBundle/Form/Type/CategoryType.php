@@ -21,6 +21,7 @@ class CategoryType extends AbstractType
                 'label' => 'Category: ',
                 'attr' => array(
                     'placeholder' => '... click \'n type',
+                    'autofocus' => true,
                 ),
             ));
     }

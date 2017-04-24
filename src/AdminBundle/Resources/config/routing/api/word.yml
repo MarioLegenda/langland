@@ -12,3 +12,8 @@ word_index:
     path: /
     defaults: { _controller: AdminBundle:Word:index }
     methods: [GET]
+
+word_remove:
+    path: /remove/{id}
+    defaults: { _controller: AdminBundle:Word:remove }
+    methods: [GET]

@@ -11,6 +11,7 @@
 
         <field name="name" type="string" length="255" />
         <field name="type" type="string" length="255" nullable="true"/>
+        <field name="description" type="text" nullable="true"/>
 
         <many-to-one field="language" target-entity="AdminBundle\Entity\Language">
             <join-column name="language_id" referenced-column-name="id" />
@@ -26,5 +27,12 @@
                 </inverse-join-columns>
             </join-table>
         </many-to-many>
+
+        <one-to-many target-entity="AdminBundle\Entity\Translation" mapped-by="word" field="translations">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
     </entity>
 </doctrine-mapping>

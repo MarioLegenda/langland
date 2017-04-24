@@ -27,6 +27,14 @@
     border-bottom: 4px solid $main-color;
   }
 
+  textarea {
+    line-height: 1.8em;
+
+    font-size: 1.05em;
+
+    padding: 10px;
+  }
+
   label {
     width: 100%;
     display:block;

@@ -7,33 +7,34 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Sound
 {
     /**
-     * @var UploadedFile $soundFile
-     */
-    private $soundFile;
-    /**
      * @var int $id
      */
     private $id;
     /**
-     * @var string $relativePath
+     * @var string $name
      */
-    private $relativePath;
+    private $name;
     /**
-     * @var string $absolutePath
+     * @var string $targetDir
      */
-    private $absolutePath;
+    private $targetDir;
     /**
-     * @var string $fileName
+     * @var string $originalName
      */
-    private $fileName;
+    private $originalName;
     /**
-     * @var string $absoluteFullPath
+     * @var \DateTime $createdAt
      */
-    private $absoluteFullPath;
+    private $createdAt;
     /**
-     * @var string $relativeFullPath
+     * @var UploadedFile $soundFile
      */
-    private $relativeFullPath;
+    private $soundFile;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
     /**
      * @return mixed
      */
@@ -42,108 +43,77 @@ class Sound
         return $this->id;
     }
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    /**
      * @return mixed
      */
-    public function getRelativePath()
+    public function getName()
     {
-        return $this->relativePath;
+        return $this->name;
     }
     /**
-     * @param mixed $relativePath
+     * @param string $name
      * @return Sound
      */
-    public function setRelativePath($relativePath) : Sound
+    public function setName($name) : Sound
     {
-        $this->relativePath = $relativePath;
+        $this->name = $name;
 
         return $this;
     }
     /**
      * @return mixed
      */
-    public function getAbsolutePath()
+    public function getTargetDir()
     {
-        return $this->absolutePath;
+        return $this->targetDir;
     }
     /**
-     * @param mixed $absolutePath
+     * @param string $targetDir
      * @return Sound
      */
-    public function setAbsolutePath($absolutePath) : Sound
+    public function setTargetDir($targetDir) : Sound
     {
-        $this->absolutePath = $absolutePath;
+        $this->targetDir = $targetDir;
 
         return $this;
     }
     /**
      * @return mixed
      */
-    public function getFileName()
+    public function getCreatedAt()
     {
-        return $this->fileName;
+        return $this->createdAt;
     }
     /**
-     * @param mixed $fileName
+     * @param \DateTime $createdAt
      * @return Sound
      */
-    public function setFileName($fileName) : Sound
+    public function setCreatedAt($createdAt) : Sound
     {
-        $this->fileName = $fileName;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
     /**
-     * @return mixed
+     * @return string
      */
-    public function getAbsoluteFullPath()
+    public function getOriginalName()
     {
-        return $this->absoluteFullPath;
+        return $this->originalName;
     }
     /**
-     * @param mixed $absoluteFullPath
+     * @param string $originalName
      * @return Sound
      */
-    public function setAbsoluteFullPath($absoluteFullPath) : Sound
+    public function setOriginalName($originalName) : Sound
     {
-        $this->absoluteFullPath = $absoluteFullPath;
+        $this->originalName = $originalName;
 
         return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getRelativeFullPath()
-    {
-        return $this->relativeFullPath;
-    }
-    /**
-     * @param mixed $relativeFullPath
-     * @return Sound
-     */
-    public function setRelativeFullPath($relativeFullPath) : Sound
-    {
-        $this->relativeFullPath = $relativeFullPath;
-
-        return $this;
-    }
-    /**
-     * @return bool
-     */
-    public function hasSoundFile() : bool
-    {
-        return $this->soundFile instanceof UploadedFile;
     }
     /**
      * @return UploadedFile
      */
-    public function getSoundFile(): UploadedFile
+    public function getSoundFile()
     {
         return $this->soundFile;
     }
@@ -151,7 +121,7 @@ class Sound
      * @param UploadedFile $soundFile
      * @return Sound
      */
-    public function setSoundFile(UploadedFile $soundFile) : Sound
+    public function setSoundFile($soundFile) : Sound
     {
         $this->soundFile = $soundFile;
 

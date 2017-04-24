@@ -1,32 +1,80 @@
 <?php
 
-namespace API\SharedDataBundle\Entity;
-
 namespace AdminBundle\Entity;
 
 class Course
 {
     /**
-     * @var string $name
+     * @var int
+     */
+    private $id;
+    /**
+     * @var string
      */
     private $name;
-    /**
-     * @var string $language
-     */
+
     private $language;
     /**
-     * @return mixed
+     * @var string
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Course
+     */
+    public function setName($name) : Course
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+    /**
+     * Get name
+     *
+     * @return string
      */
     public function getName()
     {
         return $this->name;
     }
     /**
-     * @param mixed $name
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Course
      */
-    public function setName($name)
+    public function setCreatedAt($createdAt) : Course
     {
-        $this->name = $name;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * Get createdAt
+     *
+     * @return string
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
     /**
      * @return mixed
@@ -37,21 +85,13 @@ class Course
     }
     /**
      * @param mixed $language
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-    }
-    /**
-     * @param $request
      * @return Course
      */
-    public static function createFromRequest(ParameterBag $request) : Course
+    public function setLanguage($language) : Course
     {
-        $course = new Course();
-        $course->setName($request->get('name'));
-        $course->setLanguage($request->get('language'));
+        $this->language = $language;
 
-        return $course;
+        return $this;
     }
 }
+

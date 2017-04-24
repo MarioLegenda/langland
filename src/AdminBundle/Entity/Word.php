@@ -24,10 +24,16 @@ class Word
      * @var int $language
      */
     private $language;
+
+    private $description;
     /**
      * @var ArrayCollection $categories
      */
     private $categories;
+    /**
+     * @var Translation[] $translations
+     */
+    private $translations;
     /**
      * @var WordImage $wordImage
      */
@@ -45,7 +51,7 @@ class Word
     {
         $this->createdAt = new \DateTime();
         $this->categories = new ArrayCollection();
-        $this->images = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
     /**
      * @return mixed
@@ -141,6 +147,47 @@ class Word
         return $this;
     }
     /**
+     * @param Translation $translation
+     * @return bool
+     */
+    public function hasTranslation(Translation $translation) : bool
+    {
+        return $this->translations->contains($translation);
+    }
+    /**
+     * @param Translation $translation
+     * @return Word
+     */
+    public function addTranslation(Translation $translation) : Word
+    {
+        if (!$this->hasTranslation($translation)) {
+            $translation->setWord($this);
+            $this->translations->add($translation);
+        }
+
+        return $this;
+    }
+    /**
+     * @param Translation $translation
+     * @return Word
+     */
+    public function removeTranslation(Translation $translation) : Word
+    {
+        if ($this->hasTranslation($translation)) {
+            $translation->setWord(null);
+            $this->translations->removeElement($translation);
+        }
+
+        return $this;
+    }
+    /**
+     * @return Translation[]|ArrayCollection
+     */
+    public function getTranslations()
+    {
+        return $this->translations;
+    }
+    /**
      * @return bool
      */
     public function hasWordImage() : bool
@@ -162,16 +209,33 @@ class Word
         $this->wordImage = $wordImage;
     }
     /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    /**
+     * @param mixed $description
+     * @return Word
+     */
+    public function setDescription($description) : Word
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+    /**
      * @return WordImage
      */
-    public function getViewImage(): WordImage
+    public function getViewImage()
     {
         return $this->viewImage;
     }
     /**
      * @param WordImage $viewImage
      */
-    public function setViewImage(WordImage $viewImage = null)
+    public function setViewImage($viewImage = null)
     {
         $this->viewImage = $viewImage;
     }

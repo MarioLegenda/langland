@@ -16,7 +16,8 @@
             {% for word in words %}
                 <div class="card full-width align-left margin-bottom-10">
                     <a class="base-action-link align-left" href="#">{{ word.name }}</a>
-                    <a class="sub-base-action-link align-right" href="{{ path('word_edit', {'id': word.id}) }}">Edit</a>
+                    <a class="danger-action-link align-right" href="{{ path('word_remove', {'id': word.id}) }}"><i class="fa fa-remove"></i></a>
+                    <a class="sub-base-action-link align-right" href="{{ path('word_edit', {'id': word.id}) }}"><i class="fa fa-edit"></i></a>
                 </div>
             {% endfor %}
         </div>

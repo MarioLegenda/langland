@@ -5,27 +5,34 @@ admin_dashboard:
 language:
   resource: "@AdminBundle/Resources/config/routing/api/language.yml"
   prefix: /admin/language
+  host: '%host%'
 
 word:
   resource: "@AdminBundle/Resources/config/routing/api/word.yml"
   prefix: /admin/word
+  host: '%host%'
 
 category:
   resource: "@AdminBundle/Resources/config/routing/api/category.yml"
   prefix: /admin/category
   host: '%host%'
 
-sentence:
-  resource: "@AdminBundle/Resources/config/routing/api/sentence.yml"
-  prefix: /admin/sentence
+sound:
+  resource: "@AdminBundle/Resources/config/routing/api/sound.yml"
+  prefix: /admin/sound
+  host: '%host%'
+
+course:
+  resource: "@AdminBundle/Resources/config/routing/api/course.yml"
+  prefix: /admin/course
 
 search:
   resource: "@AdminBundle/Resources/config/routing/api/search.yml"
   prefix: /admin/search
 
-course:
-  resource: "@AdminBundle/Resources/config/routing/api/course.yml"
-  prefix: /admin/course
+sentence:
+  resource: "@AdminBundle/Resources/config/routing/api/sentence.yml"
+  prefix: /admin/sentence
 
 class:
   resource: "@AdminBundle/Resources/config/routing/api/class.yml"

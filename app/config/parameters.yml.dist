@@ -12,18 +12,10 @@ parameters:
 
     host: 33.33.33.10
 
-    blue_dot_service_name: app.blue_dot
-
-    uploads_relative_path: /uploads/
-    uploads_absolute_path: '%kernel.root_dir%/../web/uploads'
-
     upload_dirs:
-        sounds_relative_path: /sounds/
-        sounds_absolute_path: '%kernel.root_dir%/../web/sounds'
-
-    deck_files_dir: '%kernel.root_dir%/Resources/views/Admin/BaseInclude/Page/Course/Decks'
+        image_upload_dir: '%kernel.root_dir%/../web/uploads/images'
+        sound_upload_dir: '%kernel.root_dir%/../web/uploads/sounds'
 
     security_admin_redirect: armor_admin_login
     security_app_redirect: app_login
-
     email_config: '%kernel.root_dir%/config.email.yml'

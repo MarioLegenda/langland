@@ -12,7 +12,6 @@ header {
   }
 }
 
-
 .main-action-link {
   padding: 10px 30px 10px 30px;
 
@@ -37,7 +36,7 @@ header {
 }
 
 .sub-base-action-link {
-  color: $subBaseLinkColor;
+  color: $highlight-gray;
 
   padding: 10px;
 
@@ -45,6 +44,14 @@ header {
 
   &:hover {
     color: $subBaseLinkHoverColor;
+  }
+}
+
+.danger-action-link {
+  @extend .sub-base-action-link;
+
+  &:hover {
+    color:red;
   }
 }
 

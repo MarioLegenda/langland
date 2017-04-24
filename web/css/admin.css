@@ -154,6 +154,10 @@ body {
   background-color: white;
   border: 1px solid #b5b3b3;
   border-bottom: 4px solid #fc571b; }
+.form textarea {
+  line-height: 1.8em;
+  font-size: 1.05em;
+  padding: 10px; }
 .form label {
   width: 100%;
   display: block;
@@ -190,12 +194,15 @@ header {
   padding: 10px;
   color: #2d2d2d; }
 
-.sub-base-action-link {
-  color: #47c1ff;
+.sub-base-action-link, .danger-action-link {
+  color: #b5b3b3;
   padding: 10px;
   margin-left: 20px; }
-  .sub-base-action-link:hover {
+  .sub-base-action-link:hover, .danger-action-link:hover {
     color: #008db5; }
+
+.danger-action-link:hover {
+  color: red; }
 
 .page .page-title {
   font-size: 1.5em;

@@ -7,6 +7,8 @@ use AdminBundle\Transformer\MultipleChoiceTransformer;
 use AdminBundle\Transformer\SingleChoiceTransformer;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -53,6 +55,13 @@ class WordType extends AbstractType
                     'placeholder' => '... click \'n type',
                 )
             ))
+            ->add('description', TextareaType::class, array(
+                'label' => 'Optional description: ',
+                'attr' => array(
+                    'rows' => 5,
+                    'cols' => 40,
+                ),
+            ))
             ->add('categories', ChoiceType::class, array(
                     'label' => 'Choose categories: ',
                     'placeholder' => 'Choose categories',
@@ -61,6 +70,13 @@ class WordType extends AbstractType
             ))
             ->add('wordImage', WordImageType::class, array(
                 'label' => false,
+            ))
+            ->add('translations', CollectionType::class, array(
+                'label' => 'Add translations ...',
+                'entry_type' => TranslationType::class,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
             ));
 
             $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(

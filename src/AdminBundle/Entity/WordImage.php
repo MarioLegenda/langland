@@ -16,7 +16,7 @@ class WordImage
      */
     private $originalName;
     /**
-     * @var
+     * @var string $targetDir
      */
     private $targetDir;
     /**

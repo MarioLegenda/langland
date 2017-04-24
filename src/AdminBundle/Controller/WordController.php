@@ -42,6 +42,8 @@ class WordController extends RepositoryController
                     $this->uploadWordImage($word);
                 }
 
+                $this->removeEmptyTranslations($word);
+
                 $em->persist($word);
                 $em->flush();
 
@@ -63,9 +65,14 @@ class WordController extends RepositoryController
     {
         $word = $this->getRepository('AdminBundle:Word')->find($id);
 
+        if (empty($word)) {
+            throw $this->createNotFoundException();
+        }
+
         $wordImage = $this->get('doctrine')->getRepository('AdminBundle:WordImage')->findBy(array(
             'word' => $word,
         ));
+
 
         $word->setViewImage((!empty($wordImage)) ? $wordImage[0] : null);
 
@@ -82,6 +89,8 @@ class WordController extends RepositoryController
                 if ($word->hasWordImage()) {
                     $this->uploadWordImage($word);
                 }
+
+                $this->removeEmptyTranslations($word);
 
                 $em->persist($word);
                 $em->flush();
@@ -103,11 +112,45 @@ class WordController extends RepositoryController
         ));
     }
 
+    public function removeAction(Request $request, $id)
+    {
+        $word = $this->getRepository('AdminBundle:Word')->find($id);
+
+        if (empty($word)) {
+            throw $this->createNotFoundException();
+        }
+
+        $em = $this->get('doctrine')->getEntityManager();
+        $wordImage = $this->getRepository('AdminBundle:WordImage')->findBy(array(
+            'word' => $word,
+        ));
+
+        if (!empty($wordImage)) {
+            $wordImage = $wordImage[0];
+
+            $fileName = $wordImage->getName();
+            $targetDir = realpath($wordImage->getTargetDir());
+            $fullFileName = $targetDir.'/'.$fileName;
+
+            if (file_exists($fullFileName)) {
+                unlink($fullFileName);
+            }
+
+            $em->remove($wordImage);
+        }
+
+        $em->remove($word);
+
+        $em->flush();
+
+        return $this->redirectToRoute('word_index');
+    }
+
     private function uploadWordImage(Word $word)
     {
         $fileUploader = $this->get('admin.file_uploader');
 
-        $fileUploader->upload($word->getWordImage(true)->getImageFile(), array(
+        $fileUploader->uploadImage($word->getWordImage()->getImageFile(), array(
             'repository' => 'AdminBundle:WordImage',
             'field' => 'name',
         ));
@@ -115,6 +158,15 @@ class WordController extends RepositoryController
         $word->getWordImage()
             ->setName($fileUploader->getFileName())
             ->setOriginalName($fileUploader->getOriginalName())
-            ->setTargetDir($fileUploader->getTargetDir());
+            ->setTargetDir($fileUploader->getImageDir());
+    }
+
+    private function removeEmptyTranslations(Word $word)
+    {
+        foreach ($word->getTranslations() as $translation) {
+            if (is_null($translation->getName())) {
+                $word->removeTranslation($translation);
+            }
+        }
     }
 }

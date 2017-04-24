@@ -26,9 +26,20 @@
 
                         {% include '::Admin/Form/_include/field.html.twig' with {'field': form.type } only %}
 
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.description } only %}
+
                         {% include '::Admin/Form/_include/field.html.twig' with {'field': form.categories } only %}
 
                         {% include '::Admin/Form/_include/field.html.twig' with {'field': form.wordImage } only %}
+
+                        <div class="full-width align-left form-field field-break">
+                            {{ form_label(form.translations) }}
+                            <div class="translations" data-prototype="{{ form_widget(form.translations.vars.prototype)|e('html_attr') }}">
+                                {% for translation in form.translations %}
+                                    <div>{{ form_row(translation.name) }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
 
                         {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
                     </div>

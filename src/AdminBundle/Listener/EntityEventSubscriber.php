@@ -30,13 +30,11 @@ class EntityEventSubscriber implements EventSubscriber
         if ($entity instanceof Word) {
             $wordImage = $entity->getWordImage();
 
-            if (!$wordImage->getImageFile() instanceof UploadedFile) {
-                return;
+            if ($wordImage->getImageFile() instanceof UploadedFile) {
+                $wordImage->setWord($entity);
+
+                $event->getEntityManager()->persist($wordImage);
             }
-
-            $wordImage->setWord($entity);
-
-            $event->getEntityManager()->persist($wordImage);
         }
     }
     /**

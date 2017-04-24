@@ -64,4 +64,32 @@
             </constraint>
         </property>
     </class>
+
+    <class name="AdminBundle\Entity\Course">
+        <property name="language">
+            <constraint name="NotNull">
+                <option name="message">You have to specify a language for a course</option>
+            </constraint>
+        </property>
+
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">Course name cannot be empty</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">Course name can have up to {{ limit }} characters</option>
+            </constraint>
+
+            <constraint name="AdminBundle\Validator\Constraint\UniqueConstraint">
+                <option name="repository">AdminBundle:Course</option>
+                <option name="field">name</option>
+
+                <option name="groups">
+                    <value>create</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
 </constraint-mapping>

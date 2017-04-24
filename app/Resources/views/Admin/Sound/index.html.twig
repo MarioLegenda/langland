@@ -1,0 +1,24 @@
+{% extends '::Admin/base.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Sounds</h1>
+            <a href="{{ path('sound_create') }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
+        {% if sounds is empty %}
+            <p class="no-data-message">No sounds have been added</p>
+        {% endif %}
+
+        {% if sounds is not empty %}
+            <div class="full-width align-left margin-top-30 page-content">
+                {% for sound in sounds %}
+                    <div class="card full-width align-left margin-bottom-10">
+                        <a class="base-action-link align-left" href="#">{{ sound.originalName }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

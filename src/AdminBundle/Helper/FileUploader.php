@@ -9,9 +9,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class FileUploader
 {
     /**
-     * @var string $targetDir
+     * @var string $imageDir
      */
-    private $targetDir;
+    private $imageDir;
+    /**
+     * @var string $soundDir
+     */
+    private $soundDir;
     /**
      * @var ImageResize $imageResize
      */
@@ -30,13 +34,14 @@ class FileUploader
     private $originalName;
     /**
      * FileUploader constructor.
-     * @param string $targetDir
+     * @param array $uploadDirs
      * @param ImageResize $imageResize
      * @param FileNamer $fileNamer
      */
-    public function __construct(string $targetDir, ImageResize $imageResize, FileNamer $fileNamer)
+    public function __construct(array $uploadDirs, ImageResize $imageResize, FileNamer $fileNamer)
     {
-        $this->targetDir = $targetDir;
+        $this->imageDir = $uploadDirs['image_upload_dir'];
+        $this->soundDir = realpath($uploadDirs['sound_upload_dir']);
         $this->imageResize = $imageResize;
         $this->fileNamer = $fileNamer;
     }
@@ -44,17 +49,34 @@ class FileUploader
      * @param UploadedFile $file
      * @param array $options
      */
-    public function upload(UploadedFile $file, array $options = array())
+    public function uploadImage(UploadedFile $file, array $options = array())
     {
         $this->fileName = $this->fileNamer->createName($options).'.'.$file->guessExtension();
         $this->originalName = $file->getClientOriginalName();
 
-        $path = $this->targetDir.'/'.$this->fileName;
+        $path = $this->imageDir.'/'.$this->fileName;
 
         $this->imageResize
             ->setWidth(250)
             ->setHeight(250)
             ->resizeAndSave($file, $path);
+    }
+
+    public function uploadSound(UploadedFile $file, array $options)
+    {
+        $this->fileName = $this->fileNamer->createName($options).'.mp3';
+        $this->originalName = $file->getClientOriginalName();
+
+        $file->move($this->soundDir.'/temp', $this->fileName);
+
+        $src = $this->soundDir.'/temp/'.$this->fileName;
+        $dest = $this->soundDir.'/'.$this->fileName;
+
+        exec(sprintf('/usr/bin/sox -t %s %s %s', 'mp3', $src, $dest), $output);
+
+        if (file_exists($src)) {
+            unlink($src);
+        }
     }
     /**
      * @return string
@@ -87,18 +109,29 @@ class FileUploader
     /**
      * @return string
      */
-    public function getTargetDir(): string
+    public function getImageDir(): string
     {
-        return $this->targetDir;
+        return $this->imageDir;
     }
     /**
-     * @param string $targetDir
-     * @return FileUploader
+     * @param string $imageDir
      */
-    public function setTargetDir(string $targetDir) : FileUploader
+    public function setImageDir(string $imageDir)
     {
-        $this->targetDir = $targetDir;
-
-        return $this;
+        $this->imageDir = $imageDir;
+    }
+    /**
+     * @return string
+     */
+    public function getSoundDir(): string
+    {
+        return $this->soundDir;
+    }
+    /**
+     * @param string $soundDir
+     */
+    public function setSoundDir(string $soundDir)
+    {
+        $this->soundDir = $soundDir;
     }
 }

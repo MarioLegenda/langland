@@ -8,6 +8,7 @@
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
+
         <field name="name" type="string" length="255" />
         <field name="createdAt" type="datetime" />
     </entity>

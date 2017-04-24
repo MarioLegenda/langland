@@ -9,43 +9,83 @@ class Translation
      */
     private $id;
     /**
-     * @var string $translation
+     * @var string $name
      */
-    private $translation;
+    private $name;
+    /**
+     * @var \DateTime $createdAt
+     */
+    private $createdAt;
+    /**
+     * @var Word $word
+     */
+    private $word;
     /**
      * Translation constructor.
-     * @param $translation
      */
-    public function __construct($translation)
+    public function __construct()
     {
-        $this->translation = $translation;
-    }
-    /**
-     * @return mixed
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->createdAt = new \DateTime();
     }
     /**
      * @param mixed $id
+     * @return Translation
      */
-    public function setId($id)
+    public function setId($id) : Translation
     {
         $this->id = $id;
+
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * @param string $name
+     * @return Translation
+     */
+    public function setName(string $name) : Translation
+    {
+        $this->name = $name;
+
+        return $this;
     }
     /**
      * @return mixed
      */
-    public function getTranslation()
+    public function getCreatedAt()
     {
-        return $this->translation;
+        return $this->createdAt;
     }
     /**
-     * @param mixed $translation
+     * @param mixed $createdAt
+     * @return Translation
      */
-    public function setTranslation($translation)
+    public function setCreatedAt($createdAt) : Translation
     {
-        $this->translation = $translation;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getWord()
+    {
+        return $this->word;
+    }
+    /**
+     * @param mixed $word
+     * @return Translation
+     */
+    public function setWord($word) : Translation
+    {
+        $this->word = $word;
+
+        return $this;
     }
 }

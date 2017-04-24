@@ -10,7 +10,7 @@
         // Get the ul that holds the collection of tags
         $collectionHolder = $('div.translations');
 
-        $collectionHolder.find('div').each(function() {
+        $collectionHolder.find('.translation').each(function() {
             addTagFormDeleteLink($(this));
         });
 

@@ -19,6 +19,11 @@
     padding: 10px;
   }
 
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
   select {
     background-color: white;
 
@@ -47,6 +52,16 @@
     padding: 10px 10px 10px 0;
 
     border: 1px solid $highlight-gray;
+  }
+
+  .collection-holder {
+    input[type="text"] {
+      float:left;
+    }
+
+    input[type="checkbox"] {
+      float:left;
+    }
   }
 
   .form-error {

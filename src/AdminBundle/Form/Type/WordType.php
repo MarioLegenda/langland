@@ -42,6 +42,9 @@ class WordType extends AbstractType
                 'label' => 'Language: ',
                 'placeholder' => 'Choose language',
                 'choices' => $this->createLanguageChoices(),
+                'choice_label' => function($choice, $key, $value) {
+                    return ucfirst($key);
+                }
             ))
             ->add('name', TextType::class, array(
                 'label' => 'Word: ',
@@ -67,6 +70,9 @@ class WordType extends AbstractType
                 'placeholder' => 'Choose categories',
                 'multiple' => true,
                 'choices' => $this->createCategoryChoices(),
+                'choice_label' => function ($choice, $key, $value) {
+                    return ucfirst($key);
+                }
             ))
             ->add('wordImage', WordImageType::class, array(
                 'label' => false,

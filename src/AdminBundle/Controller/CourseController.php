@@ -111,9 +111,9 @@ class CourseController extends RepositoryController
         ));
     }
 
-    public function manageAction(Request $request, $id)
+    public function manageAction($courseId)
     {
-        $course = $this->getRepository('AdminBundle:Course')->find($id);
+        $course = $this->getRepository('AdminBundle:Course')->find($courseId);
 
         if (empty($course)) {
             throw $this->createNotFoundException();

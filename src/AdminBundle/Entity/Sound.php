@@ -27,14 +27,13 @@ class Sound
      */
     private $createdAt;
     /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
+    /**
      * @var UploadedFile $soundFile
      */
     private $soundFile;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTime();
-    }
     /**
      * @return mixed
      */
@@ -126,5 +125,31 @@ class Sound
         $this->soundFile = $soundFile;
 
         return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Sound
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Sound
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

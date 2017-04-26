@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="AdminBundle\Entity\Course" table="courses">
+  <entity name="AdminBundle\Entity\SentenceTranslation" table="sentence_translations">
 
     <id name="id" type="integer" column="id">
       <generator strategy="AUTO"/>
     </id>
 
-    <field name="name" type="string" column="name" length="255"/>
+    <field name="name" type="text" column="name"/>
+    <field name="markedCorrect" type="boolean" column="marked_correct"/>
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
 
-    <many-to-one field="language" target-entity="AdminBundle\Entity\Language">
-      <join-column name="language_id" referenced-column-name="id" />
+    <many-to-one target-entity="AdminBundle\Entity\Sentence" field="sentence" inversed-by="sentenceTranslations">
+      <join-column name="sentence_id" referenced-column-name="id" />
     </many-to-one>
-
-    <one-to-many target-entity="AdminBundle\Entity\Lesson" mapped-by="course" field="lessons">
-    </one-to-many>
 
     <lifecycle-callbacks>
       <lifecycle-callback type="prePersist" method="updateTimestamps" />

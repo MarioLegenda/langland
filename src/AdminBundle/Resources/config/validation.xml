@@ -83,4 +83,27 @@
             </constraint>
         </property>
     </class>
+
+    <class name="AdminBundle\Entity\Sentence">
+        <constraint name="Callback">validateTranslations</constraint>
+
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">You have to specify an internal name for a sentence</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">Sentence internal name can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
+
+        <property name="sentence">
+            <constraint name="NotBlank">
+                <option name="message">Sentence cannot be empty</option>
+            </constraint>
+        </property>
+    </class>
+
+
 </constraint-mapping>

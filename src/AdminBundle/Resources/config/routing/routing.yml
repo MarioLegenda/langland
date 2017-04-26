@@ -30,10 +30,6 @@ search:
   resource: "@AdminBundle/Resources/config/routing/api/search.yml"
   prefix: /admin/search
 
-sentence:
-  resource: "@AdminBundle/Resources/config/routing/api/sentence.yml"
-  prefix: /admin/sentence
-
 class:
   resource: "@AdminBundle/Resources/config/routing/api/class.yml"
   prefix: /admin/class

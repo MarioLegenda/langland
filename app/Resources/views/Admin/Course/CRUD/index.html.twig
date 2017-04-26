@@ -17,7 +17,7 @@
                     <div class="card full-width align-left margin-bottom-10">
                         <a class="base-action-link align-left" href="#">{{ course.name }} | <span class="text-highlight">{{ course.language.name | capitalize }}</span></a>
                         <a class="sub-base-action-link align-right" href="{{ path('course_edit', {'id': course.id}) }}"><i class="fa fa-edit"></i></a>
-                        <a class="sub-base-action-link align-right" href="{{ path('course_manage', {'id': course.id}) }}">Manage</a>
+                        <a class="sub-base-action-link align-right" href="{{ path('course_manage', {'courseId': course.id}) }}">Manage</a>
                     </div>
                 {% endfor %}
             </div>

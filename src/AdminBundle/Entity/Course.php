@@ -2,28 +2,36 @@
 
 namespace AdminBundle\Entity;
 
-use Symfony\Component\Validator\Context\ExecutionContext;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Course
 {
     /**
-     * @var int
+     * @var int $id
      */
     private $id;
     /**
-     * @var string
+     * @var string $name
      */
     private $name;
 
     private $language;
     /**
-     * @var string
+     * @var \DateTime $createdAt
      */
     private $createdAt;
+    /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
+    /**
+     * @var ArrayCollection $lessons
+     */
+    private $lessons;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->lessons = new ArrayCollection();
     }
     /**
      * Get id
@@ -63,7 +71,7 @@ class Course
      *
      * @return Course
      */
-    public function setCreatedAt($createdAt) : Course
+    public function setCreatedAt(\DateTime $createdAt) : Course
     {
         $this->createdAt = $createdAt;
 
@@ -81,6 +89,23 @@ class Course
     /**
      * @return mixed
      */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Course
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Course
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
     public function getLanguage()
     {
         return $this->language;
@@ -94,6 +119,55 @@ class Course
         $this->language = $language;
 
         return $this;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getLessons()
+    {
+        return $this->lessons;
+    }
+    /**
+     * @param Lesson $lesson
+     * @return bool
+     */
+    public function hasLesson(Lesson $lesson) : bool
+    {
+        return $this->lessons->contains($lesson);
+    }
+    /**
+     * @param Lesson $lesson
+     * @return Course
+     */
+    public function addLesson(Lesson $lesson) : Course
+    {
+        if (!$this->hasLesson($lesson)) {
+            $lesson->setCourse($this);
+            $this->lessons->add($lesson);
+        }
+
+        return $this;
+    }
+    /**
+     * @param ArrayCollection $lessons
+     * @return Course
+     */
+    public function setLessons($lessons) : Course
+    {
+        foreach ($lessons as $lesson) {
+            $this->addLesson($lesson);
+        }
+
+        return $this;
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }
 

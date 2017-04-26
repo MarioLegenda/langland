@@ -1,0 +1,15 @@
+course_manage:
+    path: /{courseId}
+    defaults: { _controller: AdminBundle:Course:manage }
+    methods: [GET]
+    host: '%host%'
+
+course_manager:
+    resource: "@AdminBundle/Resources/config/routing/api/course/lesson.yml"
+    prefix: /{courseId}/lesson
+    host: '%host%'
+
+sentence:
+    resource: "@AdminBundle/Resources/config/routing/api/course/sentence.yml"
+    prefix: /{courseId}/sentence
+    host: '%host%'

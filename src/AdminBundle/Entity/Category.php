@@ -13,11 +13,10 @@ class Category
      * @var \DateTime $createdAt
      */
     private $createdAt;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTime();
-    }
+    /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
     /**
      * @return mixed
      */
@@ -33,32 +32,38 @@ class Category
         $this->id = $id;
     }
     /**
-     * @return mixed
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-    /**
-     * @param mixed $category
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-    }
-    /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
     /**
      * @param \DateTime $createdAt
+     * @return Category
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt) : Category
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Category
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Category
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
     /**
      * @return string
@@ -76,5 +81,14 @@ class Category
         $this->name = $name;
 
         return $this;
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

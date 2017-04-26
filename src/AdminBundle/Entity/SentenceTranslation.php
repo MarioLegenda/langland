@@ -3,9 +3,9 @@
 namespace AdminBundle\Entity;
 
 /**
- * Lesson
+ * SentenceTranslation
  */
-class Lesson
+class SentenceTranslation
 {
     /**
      * @var int $id
@@ -16,6 +16,10 @@ class Lesson
      */
     private $name;
     /**
+     * @var int $markedCorrect
+     */
+    private $markedCorrect;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -24,9 +28,9 @@ class Lesson
      */
     private $updatedAt;
     /**
-     * @var Course $course
+     * @var Sentence
      */
-    private $course;
+    private $sentence;
     /**
      * Get id
      *
@@ -41,9 +45,9 @@ class Lesson
      *
      * @param string $name
      *
-     * @return Lesson
+     * @return SentenceTranslation
      */
-    public function setName($name) : Lesson
+    public function setName($name) : SentenceTranslation
     {
         $this->name = $name;
 
@@ -59,13 +63,35 @@ class Lesson
         return $this->name;
     }
     /**
+     * Set markedCorrect
+     *
+     * @param integer $markedCorrect
+     *
+     * @return SentenceTranslation
+     */
+    public function setMarkedCorrect($markedCorrect) : SentenceTranslation
+    {
+        $this->markedCorrect = $markedCorrect;
+
+        return $this;
+    }
+    /**
+     * Get markedCorrect
+     *
+     * @return int
+     */
+    public function getMarkedCorrect()
+    {
+        return $this->markedCorrect;
+    }
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
      *
-     * @return Lesson
+     * @return SentenceTranslation
      */
-    public function setCreatedAt(\DateTime $createdAt) : Lesson
+    public function setCreatedAt($createdAt) : SentenceTranslation
     {
         $this->createdAt = $createdAt;
 
@@ -89,35 +115,27 @@ class Lesson
     }
     /**
      * @param \DateTime $updatedAt
-     * @return Lesson
+     * @return SentenceTranslation
      */
-    public function setUpdatedAt(\DateTime $updatedAt) : Lesson
+    public function setUpdatedAt(\DateTime $updatedAt) : SentenceTranslation
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
     /**
-     * Set course
-     *
-     * @param string $course
-     *
-     * @return Lesson
+     * @return mixed
      */
-    public function setCourse($course) : Lesson
+    public function getSentence()
     {
-        $this->course = $course;
-
-        return $this;
+        return $this->sentence;
     }
     /**
-     * Get course
-     *
-     * @return string
+     * @param mixed $sentence
      */
-    public function getCourse()
+    public function setSentence($sentence)
     {
-        return $this->course;
+        $this->sentence = $sentence;
     }
 
     public function updateTimestamps()

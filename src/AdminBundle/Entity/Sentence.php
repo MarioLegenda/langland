@@ -2,9 +2,12 @@
 
 namespace AdminBundle\Entity;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContext;
 
+/**
+ * Sentence
+ */
 class Sentence
 {
     /**
@@ -12,64 +15,70 @@ class Sentence
      */
     private $id;
     /**
-     * @var int $lessonId
+     * @var string $name
      */
-    private $lessonId;
-    /**
-     * @var string $internalName
-     */
-    private $internalName;
+    private $name;
     /**
      * @var string $sentence
      */
     private $sentence;
     /**
-     * @var array $translations
+     * @var \DateTime $createdAt
      */
-    private $translations = array();
+    private $createdAt;
     /**
-     * @return mixed
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
+    /**
+     * @var Course $course
+     */
+    private $course;
+    /**
+     * @var ArrayCollection $sentenceTranslations
+     */
+    private $sentenceTranslations;
+
+    public function __construct()
+    {
+        $this->sentenceTranslations = new ArrayCollection();
+    }
+    /**
+     * Get id
+     *
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
     /**
-     * @param mixed $id
+     * Set name
+     *
+     * @param string $name
+     *
      * @return Sentence
      */
-    public function setId($id) : Sentence
+    public function setName($name) : Sentence
     {
-        $this->id = $id;
+        $this->name = $name;
 
         return $this;
     }
     /**
-     * @return mixed
+     * Get name
+     *
+     * @return string
      */
-    public function getLessonId()
+    public function getName()
     {
-        return $this->lessonId;
+        return $this->name;
     }
     /**
-     * @param mixed $lessonId
-     * @return Sentence
-     */
-    public function setLessonId($lessonId) : Sentence
-    {
-        $this->lessonId = $lessonId;
-
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getSentence()
-    {
-        return $this->sentence;
-    }
-    /**
-     * @param mixed $sentence
+     * Set sentence
+     *
+     * @param string $sentence
+     *
      * @return Sentence
      */
     public function setSentence($sentence) : Sentence
@@ -79,67 +88,172 @@ class Sentence
         return $this;
     }
     /**
-     * @return array
+     * Get sentence
+     *
+     * @return string
      */
-    public function getTranslations(): array
+    public function getSentence()
     {
-        return $this->translations;
+        return $this->sentence;
     }
     /**
-     * @param array $translations
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
      * @return Sentence
      */
-    public function setTranslations(array $translations) : Sentence
+    public function setCreatedAt(\DateTime $createdAt) : Sentence
     {
-        $this->translations = $translations;
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Sentence
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Sentence
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
     /**
      * @return mixed
      */
-    public function getInternalName()
+    public function getCourse()
     {
-        return $this->internalName;
+        return $this->course;
     }
     /**
-     * @param mixed $internalName
+     * @param mixed $course
      * @return Sentence
      */
-    public function setInternalName($internalName) : Sentence
+    public function setCourse($course) : Sentence
     {
-        $this->internalName = $internalName;
+        $this->course = $course;
 
         return $this;
     }
     /**
-     * @param ExecutionContextInterface $context
+     * @param SentenceTranslation $sentenceTranslation
+     * @return bool
      */
-    public function validate(ExecutionContextInterface $context)
+    public function hasSentenceTranslation(SentenceTranslation $sentenceTranslation) : bool
     {
-        if (count($this->getTranslations()) === 0) {
-            $context->buildViolation('There has to be at least one translation for a sentence')
-                ->atPath('translations')
+        return $this->sentenceTranslations->contains($sentenceTranslation);
+    }
+    /**
+     * @param SentenceTranslation $sentenceTranslation
+     * @return Sentence
+     */
+    public function addSentenceTranslation(SentenceTranslation $sentenceTranslation) : Sentence
+    {
+        if (!$this->hasSentenceTranslation($sentenceTranslation)) {
+            $sentenceTranslation->setSentence($this);
+            $this->sentenceTranslations->add($sentenceTranslation);
+        }
+
+        return $this;
+    }
+    /**
+     * @param SentenceTranslation $sentenceTranslation
+     * @return Sentence
+     */
+    public function removeSentenceTranslation(SentenceTranslation $sentenceTranslation) : Sentence
+    {
+        if ($this->hasSentenceTranslation($sentenceTranslation)) {
+            $sentenceTranslation->setSentence(null);
+            $this->sentenceTranslations->removeElement($sentenceTranslation);
+        }
+
+        return $this;
+    }
+    /**
+     * @param $sentenceTranslations
+     * @return Sentence
+     */
+    public function setSentenceTranslations($sentenceTranslations) : Sentence
+    {
+        foreach ($sentenceTranslations as $sentenceTranslation) {
+            $this->addSentenceTranslation($sentenceTranslation);
+        }
+
+        return $this;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getSentenceTranslations()
+    {
+        return $this->sentenceTranslations;
+    }
+    /**
+     * @param ExecutionContext $context
+     */
+    public function validateTranslations(ExecutionContext $context)
+    {
+        if (count($this->sentenceTranslations) < 3) {
+            $context->buildViolation('You have to provide at least 3 non empty translations for a sentence and one of them must be marked as correct')
+                ->atPath('sentenceTranslations')
+                ->addViolation();
+
+            return;
+        }
+
+        $hasName = 0;
+        foreach ($this->sentenceTranslations as $sentenceTranslation) {
+            if (is_string($sentenceTranslation->getName())) {
+                ++$hasName;
+            }
+        }
+
+        if ($hasName < 3) {
+            $context->buildViolation('You have to provide at least 3 non empty translations for a sentence and one of them must be marked as correct')
+                ->atPath('sentenceTranslations')
+                ->addViolation();
+        }
+
+        $correctNum = 0;
+        foreach ($this->sentenceTranslations as $sentenceTranslation) {
+            $markedCorrect = $sentenceTranslation->getMarkedCorrect();
+
+            if ($markedCorrect === true) {
+                ++$correctNum;
+            }
+        }
+
+        if ($correctNum !== 1) {
+            $context->buildViolation('You have to mark a single sentence translation as correct')
+                ->atPath('sentenceTranslations')
                 ->addViolation();
         }
     }
-    /**
-     * @param Request $request
-     * @return Sentence
-     */
-    public static function createFromRequest(Request $request) : Sentence
+
+    public function updateTimestamps()
     {
-        $sentence = new Sentence();
+        $this->setUpdatedAt(new \DateTime());
 
-        $request = $request->request;
-
-        $sentence
-            ->setId(($request->has('id')) ? $request->get('id') : null)
-            ->setInternalName(($request->has('internal_name')) ? $request->get('internal_name') : null)
-            ->setLessonId($request->get('lesson_id'))
-            ->setSentence(($request->has('sentence')) ? $request->get('sentence') : null)
-            ->setTranslations(($request->has('translations')) ? $request->get('translations') : array());
-
-        return $sentence;
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }
+

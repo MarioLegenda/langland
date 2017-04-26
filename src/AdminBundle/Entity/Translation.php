@@ -17,6 +17,10 @@ class Translation
      */
     private $createdAt;
     /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
+    /**
      * @var Word $word
      */
     private $word;
@@ -74,6 +78,23 @@ class Translation
     /**
      * @return mixed
      */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Translation
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Translation
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
     public function getWord()
     {
         return $this->word;
@@ -87,5 +108,14 @@ class Translation
         $this->word = $word;
 
         return $this;
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

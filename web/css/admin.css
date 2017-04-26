@@ -150,6 +150,9 @@ body {
   font-size: 1.2em;
   font-family: "Inconsolata", monospace;
   padding: 10px; }
+.form input[type="checkbox"] {
+  width: 20px;
+  height: 20px; }
 .form select {
   background-color: white;
   border: 1px solid #b5b3b3;
@@ -166,6 +169,10 @@ body {
 .form input[type="text"] {
   padding: 10px 10px 10px 0;
   border: 1px solid #b5b3b3; }
+.form .collection-holder input[type="text"] {
+  float: left; }
+.form .collection-holder input[type="checkbox"] {
+  float: left; }
 .form .form-error {
   color: #fc571b;
   padding: 10px 10px 10px 0; }

@@ -39,6 +39,9 @@ class CourseType extends AbstractType
                 'label' => 'Language: ',
                 'placeholder' => 'Choose language',
                 'choices' => $this->createLanguageChoices(),
+                'choice_label' => function($choice, $key, $value) {
+                    return ucfirst($key);
+                }
             ))
             ->add('name', TextType::class, array(
                 'label' => 'Name: ',

@@ -1,6 +1,8 @@
 
 <header class="full-width align-left">
     <div class="align-left full-width">
-        <h1 class="align-left main-title"><a href="{{ path('admin_dashboard') }}">Langland - admin</a></h1>
+        <h1 class="align-left main-title">
+            <a href="{{ path('admin_dashboard') }}">Langland - admin {% if course is defined %}| {{ course.name }} course {% endif %}</a>
+        </h1>
     </div>
 </header>

@@ -28,6 +28,14 @@ class WordImage
      */
     private $word;
     /**
+     * @var \DateTime $createdAt
+     */
+    private $createdAt;
+    /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
+    /**
      * @return mixed
      */
     public function getId()
@@ -125,5 +133,48 @@ class WordImage
         $this->targetDir = $targetDir;
 
         return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @param \DateTime $createdAt
+     * @return WordImage
+     */
+    public function setCreatedAt($createdAt) : WordImage
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return WordImage
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : WordImage
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

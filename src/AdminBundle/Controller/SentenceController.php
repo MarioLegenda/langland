@@ -3,83 +3,132 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Sentence;
-use ArmorBundle\Admin\AdminAuthInterface;
-use ArmorBundle\Controller\MasterSecurityController;
-use BlueDot\Entity\PromiseInterface;
+use AdminBundle\Form\Type\SentenceType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
-class SentenceController extends MasterSecurityController implements AdminAuthInterface
+class SentenceController extends RepositoryController
 {
-    public function createAction(Request $request)
+    public function indexAction($courseId)
     {
-        $sentence = Sentence::createFromRequest($request);
-        $response = $this->get('app.manual_validator')->validate($sentence);
+        $course = $this->getRepository('AdminBundle:Course')->find($courseId);
 
-        if ($response instanceof JsonResponse) {
-            return $response;
+        if (empty($course)) {
+            throw $this->createNotFoundException();
         }
 
-        return $this->get('app.sentence_repository')
-            ->create($sentence)
-            ->success(function() {
-                return $this->createSuccessJsonResponse();
-            })
-            ->failure(function() use ($sentence) {
-                return $this->createFailedJsonResponse(array(
-                    sprintf('Sentence with internal name \'%s\' already exists', $sentence->getInternalName()),
-                ));
-            })
-            ->getResult();
+        $sentences = $this->getRepository('AdminBundle:Sentence')->findBy(array(
+            'course' => $course,
+        ));
+
+        return $this->render('::Admin/Sentence/index.html.twig', array(
+            'course' => $course,
+            'sentences' => $sentences,
+        ));
     }
 
-    public function findInternalNamesAction(Request $request)
+    public function createAction(Request $request, $courseId)
     {
-        return $this->get('app.sentence_repository')
-            ->findInternalNames($request->request->get('lesson_id'))
-            ->success(function(PromiseInterface $promise) {
-                return $this->createSuccessJsonResponse(array(
-                    'internal_names' => $promise->getResult(),
+        $course = $this->getRepository('AdminBundle:Course')->find($courseId);
+
+        if (empty($course)) {
+            throw $this->createNotFoundException();
+        }
+
+        $sentence = new Sentence();
+        $form = $this->createForm(SentenceType::class, $sentence);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->get('doctrine')->getManager();
+
+                $this->removeEmptyTranslations($sentence);
+
+                $existingSentence = $this->getRepository('AdminBundle:Sentence')->findBy(array(
+                    'name' => $sentence->getName(),
                 ));
-            })
-            ->failure(function() {
-                return $this->createSuccessJsonResponse(array(
-                    'internal_names' => array(),
+
+                if (!empty($existingSentence)) {
+                    $form->addError(new FormError(
+                        sprintf('Sentence with internal name \'%s\' already exists', $sentence->getName())
+                    ));
+
+                    return $this->render('AdminBundle:Sentence:create.html.twig', array(
+                        'course' => $course,
+                    ));
+                }
+
+                $sentence->setCourse($course);
+
+                $em->persist($sentence);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    sprintf('Course created successfully')
+                );
+
+                return $this->redirectToRoute('sentence_create', array(
+                    'courseId' => $course->getId(),
                 ));
-            })
-            ->getResult();
+            }
+        }
+
+        return $this->render('::Admin/Sentence/create.html.twig', array(
+            'course' => $course,
+            'form' => $form->createView(),
+        ));
     }
 
-    public function findLessonSentenceAction(Request $request)
+    public function editAction(Request $request, $courseId, $sentenceId)
     {
-        return $this->get('app.sentence_repository')
-            ->findLessonSentence($request->request->all())
-            ->success(function(PromiseInterface $promise) {
-                return $this->createSuccessJsonResponse(array(
-                    'sentence' => $promise->getResult(),
+        $course = $this->getRepository('AdminBundle:Course')->find($courseId);
+
+        if (empty($course)) {
+            throw $this->createNotFoundException();
+        }
+
+        $sentence = $this->getRepository('AdminBundle:Sentence')->find($sentenceId);
+        $form = $this->createForm(SentenceType::class, $sentence);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->get('doctrine')->getManager();
+
+                $this->removeEmptyTranslations($sentence);
+
+                $em->persist($sentence);
+                $em->flush();
+
+                $this->addFlash(
+                    'notice',
+                    sprintf('Course edited successfully')
+                );
+
+                return $this->redirectToRoute('sentence_edit', array(
+                    'courseId' => $course->getId(),
+                    'sentenceId' => $sentence->getId(),
                 ));
-            })
-            ->failure(function() {
-                return $this->createFailedJsonResponse();
-            })
-            ->getResult();
+            }
+        }
+
+        return $this->render('::Admin/Sentence/edit.html.twig', array(
+            'course' => $course,
+            'sentence' => $sentence,
+            'form' => $form->createView(),
+        ));
     }
 
-    public function updateLessonSentenceAction(Request $request)
+    private function removeEmptyTranslations(Sentence $sentence)
     {
-        return $this->get('app.sentence_repository')->updateLessonSentence(array(
-            'data' => $request->request->all(),
-        ))
-            ->success(function(PromiseInterface $promise) {
-                return $this->createSuccessJsonResponse(array(
-                    'sentence' => $promise->getResult(),
-                ));
-            })
-            ->failure(function() {
-                return $this->createFailedJsonResponse(array(
-                    'Internal name already exists'
-                ));
-            })
-            ->getResult();
+        foreach ($sentence->getSentenceTranslations() as $translation) {
+            if (is_null($translation->getName())) {
+                $sentence->removeSentenceTranslation($translation);
+            }
+        }
     }
 }

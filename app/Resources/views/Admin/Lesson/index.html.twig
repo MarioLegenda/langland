@@ -1,0 +1,26 @@
+{% extends '::Admin/Course/baseContent.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Lessons</h1>
+            <a href="{{ path('lesson_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
+        {% if lessons is empty %}
+            <p class="no-data-message">No lessons have been added</p>
+        {% endif %}
+
+        {% if lessons is not empty %}
+            <div class="full-width align-left margin-top-30 page-content">
+                {% for lesson in lessons %}
+                    <div class="card full-width align-left margin-bottom-10">
+                        <a class="base-action-link align-left" href="#">{{ lesson.name }}</a>
+                        <a class="sub-base-action-link align-right" href="{{ path('lesson_edit', {'courseId': lesson.course.id, 'lessonId': lesson.id}) }}"><i class="fa fa-edit"></i></a>
+                        <a class="sub-base-action-link align-right" href="#">Manage</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

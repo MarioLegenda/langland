@@ -24,7 +24,9 @@ class Word
      * @var int $language
      */
     private $language;
-
+    /**
+     * @var string $description
+     */
     private $description;
     /**
      * @var ArrayCollection $categories
@@ -46,6 +48,8 @@ class Word
      * @var \DateTime $createdAt
      */
     private $createdAt;
+
+    private $updatedAt;
 
     public function __construct()
     {
@@ -109,23 +113,6 @@ class Word
     public function setType($type) : Word
     {
         $this->type = $type;
-
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-    /**
-     * @param mixed $createdAt
-     * @return Word
-     */
-    public function setCreatedAt($createdAt) : Word
-    {
-        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -226,6 +213,40 @@ class Word
         return $this;
     }
     /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @param \DateTime $createdAt
+     * @return Word
+     */
+    public function setCreatedAt(\DateTime $createdAt) : Word
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Word
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Word
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
      * @return WordImage
      */
     public function getViewImage()
@@ -248,6 +269,15 @@ class Word
             $context->buildViolation('There can be only up to 25 translations for a word')
                 ->atPath('translations')
                 ->addViolation();
+        }
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
         }
     }
 }

@@ -5,15 +5,23 @@
         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity name="AdminBundle\Entity\Translation" table="word_translations">
+
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
 
         <field name="name" type="string" length="255" />
-        <field name="createdAt" type="datetime" />
+        <field name="createdAt" type="datetime" column="created_at"/>
+        <field name="updatedAt" type="datetime" column="updated_at"/>
 
         <many-to-one target-entity="AdminBundle\Entity\Word" field="word" inversed-by="translations">
             <join-column name="word_id" referenced-column-name="id" />
         </many-to-one>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="updateTimestamps" />
+            <lifecycle-callback type="preUpdate" method="updateTimestamps" />
+        </lifecycle-callbacks>
+
     </entity>
 </doctrine-mapping>

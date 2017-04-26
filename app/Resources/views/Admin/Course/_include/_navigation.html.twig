@@ -1,8 +1,8 @@
 <nav>
     <div class="align-left nav-menu">
         <div class="align-left nav-menu-container">
-            <a href="#" class="nav-link">Theory<i class="fa fa-comments-o"></i></a>
-            <a href="#" class="nav-link">Sentence<i class="fa fa-header"></i></a>
+            <a href="{{ path('lesson_index', {'courseId' : course.id}) }}" class="nav-link">Lessons<i class="fa fa-comments-o"></i></a>
+            <a href="{{ path('sentence_index', {'courseId' : course.id}) }}" class="nav-link">Sentences<i class="fa fa-header"></i></a>
             <a href="#" class="nav-link">Word pool<i class="fa fa-file-word-o"></i></a>
         </div>
 

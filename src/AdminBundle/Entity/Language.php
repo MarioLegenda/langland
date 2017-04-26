@@ -16,11 +16,10 @@ class Language
      * @var \DateTime $createdAt
      */
     private $createdAt;
-
-    public function __construct()
-    {
-        $this->createdAt = new \DateTime();
-    }
+    /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
     /**
      * @return mixed
      */
@@ -29,26 +28,39 @@ class Language
         return $this->id;
     }
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    /**
      * @return \DateTime
      */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
     /**
      * @param \DateTime $createdAt
+     * @return Language
      */
-    public function setCreatedAt(\DateTime $createdAt)
+    public function setCreatedAt(\DateTime $createdAt) : Language
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Language
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Language
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
     /**
      * @return string
@@ -66,5 +78,14 @@ class Language
         $this->name = $name;
 
         return $this;
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

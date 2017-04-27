@@ -1,25 +1,22 @@
+const path = require('path');
+
 module.exports = {
-    devServer: {
-        stats: {
-            colors: true,
-            hash: false,
-            version: false,
-            timings: false,
-            assets: false,
-            chunks: false,
-            modules: false,
-            reasons: false,
-            children: false,
-            source: false,
-            errors: false,
-            errorDetails: false,
-            warnings: false,
-            publicPath: false
-        }
-    },
-    entry: "./js/entry.js",
+    entry: './js/admin/entry.jsx',
     output: {
-        path: __dirname,
-        filename: "js/bundle.js"
+        path: path.resolve('dist'),
+        filename: 'bundle.js'
+    },
+    module: {
+        loaders: [
+            { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+            {
+                test: /\.jsx$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                query: {
+                    presets:['es2015', 'react']
+                }
+            }
+        ],
     }
 };

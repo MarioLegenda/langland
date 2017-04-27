@@ -1,0 +1,13 @@
+word_pool_index:
+    path: /
+    defaults: { _controller: AdminBundle:WordPool:index }
+    methods: [GET]
+
+word_pool_create:
+    path: /create
+    defaults: { _controller: AdminBundle:WordPool:create }
+    methods: [GET, POST]
+
+word_pool_edit:
+    path: /edit/{wordPoolId}
+    defaults: { _controller: AdminBundle:WordPool:edit }

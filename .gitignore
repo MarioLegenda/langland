@@ -17,4 +17,8 @@
 .idea
 /lib/bluedot/
 /web/uploads
+/web/node_modules
+/web/.babelrc
+/web/js/*
+/web/webpack.config.js
 

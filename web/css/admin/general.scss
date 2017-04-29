@@ -22,6 +22,8 @@
 .button-wrapper {
   width: 200px;
 
+  z-index: 1;
+
   .loading {
     position:absolute;
     width: 25px;

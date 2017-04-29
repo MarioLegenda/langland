@@ -10,24 +10,26 @@
             <p class="full-width align-left no-data-message margin-top-30">There are no created languages</p>
         {% endif %}
 
-        <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('course_create') }}" method="POST" class="form" name="addCourseForm" enctype="multipart/form-data" novalidate>
-                <div class="margin-top-40 align-left full-width">
-                    <div class="form-error full-width align-right">
-                        {{ form_errors(form) }}
+        {% if form is defined %}
+            <div class="full-width align-left margin-top-30 page-content form">
+                <form action="{{ path('course_create') }}" method="POST" class="form" name="addCourseForm" enctype="multipart/form-data" novalidate>
+                    <div class="margin-top-40 align-left full-width">
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form) }}
+                        </div>
+
+                        {% include '::Admin/Form/_include/flashNotice.html.twig' %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.language} only %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name} only %}
+
+                        {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
                     </div>
 
-                    {% include '::Admin/Form/_include/flashNotice.html.twig' %}
-
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.language} only %}
-
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name} only %}
-
-                    {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
-                </div>
-
-                {{ form_widget(form._token) }}
-            </form>
-        </div>
+                    {{ form_widget(form._token) }}
+                </form>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

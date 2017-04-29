@@ -8,6 +8,11 @@ word_pool_create:
     defaults: { _controller: AdminBundle:WordPool:create }
     methods: [GET, POST]
 
+word_pool_remove:
+    path: /remove/{wordPoolId}
+    defaults: { _controller: AdminBundle:WordPool:remove }
+    methods: [GET]
+
 word_pool_edit:
     path: /edit/{wordPoolId}
     defaults: { _controller: AdminBundle:WordPool:edit }

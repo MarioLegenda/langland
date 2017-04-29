@@ -10,7 +10,7 @@
 
         {% block stylesheets %}
             <link href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
-            <link href="{{ asset('css/admin.css') }}?v=32h4rwnkerwkjer" rel="stylesheet"/>
+            <link href="{{ asset('css/admin.css') }}?v={{ random(99999999) }}" rel="stylesheet"/>
         {% endblock %}
 
     </head>
@@ -25,7 +25,7 @@
 
             <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 
-            <script src="{{ asset('dist/bundle.js') }}"></script>
+            <script src="{{ asset('dist/bundle.js') }}?v={{ random(9999999) }}"></script>
         {% endblock %}
     </body>
 </html>

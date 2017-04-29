@@ -13,11 +13,12 @@
 
         {% if wordPool is not empty %}
             <div class="full-width align-left margin-top-30 page-content">
-                {% for word in wordPool %}
-                    <div class="card full-width align-left margin-bottom-10">
-                        <a class="base-action-link align-left" href="#">{{ wordPool.name }}</a>
-                        <a class="sub-base-action-link align-right" href="#"><i class="fa fa-edit"></i></a>
-                    </div>
+                {% for pool in wordPool %}
+                        <div class="card full-width align-left margin-bottom-10">
+                            <a class="base-action-link align-left" href="#">{{ pool.name }}</a>
+                            <a class="danger-action-link align-right" href="{{ path('word_pool_remove', {'courseId' : course.id, 'wordPoolId' : pool.id}) }}"><i class="fa fa-remove"></i></a>
+                            <a class="sub-base-action-link align-right" href="{{ path('word_pool_edit', {'courseId' : course.id, 'wordPoolId' : pool.id}) }}"><i class="fa fa-edit"></i></a>
+                        </div>
                 {% endfor %}
             </div>
         {% endif %}

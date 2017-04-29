@@ -17,8 +17,17 @@ class WordPoolType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name', TextType::class, array(
+                'label' => 'Internal name: ',
+                'attr' => array(
+                    'placeholder' => '... internal name',
+                ),
+            ))
             ->add('wordIds', TextType::class, array(
                 'label' => false,
+                'attr' => array(
+                    'data-autocomplete-widget' => 'true',
+                ),
             ));
     }
 

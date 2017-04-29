@@ -1,0 +1,36 @@
+{% extends '::Admin/Course/baseContent.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Word pool - edit <span class="text-highlight">{{ wordPool.name }}</span> word pool</h1>
+        </div>
+
+        <div class="full-width align-left margin-top-30 page-content form">
+            <form action="{{ path('word_pool_edit', {'courseId' : course.id, 'wordPoolId' : wordPool.id}) }}" method="POST" class="form" name="addSentenceForm" enctype="multipart/form-data" novalidate>
+                <div class="margin-top-40 align-left full-width">
+                    <div class="form-field field-break full-width align-left">
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form) }}
+                        </div>
+                    </div>
+
+                    {% include '::Admin/Form/_include/flashNotice.html.twig' %}
+
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name} only %}
+
+                    <div id="word-pool-widget" class="relative">
+
+                    </div>
+
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.wordIds} only %}
+                    {#
+                                        {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
+                    #}
+                </div>
+
+                {{ form_widget(form._token) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

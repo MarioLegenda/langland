@@ -167,6 +167,7 @@ body {
   float: left;
   margin-bottom: 20px; }
 .form input[type="text"] {
+  width: 480px;
   padding: 10px 10px 10px 0;
   border: 1px solid #b5b3b3; }
 .form .collection-holder input[type="text"] {
@@ -280,6 +281,40 @@ header {
   .modal-container .language-error {
     font-size: 0.9em;
     color: #fc571b; }
+
+.word-pool-widget {
+  z-index: 100; }
+
+.andrea-autocomplete-list {
+  max-height: 300px;
+  overflow: auto; }
+  .andrea-autocomplete-list a {
+    background-color: white;
+    display: block;
+    font-size: 1.2em;
+    color: #2d2d2d;
+    padding: 10px;
+    z-index: 101;
+    border-bottom: 1px dotted #b5b3b3; }
+    .andrea-autocomplete-list a:hover {
+      background-color: #fc571b;
+      color: white; }
+
+.andrea-tags {
+  border: 1px solid #b5b3b3;
+  height: 200px;
+  padding: 10px;
+  overflow: auto; }
+  .andrea-tags .tag {
+    background-color: #fc571b;
+    display: inline-block;
+    color: white;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 5px; }
+    .andrea-tags .tag i {
+      display: inline-block;
+      margin-left: 10px; }
 
 .nav-menu {
   width: 175px; }
@@ -725,7 +760,8 @@ header {
     cursor: pointer; }
 
 .button-wrapper {
-  width: 200px; }
+  width: 200px;
+  z-index: 1; }
   .button-wrapper .loading {
     position: absolute;
     width: 25px;

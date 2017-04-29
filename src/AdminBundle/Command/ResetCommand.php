@@ -2,24 +2,27 @@
 
 namespace AdminBundle\Command;
 
-
 use ArmorBundle\Entity\Role;
 use ArmorBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UserCommand extends ContainerAwareCommand
+class ResetCommand extends ContainerAwareCommand
 {
     public function configure()
     {
         $this
-            ->setName('langland:user')
+            ->setName('langland:reset')
             ->setDescription('Seeds users');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        exec('/usr/bin/php bin/console do:da:dr --force');
+        exec('/usr/bin/php bin/console do:da:cr');
+        exec('/usr/bin/php bin/console do:sc:up --force');
+
         $this->createAdminUser('root', 'root');
         $this->createRegularUser('mile', 'root');
     }

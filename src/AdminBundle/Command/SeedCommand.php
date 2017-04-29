@@ -3,10 +3,18 @@
 namespace AdminBundle\Command;
 
 use AdminBundle\Entity\Category;
+use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Language;
+use AdminBundle\Entity\Lesson;
+use AdminBundle\Entity\Sentence;
+use AdminBundle\Entity\SentenceTranslation;
+use AdminBundle\Entity\SentenceWordPool;
+use AdminBundle\Entity\Word;
+use AdminBundle\Entity\WordImage;
 use ArmorBundle\Entity\User;
 use BlueDot\BlueDotInterface;
 use BlueDot\Entity\PromiseInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,231 +32,117 @@ class SeedCommand extends ContainerAwareCommand
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $blueDot = $this->getContainer()->get('app.blue_dot');
-
-        $blueDot->setConfiguration(__DIR__.'/blue_dot.yml');
+        $em = $this->getContainer()->get('doctrine')->getManager();
 
         $faker = \Faker\Factory::create();
 
-        $output->writeln('');
-        $output->writeln('<info>Script started</info>');
-        $output->writeln('');
+        $languages = array('french', 'spanish', 'italian');
+        $categories = array('nature', 'body', 'soul', 'love');
+        $courses = array('French course', 'Spanish course', 'Italian course');
 
-        $output->writeln('<info>Configuring files</info>');
+        $categoryObjects = array();
 
-        $dirs = array('/var/www/web/sounds', '/var/www/web/uploads');
+        foreach ($categories as $cat) {
+            $category = new Category();
+            $category->setName($cat);
 
-        foreach ($dirs as $dir) {
-            if (is_dir($dir)) {
-                $files = new \RecursiveIteratorIterator(
-                    new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),
-                    \RecursiveIteratorIterator::CHILD_FIRST
-                );
+            $categoryObjects[] = $category;
 
-                foreach ($files as $fileinfo) {
-                    $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-                    $todo($fileinfo->getRealPath());
+            $em->persist($category);
+            $em->flush();
+        }
+
+        for ($i = 0; $i < count($languages); $i++) {
+            $lang = $languages[$i];
+
+            $language = new Language();
+            $language->setName($lang);
+
+            $em->persist($language);
+
+            $em->flush();
+
+            $wordsArray = array();
+            for ($m = 0; $m < 10; $m++) {
+                $word = new Word();
+                $word->setName($faker->word);
+                $word->setLanguage($language);
+
+                $categoryCollection = new ArrayCollection();
+                $categoryCollection->add($categoryObjects[$i]);
+                $categoryCollection->add($categoryObjects[$i + 1]);
+
+                $word->setCategories($categoryCollection);
+                $word->setDescription($faker->sentence(60));
+                $word->setType($faker->company);
+                $word->setWordImage(new WordImage());
+
+                $em->persist($word);
+
+                $wordsArray[] = $word;
+            }
+
+            $em->flush();
+
+            $course = new Course();
+            $course->setName($courses[$i]);
+            $course->setLanguage($language);
+
+            $em->persist($course);
+
+            for ($a = 0; $a < 5; $a++) {
+                $lesson = new Lesson();
+                $lesson->setName($faker->name);
+                $lesson->setCourse($course);
+
+                $em->persist($lesson);
+            }
+
+            $em->flush();
+
+            for ($r = 0; $r < 10; $r++) {
+                $sentence = new Sentence();
+                $sentence->setName($faker->name);
+                $sentence->setSentence($faker->sentence(25));
+                $sentence->setCourse($course);
+
+                for ($o = 0; $o < 10; $o++) {
+                    $sentenceTranslation = new SentenceTranslation();
+                    $sentenceTranslation->setSentence($faker->sentence(25));
+                    $sentenceTranslation->setMarkedCorrect(0);
+                    $sentenceTranslation->setName($faker->name);
+
+                    $sentence->addSentenceTranslation($sentenceTranslation);
                 }
 
-                rmdir($dir);
+                $em->persist($sentence);
+            }
+
+            for ($t = 0; $t < 5; $t++) {
+                $wordPool = new SentenceWordPool();
+
+                $wordPool->setName($faker->name);
+                $wordPool->setCourse($course);
+
+                $poolWord = new ArrayCollection();
+
+                $count = 0;
+                for (;;) {
+
+                    if ($count === 10) {
+                        break;
+                    }
+
+                    $poolWord->add($wordsArray[$count]);
+                    $count++;
+                }
+
+                $wordPool->setWords($poolWord);
+
+                $em->persist($wordPool);
             }
         }
 
-        $twigFilesDir = $this->getContainer()->getParameter('deck_files_dir');
-
-        if (is_dir($twigFilesDir)) {
-            $twigFiles = scandir($twigFilesDir);
-
-            foreach ($twigFiles as $twigFile) {
-                if ($twigFile !== '.' and $twigFile !== '..') {
-                    unlink($twigFilesDir.'/'.$twigFile);
-                }
-            }
-
-            rmdir($this->getContainer()->getParameter('deck_files_dir'));
-        }
-
-        mkdir($this->getContainer()->getParameter('deck_files_dir'));
-
-        mkdir('/var/www/web/sounds');
-        mkdir('/var/www/web/sounds/temp');
-        mkdir('/var/www/web/uploads');
-
-        $output->writeln('<info>Files configured successfully</info>');
-        $output->writeln('');
-
-        $output->writeln('<info>Creating database and initial users</info>');
-
-        $blueDot->execute('scenario.database');
-        $blueDot->execute('scenario.seed');
-
-        $this->createAdminUser($blueDot, 'root', 'root');
-        $this->createAdminUser($blueDot, 'mile', 'root');
-        $this->createRegularUser($blueDot);
-
-        $output->writeln('<info>Finished creating database and users</info>');
-        $output->writeln('');
-
-        $languages = array(
-            'croatian',
-            'english',
-            'french',
-            'spanish',
-            'german',
-            'italian',
-        );
-
-        $languageModels = array();
-
-        foreach ($languages as $language) {
-            $languageModels[] = (new Language())->setLanguage($language);
-        }
-
-        $categories = array(
-            'nature',
-            'house',
-            'road',
-            'city',
-            'construction',
-            'programming',
-            'medicine',
-            'history',
-            'hardware',
-            'software',
-        );
-
-
-        $output->writeln('<info>SEEDING STARTED</info>');
-        $output->writeln('');
-
-        $inserts = 0;
-        $start = time();
-        foreach ($languageModels as $languageModel) {
-            $languageId = $blueDot->execute('simple.insert.create_language', $languageModel)
-                ->success(function(PromiseInterface $promise) {
-                    return $promise->getResult()->get('last_insert_id');
-                })->getResult();
-
-            $inserts++;
-
-            $blueDot
-                ->createStatementBuilder()
-                ->addSql(sprintf('INSERT INTO courses (language_id, name) VALUES (%d, "%s")', $languageId, sprintf('%s course', ucfirst($languageModel->getLanguage()))))
-                ->execute()
-                ->success(function(PromiseInterface $promise) use ($blueDot, $languageModel) {
-                    $courseId = $promise->getResult()->get('last_insert_id');
-
-                    $blueDot->execute('simple.insert.create_class', array(
-                        'course_id' => $courseId,
-                        'name' => sprintf('Gentle %s introduction', ucfirst($languageModel->getLanguage())),
-                    ));
-                });
-
-            $inserts++;
-
-            $output->writeln(sprintf('<info>Currently added language: %s</info>', $languageModel->getLanguage()));
-
-            for ($a = 0; $a < 10; $a++) {
-                $category = new Category();
-                $category->setCategory($categories[$a]);
-                $category->setLanguageId($languageId);
-
-                $categoryId = $blueDot->execute('simple.insert.create_category', $category)
-                ->success(function(PromiseInterface $promise) {
-                    return $promise->getResult()->get('last_insert_id');
-                })->getResult();
-
-                $inserts++;
-
-                for ($i = 0; $i < 10; $i++) {
-                    $blueDot->execute('scenario.insert_word', array(
-                        'insert_word' => array(
-                            'language_id' => $languageId,
-                            'word' => $faker->word,
-                            'type' => $faker->company,
-                        ),
-                        'insert_word_image' => array(
-                            'relative_path' => 'relative_path',
-                            'absolute_path' => 'absolute_path',
-                            'file_name' => 'file_name',
-                            'absolute_full_path' => 'absolute_full_path',
-                            'relative_full_path' => 'relative_full_path',
-                        ),
-                       'insert_translation' => array(
-                            'translation' => $faker->words(rand(1, 25)),
-                        ),
-                        'insert_word_category' => array(
-                            'category_id' => $categoryId,
-                        ),
-                    ))->success(function(PromiseInterface $promise) use (&$inserts) {
-                        $translationRowCount = $promise->getResult()->get('insert_translation')->get('row_count');
-                        $insertWordRowCount = $promise->getResult()->get('insert_word')->get('row_count');
-                        $insertCategoryRowCount = $promise->getResult()->get('insert_word_category')->get('row_count');
-
-                        $inserts += (int) $translationRowCount;
-                        $inserts += (int) $insertWordRowCount;
-                        $inserts += (int) $insertCategoryRowCount;
-                    });
-                }
-            }
-        }
-
-        $finish = time() - $start;
-
-        $output->writeln('<info>Clearing symfony cache</info>');
-        $output->writeln('');
-
-        exec('/usr/bin/php /var/www/app/console cache:clear --env=dev');
-
-        $output->writeln('<info>Cached cleared</info>');
-
-        $output->writeln('');
-        $output->writeln('<info>SEED FINISHED</info>');
-        $output->writeln('');
-
-        $output->writeln(sprintf('<info>Total of %d sql statements executed in %d seconds</info>', $inserts, $finish));
-        $output->writeln('');
-    }
-
-    private function createAdminUser(BlueDotInterface $blueDot, string $username, string $password)
-    {
-        $encoder = $this->getContainer()->get('security.password_encoder');
-
-        $userData = array(
-            'name' => 'Mile',
-            'lastname' => 'Milozvučić',
-            'username' => $username,
-            'password' => $password,
-            'gender' => 'male',
-            'enabled' => 1,
-            'roles' => serialize(array('ROLE_DEVELOPER')),
-        );
-
-        $user = new User($userData);
-
-        $user->setPassword($encoder->encodePassword($user, 'root'));
-
-        $blueDot->execute('simple.insert.create_user', $user);
-    }
-
-    private function createRegularUser(BlueDotInterface $blueDot)
-    {
-        $encoder = $this->getContainer()->get('security.password_encoder');
-
-        $userData = array(
-            'name' => 'Mile',
-            'lastname' => 'Milozvučić',
-            'username' => 'mile',
-            'password' => 'root',
-            'gender' => 'female',
-            'enabled' => 1,
-            'roles' => serialize(array('ROLE_USER')),
-        );
-
-        $user = new User($userData);
-
-        $user->setPassword($encoder->encodePassword($user, 'root'));
-
-        $blueDot->execute('simple.insert.create_user', $user);
+        $em->flush();
     }
 }

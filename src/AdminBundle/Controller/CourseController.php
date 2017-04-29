@@ -24,7 +24,7 @@ class CourseController extends RepositoryController
         $language = $this->getRepository('AdminBundle:Language')->find(1);
 
         if (empty($language)) {
-            return $this->render('::Admin/Word/CRUD/create.html.twig', array(
+            return $this->render('::Admin/Course/CRUD/create.html.twig', array(
                 'no_language' => true,
             ));
         }

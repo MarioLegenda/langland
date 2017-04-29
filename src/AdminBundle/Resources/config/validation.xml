@@ -105,5 +105,23 @@
         </property>
     </class>
 
+    <class name="AdminBundle\Entity\ViewEntity\WordPool">
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">Word pool name cannot be empty</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">Word pool name can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
+        <property name="wordIds">
+            <constraint name="NotBlank">
+                <option name="message">You have to provide at least one word</option>
+            </constraint>
+        </property>
+    </class>
+
 
 </constraint-mapping>

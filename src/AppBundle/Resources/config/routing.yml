@@ -1,0 +1,3 @@
+app_dashboard:
+    path:     /langland
+    defaults: { _controller: AppBundle:Dashboard:dashboard }

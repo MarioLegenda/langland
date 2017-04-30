@@ -16,4 +16,14 @@ class UserRepository extends EntityRepository
             'username' => $username,
         ));
     }
+    /**
+     * @param string $confirmHash
+     * @return array
+     */
+    public function findUserByConfirmationHash(string $confirmHash)
+    {
+        return $this->findBy(array(
+            'confirmHash' => $confirmHash,
+        ));
+    }
 }

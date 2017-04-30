@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}LangLand{% endblock %}</title>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link href="https://fonts.googleapis.com/css?family=Farsan" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Inconsolata&amp;subset=latin-ext" rel="stylesheet">
+    <title>{% block title %}LangLand{% endblock %}</title>
+</head>
 
-        {% block stylesheets %}
-        {% endblock %}
+<body>
 
-    </head>
+<div class="container-full-width app">
+    {% block content %}{% endblock %}
+</div>
 
-    <body>
-
-        {% block content %} {% endblock %}
-    </body>
+</body>
 </html>

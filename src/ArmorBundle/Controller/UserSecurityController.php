@@ -5,11 +5,13 @@ namespace ArmorBundle\Controller;
 use ArmorBundle\Admin\UserLoggedInInterface;
 use ArmorBundle\Entity\Role;
 use ArmorBundle\Entity\User;
+use ArmorBundle\Exception\AccountNotEnabledException;
 use ArmorBundle\Form\Type\RegistrationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class UserSecurityController extends Controller implements UserLoggedInInterface
@@ -21,8 +23,11 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
+        $errorMessage = '';
         if ($error instanceof BadCredentialsException) {
-            $error = 'Username or password are incorrect. If you already registered, please confirm your password from the email that you received';
+            $errorMessage = 'Username or password are incorrect';
+        } else if ($error instanceof AccountNotEnabledException) {
+            $errorMessage = $error->getMessage();
         }
 
         // last username entered by the user
@@ -30,7 +35,7 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 
         return $this->render('ArmorBundle:Security:login.html.twig', array(
             'last_username' => $lastUsername,
-            'error'         => $error,
+            'error'         => $errorMessage,
         ));
     }
 
@@ -54,10 +59,23 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
             $user->addRole(new Role('ROLE_USER'));
             $user->setEnabled(0);
 
+            $userRepo = $this->get('doctrine')->getRepository('ArmorBundle:User');
+            for (;;) {
+                $hash = md5(uniqid(rand(), true));
+
+                if (empty($userRepo->findUserByConfirmationHash($hash))) {
+                    $user->setConfirmHash($hash);
+
+                    break;
+                }
+            }
+
             $confirm = $this->get('armor.email')->send(
                 'confirmation_email',
                 $user->getUsername(),
-                array('confirm_hash' => 'člgjačfdhgodilkfhgo8irtu39487529487524wu8tef')
+                array('confirm_url' => 'http://'.$this->getParameter('host').$this->generateUrl('armor_user_confirm', array(
+                    'hash' => $user->getConfirmHash(),
+                ), UrlGenerator::ABSOLUTE_PATH))
             );
 
             if ($confirm !== 1) {
@@ -80,7 +98,7 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 
             $this->addFlash(
                 'user_created_notice',
-                sprintf('Your account has be successfully created and a confirmation email has been sent to ', $user->getUsername())
+                sprintf('Your account has be successfully created and a confirmation email has been sent to %s', $user->getUsername())
             );
 
 
@@ -92,5 +110,37 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
                 'form' => $form->createView(),
             )
         );
+    }
+
+    public function confirmUserAction($hash)
+    {
+        $userRepo = $this->get('doctrine')->getRepository('ArmorBundle:User');
+
+        $user = $userRepo->findUserByConfirmationHash($hash);
+
+        if (!empty($user)) {
+            $this->addFlash(
+                'user_confirmed',
+                sprintf('Thank you, %s. You have successfully confirmed your account. Now, sign in and start learning a new language', $user[0]->getUsername())
+            );
+
+            $user = $user[0];
+
+            $user->setConfirmHash(null);
+            $user->setEnabled(true);
+
+            $em = $this->get('doctrine')->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('armor_user_login');
+        }
+
+        $this->addFlash(
+            'user_not_confirmed',
+            sprintf('For some reason, you email %s could not be confirmed. Please, sign up with another email', $user[0]->getUsername())
+        );
+
+        return $this->redirectToRoute('armor_user_login');
     }
 }

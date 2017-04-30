@@ -20,6 +20,18 @@
             </div>
             {% endif %}
 
+            {% if app.session.flashBag.has('user_confirmed') %}
+                <div class="success margin-bottom-20">
+                    {{ app.session.flashBag.get('user_confirmed')[0] }}
+                </div>
+            {% endif %}
+
+            {% if app.session.flashBag.has('user_not_confirmed') %}
+                <div class="success margin-bottom-20">
+                    {{ app.session.flashBag.get('user_not_confirmed')[0] }}
+                </div>
+            {% endif %}
+
             <form action="{{ path('armor_user_login') }}" method="post">
                 <div class="form-row margin-bottom-10 full-width align-left border-top border-bottom">
                     <div>

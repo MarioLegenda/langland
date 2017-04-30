@@ -41,6 +41,8 @@ class User implements UserInterface
      * @var string $gender
      */
     private $gender;
+
+    private $confirmHash;
     /**
      * @var \DateTime $createdAt
      */
@@ -233,6 +235,23 @@ class User implements UserInterface
     public function setGender($gender) : UserInterface
     {
         $this->gender = $gender;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getConfirmHash()
+    {
+        return $this->confirmHash;
+    }
+    /**
+     * @param mixed $confirmHash
+     * @return UserInterface
+     */
+    public function setConfirmHash($confirmHash) : UserInterface
+    {
+        $this->confirmHash = $confirmHash;
 
         return $this;
     }

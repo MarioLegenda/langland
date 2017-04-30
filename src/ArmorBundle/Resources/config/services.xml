@@ -9,12 +9,17 @@
         <parameter key="armor.user_provider.class">ArmorBundle\Provider\UserProvider</parameter>
         <parameter key="armor.repository.user_repository.class">ArmorBundle\Repository\UserRepository</parameter>
         <parameter key="armor.email.class">ArmorBundle\Email\Email</parameter>
+        <parameter key="armor.user.user_checker.class">ArmorBundle\Security\UserChecker</parameter>
     </parameters>
 
     <services>
 
         <service id="armor.user_provider" class="%armor.user_provider.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
+        </service>
+
+        <service id="armor.user.user_checker" class="%armor.user.user_checker.class%">
+
         </service>
 
         <!--

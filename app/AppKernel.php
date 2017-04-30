@@ -18,8 +18,8 @@ class AppKernel extends Kernel
             new API\SharedDataBundle\SharedDataBundle(),
             new AdminBundle\AdminBundle(),
             new ArmorBundle\ArmorBundle(),
-            new AppBundle\AppBundle(),
             new PublicBundle\PublicBundle(),
+            new AppBundle\AppBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

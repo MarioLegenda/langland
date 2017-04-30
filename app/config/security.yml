@@ -5,7 +5,7 @@ security:
             cost: 12
 
     providers:
-        blue_dot_provider:
+        armor_user_provider:
             id: armor.user_provider
 
     firewalls:
@@ -15,7 +15,7 @@ security:
 
         admin:
             pattern: ^/admin
-            provider: blue_dot_provider
+            provider: armor_user_provider
             http_basic: ~
             form_login:
                 default_target_path: admin_dashboard
@@ -28,11 +28,12 @@ security:
 
             anonymous: ~
 
-        vocallo:
+        langland:
             pattern: ^/langland
-            provider: blue_dot_provider
+            provider: armor_user_provider
+            user_checker: armor.user.user_checker
             form_login:
-                default_target_path: user_panel
+                default_target_path: app_dashboard
                 login_path: armor_user_login
                 check_path: armor_user_login
 
@@ -55,6 +56,7 @@ security:
         - { path: ^/langland/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/user/confirm/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/*, role: ROLE_USER }
 
 

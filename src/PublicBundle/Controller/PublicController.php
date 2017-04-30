@@ -4,7 +4,7 @@ namespace PublicBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class MainController extends Controller
+class PublicController extends Controller
 {
     public function homeAction()
     {

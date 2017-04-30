@@ -23,4 +23,8 @@
     <route id="armor_user_register" path="/langland/register" methods="GET POST">
         <default key="_controller">ArmorBundle:UserSecurity:register</default>
     </route>
+
+    <route id="armor_user_confirm" path="/langland/user/confirm/{hash}" methods="GET POST">
+        <default key="_controller">ArmorBundle:UserSecurity:confirmUser</default>
+    </route>
 </routes>

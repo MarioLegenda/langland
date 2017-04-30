@@ -129,11 +129,22 @@
   }
 
   .success {
-    color: #21ea1e;
+    width: 480px;
+    float:left;
+    color: $text-color-gray;
+    word-wrap: break-word;
+
+    margin-left: 60px;
+
+    border: 1px dotted $publicMainColor;
+
+    padding: 10px;
 
     text-align: center;
 
     line-height: 1.2em;
+
+    font-family: $muli;
   }
 
   .highlight {

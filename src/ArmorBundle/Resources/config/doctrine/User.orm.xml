@@ -15,6 +15,7 @@
         <field name="password" type="string" length="255" />
         <field name="enabled" type="boolean" />
         <field name="gender" type="string" length="255" />
+        <field name="confirmHash" type="string" length="32" column="confirm_hash" nullable="true"/>
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 

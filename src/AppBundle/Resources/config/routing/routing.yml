@@ -1,3 +1,0 @@
-user_panel:
-    path: /langland
-    defaults: { _controller: AppBundle:Main:home }

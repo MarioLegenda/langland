@@ -1,10 +1,11 @@
 .user-actions {
   width: 600px;
 
+  overflow:hidden;
+
   margin: 0 auto;
   margin-top: 5%;
-
-  background-color: white;
+  margin-bottom: 5%;
 
   font-family: $palaquin;
 
@@ -63,17 +64,28 @@
         }
 
         select {
-          width: 150px;
+          width: 200px;
           display: block;
 
           margin-top: 10px;
+
+          padding: 5px;
+
+          background-color: white;
+
+          margin-left: 13px;
         }
 
         input {
           border:none;
           background-color: transparent;
           padding: 8px;
-          padding-left: 0;
+          padding-left: 5px;
+
+          font-size: 1em;
+          font-family:$muli;
+
+          margin-left: 10px;
         }
       }
     }
@@ -91,7 +103,7 @@
         width: 280px;
         float: right;
         border: none;
-        background-color: $main-color;
+        background-color: $publicMainColor;
 
         color:white;
 
@@ -112,6 +124,8 @@
     margin-left: 20px;
 
     line-height: 1.2em;
+
+    font-family: $muli;
   }
 
   .success {
@@ -123,7 +137,7 @@
   }
 
   .highlight {
-    color: $main-color;
+    color: $publicMainColor;
   }
 
   .border-top {

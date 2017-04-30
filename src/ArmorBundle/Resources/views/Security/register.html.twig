@@ -16,6 +16,12 @@
                 {{ form_errors(form) }}
             </div>
 
+            {% if app.session.flashBag.has('email_failed') %}
+                <div class="error margin-bottom-20">
+                    {{ app.session.flashBag.get('email_failed')[0] }}
+                </div>
+            {% endif %}
+
             <div class="form-row margin-bottom-10 full-width align-left border-top border-bottom">
                 <div>
                     {{ form_label(form.username) }}<span class="highlight"> *</span>
@@ -78,12 +84,6 @@
             </div>
 
             {{ form_rest(form) }}
-
-            {#
-                If you want to control the URL the user
-                is redirected to on success (more details below)
-                <input type="hidden" name="_target_path" value="/account" />
-            #}
 
             <div class="action-button full-width align-left">
                 <button type="submit">SIGN UP</button>

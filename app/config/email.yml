@@ -1,4 +1,4 @@
 confirmation_email:
     from: whitepostmail@gmail.com
-    subject: 'Vocallo - confirm registration'
+    subject: 'Langland - confirm registration'
     template: 'ArmorBundle:Emails:confirmation_email.html.twig'

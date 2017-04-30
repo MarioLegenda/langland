@@ -2,8 +2,7 @@
 
 {% block content %}
 
-
-    <a href="{{ path('public_homepage') }}">LangLand</a>
+<a href="{{ path('public_homepage') }}">LangLand</a>
 
 <div class="user-actions">
     {% include '@Armor/Security/_include/_actions.html.twig' %}
@@ -35,12 +34,6 @@
                         <input type="password" id="password" name="_password" placeholder="Your password" />
                     </div>
                 </div>
-
-                {#
-                    If you want to control the URL the user
-                    is redirected to on success (more details below)
-                    <input type="hidden" name="_target_path" value="/account" />
-                #}
 
                 <div class="action-button full-width align-left">
                     <a href="#" class="highlight">Forgot your password?</a>

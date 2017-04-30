@@ -3,6 +3,7 @@
 namespace ArmorBundle\Controller;
 
 use ArmorBundle\Admin\UserLoggedInInterface;
+use ArmorBundle\Entity\Role;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Form\Type\RegistrationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,34 +51,40 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
             $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
 
-            $user->addRole('ROLE_USER');
+            $user->addRole(new Role('ROLE_USER'));
+            $user->setEnabled(0);
 
-            return $this->get('armor.repository.user_repository')
-                ->createUser($user)
-                ->success(function() use ($user) {
-                    $this->addFlash(
-                        'user_created_notice',
-                        sprintf('You have successfully registered. A confirmation email has been sent to %s', $user->getUsername())
-                    );
+            $confirm = $this->get('armor.email')->send(
+                'confirmation_email',
+                $user->getUsername(),
+                array('confirm_hash' => 'člgjačfdhgodilkfhgo8irtu39487529487524wu8tef')
+            );
 
-                    $this->get('armor.email')->send(
-                        'confirmation_email',
-                        $user->getUsername(),
-                        array('confirm_hash' => 'člgjačfdhgodilkfhgo8irtu39487529487524wu8tef')
-                    );
+            if ($confirm !== 1) {
+                $this->addFlash(
+                    'email_failed',
+                    sprintf('Email sent to %s failed. Please, try again', $user->getUsername())
+                );
 
-                    return new RedirectResponse($this->generateUrl('armor_user_login').'?action=sign-in');
-                })
-                ->failure(function() use ($form, $user) {
-                    $form->addError(new FormError(sprintf('User with username %s already exists', $user->getUsername())));
+                return $this->render(
+                    'ArmorBundle:Security:register.html.twig', array(
+                        'form' => $form->createView(),
+                    )
+                );
+            }
 
-                    return $this->render(
-                        'ArmorBundle:Security:register.html.twig', array(
-                            'form' => $form->createView(),
-                        )
-                    );
-                })
-                ->getResult();
+            $em = $this->get('doctrine')->getManager();
+
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash(
+                'user_created_notice',
+                sprintf('Your account has be successfully created and a confirmation email has been sent to ', $user->getUsername())
+            );
+
+
+            return $this->redirectToRoute('armor_user_login');
         }
 
         return $this->render(

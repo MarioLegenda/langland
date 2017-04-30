@@ -15,17 +15,18 @@ class Role implements RoleInterface
      */
     private $role;
     /**
-     * @var \DateTime $dateCreated
-     */
-    private $dateCreated;
-    /**
      * @var User $user
      */
     private $user;
-
-    public function __construct()
+    /**
+     * Role constructor.
+     * @param string|null $role
+     */
+    public function __construct(string $role = null)
     {
-        $this->dateCreated = new \DateTime();
+        if (!is_null($role)) {
+            $this->role = $role;
+        }
     }
     /**
      * @return mixed
@@ -35,13 +36,6 @@ class Role implements RoleInterface
         return $this->id;
     }
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    /**
      * @return mixed
      */
     public function getRole()
@@ -49,25 +43,14 @@ class Role implements RoleInterface
         return $this->role;
     }
     /**
-     * @return mixed
-     */
-    public function getDateCreated()
-    {
-        return $this->dateCreated;
-    }
-    /**
-     * @param mixed $dateCreated
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->dateCreated = $dateCreated;
-    }
-    /**
      * @param mixed $role
+     * @return RoleInterface
      */
-    public function setRole($role)
+    public function setRole($role) : RoleInterface
     {
         $this->role = $role;
+
+        return $this;
     }
     /**
      * @return mixed
@@ -78,9 +61,12 @@ class Role implements RoleInterface
     }
     /**
      * @param mixed $user
+     * @return RoleInterface
      */
-    public function setUser($user)
+    public function setUser($user) : RoleInterface
     {
         $this->user = $user;
+
+        return $this;
     }
 }

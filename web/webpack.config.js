@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
     entry: './js/admin/entry.jsx',
     output: {
-        path: path.resolve('dist'),
+        path: path.resolve('dist/js'),
         filename: 'bundle.js'
     },
     module: {

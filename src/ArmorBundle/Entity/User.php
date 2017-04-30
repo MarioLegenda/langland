@@ -30,10 +30,6 @@ class User implements UserInterface
 
     private $plainPassword;
     /**
-     * @var string $dateCreated
-     */
-    private $dateCreated;
-    /**
      * @var bool $enabled
      */
     private $enabled;
@@ -45,10 +41,17 @@ class User implements UserInterface
      * @var string $gender
      */
     private $gender;
+    /**
+     * @var \DateTime $createdAt
+     */
+    private $createdAt;
+    /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
 
     public function __construct()
     {
-        $this->dateCreated = new \DateTime();
         $this->roles = new ArrayCollection();
     }
     /**
@@ -59,13 +62,6 @@ class User implements UserInterface
         return $this->id;
     }
     /**
-     * @param mixed $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    /**
      * @return mixed
      */
     public function getName()
@@ -74,10 +70,13 @@ class User implements UserInterface
     }
     /**
      * @param mixed $name
+     * @return UserInterface
      */
-    public function setName($name)
+    public function setName($name) : UserInterface
     {
         $this->name = $name;
+
+        return $this;
     }
     /**
      * @return mixed
@@ -89,10 +88,13 @@ class User implements UserInterface
 
     /**
      * @param mixed $lastname
+     * @return UserInterface
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname) : UserInterface
     {
         $this->lastname = $lastname;
+
+        return $this;
     }
     /**
      * @return mixed
@@ -103,17 +105,19 @@ class User implements UserInterface
     }
     /**
      * @param mixed $username
+     * @return UserInterface
      */
-    public function setUsername($username)
+    public function setUsername($username) : UserInterface
     {
         $this->username = $username;
+
+        return $this;
     }
 
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
     }
-
     /**
      * @return mixed
      */
@@ -123,12 +127,14 @@ class User implements UserInterface
     }
     /**
      * @param mixed $password
+     * @return UserInterface
      */
-    public function setPassword($password)
+    public function setPassword($password) : UserInterface
     {
         $this->password = $password;
-    }
 
+        return $this;
+    }
     /**
      * @return mixed
      */
@@ -146,32 +152,19 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getDateCreated()
-    {
-        return $this->dateCreated;
-    }
-    /**
-     * @param mixed $dateCreated
-     */
-    public function setDateCreated($dateCreated)
-    {
-        $this->dateCreated = $dateCreated;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getEnabled()
     {
         return $this->enabled;
     }
-
     /**
      * @param mixed $enabled
+     * @return UserInterface
      */
-    public function setEnabled($enabled)
+    public function setEnabled($enabled) : UserInterface
     {
         $this->enabled = $enabled;
+
+        return $this;
     }
     /**
      * @return null
@@ -182,9 +175,9 @@ class User implements UserInterface
     }
     /**
      * @param Role $role
-     * @return $this
+     * @return UserInterface
      */
-    public function addRole(Role $role)
+    public function addRole(Role $role) : UserInterface
     {
         if ($this->roles->contains($role)) {
             return $this;
@@ -235,10 +228,47 @@ class User implements UserInterface
     }
     /**
      * @param mixed $gender
+     * @return UserInterface
      */
-    public function setGender($gender)
+    public function setGender($gender) : UserInterface
     {
         $this->gender = $gender;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @param \DateTime $createdAt
+     * @return UserInterface
+     */
+    public function setCreatedAt(\DateTime $createdAt) : UserInterface
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return UserInterface
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : UserInterface
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
     /**
      * @return string
@@ -263,5 +293,14 @@ class User implements UserInterface
             $this->password,
             $this->roles,
             ) = unserialize($serialized);
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

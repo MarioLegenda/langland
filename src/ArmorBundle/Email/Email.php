@@ -51,7 +51,7 @@ class Email
 
         if (!is_string($to)) {
             throw new \RuntimeException(
-                'Invalid \'to\' mail. Sending mails require a receiver'
+                'Invalid \'to\' mail. Sending emails requires a receiver'
             );
         }
 
@@ -68,6 +68,6 @@ class Email
                 'text/html'
             );
 
-        $this->mailer->send($message);
+        return $this->mailer->send($message);
     }
 }

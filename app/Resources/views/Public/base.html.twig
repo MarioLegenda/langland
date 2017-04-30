@@ -6,18 +6,18 @@
 
     <title>{% block title %}LangLand{% endblock %}</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Farsan" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Palanquin+Dark:400,700" rel="stylesheet">
 
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('css/public.css') ~ '?v=dfksaghwaoirjw2542345' }}" />
+        <link rel="stylesheet" href="{{ asset('dist/css/public.css') ~ '?v=' ~ random(9999999999) }}" />
     {% endblock %}
 
 </head>
 
 <body>
 
-<div class="container-full-width">
+<div class="container-full-width app">
 
     {% block content %}{% endblock %}
 

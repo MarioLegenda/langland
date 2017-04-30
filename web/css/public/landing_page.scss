@@ -1,10 +1,5 @@
 .landing-page {
-  background-image: url("../images/cover3.jpg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-
-  height: 1000px;
+  background-color: $publicMainColor;
 
   .action {
     width: 70%;
@@ -49,19 +44,13 @@
 
         margin-left: 10px;
 
+        border: 1px solid white;
+
+        border-radius: 20px;
+
         &:hover {
           cursor: pointer;
         }
-      }
-
-      .sign-up {
-        background: $main-color;
-        color:white;
-      }
-
-      .sign-in {
-        background-color: white;
-        color: $text-color-gray;
       }
     }
   }

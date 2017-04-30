@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="ArmorBundle\Entity\User" table="user" repository-class="ArmorBundle\Repository\UserRepository">
+    <entity name="ArmorBundle\Entity\User" table="users" repository-class="ArmorBundle\Repository\UserRepository">
         <id name="id" type="integer">
             <generator strategy="AUTO" />
         </id>
@@ -15,12 +15,19 @@
         <field name="password" type="string" length="255" />
         <field name="enabled" type="boolean" />
         <field name="gender" type="string" length="255" />
+        <field name="createdAt" type="datetime" column="created_at"/>
+        <field name="updatedAt" type="datetime" column="updated_at"/>
 
         <one-to-many field="roles" target-entity="ArmorBundle\Entity\Role" mapped-by="user">
             <cascade>
                 <cascade-persist/>
             </cascade>
         </one-to-many>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="updateTimestamps" />
+            <lifecycle-callback type="preUpdate" method="updateTimestamps" />
+        </lifecycle-callbacks>
 
     </entity>
 </doctrine-mapping>

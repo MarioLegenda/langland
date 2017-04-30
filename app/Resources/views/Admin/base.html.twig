@@ -20,12 +20,12 @@
         {% block base %}{% endblock %}
 
         {% block javascripts %}
-            <script src="{{ asset('js/lib/ace.min.js') }}"></script>
-            <script src="{{ asset('js/lib/ace-html-mode.min.js') }}"></script>
+            <script src="{{ asset('dist/js/lib/ace.min.js') }}"></script>
+            <script src="{{ asset('dist/js/lib/ace-html-mode.min.js') }}"></script>
 
             <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 
-            <script src="{{ asset('dist/bundle.js') }}?v={{ random(9999999) }}"></script>
+            <script src="{{ asset('dist/js/bundle.js') }}?v={{ random(9999999) }}"></script>
         {% endblock %}
     </body>
 </html>

@@ -21,4 +21,7 @@
 /web/.babelrc
 /web/js/*
 /web/webpack.config.js
+/web/js
+/web/css
+
 

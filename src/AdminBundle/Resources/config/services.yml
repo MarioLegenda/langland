@@ -17,6 +17,12 @@ services:
         tags:
             - { name: form.type }
 
+    admin.form.lesson_working_data:
+        class: AdminBundle\Form\Type\LessonWorkingDataType
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: form.type }
+
     admin.validation_group_resolver:
         class: AdminBundle\ValidationGroupResolver\GroupResolver
         arguments: ['@request_stack']

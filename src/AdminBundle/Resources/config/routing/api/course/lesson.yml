@@ -12,8 +12,3 @@ lesson_edit:
     path: /edit/{lessonId}
     defaults: { _controller: AdminBundle:Lesson:edit }
     methods: [GET, POST]
-
-lesson_manage:
-    path: /manage/{lessonId}
-    defaults: { _controller: AdminBundle:Lesson:manage }
-    methods: [GET, POST]

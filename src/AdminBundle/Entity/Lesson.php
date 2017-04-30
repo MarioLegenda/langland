@@ -27,6 +27,8 @@ class Lesson
      * @var Course $course
      */
     private $course;
+
+    private $workingData;
     /**
      * Get id
      *
@@ -57,6 +59,20 @@ class Lesson
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * @return mixed
+     */
+    public function getWorkingData()
+    {
+        return $this->workingData;
+    }
+    /**
+     * @param mixed $workingData
+     */
+    public function setWorkingData($workingData)
+    {
+        $this->workingData = $workingData;
     }
     /**
      * Set createdAt

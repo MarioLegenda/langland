@@ -104,4 +104,17 @@ class LessonController extends RepositoryController
             'form' => $form->createView(),
         ));
     }
+
+    public function manageAction($lessonId)
+    {
+        $lesson = $this->getRepository('AdminBundle:Lesson')->find($lessonId);
+
+        if (empty($lesson)) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->render('::Admin/Course/Lesson/dashboard.html.twig', array(
+            'lesson' => $lesson,
+        ));
+    }
 }

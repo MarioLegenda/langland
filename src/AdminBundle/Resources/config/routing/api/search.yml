@@ -1,9 +1,0 @@
-search_words:
-    path:     /search-words
-    defaults: { _controller: AdminBundle:Search:search }
-    methods: [POST]
-
-find_last_words:
-    path: /find-last-words
-    defaults: { _controller: AdminBundle:Search:findLastWords }
-    methods: [POST]

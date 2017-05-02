@@ -1,33 +1,26 @@
 /*
-Error: Invalid CSS after "$main-color": expected selector or at-rule, was ": #fc571b;"
-        on line 6 of framework/main.scss
-        from line 2 of admin.scss
+Error: File to import not found or unreadable: admin/search.scss.
+        on line 8 of admin.scss
 
-1: $language-font: 'Farsan', cursive;
-2: $app-font: 'Inconsolata', monospace;
-3: $palaquin: 'Palanquin Dark', sans-serif;
-4: $muli: 'Muli', sans-serif
-5: 
-6: $main-color: #fc571b;
-7: $highlight-gray: #b5b3b3;
-8: $text-color-gray: #2d2d2d;
-9: $start-font-size: 16px;
-10: $background-color: #efefef;
-11: $error: #f40909;
+3: @import 'framework/appareance.scss';
+4: @import 'framework/form.scss';
+5: @import 'admin/pageLayout.scss';
+6: @import "admin/autocomplete.scss";
+7: @import 'admin/mainNavigation.scss';
+8: @import 'admin/search.scss';
+9: @import 'admin/course.scss';
+10: @import 'admin/dashboard.scss';
+11: @import 'admin/overrides.scss';
+12: @import 'admin/responsive.scss';
+13: @import "admin/animation.scss";
 
 Backtrace:
-framework/main.scss:6
-admin.scss:2
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/scss/parser.rb:1209:in `expected'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/scss/parser.rb:1137:in `expected'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/scss/parser.rb:42:in `parse'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/engine.rb:406:in `_to_tree'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/engine.rb:312:in `to_tree'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:326:in `block in visit_import'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/stack.rb:88:in `block in with_import'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/stack.rb:115:in `with_frame'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/stack.rb:88:in `with_import'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:325:in `visit_import'
+admin.scss:8
+/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/import_node.rb:67:in `rescue in import'
+/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/import_node.rb:45:in `import'
+/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/import_node.rb:28:in `imported_file'
+/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/import_node.rb:37:in `css_import?'
+/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:313:in `visit_import'
 /var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/visitors/base.rb:36:in `visit'
 /var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
 /var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/stack.rb:79:in `block in with_base'
@@ -65,4 +58,4 @@ admin.scss:2
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid CSS after \"$main-color\": expected selector or at-rule, was \": #fc571b;\"\A         on line 6 of framework/main.scss\A         from line 2 of admin.scss\A \A 1: $language-font: 'Farsan', cursive;\A 2: $app-font: 'Inconsolata', monospace;\A 3: $palaquin: 'Palanquin Dark', sans-serif;\A 4: $muli: 'Muli', sans-serif\A 5: \A 6: $main-color: #fc571b;\A 7: $highlight-gray: #b5b3b3;\A 8: $text-color-gray: #2d2d2d;\A 9: $start-font-size: 16px;\A 10: $background-color: #efefef;\A 11: $error: #f40909;"; }
+  content: "Error: File to import not found or unreadable: admin/search.scss.\A         on line 8 of admin.scss\A \A 3: @import 'framework/appareance.scss';\A 4: @import 'framework/form.scss';\A 5: @import 'admin/pageLayout.scss';\A 6: @import \"admin/autocomplete.scss\";\A 7: @import 'admin/mainNavigation.scss';\A 8: @import 'admin/search.scss';\A 9: @import 'admin/course.scss';\A 10: @import 'admin/dashboard.scss';\A 11: @import 'admin/overrides.scss';\A 12: @import 'admin/responsive.scss';\A 13: @import \"admin/animation.scss\";"; }

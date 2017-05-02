@@ -5,6 +5,7 @@ namespace ArmorBundle\Controller;
 use ArmorBundle\Admin\UserLoggedInInterface;
 use ArmorBundle\Entity\Role;
 use ArmorBundle\Entity\User;
+use ArmorBundle\Event\AccountConfirmedEvent;
 use ArmorBundle\Exception\AccountNotEnabledException;
 use ArmorBundle\Form\Type\RegistrationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -132,6 +133,10 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
             $em = $this->get('doctrine')->getManager();
             $em->persist($user);
             $em->flush();
+
+            $dispatcher = $this->get('event_dispatcher');
+            $event = new AccountConfirmedEvent($user);
+            $dispatcher->dispatch(AccountConfirmedEvent::NAME, $event);
 
             return $this->redirectToRoute('armor_user_login');
         }

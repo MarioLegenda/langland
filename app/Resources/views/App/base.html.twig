@@ -5,13 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{% block title %}LangLand{% endblock %}</title>
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('dist/css/app.css') ~ '?v=' ~ random(999999999) }}" />
+    {% endblock %}
 </head>
 
 <body>
 
 <div class="container-full-width app">
+    
+    {% include '::App/_header.html.twig' %}
+
     {% block content %}{% endblock %}
 </div>
+
+{% block javascripts %}
+    <script src="{{ asset('js/app/lib/ajax.min.js') }}"></script>
+
+    <script src="{{ asset('dist/js/app/bundle.js') ~ '?v=' ~ random(999999999) }}"></script>
+{% endblock %}
 
 </body>
 </html>

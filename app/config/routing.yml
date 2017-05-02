@@ -12,3 +12,7 @@ armor:
 
 admin:
     resource: '@AdminBundle/Resources/config/routing/routing.yml'
+
+api_blue_dot_loader:
+    resource: .
+    type: blue_dot_base_route

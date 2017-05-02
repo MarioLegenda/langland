@@ -1,22 +1,2 @@
-/*
-Errno::ENOENT: No such file or directory - app.scss
-
-Backtrace:
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/plugin/compiler.rb:484:in `read'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/plugin/compiler.rb:484:in `update_stylesheet'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/plugin/compiler.rb:209:in `each'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/plugin.rb:82:in `update_stylesheets'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/exec/sass_scss.rb:51:in `process_result'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/exec/base.rb:52:in `parse'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/lib/sass/exec/base.rb:19:in `parse!'
-/var/lib/gems/1.9.1/gems/sass-3.4.23/bin/scss:13:in `<top (required)>'
-/usr/local/bin/scss:23:in `load'
-/usr/local/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Errno::ENOENT: No such file or directory - app.scss"; }
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}a{color:black;text-decoration:none}*{box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box}body{font-family:"Inconsolata",monospace;font-size:16px;background-color:#efefef}.container,.fluid-container{width:1024px;position:relative;overflow:hidden;margin:0 auto;min-width:480px;max-width:1024px}.container-full-width{width:100%;position:relative;overflow:hidden;max-width:1920px}.fluid-container{width:75%}.center{margin:0 auto}.text-center{text-align:center}.block{display:block}.absolute{position:absolute}.relative{position:relative}.full-width{width:100%}.input-text-error{border:1px solid #fc571b}.align-left{float:left}.align-right{float:right}.bold{font-weight:bold}.margin-top-10{margin-top:10px}.margin-top-20{margin-top:20px}.margin-top-30{margin-top:30px}.margin-top-40{margin-top:40px}.margin-top-50{margin-top:50px}.margin-bottom-10{margin-bottom:10px}.margin-bottom-20{margin-bottom:20px}.margin-bottom-30{margin-bottom:30px}.margin-bottom-40{margin-bottom:40px}.margin-bottom-50{margin-bottom:50px}.text-highlight{color:#fc571b}.app-header{background-color:white;color:#2d2d2d;padding:20px;border-bottom:1px solid #b5b3b3}.app-header .profileBar{margin-right:10px}.app-header .profileBar i{margin-left:20px}
+/*# sourceMappingURL=app.css.map */

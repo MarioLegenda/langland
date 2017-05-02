@@ -2,9 +2,9 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './js/admin/entry.jsx',
+    entry: './../../js/app/entry.jsx',
     output: {
-        path: path.resolve('dist/js'),
+        path: path.resolve('../../dist/js/app'),
         filename: 'bundle.js'
     },
     module: {
@@ -19,8 +19,8 @@ module.exports = {
                 }
             }
         ],
-    },
-    plugins: [
+    }
+/*    plugins: [
         new webpack.DefinePlugin({ // <-- key to reducing React's size
             'process.env': {
                 'NODE_ENV': JSON.stringify('production')
@@ -28,5 +28,5 @@ module.exports = {
         }),
         new webpack.optimize.UglifyJsPlugin(), //minify everything
         new webpack.optimize.AggressiveMergingPlugin()//Merge chunks
-    ],
+    ],*/
 };

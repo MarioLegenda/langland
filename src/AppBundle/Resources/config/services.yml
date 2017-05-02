@@ -1,1 +1,5 @@
-
+services:
+    registration_listener:
+        class: AppBundle\Listener\AccountConfirmedListener
+        tags:
+            - { name: 'kernel.event_listener', event: 'armor.account_confirmed', method: 'onAccountConfirmed' }

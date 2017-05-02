@@ -18,3 +18,5 @@ parameters:
     security_admin_redirect: armor_admin_login
     security_app_redirect: app_login
     email_config: '%kernel.root_dir%/config/email.yml'
+    blue_dot_dir: '%kernel.root_dir%/config/blueDot'
+    api_base_route: /langland/api/v1

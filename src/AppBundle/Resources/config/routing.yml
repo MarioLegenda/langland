@@ -1,3 +1,8 @@
 app_dashboard:
     path:     /langland
     defaults: { _controller: AppBundle:Dashboard:dashboard }
+
+get_logged_in_user:
+    path: /langland/user/logged-in-user
+    defaults: { _controller: AppBundle:Ajax/User:findLoggedInUser }
+

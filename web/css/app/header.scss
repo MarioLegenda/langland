@@ -1,0 +1,18 @@
+.app-header {
+  background-color: white;
+
+  color:$text-color-gray;
+
+  padding: 20px;
+
+  border-bottom: 1px solid $highlight-gray;
+
+  .profileBar {
+
+    margin-right: 10px;
+
+    i {
+      margin-left: 20px;
+    }
+  }
+}

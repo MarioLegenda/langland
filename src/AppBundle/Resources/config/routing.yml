@@ -1,8 +1,22 @@
 app_dashboard:
     path:     /langland
     defaults: { _controller: AppBundle:Dashboard:dashboard }
+    methods: [GET]
 
-get_logged_in_user:
-    path: /langland/user/logged-in-user
-    defaults: { _controller: AppBundle:Ajax/User:findLoggedInUser }
+app_setup:
+    path:     /langland/setup
+    defaults: { _controller: AppBundle:Setup:setup }
+    methods: [GET]
+
+user:
+  resource: "@AppBundle/Resources/config/routing/ajax/user/user.yml"
+  prefix: /langland
+  host: '%host%'
+  methods: [POST]
+
+setup:
+  resource: "@AppBundle/Resources/config/routing/ajax/setup/setup.yml"
+  prefix: /langland
+  host: '%host%'
+  methods: [POST]
 

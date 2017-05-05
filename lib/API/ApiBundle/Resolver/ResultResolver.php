@@ -62,4 +62,11 @@ class ResultResolver
     {
         return $this->result;
     }
+    /**
+     * @return array
+     */
+    public function getValidity() : array
+    {
+        return $this->configuration->getValidity();
+    }
 }

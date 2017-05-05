@@ -2,6 +2,7 @@ $language-font: 'Farsan', cursive;
 $app-font: 'Inconsolata', monospace;
 $palaquin: 'Palanquin Dark', sans-serif;
 $muli: 'Muli', sans-serif;
+$mallanna: 'Mallanna', sans-serif;
 
 $main-color: #fc571b;
 $highlight-gray: #b5b3b3;
@@ -26,7 +27,7 @@ $frontend-main: #e3ea09;
 }
 
 body {
-  font-family: $app-font;
+  font-family: $mallanna;
   font-size: $start-font-size;
   background-color: $background-color;
 }

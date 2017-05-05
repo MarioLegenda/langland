@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use AdminBundle\Entity\Language;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -29,6 +31,15 @@ class LearningUser
      * @var LearningUserPreference $userPreference
      */
     private $userPreference;
+    /**
+     * @var ArrayCollection $languages
+     */
+    private $languages;
+
+    public function __construct()
+    {
+        $this->languages = new ArrayCollection();
+    }
     /**
      * Get id
      *
@@ -124,6 +135,41 @@ class LearningUser
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
         }
+    }
+    /**
+     * @param Language $language
+     * @return bool
+     */
+    public function hasLanguage(Language $language) : bool
+    {
+        return $this->languages->contains($language);
+    }
+    /**
+     * @param Language $language
+     * @return LearningUser
+     */
+    public function addLanguage(Language $language) : LearningUser
+    {
+        if (!$this->hasLanguage($language)) {
+            $this->languages->add($language);
+        }
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getLanguages()
+    {
+        return $this->languages;
+    }
+
+    /**
+     * @param mixed $languages
+     */
+    public function setLanguages($languages)
+    {
+        $this->languages = $languages;
     }
 }
 

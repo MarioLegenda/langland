@@ -14,6 +14,12 @@ class JsonController extends Controller
      */
     public function createResponse(ResultResolver $resultResolver) : JsonResponse
     {
+        $validity = $resultResolver->getValidity();
+
+        if ($validity['valid'] === false) {
+            return $this->createErrorResponse($validity['message']);
+        }
+
         $result = $resultResolver->resolve()->getResult();
 
         if (empty($result)) {
@@ -44,6 +50,19 @@ class JsonController extends Controller
             'data' => array(
                 'status' => 'failure',
                 'message' => 'API did not find any results',
+            )
+        ));
+    }
+    /**
+     * @param string $errorMessage
+     * @return JsonResponse
+     */
+    private function createErrorResponse(string $errorMessage) : JsonResponse
+    {
+        return new JsonResponse(array(
+            'data' => array(
+                'status' => 'failure',
+                'message' => $errorMessage,
             )
         ));
     }

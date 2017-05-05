@@ -1,0 +1,3 @@
+app_setup_learning_user:
+    path:     /setup/create-learning-user
+    defaults: { _controller: AppBundle:Ajax/Setup:createLearningUser }

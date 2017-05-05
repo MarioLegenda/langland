@@ -1,0 +1,86 @@
+.initial-info {
+  width: 660px;
+
+  margin: 0 auto;
+
+  font-size: 1.2em;
+
+  overflow: hidden;
+
+  padding: 20px;
+
+  background-color: white;
+
+  border-bottom: 1px solid $appMainColor;
+
+  .setup-message {
+    text-align: center;
+
+    margin-top: 50px;
+  }
+
+  .time-question {
+    .time-choice {
+      display: inline-block;
+      color: $appMainColor;
+
+      margin-right: 15px;
+
+      background-color: unset;
+      border:none;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .language-select {
+    .language-box {
+      margin-bottom: 15px;
+      float:left;
+
+      a {
+        display:block;
+        float:left;
+        background-color: unset;
+        border:none;
+        font-family: $mallanna;
+        font-size: 1.2em;
+
+        padding: 60px;
+
+        margin-left: 15px;
+
+        border-bottom: 1px solid $highlight-gray;
+
+        &:hover {
+          cursor: pointer;
+          border-bottom: 1px solid $appMainColor;
+          color: $appMainColor;
+        }
+      }
+    }
+
+    .language-selected {
+      border-bottom: 1px solid $appMainColor !important;
+      color: $appMainColor;
+    }
+  }
+
+  .next-button {
+    width: 30px;
+    display:block;
+    border:none;
+
+    color: $text-color-gray;
+
+    background-color: unset;
+    font-size: 1em;
+
+    &:hover {
+      color: $appMainColor;
+      cursor: pointer;
+    }
+  }
+}

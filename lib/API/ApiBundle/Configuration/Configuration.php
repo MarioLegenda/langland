@@ -7,9 +7,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class Configuration
 {
     /**
-     * @var bool $valid
+     * @var array $valid
      */
-    private $valid = false;
+    private $valid = array(
+        'valid' => false,
+        'message' => null
+    );
     /**
      * @var string $statementName
      */
@@ -31,14 +34,20 @@ class Configuration
         $request = $requestStack->getCurrentRequest();
 
         if ($request->request->has('blue_dot')) {
-            $config = $request->request->get('blue_dot');
+            $config = json_decode($request->request->get('blue_dot'), true);
 
             if (array_key_exists('api', $config)) {
                 $this->apiName = $config['api'];
             }
 
+            if (!array_key_exists('statement', $config)) {
+                $this->valid['message'] = sprintf('\'%s\' key not found', 'statement');
+
+                return;
+            }
+
             if (array_key_exists('statement', $config)) {
-                $this->valid = true;
+                $this->valid['valid'] = true;
 
                 $statement = $config['statement'];
 
@@ -86,9 +95,9 @@ class Configuration
         return $this->parameters;
     }
     /**
-     * @return bool
+     * @return array
      */
-    public function isValid() : bool
+    public function getValidity() : array
     {
         return $this->valid;
     }

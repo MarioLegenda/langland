@@ -42,7 +42,6 @@ class ApiRouteLoader extends Loader
         );
 
         $route = new Route($this->route, $defaults);
-
         // add the new route to the route collection
         $routeName = 'api_blue_dot_route';
         $routes->add($routeName, $route);

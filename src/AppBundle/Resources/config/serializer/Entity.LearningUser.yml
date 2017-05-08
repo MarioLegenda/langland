@@ -1,0 +1,12 @@
+AppBundle\Entity\LearningUser:
+    exclusion_policy: ALL
+    properties:
+        languages:
+            expose: true
+            type: AdminBundle\Entity\Language
+            groups: [signed_courses]
+        currentLanguage:
+            expose: true
+            type: AdminBundle\Entity\Language
+            groups: [signed_courses]
+            serialized_name: currentLanguage

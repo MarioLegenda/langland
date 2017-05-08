@@ -6,7 +6,6 @@ use AdminBundle\Entity\Language;
 use AdminBundle\Form\Type\LanguageType;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class LanguageController extends RepositoryController
 {
     public function indexAction()

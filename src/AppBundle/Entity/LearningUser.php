@@ -6,9 +6,6 @@ use AdminBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * LearningUser
- */
 class LearningUser
 {
     /**
@@ -35,6 +32,10 @@ class LearningUser
      * @var ArrayCollection $languages
      */
     private $languages;
+    /**
+     * @var Language $currentLanguage
+     */
+    private $currentLanguage;
 
     public function __construct()
     {
@@ -163,13 +164,29 @@ class LearningUser
     {
         return $this->languages;
     }
-
     /**
      * @param mixed $languages
      */
     public function setLanguages($languages)
     {
         $this->languages = $languages;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCurrentLanguage()
+    {
+        return $this->currentLanguage;
+    }
+    /**
+     * @param mixed $currentLanguage
+     * @return LearningUser
+     */
+    public function setCurrentLanguage($currentLanguage) : LearningUser
+    {
+        $this->currentLanguage = $currentLanguage;
+
+        return $this;
     }
 }
 

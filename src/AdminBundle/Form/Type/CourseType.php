@@ -5,6 +5,7 @@ namespace AdminBundle\Form\Type;
 use AdminBundle\Entity\Course;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,7 +50,8 @@ class CourseType extends AbstractType
                     'placeholder' => 'click \'n type ...',
                     'autofocus' => true,
                 )
-            ));
+            ))
+            ->add('showOnPage', CheckboxType::class);
 
         $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(
             ($course->getLanguage()) instanceof Language ? $course->getLanguage()->getId() : null,

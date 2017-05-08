@@ -1,0 +1,12 @@
+ArmorBundle\Entity\User:
+    exclusion_policy: all
+    properties:
+        name:
+            expose: true
+            groups: [initial_data]
+        lastname:
+            expose: true
+            groups: [initial_data]
+        username:
+            expose: true
+            groups: [initial_data]

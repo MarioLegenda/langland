@@ -83,14 +83,6 @@ class CourseController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $potencionalForm = $this->checkExistingCourse($course, $form);
-
-                if ($potencionalForm instanceof FormInterface) {
-                    return $this->render('::Admin/Course/CRUD/create.html.twig', array(
-                        'form' => $form->createView(),
-                    ));
-                }
-
                 $em->persist($course);
                 $em->flush();
 

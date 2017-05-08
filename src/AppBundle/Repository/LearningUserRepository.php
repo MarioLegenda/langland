@@ -9,8 +9,14 @@ class LearningUserRepository extends EntityRepository
 {
     public function findLearningUserByLoggedInUser(UserInterface $user)
     {
-        return $this->findBy(array(
+        $user = $this->findBy(array(
             'user' => $user,
         ));
+
+        if (!empty($user)) {
+            return $user[0];
+        }
+
+        return null;
     }
 }

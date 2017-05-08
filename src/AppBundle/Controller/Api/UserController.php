@@ -1,8 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Ajax;
+namespace AppBundle\Controller\Api;
 
 use AdminBundle\Controller\RepositoryController;
+use JMS\Serializer\SerializationContext;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -20,6 +21,7 @@ class UserController extends RepositoryController
         }
 
         $userInfo = array(
+            'id' => $user->getId(),
             'name' => $user->getName(),
             'lastname' => $user->getLastname(),
             'username' => $user->getUsername(),

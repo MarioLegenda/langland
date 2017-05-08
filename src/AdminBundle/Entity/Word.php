@@ -48,12 +48,13 @@ class Word
      * @var \DateTime $createdAt
      */
     private $createdAt;
-
+    /**
+     * @var \DateTime $updatedAt
+     */
     private $updatedAt;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
         $this->categories = new ArrayCollection();
         $this->translations = new ArrayCollection();
     }

@@ -3,20 +3,9 @@ app_dashboard:
     defaults: { _controller: AppBundle:Dashboard:dashboard }
     methods: [GET]
 
-app_setup:
-    path:     /langland/setup
-    defaults: { _controller: AppBundle:Setup:setup }
-    methods: [GET]
-
-user:
-  resource: "@AppBundle/Resources/config/routing/ajax/user/user.yml"
-  prefix: /langland
+app_course:
+  resource: "@AppBundle/Resources/config/routing/api/course/course.yml"
+  prefix: /langland/courses
   host: '%host%'
-  methods: [POST]
-
-setup:
-  resource: "@AppBundle/Resources/config/routing/ajax/setup/setup.yml"
-  prefix: /langland
-  host: '%host%'
-  methods: [POST]
+  methods: [POST, GET]
 

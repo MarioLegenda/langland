@@ -38,7 +38,7 @@ class SeedCommand extends ContainerAwareCommand
 
         $languages = array('french', 'spanish', 'italian');
         $categories = array('nature', 'body', 'soul', 'love');
-        $courses = array('French course', 'Spanish course', 'Italian course');
+        $courses = array('I know this ...');
 
         $categoryObjects = array();
 
@@ -85,7 +85,7 @@ class SeedCommand extends ContainerAwareCommand
             $em->flush();
 
             $course = new Course();
-            $course->setName($courses[$i]);
+            $course->setName($courses[0]);
             $course->setLanguage($language);
 
             $em->persist($course);

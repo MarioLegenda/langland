@@ -14,8 +14,12 @@ class Course
      * @var string $name
      */
     private $name;
-
+    /**
+     * @var Language $language
+     */
     private $language;
+
+    private $showOnPage;
     /**
      * @var \DateTime $createdAt
      */
@@ -63,6 +67,23 @@ class Course
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * @return mixed
+     */
+    public function getShowOnPage()
+    {
+        return $this->showOnPage;
+    }
+    /**
+     * @param mixed $showOnPage
+     * @return Course
+     */
+    public function setShowOnPage($showOnPage) : Course
+    {
+        $this->showOnPage = $showOnPage;
+
+        return $this;
     }
     /**
      * Set createdAt

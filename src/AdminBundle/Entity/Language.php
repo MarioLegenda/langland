@@ -28,13 +28,29 @@ class Language
         return $this->id;
     }
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * @param string $name
+     * @return Language
+     */
+    public function setName(string $name) : Language
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+    /**
      * @return \DateTime
      */
     public function getCreatedAt()
     {
         return $this->createdAt;
     }
-
     /**
      * @param \DateTime $createdAt
      * @return Language
@@ -59,23 +75,6 @@ class Language
     public function setUpdatedAt(\DateTime $updatedAt) : Language
     {
         $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-    /**
-     * @param string $name
-     * @return Language
-     */
-    public function setName(string $name) : Language
-    {
-        $this->name = $name;
 
         return $this;
     }

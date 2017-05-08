@@ -1,4 +1,5 @@
 .app-header {
+  position: absolute;
   background-color: white;
 
   color:$text-color-gray;
@@ -7,12 +8,103 @@
 
   border-bottom: 1px solid $appMainColor;
 
-  .profileBar {
+  .course-bar:hover .bar-popup {
+    display:block;
+  }
 
+  .bar {
     margin-right: 10px;
 
-    i {
-      margin-left: 20px;
+    i.down {
+      position: absolute;
+
+      top: 6px;
+      right: 40px;
+    }
+
+    i.profile-icon {
+      display: inline-block;
+      float: right;
+    }
+
+    button {
+      width: 60px;
+      display:block;
+      position:relative;
+      border: none;
+
+      color: $highlight-gray;
+
+      background-color: unset;
+
+      &:hover {
+        cursor: pointer;
+        color: $appMainColor;
+      }
+    }
+
+    .bar-popup {
+      display:none;
+      width: 150px;
+      right: 8px;
+      border-radius: 10px;
+
+      padding: 20px;
+
+      background-color: white;
+
+/*      h2 {
+        width: 100%;
+        text-align: center;
+        color: $appMainColor;
+
+        i {
+          display:inline-block;
+
+          margin-right: 42px;
+        }
+      }*/
+
+      a {
+        display:block;
+        color: $highlight-gray;
+        text-align: center;
+
+        margin-top: 15px;
+
+        &:hover {
+          color: $appMainColor;
+        }
+
+        i {
+          display: inline-block;
+
+          margin-right: 20px;
+        }
+      }
+
+      .course-link {
+        position:relative;
+
+        color: $appMainColor;
+
+        span:first-child {
+          position:absolute;
+
+          right: 75px;
+        }
+      }
+
+      .bar-line {
+        width: 110px;
+        padding: 4px;
+
+        margin: 10px 0 10px 0;
+
+        border-radius: 20px;
+
+        background-color: $highlight-gray;
+      }
     }
   }
 }

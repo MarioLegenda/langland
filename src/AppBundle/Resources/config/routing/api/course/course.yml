@@ -1,0 +1,7 @@
+app_course_setup:
+    path: /
+    defaults: { _controller: AppBundle:Course:setup }
+
+find_signed_in_courses:
+    path: /find-signed-courses
+    defaults: { _controller: AppBundle:Course:findSignedCourses }

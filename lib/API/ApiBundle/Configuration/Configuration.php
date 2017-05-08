@@ -34,7 +34,13 @@ class Configuration
         $request = $requestStack->getCurrentRequest();
 
         if ($request->request->has('blue_dot')) {
-            $config = json_decode($request->request->get('blue_dot'), true);
+            $blueDot = $request->request->get('blue_dot');
+
+            if (is_array($blueDot)) {
+                $config = $blueDot;
+            } else {
+                $config = json_decode($request->request->get('blue_dot'), true);
+            }
 
             if (array_key_exists('api', $config)) {
                 $this->apiName = $config['api'];

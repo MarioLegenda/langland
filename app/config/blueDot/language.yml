@@ -1,5 +1,0 @@
-configuration:
-    simple:
-        select:
-            find_all_languages:
-                sql: SELECT id, name FROM languages

@@ -2,9 +2,6 @@
 
 namespace AppBundle\Entity;
 
-/**
- * LearningUserPreferences
- */
 class LearningUserPreference
 {
     /**

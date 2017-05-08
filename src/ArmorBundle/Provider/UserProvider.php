@@ -37,8 +37,10 @@ class UserProvider implements UserProviderInterface
             'username' => $username,
         ));
 
-        if ($user[0] instanceof User) {
-            return $user[0];
+        if (!empty($user)) {
+            if ($user[0] instanceof User) {
+                return $user[0];
+            }
         }
 
         throw new UsernameNotFoundException(

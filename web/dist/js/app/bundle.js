@@ -11259,16 +11259,31 @@ var LanguageList = function (_React$Component) {
     function LanguageList(props) {
         _classCallCheck(this, LanguageList);
 
-        return _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
+
+        console.log(_this.props);
+        return _this;
     }
 
     _createClass(LanguageList, [{
         key: 'render',
         value: function render() {
+            var items = this.props.items.map(function (item) {
+                return _react2.default.createElement(
+                    'div',
+                    { key: item.id, className: 'language' },
+                    _react2.default.createElement(
+                        'a',
+                        { href: '#', className: 'language-link' },
+                        item.name.toUpperCase()
+                    )
+                );
+            });
+
             return _react2.default.createElement(
                 'div',
-                { className: 'app' },
-                _react2.default.createElement('div', { className: 'component' })
+                { className: 'component language-course-list' },
+                items
             );
         }
     }]);
@@ -11282,7 +11297,12 @@ var LanguageListContainer = function (_React$Component2) {
     function LanguageListContainer(props) {
         _classCallCheck(this, LanguageListContainer);
 
-        return _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
+
+        _this2.state = {
+            items: []
+        };
+        return _this2;
     }
 
     _createClass(LanguageListContainer, [{
@@ -11291,12 +11311,22 @@ var LanguageListContainer = function (_React$Component2) {
             jQuery.ajax({
                 url: '/web/app_dev.php/langland/language/find-learnable-languages',
                 method: 'POST'
-            }).done(jQuery.proxy(function (data) {}, true));
+            }).done(jQuery.proxy(function (data) {
+                this.setState({
+                    items: data.data
+                });
+            }, this));
         }
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(LanguageList, null);
+            var items = this.state.items;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'app' },
+                _react2.default.createElement(LanguageList, { items: items })
+            );
         }
     }]);
 

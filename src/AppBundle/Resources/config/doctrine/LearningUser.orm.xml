@@ -11,21 +11,15 @@
 
     <one-to-one field="user" target-entity="ArmorBundle\Entity\User" />
 
-    <one-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
+    <one-to-one field="currentCourse" target-entity="AdminBundle\Entity\Course" />
 
-    <one-to-one field="userPreference" target-entity="AppBundle\Entity\LearningUserPreference">
-      <cascade>
-        <cascade-persist/>
-      </cascade>
-    </one-to-one>
-
-    <many-to-many field="languages" target-entity="AdminBundle\Entity\Language">
-      <join-table name="learning_user_languages">
+    <many-to-many field="courses" target-entity="AdminBundle\Entity\Course">
+      <join-table name="learning_user_courses">
         <join-columns>
           <join-column name="learning_user_id" referenced-column-name="id"/>
         </join-columns>
         <inverse-join-columns>
-          <join-column name="language_id" referenced-column-name="id" />
+          <join-column name="course_id" referenced-column-name="id" />
         </inverse-join-columns>
       </join-table>
     </many-to-many>

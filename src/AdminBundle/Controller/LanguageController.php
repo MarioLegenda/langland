@@ -4,6 +4,7 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Language;
 use AdminBundle\Form\Type\LanguageType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 class LanguageController extends RepositoryController
@@ -27,6 +28,20 @@ class LanguageController extends RepositoryController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
+
+                $potentionalLanguage = $this->getRepository('AdminBundle:Language')->findBy(array(
+                    'name' => $language->getName(),
+                ));
+
+                if (!empty($potentionalLanguage)) {
+                    $form->addError(new FormError(
+                        sprintf('Language with name \'%s\' already exists', $language->getName())
+                    ));
+
+                    return $this->render('::Admin/Language/create.html.twig', array(
+                        'form' => $form->createView(),
+                    ));
+                }
 
                 $em->persist($language);
                 $em->flush();

@@ -4,4 +4,4 @@ app_course_setup:
 
 find_signed_in_courses:
     path: /find-signed-courses
-    defaults: { _controller: AppBundle:Course:findSignedCourses }
+    defaults: { _controller: AppBundle:Api/Course:findSignedCourses }

@@ -21,7 +21,6 @@ class UserController extends RepositoryController
         }
 
         $userInfo = array(
-            'id' => $user->getId(),
             'name' => $user->getName(),
             'lastname' => $user->getLastname(),
             'username' => $user->getUsername(),

@@ -9,3 +9,15 @@ app_course:
   host: '%host%'
   methods: [POST, GET]
 
+app_user:
+  resource: "@AppBundle/Resources/config/routing/api/user/user.yml"
+  prefix: /langland/user
+  host: '%host%'
+  methods: [POST]
+
+app_language:
+  resource: "@AppBundle/Resources/config/routing/api/language/language.yml"
+  prefix: /langland/language
+  host: '%host%'
+  methods: [POST]
+

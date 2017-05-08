@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,21 +26,17 @@ class LearningUser
      */
     private $user;
     /**
-     * @var LearningUserPreference $userPreference
+     * @var ArrayCollection $courses
      */
-    private $userPreference;
+    private $courses;
     /**
-     * @var ArrayCollection $languages
+     * @var Course $currentCourse
      */
-    private $languages;
-    /**
-     * @var Language $currentLanguage
-     */
-    private $currentLanguage;
+    private $currentCourse;
 
     public function __construct()
     {
-        $this->languages = new ArrayCollection();
+        $this->courses = new ArrayCollection();
     }
     /**
      * Get id
@@ -103,23 +100,6 @@ class LearningUser
         return $this;
     }
     /**
-     * @return LearningUserPreference
-     */
-    public function getUserPreference(): LearningUserPreference
-    {
-        return $this->userPreference;
-    }
-    /**
-     * @param LearningUserPreference $userPreference
-     * @return LearningUser
-     */
-    public function setUserPreference(LearningUserPreference $userPreference) : LearningUser
-    {
-        $this->userPreference = $userPreference;
-
-        return $this;
-    }
-    /**
      * Get updatedAt
      *
      * @return \DateTime
@@ -138,21 +118,21 @@ class LearningUser
         }
     }
     /**
-     * @param Language $language
+     * @param Course $course
      * @return bool
      */
-    public function hasLanguage(Language $language) : bool
+    public function hasCourse(Course $course) : bool
     {
-        return $this->languages->contains($language);
+        return $this->courses->contains($course);
     }
     /**
-     * @param Language $language
+     * @param Course $course
      * @return LearningUser
      */
-    public function addLanguage(Language $language) : LearningUser
+    public function addLanguage(Course $course) : LearningUser
     {
-        if (!$this->hasLanguage($language)) {
-            $this->languages->add($language);
+        if (!$this->hasCourse($course)) {
+            $this->courses->add($course);
         }
 
         return $this;
@@ -162,29 +142,29 @@ class LearningUser
      */
     public function getLanguages()
     {
-        return $this->languages;
+        return $this->courses;
     }
     /**
-     * @param mixed $languages
+     * @param mixed $courses
      */
-    public function setLanguages($languages)
+    public function setCourses($courses)
     {
-        $this->languages = $languages;
+        $this->courses = $courses;
     }
     /**
      * @return mixed
      */
-    public function getCurrentLanguage()
+    public function getCurrentCourse()
     {
-        return $this->currentLanguage;
+        return $this->currentCourse;
     }
     /**
-     * @param mixed $currentLanguage
+     * @param mixed $currentCourse
      * @return LearningUser
      */
-    public function setCurrentLanguage($currentLanguage) : LearningUser
+    public function setCurrentCourse($currentCourse) : LearningUser
     {
-        $this->currentLanguage = $currentLanguage;
+        $this->currentCourse = $currentCourse;
 
         return $this;
     }

@@ -1,0 +1,3 @@
+app_find_learnable_languages:
+    path: /find-learnable-languages
+    defaults: { _controller: AppBundle:Api/Language:findLearnableLanguages }

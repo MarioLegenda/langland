@@ -10938,9 +10938,11 @@ module.exports = getIteratorFn;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.HeaderContainer = exports.UserProfileBarContainer = undefined;
+exports.UserProfileBarContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+exports.HeaderContainer = HeaderContainer;
 
 var _react = __webpack_require__(7);
 
@@ -10966,18 +10968,27 @@ var UserProfileBar = function (_React$Component) {
     _createClass(UserProfileBar, [{
         key: "render",
         value: function render() {
+            var user = this.props.user;
+
             return _react2.default.createElement(
                 "div",
-                { className: "align-right" },
+                { className: "bar align-left relative user-bar" },
+                _react2.default.createElement(
+                    "button",
+                    null,
+                    _react2.default.createElement("i", { className: "fa fa-chevron-down down" }),
+                    _react2.default.createElement("i", { className: "fa fa-user fa-2x profile-icon" })
+                ),
                 _react2.default.createElement(
                     "div",
-                    { className: "bar align-right" },
+                    { className: "bar-popup absolute user-bar-popup" },
                     _react2.default.createElement(
-                        "button",
+                        "h2",
                         null,
-                        _react2.default.createElement("i", { className: "fa fa-chevron-down down" }),
-                        _react2.default.createElement("i", { className: "fa fa-user-o fa-2x profile-icon" })
-                    )
+                        "Hello, ",
+                        user.name
+                    ),
+                    _react2.default.createElement("div", { className: "bar-line" })
                 )
             );
         }
@@ -10992,12 +11003,35 @@ var UserProfileBarContainer = exports.UserProfileBarContainer = function (_React
     function UserProfileBarContainer(props) {
         _classCallCheck(this, UserProfileBarContainer);
 
-        return _possibleConstructorReturn(this, (UserProfileBarContainer.__proto__ || Object.getPrototypeOf(UserProfileBarContainer)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (UserProfileBarContainer.__proto__ || Object.getPrototypeOf(UserProfileBarContainer)).call(this, props));
+
+        _this2.state = {
+            user: null
+        };
+        return _this2;
     }
 
     _createClass(UserProfileBarContainer, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            jQuery.ajax({
+                url: '/web/app_dev.php/langland/user/find-logged-in-user',
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {
+                this.setState({
+                    user: data.data
+                });
+            }, this));
+        }
+    }, {
         key: "render",
         value: function render() {
+            var user = this.state.user;
+
+            if (user === null) {
+                return null;
+            }
+
             return _react2.default.createElement(UserProfileBar, { user: this.state.user });
         }
     }]);
@@ -11063,76 +11097,63 @@ var CourseBarContainer = function (_React$Component4) {
     function CourseBarContainer(props) {
         _classCallCheck(this, CourseBarContainer);
 
-        return _possibleConstructorReturn(this, (CourseBarContainer.__proto__ || Object.getPrototypeOf(CourseBarContainer)).call(this, props));
+        var _this4 = _possibleConstructorReturn(this, (CourseBarContainer.__proto__ || Object.getPrototypeOf(CourseBarContainer)).call(this, props));
+
+        _this4.state = {
+            courseBar: null
+        };
+        return _this4;
     }
 
     _createClass(CourseBarContainer, [{
         key: "componentDidMount",
-        value: function componentDidMount() {}
+        value: function componentDidMount() {
+            jQuery.ajax({
+                url: '/web/app_dev.php/langland/courses/find-signed-courses',
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {}
+            }, this));
+        }
     }, {
         key: "render",
         value: function render() {
-            return _react2.default.createElement("div", null);
+            if (this.state.courseBar === null) {
+                return null;
+            }
+
+            return _react2.default.createElement(CourseBar, null);
         }
     }]);
 
     return CourseBarContainer;
 }(_react2.default.Component);
 
-var Header = function (_React$Component5) {
-    _inherits(Header, _React$Component5);
+function Header() {
+    return _react2.default.createElement(
+        "header",
+        { className: "animated full-width app-header", id: "react-header" },
+        _react2.default.createElement(
+            "div",
+            { className: "full-width" },
+            _react2.default.createElement(
+                "h1",
+                { className: "align-left main-title" },
+                "Langland"
+            )
+        ),
+        _react2.default.createElement(
+            "div",
+            { className: "align-right" },
+            _react2.default.createElement(CourseBarContainer, null),
+            _react2.default.createElement(UserProfileBarContainer, null)
+        )
+    );
+}
 
-    function Header(props) {
-        _classCallCheck(this, Header);
-
-        return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
-    }
-
-    _createClass(Header, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "header",
-                { className: "animated full-width app-header", id: "react-header" },
-                _react2.default.createElement(
-                    "div",
-                    { className: "full-width" },
-                    _react2.default.createElement(
-                        "h1",
-                        { className: "align-left main-title" },
-                        "Langland"
-                    )
-                ),
-                _react2.default.createElement(
-                    "div",
-                    { className: "align-right" },
-                    _react2.default.createElement(CourseBarContainer, null)
-                )
-            );
-        }
-    }]);
-
-    return Header;
-}(_react2.default.Component);
-
-var HeaderContainer = exports.HeaderContainer = function (_React$Component6) {
-    _inherits(HeaderContainer, _React$Component6);
-
-    function HeaderContainer(props) {
-        _classCallCheck(this, HeaderContainer);
-
-        return _possibleConstructorReturn(this, (HeaderContainer.__proto__ || Object.getPrototypeOf(HeaderContainer)).call(this, props));
-    }
-
-    _createClass(HeaderContainer, [{
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(Header, null);
-        }
-    }]);
-
-    return HeaderContainer;
-}(_react2.default.Component);
+function HeaderContainer() {
+    return _react2.default.createElement(Header, null);
+}
 
 /***/ }),
 /* 95 */
@@ -11210,6 +11231,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
@@ -11224,29 +11247,72 @@ var _header = __webpack_require__(94);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var courseSetup = document.getElementById('react-course-setup');
-/*
-import {SetupContainer} from './setup.jsx';
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-const initialSetup = document.getElementById('react-setup');
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-if (initialSetup !== null) {
-    jQuery.ajax({
-        url: '/web/app_dev.php/langland/language/all',
-        method: 'POST'
-    }).done(jQuery.proxy(function(data) {
-        ReactDOM.render(
-            <SetupContainer
-                languages = {data.data.data}
-            />,
-            initialSetup
-        );
-    }, this));
-}*/
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-if (courseSetup !== null) {
-    _reactDom2.default.render(_react2.default.createElement(_header.HeaderContainer, null), courseSetup);
+var LanguageList = function (_React$Component) {
+    _inherits(LanguageList, _React$Component);
+
+    function LanguageList(props) {
+        _classCallCheck(this, LanguageList);
+
+        return _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
+    }
+
+    _createClass(LanguageList, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'app' },
+                _react2.default.createElement('div', { className: 'component' })
+            );
+        }
+    }]);
+
+    return LanguageList;
+}(_react2.default.Component);
+
+var LanguageListContainer = function (_React$Component2) {
+    _inherits(LanguageListContainer, _React$Component2);
+
+    function LanguageListContainer(props) {
+        _classCallCheck(this, LanguageListContainer);
+
+        return _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
+    }
+
+    _createClass(LanguageListContainer, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            jQuery.ajax({
+                url: '/web/app_dev.php/langland/language/find-learnable-languages',
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {}, true));
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(LanguageList, null);
+        }
+    }]);
+
+    return LanguageListContainer;
+}(_react2.default.Component);
+
+function App() {
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(_header.HeaderContainer, null),
+        _react2.default.createElement(LanguageListContainer, null)
+    );
 }
+
+_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('react-app'));
 
 /***/ }),
 /* 98 */

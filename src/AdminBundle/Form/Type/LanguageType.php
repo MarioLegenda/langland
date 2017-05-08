@@ -4,6 +4,7 @@ namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Language;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,7 +24,8 @@ class LanguageType extends AbstractType
                     'placeholder' => '... click \'n type',
                     'autofocus' => true,
                 ),
-            ));
+            ))
+            ->add('showOnPage', CheckboxType::class);
     }
     /**
      * @return string

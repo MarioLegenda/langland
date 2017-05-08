@@ -50,8 +50,7 @@ class CourseType extends AbstractType
                     'placeholder' => 'click \'n type ...',
                     'autofocus' => true,
                 )
-            ))
-            ->add('showOnPage', CheckboxType::class);
+            ));
 
         $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(
             ($course->getLanguage()) instanceof Language ? $course->getLanguage()->getId() : null,

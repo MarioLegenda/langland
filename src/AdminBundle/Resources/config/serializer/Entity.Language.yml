@@ -3,9 +3,7 @@ AdminBundle\Entity\Language:
     properties:
         id:
             expose: true
-            type: int
-            groups: [signed_courses]
+            groups: [learnable_language]
         name:
             expose: true
-            type: string
-            groups: [entire_object, signed_courses]
+            groups: [learnable_language]

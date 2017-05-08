@@ -39,11 +39,6 @@
                 <option name="max">50</option>
                 <option name="maxMessage">Language name can have up to {{ limit }} characters</option>
             </constraint>
-
-            <constraint name="AdminBundle\Validator\Constraint\UniqueConstraint">
-                <option name="repository">AdminBundle:Language</option>
-                <option name="field">name</option>
-            </constraint>
         </property>
     </class>
 

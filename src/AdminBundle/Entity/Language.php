@@ -12,6 +12,8 @@ class Language
      * @var string $name
      */
     private $name;
+
+    private $showOnPage;
     /**
      * @var \DateTime $createdAt
      */
@@ -41,6 +43,23 @@ class Language
     public function setName(string $name) : Language
     {
         $this->name = $name;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getShowOnPage()
+    {
+        return $this->showOnPage;
+    }
+    /**
+     * @param mixed $showOnPage
+     * @return Language
+     */
+    public function setShowOnPage($showOnPage) : Language
+    {
+        $this->showOnPage = $showOnPage;
 
         return $this;
     }

@@ -14,6 +14,14 @@
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
 
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.listDescription } only %}
+
+                    {% if language.viewImage is not empty %}
+                        <div class="full-width align-left">
+                            <img width="250" height="250" src="/web/uploads/images/{{ language.viewImage.name }}" />
+                        </div>
+                    {% endif %}
+
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.showOnPage } only %}
 
                     {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Edit'} %}

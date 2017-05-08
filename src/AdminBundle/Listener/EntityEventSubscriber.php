@@ -3,7 +3,7 @@
 namespace AdminBundle\Listener;
 
 use AdminBundle\Entity\Word;
-use AdminBundle\Entity\WordImage;
+use AdminBundle\Entity\Image;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -44,7 +44,7 @@ class EntityEventSubscriber implements EventSubscriber
     {
         $entity = $event->getEntity();
 
-        if ($entity instanceof WordImage) {
+        if ($entity instanceof Image) {
             return;
         }
 
@@ -64,7 +64,7 @@ class EntityEventSubscriber implements EventSubscriber
                     $em->persist($wordImage);
 
                     $em->flush();
-                } else if ($image[0] instanceof WordImage) {
+                } else if ($image[0] instanceof Image) {
                     $dbImage = $image[0];
                     $imageFile = realpath($dbImage->getTargetDir().'/'.$dbImage->getName());
 

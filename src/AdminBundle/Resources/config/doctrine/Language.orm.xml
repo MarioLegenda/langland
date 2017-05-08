@@ -12,6 +12,8 @@
 
         <field name="name" type="string" length="255" />
         <field name="showOnPage" type="boolean" column="show_on_page"/>
+        <field name="listDescription" type="string" length="255" column="list_description"/>
+
         <field name="createdAt" type="datetime" column="created_at" />
         <field name="updatedAt" type="datetime" column="updated_at" />
 

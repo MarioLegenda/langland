@@ -69,7 +69,7 @@ class WordController extends RepositoryController
             throw $this->createNotFoundException();
         }
 
-        $wordImage = $this->get('doctrine')->getRepository('AdminBundle:WordImage')->findBy(array(
+        $wordImage = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
             'word' => $word,
         ));
 
@@ -112,7 +112,7 @@ class WordController extends RepositoryController
         ));
     }
 
-    public function removeAction(Request $request, $id)
+    public function removeAction($id)
     {
         $word = $this->getRepository('AdminBundle:Word')->find($id);
 
@@ -151,8 +151,12 @@ class WordController extends RepositoryController
         $fileUploader = $this->get('admin.file_uploader');
 
         $fileUploader->uploadImage($word->getWordImage()->getImageFile(), array(
-            'repository' => 'AdminBundle:WordImage',
+            'repository' => 'AdminBundle:Image',
             'field' => 'name',
+            'resize' => array(
+                'width' => 250,
+                'height' => 250,
+            ),
         ));
 
         $word->getWordImage()

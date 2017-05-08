@@ -56,10 +56,9 @@ class FileUploader
 
         $path = $this->imageDir.'/'.$this->fileName;
 
-        $this->imageResize
-            ->setWidth(250)
-            ->setHeight(250)
-            ->resizeAndSave($file, $path);
+        if (array_key_exists('resize', $options)) {
+            $this->resizeAndSave($options['resize'], $file, $path);
+        }
     }
 
     public function uploadSound(UploadedFile $file, array $options)
@@ -133,5 +132,13 @@ class FileUploader
     public function setSoundDir(string $soundDir)
     {
         $this->soundDir = $soundDir;
+    }
+
+    public function resizeAndSave(array $measurements, $file, $path)
+    {
+        $this->imageResize
+            ->setWidth($measurements['width'])
+            ->setHeight($measurements['height'])
+            ->resizeAndSave($file, $path);
     }
 }

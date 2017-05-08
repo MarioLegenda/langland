@@ -42,3 +42,8 @@ services:
     admin.file_uploader:
         class: AdminBundle\Helper\FileUploader
         arguments: ['%upload_dirs%', '@admin.image_resizer', '@admin.file_namer']
+
+    admin.mapping_listener:
+        class: AdminBundle\Listener\DoctrineMappingListener
+        tags:
+            - { name: doctrine.orm.entity_listener, method: 'onMapping'}

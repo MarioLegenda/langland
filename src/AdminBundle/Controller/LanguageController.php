@@ -68,6 +68,13 @@ class LanguageController extends RepositoryController
             throw $this->createNotFoundException();
         }
 
+        $image = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
+            'word' => $word,
+        ));
+
+
+        $word->setViewImage((!empty($wordImage)) ? $wordImage[0] : null);
+
         $form = $this->createForm(LanguageType::class, $language);
 
         $form->handleRequest($request);

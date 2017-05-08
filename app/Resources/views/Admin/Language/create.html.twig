@@ -17,6 +17,10 @@
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
 
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.listDescription } only %}
+
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.languageIcon } only %}
+
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.showOnPage } only %}
 
                     {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}

@@ -74,7 +74,7 @@ class WordType extends AbstractType
                     return ucfirst($key);
                 }
             ))
-            ->add('wordImage', WordImageType::class, array(
+            ->add('wordImage', ImageType::class, array(
                 'label' => false,
             ))
             ->add('translations', CollectionType::class, array(

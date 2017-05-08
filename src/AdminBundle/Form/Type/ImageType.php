@@ -2,13 +2,13 @@
 
 namespace AdminBundle\Form\Type;
 
-use AdminBundle\Entity\WordImage;
+use AdminBundle\Entity\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WordImageType extends AbstractType
+class ImageType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -18,7 +18,7 @@ class WordImageType extends AbstractType
     {
         $builder
             ->add('imageFile', FileType::class, array(
-                'label' => 'Associate an image to this word ...'
+                'label' => 'Upload an image ...'
             ));
     }
     /**
@@ -34,7 +34,7 @@ class WordImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => WordImage::class,
+            'data_class' => Image::class,
         ));
     }
 }

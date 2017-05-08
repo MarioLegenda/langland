@@ -10,7 +10,7 @@ use AdminBundle\Entity\Sentence;
 use AdminBundle\Entity\SentenceTranslation;
 use AdminBundle\Entity\SentenceWordPool;
 use AdminBundle\Entity\Word;
-use AdminBundle\Entity\WordImage;
+use AdminBundle\Entity\Image;
 use ArmorBundle\Entity\User;
 use BlueDot\BlueDotInterface;
 use BlueDot\Entity\PromiseInterface;
@@ -75,7 +75,7 @@ class SeedCommand extends ContainerAwareCommand
                 $word->setCategories($categoryCollection);
                 $word->setDescription($faker->sentence(60));
                 $word->setType($faker->company);
-                $word->setWordImage(new WordImage());
+                $word->setWordImage(new Image());
 
                 $em->persist($word);
 

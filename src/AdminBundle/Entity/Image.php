@@ -4,7 +4,7 @@ namespace AdminBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class WordImage
+class Image
 {
     private $id;
     /**
@@ -26,7 +26,7 @@ class WordImage
     /**
      * @var Word $word
      */
-    private $word;
+    private $imageHolder;
     /**
      * @var \DateTime $createdAt
      */
@@ -44,7 +44,7 @@ class WordImage
     }
     /**
      * @param mixed $id
-     * @return WordImage
+     * @return Image
      */
     public function setId($id)
     {
@@ -61,7 +61,7 @@ class WordImage
     }
     /**
      * @param mixed $name
-     * @return WordImage
+     * @return Image
      */
     public function setName($name)
     {
@@ -92,28 +92,11 @@ class WordImage
     }
     /**
      * @param mixed $originalName
-     * @return WordImage
+     * @return Image
      */
     public function setOriginalName($originalName)
     {
         $this->originalName = $originalName;
-
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getWord()
-    {
-        return $this->word;
-    }
-    /**
-     * @param mixed $word
-     * @return WordImage
-     */
-    public function setWord($word) : WordImage
-    {
-        $this->word = $word;
 
         return $this;
     }
@@ -126,13 +109,27 @@ class WordImage
     }
     /**
      * @param string $targetDir
-     * @return WordImage
+     * @return Image
      */
-    public function setTargetDir($targetDir) : WordImage
+    public function setTargetDir($targetDir) : Image
     {
         $this->targetDir = $targetDir;
 
         return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getImageHolder()
+    {
+        return $this->imageHolder;
+    }
+    /**
+     * @param mixed $imageHolder
+     */
+    public function setImageHolder(ImageHolder $imageHolder)
+    {
+        $this->imageHolder = $imageHolder;
     }
     /**
      * @return mixed
@@ -143,9 +140,9 @@ class WordImage
     }
     /**
      * @param \DateTime $createdAt
-     * @return WordImage
+     * @return Image
      */
-    public function setCreatedAt($createdAt) : WordImage
+    public function setCreatedAt($createdAt) : Image
     {
         $this->createdAt = $createdAt;
 
@@ -160,9 +157,9 @@ class WordImage
     }
     /**
      * @param \DateTime $updatedAt
-     * @return WordImage
+     * @return Image
      */
-    public function setUpdatedAt(\DateTime $updatedAt) : WordImage
+    public function setUpdatedAt(\DateTime $updatedAt) : Image
     {
         $this->updatedAt = $updatedAt;
 

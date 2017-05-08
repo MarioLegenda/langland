@@ -11231,8 +11231,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
@@ -11245,100 +11243,20 @@ var _reactRouterDom = __webpack_require__(96);
 
 var _header = __webpack_require__(94);
 
+var _courses = __webpack_require__(223);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LanguageList = function (_React$Component) {
-    _inherits(LanguageList, _React$Component);
-
-    function LanguageList(props) {
-        _classCallCheck(this, LanguageList);
-
-        var _this = _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
-
-        console.log(_this.props);
-        return _this;
-    }
-
-    _createClass(LanguageList, [{
-        key: 'render',
-        value: function render() {
-            var items = this.props.items.map(function (item) {
-                return _react2.default.createElement(
-                    'div',
-                    { key: item.id, className: 'language' },
-                    _react2.default.createElement(
-                        'a',
-                        { href: '#', className: 'language-link' },
-                        item.name.toUpperCase()
-                    )
-                );
-            });
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'component language-course-list' },
-                items
-            );
-        }
-    }]);
-
-    return LanguageList;
-}(_react2.default.Component);
-
-var LanguageListContainer = function (_React$Component2) {
-    _inherits(LanguageListContainer, _React$Component2);
-
-    function LanguageListContainer(props) {
-        _classCallCheck(this, LanguageListContainer);
-
-        var _this2 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
-
-        _this2.state = {
-            items: []
-        };
-        return _this2;
-    }
-
-    _createClass(LanguageListContainer, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            jQuery.ajax({
-                url: '/web/app_dev.php/langland/language/find-learnable-languages',
-                method: 'POST'
-            }).done(jQuery.proxy(function (data) {
-                this.setState({
-                    items: data.data
-                });
-            }, this));
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var items = this.state.items;
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'app' },
-                _react2.default.createElement(LanguageList, { items: items })
-            );
-        }
-    }]);
-
-    return LanguageListContainer;
-}(_react2.default.Component);
-
-function App() {
+function App(match) {
     return _react2.default.createElement(
-        'div',
+        _reactRouterDom.BrowserRouter,
         null,
-        _react2.default.createElement(_header.HeaderContainer, null),
-        _react2.default.createElement(LanguageListContainer, null)
+        _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(_header.HeaderContainer, null),
+            _react2.default.createElement(_reactRouterDom.Route, { activeOnlyWhenExact: true, path: '/web/app_dev.php/langland', component: _courses.LanguageListContainer })
+        )
     );
 }
 
@@ -25625,6 +25543,109 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LanguageListContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LanguageList = function (_React$Component) {
+    _inherits(LanguageList, _React$Component);
+
+    function LanguageList(props) {
+        _classCallCheck(this, LanguageList);
+
+        return _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
+    }
+
+    _createClass(LanguageList, [{
+        key: "render",
+        value: function render() {
+            var items = this.props.items.map(function (item) {
+                return _react2.default.createElement(
+                    "div",
+                    { key: item.id, className: "language" },
+                    _react2.default.createElement(
+                        "a",
+                        { href: "#", className: "language-link" },
+                        item.name.toUpperCase()
+                    )
+                );
+            });
+
+            return _react2.default.createElement(
+                "div",
+                { className: "component language-course-list" },
+                items
+            );
+        }
+    }]);
+
+    return LanguageList;
+}(_react2.default.Component);
+
+var LanguageListContainer = exports.LanguageListContainer = function (_React$Component2) {
+    _inherits(LanguageListContainer, _React$Component2);
+
+    function LanguageListContainer(props) {
+        _classCallCheck(this, LanguageListContainer);
+
+        var _this2 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
+
+        _this2.state = {
+            items: []
+        };
+        return _this2;
+    }
+
+    _createClass(LanguageListContainer, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            jQuery.ajax({
+                url: '/web/app_dev.php/langland/language/find-learnable-languages',
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {
+                this.setState({
+                    items: data.data
+                });
+            }, this));
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var items = this.state.items;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "app" },
+                _react2.default.createElement(LanguageList, { items: items })
+            );
+        }
+    }]);
+
+    return LanguageListContainer;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

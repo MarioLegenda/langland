@@ -12,8 +12,22 @@ class Language
      * @var string $name
      */
     private $name;
-
+    /**
+     * @var bool $showOnPage
+     */
     private $showOnPage;
+    /**
+     * @var string $listDescription
+     */
+    private $listDescription;
+    /**
+     * @var $languageIcon
+     */
+    private $languageIcon;
+    /**
+     * @var $viewImage
+     */
+    private $viewImage;
     /**
      * @var \DateTime $createdAt
      */
@@ -62,6 +76,54 @@ class Language
         $this->showOnPage = $showOnPage;
 
         return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getListDescription()
+    {
+        return $this->listDescription;
+    }
+    /**
+     * @param mixed $listDescription
+     * @return Language
+     */
+    public function setListDescription($listDescription) : Language
+    {
+        $this->listDescription = $listDescription;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getLanguageIcon()
+    {
+        return $this->languageIcon;
+    }
+    /**
+     * @param mixed $languageIcon
+     * @return Language
+     */
+    public function setLanguageIcon($languageIcon) : Language
+    {
+        $this->languageIcon = $languageIcon;
+
+        return $this;
+    }
+    /**
+     * @return Image
+     */
+    public function getViewImage()
+    {
+        return $this->viewImage;
+    }
+    /**
+     * @param Image $viewImage
+     */
+    public function setViewImage($viewImage = null)
+    {
+        $this->viewImage = $viewImage;
     }
     /**
      * @return \DateTime

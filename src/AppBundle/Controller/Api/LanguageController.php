@@ -2,30 +2,24 @@
 
 namespace AppBundle\Controller\Api;
 
-use JMS\Serializer\SerializationContext;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-
-class LanguageController extends Controller
+class LanguageController extends ResponseController
 {
     public function findLearnableLanguagesAction()
     {
         $dbLanguages = $this->get('doctrine')->getRepository('AdminBundle:Language')->findLearnableLanguages();
 
         if (empty($dbLanguages)) {
-            return new JsonResponse(array(
-                'status' => 'failure',
-                'data' => array(),
-            ));
+            return $this->createFailedJsonResponse();
         }
 
-        $data = array();
-        foreach ($dbLanguages as $language) {
-            $context = SerializationContext::create();
-            $context->setGroups(array('learnable_language'));
-            $serialized = $this->get('jms_serializer')->serialize($language, 'json', $context);
+        return $this->createSuccessJsonResponse($this->createLanguages($dbLanguages));
+    }
 
-            $langArray = json_decode($serialized, true);
+    private function createLanguages(array $languages) : array
+    {
+        $data = array();
+        foreach ($languages as $language) {
+            $langArray = $this->serialize($language, array('learnable_language'));
 
             $image = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
                 'language' => $language,
@@ -34,11 +28,7 @@ class LanguageController extends Controller
             if (!empty($image)) {
                 $image = $image[0];
 
-                $context = SerializationContext::create();
-                $context->setGroups(array('learnable_language'));
-                $serialized = $this->get('jms_serializer')->serialize($image, 'json', $context);
-
-                $imgArray = json_decode($serialized, true);
+                $imgArray = $this->serialize($image, array('learnable_language'));
 
                 $langArray['image'] = $imgArray;
             }
@@ -46,9 +36,6 @@ class LanguageController extends Controller
             $data[] = $langArray;
         }
 
-        return new JsonResponse(array(
-            'status' => 'success',
-            'data' => $data,
-        ));
+        return $data;
     }
 }

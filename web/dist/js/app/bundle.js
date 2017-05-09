@@ -10966,8 +10966,21 @@ var LanguageList = function (_React$Component) {
     }
 
     _createClass(LanguageList, [{
+        key: 'createLearningUser',
+        value: function createLearningUser(e) {
+            jQuery.ajax({
+                url: '/app_dev.php/langland/user/create-learning-user',
+                method: 'POST',
+                data: {
+                    languageId: e.currentTarget.getAttribute('data-item-id')
+                }
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
             var items = this.props.items.map(function (item) {
                 return _react2.default.createElement(
                     'div',
@@ -10985,7 +10998,7 @@ var LanguageList = function (_React$Component) {
                     item.image && _react2.default.createElement('img', { src: item.image.fullPath }) || !item.image && _react2.default.createElement('img', { width: '50', height: '50' }),
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: "/app_dev.php/langland/course/" + item.id, className: 'course-start-link' },
+                        { onClick: _this2.createLearningUser, 'data-item-id': item.id, to: "/app_dev.php/langland/course/" + item.id, className: 'course-start-link' },
                         'Start course'
                     )
                 );
@@ -11008,17 +11021,17 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
     function LanguageListContainer(props) {
         _classCallCheck(this, LanguageListContainer);
 
-        var _this2 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
 
-        _this2.state = {
+        _this3.state = {
             items: []
         };
-        return _this2;
+        return _this3;
     }
 
     _createClass(LanguageListContainer, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
+        key: '_fetchLearnableLanguages',
+        value: function _fetchLearnableLanguages() {
             jQuery.ajax({
                 url: '/app_dev.php/langland/language/find-learnable-languages',
                 method: 'POST'
@@ -11027,6 +11040,11 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
                     items: data.data
                 });
             }, this));
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchLearnableLanguages();
         }
     }, {
         key: 'render',
@@ -11124,16 +11142,23 @@ var UserProfileBarContainer = exports.UserProfileBarContainer = function (_React
     }
 
     _createClass(UserProfileBarContainer, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
+        key: "_fetchLoggedInUser",
+        value: function _fetchLoggedInUser() {
             jQuery.ajax({
                 url: '/app_dev.php/langland/user/find-logged-in-user',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
-                this.setState({
-                    user: data.data
-                });
+                if (data.status === 'success') {
+                    this.setState({
+                        user: data.data
+                    });
+                }
             }, this));
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this._fetchLoggedInUser();
         }
     }, {
         key: "render",
@@ -11218,14 +11243,19 @@ var CourseBarContainer = function (_React$Component4) {
     }
 
     _createClass(CourseBarContainer, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
+        key: "_fetchSignedCourses",
+        value: function _fetchSignedCourses() {
             jQuery.ajax({
                 url: '/app_dev.php/langland/courses/find-signed-courses',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {}
             }, this));
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            this._fetchSignedCourses();
         }
     }, {
         key: "render",
@@ -25699,6 +25729,9 @@ var Course = exports.Course = function (_React$Component) {
     }
 
     _createClass(Course, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement('div', null);

@@ -1,3 +1,7 @@
 app_logged_in_user:
     path: /find-logged-in-user
     defaults: { _controller: AppBundle:Api/User:findLoggedInUser }
+
+app_create_learning_user:
+    path: /create-learning-user
+    defaults: { _controller: AppBundle:Api/User:createLearningUser }

@@ -2,33 +2,35 @@
 
 namespace AppBundle\Controller\Api;
 
-use AdminBundle\Controller\RepositoryController;
-use JMS\Serializer\SerializationContext;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use AppBundle\Entity\LearningUser;
+use Symfony\Component\HttpFoundation\Request;
 
-class UserController extends RepositoryController
+class UserController extends ResponseController
 {
     public function findLoggedInUserAction()
     {
-        $user = $this->getUser();
+        return $this->createSuccessJsonResponse(
+            $this->serialize($this->getUser(), array('exposed_user'))
+        );
+    }
 
-        if (!$user instanceof UserInterface) {
-            return new JsonResponse(array(
-                'status' => 'failed',
-                'message' => 'No user',
-            ));
+    public function createLearningUserAction(Request $request)
+    {
+        $em = $this->get('doctrine')->getManager();
+        $languageId = $request->request->get('languageId');
+
+        $language = $this->getRepository('AdminBundle:Language')->find($languageId);
+        $learningUserRepo = $this->getRepository('AppBundle:LearningUser');
+
+        $existingLearningUser = $learningUserRepo->findLearningUserByLanguage($language);
+
+        if (!empty($existingLearningUser)) {
+            return $this->createSuccessJsonResponse();
         }
 
-        $userInfo = array(
-            'name' => $user->getName(),
-            'lastname' => $user->getLastname(),
-            'username' => $user->getUsername(),
-        );
+        $em->persist(LearningUser::create($this->getUser(), $language));
+        $em->flush();
 
-        return new JsonResponse(array(
-            'status' => 'success',
-            'data' => $userInfo,
-        ));
+        return $this->createSuccessJsonResponse();
     }
 }

@@ -3,10 +3,10 @@ ArmorBundle\Entity\User:
     properties:
         name:
             expose: true
-            groups: [initial_data]
+            groups: [exposed_user]
         lastname:
             expose: true
-            groups: [initial_data]
+            groups: [exposed_user]
         username:
             expose: true
-            groups: [initial_data]
+            groups: [exposed_user]

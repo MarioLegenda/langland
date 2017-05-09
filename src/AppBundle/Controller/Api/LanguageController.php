@@ -25,7 +25,25 @@ class LanguageController extends Controller
             $context->setGroups(array('learnable_language'));
             $serialized = $this->get('jms_serializer')->serialize($language, 'json', $context);
 
-            $data[] = json_decode($serialized, true);
+            $langArray = json_decode($serialized, true);
+
+            $image = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
+                'language' => $language,
+            ));
+
+            if (!empty($image)) {
+                $image = $image[0];
+
+                $context = SerializationContext::create();
+                $context->setGroups(array('learnable_language'));
+                $serialized = $this->get('jms_serializer')->serialize($image, 'json', $context);
+
+                $imgArray = json_decode($serialized, true);
+
+                $langArray['image'] = $imgArray;
+            }
+
+            $data[] = $langArray;
         }
 
         return new JsonResponse(array(

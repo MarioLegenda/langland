@@ -10946,6 +10946,8 @@ var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(97);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -10964,34 +10966,34 @@ var LanguageList = function (_React$Component) {
     }
 
     _createClass(LanguageList, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var items = this.props.items.map(function (item) {
                 return _react2.default.createElement(
-                    "div",
-                    { key: item.id, className: "language" },
+                    'div',
+                    { key: item.id, className: 'language' },
                     _react2.default.createElement(
-                        "a",
-                        { href: "#", className: "language-link" },
+                        'a',
+                        { href: '#', className: 'language-link' },
                         item.name.toUpperCase()
                     ),
                     _react2.default.createElement(
-                        "p",
+                        'p',
                         null,
                         item.listDescription
                     ),
-                    item.image && _react2.default.createElement("img", { src: "/web/uploads/images/" + item.image.name }) || !item.image && _react2.default.createElement("img", { width: "50", height: "50" }),
+                    item.image && _react2.default.createElement('img', { src: item.image.fullPath }) || !item.image && _react2.default.createElement('img', { width: '50', height: '50' }),
                     _react2.default.createElement(
-                        "a",
-                        { href: "", className: "course-start-link" },
-                        "Start course"
+                        _reactRouterDom.Link,
+                        { to: "/app_dev.php/langland/course/" + item.id, className: 'course-start-link' },
+                        'Start course'
                     )
                 );
             });
 
             return _react2.default.createElement(
-                "div",
-                { className: "component language-course-list" },
+                'div',
+                { className: 'component language-course-list' },
                 items
             );
         }
@@ -11015,10 +11017,10 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
     }
 
     _createClass(LanguageListContainer, [{
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             jQuery.ajax({
-                url: '/web/app_dev.php/langland/language/find-learnable-languages',
+                url: '/app_dev.php/langland/language/find-learnable-languages',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 this.setState({
@@ -11027,15 +11029,11 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
             }, this));
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var items = this.state.items;
 
-            return _react2.default.createElement(
-                "div",
-                { className: "app" },
-                _react2.default.createElement(LanguageList, { items: items })
-            );
+            return _react2.default.createElement(LanguageList, { items: items });
         }
     }]);
 
@@ -11129,7 +11127,7 @@ var UserProfileBarContainer = exports.UserProfileBarContainer = function (_React
         key: "componentDidMount",
         value: function componentDidMount() {
             jQuery.ajax({
-                url: '/web/app_dev.php/langland/user/find-logged-in-user',
+                url: '/app_dev.php/langland/user/find-logged-in-user',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 this.setState({
@@ -11223,7 +11221,7 @@ var CourseBarContainer = function (_React$Component4) {
         key: "componentDidMount",
         value: function componentDidMount() {
             jQuery.ajax({
-                url: '/web/app_dev.php/langland/courses/find-signed-courses',
+                url: '/app_dev.php/langland/courses/find-signed-courses',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {}
@@ -11359,9 +11357,11 @@ var _header = __webpack_require__(95);
 
 var _courses = __webpack_require__(94);
 
+var _course = __webpack_require__(224);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function App(match) {
+function App() {
     return _react2.default.createElement(
         _reactRouterDom.BrowserRouter,
         null,
@@ -11369,7 +11369,12 @@ function App(match) {
             'div',
             null,
             _react2.default.createElement(_header.HeaderContainer, null),
-            _react2.default.createElement(_reactRouterDom.Route, { activeOnlyWhenExact: true, path: '/web/app_dev.php/langland', component: _courses.LanguageListContainer })
+            _react2.default.createElement(
+                'div',
+                { className: 'app' },
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app_dev.php/langland', component: _courses.LanguageListContainer }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: '/app_dev.php/langland/course/:id', component: _course.Course })
+            )
         )
     );
 }
@@ -25657,6 +25662,51 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 224 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Course = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Course = exports.Course = function (_React$Component) {
+    _inherits(Course, _React$Component);
+
+    function Course(props) {
+        _classCallCheck(this, Course);
+
+        return _possibleConstructorReturn(this, (Course.__proto__ || Object.getPrototypeOf(Course)).call(this, props));
+    }
+
+    _createClass(Course, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement('div', null);
+        }
+    }]);
+
+    return Course;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

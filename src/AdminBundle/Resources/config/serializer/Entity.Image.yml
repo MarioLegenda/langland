@@ -4,3 +4,7 @@ AdminBundle\Entity\Image:
         name:
             expose: true
             groups: [learnable_language]
+        fullPath:
+            expose: true
+            groups: [learnable_language]
+            serialized_name: fullPath

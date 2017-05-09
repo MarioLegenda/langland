@@ -15,10 +15,6 @@
 
     border: 1px solid white;
 
-    &:hover {
-      cursor: pointer;
-    }
-
     &:hover .language-link {
       color: $appMainColor;
     }
@@ -56,6 +52,7 @@
     border-radius: 20px;
 
     &:hover {
+      cursor: pointer;
       border: 1px solid $appMainColor;
       color: $appMainColor;
     }
@@ -68,7 +65,7 @@
 
     padding: 0 10px 10px 0;
 
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 
     color: $highlight-gray;
 

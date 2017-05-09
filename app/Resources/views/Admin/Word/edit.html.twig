@@ -26,15 +26,15 @@
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.categories } only %}
 
                     <div class="full-width align-left form-field field-break">
-                        {{ form_label(form.wordImage) }}
-                        {{ form_widget(form.wordImage) }}
+                        {{ form_label(form.image) }}
+                        {{ form_widget(form.image) }}
                         <div class="form-error full-width align-right">
-                            {{ form_errors(form.wordImage) }}
+                            {{ form_errors(form.image) }}
                         </div>
 
-                        {% if word.viewImage is not empty %}
+                        {% if word.image is not empty %}
                             <div class="full-width align-left">
-                                <img width="250" height="250" src="/web/uploads/images/{{ word.viewImage.name }}" />
+                                <img width="250" height="250" src="{{ word.image.fullPath }}" />
                             </div>
                         {% endif %}
                     </div>

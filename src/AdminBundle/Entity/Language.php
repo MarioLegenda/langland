@@ -23,7 +23,7 @@ class Language
     /**
      * @var $languageIcon
      */
-    private $languageIcon;
+    private $image;
     /**
      * @var $viewImage
      */
@@ -36,6 +36,12 @@ class Language
      * @var \DateTime $updatedAt
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->showOnPage = false;
+    }
+
     /**
      * @return mixed
      */
@@ -97,29 +103,26 @@ class Language
     /**
      * @return mixed
      */
-    public function getLanguageIcon()
+    public function getImage()
     {
-        return $this->languageIcon;
+        return $this->image;
     }
     /**
-     * @param mixed $languageIcon
-     * @return Language
+     * @param mixed $image
      */
-    public function setLanguageIcon($languageIcon) : Language
+    public function setImage($image)
     {
-        $this->languageIcon = $languageIcon;
-
-        return $this;
+        $this->image = $image;
     }
     /**
-     * @return Image
+     * @return LanguageImage
      */
     public function getViewImage()
     {
         return $this->viewImage;
     }
     /**
-     * @param Image $viewImage
+     * @param LanguageImage $viewImage
      */
     public function setViewImage($viewImage = null)
     {

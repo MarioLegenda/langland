@@ -7,7 +7,7 @@
         </div>
 
         <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('language_create') }}" method="POST" class="form" name="addLanguageForm" novalidate>
+            <form action="{{ path('language_create') }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
                 <div class="margin-top-40 align-left full-width">
                     <div class="form-error full-width align-right">
                         {{ form_errors(form) }}
@@ -19,7 +19,7 @@
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.listDescription } only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.languageIcon } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.image } only %}
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.showOnPage } only %}
 

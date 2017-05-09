@@ -27,23 +27,13 @@ services:
         class: AdminBundle\ValidationGroupResolver\GroupResolver
         arguments: ['@request_stack']
 
-    admin.pre_persist:
-        class: AdminBundle\Listener\EntityEventSubscriber
-        tags:
-            - { name: doctrine.event_subscriber }
-
     admin.file_namer:
-        class: Library\App\FileNamer
+        class: Library\FileNamer
         arguments: ['@doctrine.orm.entity_manager']
 
     admin.image_resizer:
-        class: Library\App\ImageResize
+        class: Library\ImageResize
 
     admin.file_uploader:
-        class: AdminBundle\Helper\FileUploader
+        class: Library\FileUploader
         arguments: ['%upload_dirs%', '@admin.image_resizer', '@admin.file_namer']
-
-    admin.mapping_listener:
-        class: AdminBundle\Listener\DoctrineMappingListener
-        tags:
-            - { name: doctrine.orm.entity_listener, method: 'onMapping'}

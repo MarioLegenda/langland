@@ -4,6 +4,7 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Word;
 use AdminBundle\Form\Type\WordType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 class WordController extends RepositoryController
@@ -38,11 +39,14 @@ class WordController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                if ($word->hasWordImage()) {
-                    $this->uploadWordImage($word);
-                }
+                $this->tryUploadImage($word);
 
                 $this->removeEmptyTranslations($word);
+
+                if ($word->getImage()->getImageFile() instanceof UploadedFile) {
+                    $word->getImage()->setWord($word);
+                    $em->persist($word->getImage());
+                }
 
                 $em->persist($word);
                 $em->flush();
@@ -73,8 +77,9 @@ class WordController extends RepositoryController
             'word' => $word,
         ));
 
-
-        $word->setViewImage((!empty($wordImage)) ? $wordImage[0] : null);
+        if (!empty($wordImage)) {
+            $word->setImage($wordImage[0]);
+        }
 
         $form = $this->createForm(WordType::class, $word, array(
             'word' => $word,
@@ -86,11 +91,14 @@ class WordController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                if ($word->hasWordImage()) {
-                    $this->uploadWordImage($word);
-                }
-
                 $this->removeEmptyTranslations($word);
+                $this->tryRemovePreviousImage($word);
+                $this->tryUploadImage($word);
+
+                if ($word->getImage()->getImageFile() instanceof UploadedFile) {
+                    $word->getImage()->setWord($word);
+                    $em->persist($word->getImage());
+                }
 
                 $em->persist($word);
                 $em->flush();
@@ -121,7 +129,7 @@ class WordController extends RepositoryController
         }
 
         $em = $this->get('doctrine')->getManager();
-        $wordImage = $this->getRepository('AdminBundle:WordImage')->findBy(array(
+        $wordImage = $this->getRepository('AdminBundle:Image')->findBy(array(
             'word' => $word,
         ));
 
@@ -146,23 +154,43 @@ class WordController extends RepositoryController
         return $this->redirectToRoute('word_index');
     }
 
-    private function uploadWordImage(Word $word)
+    private function tryUploadImage(Word $word)
     {
-        $fileUploader = $this->get('admin.file_uploader');
+        if ($word->getImage()->getImageFile() instanceof UploadedFile) {
+            $fileUploader = $this->get('admin.file_uploader');
 
-        $fileUploader->uploadImage($word->getWordImage()->getImageFile(), array(
-            'repository' => 'AdminBundle:Image',
-            'field' => 'name',
-            'resize' => array(
-                'width' => 250,
-                'height' => 250,
-            ),
-        ));
+            $fileUploader->uploadImage($word->getImage()->getImageFile(), array(
+                'repository' => 'AdminBundle:Image',
+                'field' => 'name',
+                'resize' => array(
+                    'width' => 250,
+                    'height' => 250,
+                ),
+            ));
 
-        $word->getWordImage()
-            ->setName($fileUploader->getFileName())
-            ->setOriginalName($fileUploader->getOriginalName())
-            ->setTargetDir($fileUploader->getImageDir());
+            $fileData = $fileUploader->getData();
+
+            $word->getImage()
+                ->setName($fileData['fileName'])
+                ->setOriginalName($fileData['originalName'])
+                ->setTargetDir($fileData['targetDir'])
+                ->setFullPath($fileData['fullPath']);
+        }
+    }
+
+    private function tryRemovePreviousImage(Word $word)
+    {
+        if ($word->getImage()->getImageFile() instanceof UploadedFile) {
+            $dbImage = $this->getRepository('AdminBundle:Image')->findBy(array(
+                'word' => $word,
+            ));
+
+            if (!empty($dbImage)) {
+                $image = $dbImage[0];
+
+                unlink($image->getTargetDir().'/'.$image->getName());
+            }
+        }
     }
 
     private function removeEmptyTranslations(Word $word)

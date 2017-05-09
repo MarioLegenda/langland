@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class Word extends ImageHolder
+class Word
 {
     /**
      * @var int $id
@@ -37,9 +37,9 @@ class Word extends ImageHolder
      */
     private $translations;
     /**
-     * @var Image $wordImage
+     * @var Image $image
      */
-    private $wordImage;
+    private $image;
     /**
      * @var Image $viewImage
      */
@@ -178,23 +178,23 @@ class Word extends ImageHolder
     /**
      * @return bool
      */
-    public function hasWordImage() : bool
+    public function hasImage() : bool
     {
-        return $this->wordImage->getImageFile() instanceof UploadedFile;
+        return $this->image->getImageFile() instanceof UploadedFile;
     }
     /**
      * @return mixed
      */
-    public function getWordImage()
+    public function getImage()
     {
-        return $this->wordImage;
+        return $this->image;
     }
     /**
-     * @param mixed $wordImage
+     * @param mixed $image
      */
-    public function setWordImage($wordImage)
+    public function setImage($image)
     {
-        $this->wordImage = $wordImage;
+        $this->image = $image;
     }
     /**
      * @return mixed

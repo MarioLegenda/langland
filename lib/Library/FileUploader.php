@@ -1,9 +1,7 @@
 <?php
 
-namespace AdminBundle\Helper;
+namespace Library;
 
-use Library\App\FileNamer;
-use Library\App\ImageResize;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
@@ -29,9 +27,17 @@ class FileUploader
      */
     private $fileName;
     /**
+     * @var mixed $relativePath
+     */
+    private $relativePath;
+    /**
      * @var string $originalName
      */
     private $originalName;
+    /**
+     * @var array $data
+     */
+    private $data = array();
     /**
      * FileUploader constructor.
      * @param array $uploadDirs
@@ -40,7 +46,8 @@ class FileUploader
      */
     public function __construct(array $uploadDirs, ImageResize $imageResize, FileNamer $fileNamer)
     {
-        $this->imageDir = $uploadDirs['image_upload_dir'];
+        $this->relativePath = $uploadDirs['relative_path'];
+        $this->imageDir = realpath($uploadDirs['image_upload_dir']);
         $this->soundDir = realpath($uploadDirs['sound_upload_dir']);
         $this->imageResize = $imageResize;
         $this->fileNamer = $fileNamer;
@@ -48,17 +55,27 @@ class FileUploader
     /**
      * @param UploadedFile $file
      * @param array $options
+     * @return array
      */
     public function uploadImage(UploadedFile $file, array $options = array())
     {
-        $this->fileName = $this->fileNamer->createName($options).'.'.$file->guessExtension();
-        $this->originalName = $file->getClientOriginalName();
+        $fileName = $this->fileNamer->createName($options).'.'.$file->guessExtension();
+        $originalName = $file->getClientOriginalName();
 
-        $path = $this->imageDir.'/'.$this->fileName;
+        $path = $this->imageDir.'/'.$fileName;
 
         if (array_key_exists('resize', $options)) {
             $this->resizeAndSave($options['resize'], $file, $path);
+        } else {
+            $file->move($this->imageDir, $fileName);
         }
+
+        $this->data = array(
+            'fileName' => $fileName,
+            'targetDir' => $this->imageDir,
+            'originalName' => $originalName,
+            'fullPath' => $this->relativePath.'/'.$fileName,
+        );
     }
 
     public function uploadSound(UploadedFile $file, array $options)
@@ -132,6 +149,13 @@ class FileUploader
     public function setSoundDir(string $soundDir)
     {
         $this->soundDir = $soundDir;
+    }
+    /**
+     * @return array
+     */
+    public function getData() : array
+    {
+        return $this->data;
     }
 
     public function resizeAndSave(array $measurements, $file, $path)

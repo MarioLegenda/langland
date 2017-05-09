@@ -7,3 +7,11 @@ AdminBundle\Entity\Language:
         name:
             expose: true
             groups: [learnable_language]
+        listDescription:
+            expose: true
+            groups: [learnable_language]
+            serialized_name: listDescription
+        image:
+            expose: true
+            type: AdminBundle\Entity\Image
+            groups: [learnable_language]

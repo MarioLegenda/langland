@@ -57,6 +57,8 @@ class SeedCommand extends ContainerAwareCommand
 
             $language = new Language();
             $language->setName($lang);
+            $language->setShowOnPage(true);
+            $language->setListDescription($faker->words(255, true));
 
             $em->persist($language);
 
@@ -75,7 +77,6 @@ class SeedCommand extends ContainerAwareCommand
                 $word->setCategories($categoryCollection);
                 $word->setDescription($faker->sentence(60));
                 $word->setType($faker->company);
-                $word->setWordImage(new Image());
 
                 $em->persist($word);
 

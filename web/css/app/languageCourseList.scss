@@ -1,31 +1,77 @@
 .language-course-list {
   overflow:hidden;
 
-  background-color: white;
-
-  border-radius: 15px;
-
-  padding: 20px;
-
   .language {
-    width: 200px;
+    width: 100%;
     float: left;
 
-    margin-left: 40px;
+    background-color: white;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    margin-bottom: 50px;
+
+    border: 1px solid white;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:hover .language-link {
+      color: $appMainColor;
+    }
+
+    img {
+      display:block;
+      float:left;
+    }
+
+    p {
+      width: 650px;
+      height: 100px;
+
+      color: $text-color-gray;
+      line-height: 1.3em;
+
+      float:right;
+    }
+  }
+
+  .course-start-link {
+    width: 150px;
+    display: block;
+
+    float:right;
+
+    text-align: center;
+
+    border: 1px solid $highlight-gray;
+
+    padding: 15px;
+
+    color: $highlight-gray;
+
+    border-radius: 20px;
+
+    &:hover {
+      border: 1px solid $appMainColor;
+      color: $appMainColor;
+    }
   }
 
   .language-link {
     display:block;
-    padding: 50px 50px 50px 50px;
+    width: 100px;
+    float:left;
 
-    text-align: center;
+    padding: 0 10px 10px 0;
+
+    margin-bottom: 20px;
+
+    color: $highlight-gray;
 
     font-family: $mallanna;
-
-    border-bottom: 1px solid $highlight-gray;
-
-    &:hover {
-      border-bottom: 1px solid $appMainColor;
-    }
   }
 }

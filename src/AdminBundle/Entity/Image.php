@@ -2,9 +2,10 @@
 
 namespace AdminBundle\Entity;
 
+use AdminBundle\Form\Type\Contract\ImageTypeInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Image
+class Image implements ImageTypeInterface
 {
     private $id;
     /**
@@ -19,14 +20,12 @@ class Image
      * @var string $targetDir
      */
     private $targetDir;
+
+    private $fullPath;
     /**
      * @var UploadedFile $imageFile
      */
     private $imageFile;
-    /**
-     * @var Word $word
-     */
-    private $imageHolder;
     /**
      * @var \DateTime $createdAt
      */
@@ -36,21 +35,19 @@ class Image
      */
     private $updatedAt;
     /**
+     * @var Word $word
+     */
+    private $word;
+    /**
+     * @var Language $language
+     */
+    private $language;
+    /**
      * @return mixed
      */
     public function getId()
     {
         return $this->id;
-    }
-    /**
-     * @param mixed $id
-     * @return Image
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
     /**
      * @return mixed
@@ -63,7 +60,7 @@ class Image
      * @param mixed $name
      * @return Image
      */
-    public function setName($name)
+    public function setName($name) : Image
     {
         $this->name = $name;
 
@@ -94,7 +91,7 @@ class Image
      * @param mixed $originalName
      * @return Image
      */
-    public function setOriginalName($originalName)
+    public function setOriginalName($originalName) : Image
     {
         $this->originalName = $originalName;
 
@@ -120,16 +117,19 @@ class Image
     /**
      * @return mixed
      */
-    public function getImageHolder()
+    public function getFullPath()
     {
-        return $this->imageHolder;
+        return $this->fullPath;
     }
     /**
-     * @param mixed $imageHolder
+     * @param mixed $fullPath
+     * @return Image
      */
-    public function setImageHolder(ImageHolder $imageHolder)
+    public function setFullPath($fullPath) : Image
     {
-        $this->imageHolder = $imageHolder;
+        $this->fullPath = $fullPath;
+
+        return $this;
     }
     /**
      * @return mixed
@@ -154,6 +154,40 @@ class Image
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     * @return mixed
+     */
+    public function getWord()
+    {
+        return $this->word;
+    }
+    /**
+     * @param mixed $word
+     * @return Image
+     */
+    public function setWord($word) : Image
+    {
+        $this->word = $word;
+
+        return $this;
+    }
+    /**
+     * @return Language
+     */
+    public function getLanguage(): Language
+    {
+        return $this->language;
+    }
+    /**
+     * @param Language $language
+     * @return Image
+     */
+    public function setLanguage(Language $language) : Image
+    {
+        $this->language = $language;
+
+        return $this;
     }
     /**
      * @param \DateTime $updatedAt

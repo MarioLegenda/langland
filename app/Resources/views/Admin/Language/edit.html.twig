@@ -7,7 +7,7 @@
         </div>
 
         <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('language_edit', { 'id': language.id }) }}" method="POST" class="form" name="addLanguageForm" novalidate>
+            <form action="{{ path('language_edit', { 'id': language.id }) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">
 
                     {% include '::Admin/Form/_include/flashNotice.html.twig' %}
@@ -16,9 +16,11 @@
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.listDescription } only %}
 
-                    {% if language.viewImage is not empty %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.image } only %}
+
+                    {% if language.image is not empty %}
                         <div class="full-width align-left">
-                            <img width="250" height="250" src="/web/uploads/images/{{ language.viewImage.name }}" />
+                            <img width="56" height="56" src="{{ language.image.fullPath }}" />
                         </div>
                     {% endif %}
 

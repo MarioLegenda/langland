@@ -27,7 +27,7 @@ class LanguageType extends AbstractType
                 ),
             ))
             ->add('showOnPage', CheckboxType::class)
-            ->add('languageIcon', ImageType::class, array(
+            ->add('image', ImageType::class, array(
                 'label' => false,
             ))
             ->add('listDescription', TextareaType::class, array(

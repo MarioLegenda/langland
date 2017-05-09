@@ -1,6 +1,6 @@
 <?php
 
-namespace Library\App;
+namespace Library;
 
 use Doctrine\ORM\EntityManager;
 

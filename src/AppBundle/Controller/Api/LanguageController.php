@@ -2,17 +2,22 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\LearningUser;
+
 class LanguageController extends ResponseController
 {
     public function findLearnableLanguagesAction()
     {
-        $dbLanguages = $this->get('doctrine')->getRepository('AdminBundle:Language')->findLearnableLanguages();
+        $dbLanguages = $this->getRepository('AdminBundle:Language')->findLearnableLanguages();
+        $learningUser = $this->getRepository('AppBundle:LearningUser')->findLearningUserByLoggedInUser($this->getUser());
 
         if (empty($dbLanguages)) {
             return $this->createFailedJsonResponse();
         }
 
-        return $this->createSuccessJsonResponse($this->createLanguages($dbLanguages));
+        return $this->createSuccessJsonResponse(
+            $this->createLanguages($dbLanguages, $learningUser)
+        );
     }
 
     public function findLearningLanguagesAction()
@@ -41,7 +46,7 @@ class LanguageController extends ResponseController
         ));
     }
 
-    private function createLanguages(array $languages) : array
+    private function createLanguages(array $languages, LearningUser $learningUser = null) : array
     {
         $data = array();
         foreach ($languages as $language) {
@@ -50,6 +55,10 @@ class LanguageController extends ResponseController
             $image = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
                 'language' => $language,
             ));
+
+            if ($learningUser instanceof LearningUser) {
+                $langArray['isLearning'] = ($learningUser->hasLanguage($language)) ? true : false;
+            }
 
             if (!empty($image)) {
                 $image = $image[0];

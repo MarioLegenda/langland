@@ -11086,9 +11086,11 @@ var LanguageList = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this2 = this;
+            var that = this;
 
             var items = this.props.items.map(function (item) {
+                var title = item.isLearning === true ? 'Continue' : 'Learn ' + item.name;
+
                 return _react2.default.createElement(
                     'div',
                     { key: item.id, className: 'language' },
@@ -11108,10 +11110,18 @@ var LanguageList = function (_React$Component) {
                         item.listDescription
                     ),
                     _react2.default.createElement(
-                        'a',
-                        { onClick: _this2.createLearningUser, 'data-item-id': item.id, className: 'course-start-link', href: "/app_dev.php/langland/course/" + item.id },
-                        'Learn ',
-                        item.name
+                        'div',
+                        { className: 'course-start-link' },
+                        _react2.default.createElement(
+                            'a',
+                            { onClick: that.createLearningUser, 'data-item-id': item.id, href: "/app_dev.php/langland/course/" + item.id },
+                            title
+                        ),
+                        item.isLearning === true && _react2.default.createElement(
+                            'span',
+                            { className: 'margin-top-10' },
+                            'Already learning'
+                        )
                     )
                 );
             });
@@ -11133,12 +11143,12 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
     function LanguageListContainer(props) {
         _classCallCheck(this, LanguageListContainer);
 
-        var _this3 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
 
-        _this3.state = {
+        _this2.state = {
             items: []
         };
-        return _this3;
+        return _this2;
     }
 
     _createClass(LanguageListContainer, [{
@@ -11217,9 +11227,8 @@ var UserProfileBar = function (_React$Component) {
                 { className: "bar align-left relative user-bar" },
                 _react2.default.createElement(
                     "button",
-                    null,
-                    _react2.default.createElement("i", { className: "fa fa-chevron-down down" }),
-                    _react2.default.createElement("i", { className: "fa fa-user fa-2x profile-icon" })
+                    { className: "menu-button" },
+                    _react2.default.createElement("i", { className: "fa fa-user fa-2x bar-icon" })
                 ),
                 _react2.default.createElement(
                     "div",
@@ -11315,9 +11324,8 @@ var CourseBar = function (_React$Component3) {
                 { className: "bar align-left relative course-bar" },
                 _react2.default.createElement(
                     "button",
-                    null,
-                    _react2.default.createElement("i", { className: "fa fa-chevron-down down" }),
-                    _react2.default.createElement("i", { className: "fa fa-bank fa-2x profile-icon" })
+                    { className: "menu-button" },
+                    _react2.default.createElement("i", { className: "fa fa-bank fa-2x bar-icon" })
                 ),
                 _react2.default.createElement(
                     "div",

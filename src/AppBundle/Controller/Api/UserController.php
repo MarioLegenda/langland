@@ -22,9 +22,19 @@ class UserController extends ResponseController
         $language = $this->getRepository('AdminBundle:Language')->find($languageId);
         $learningUserRepo = $this->getRepository('AppBundle:LearningUser');
 
-        $existingLearningUser = $learningUserRepo->findLearningUserByLanguage($language);
+        $existingLearningUser = $learningUserRepo->findLearningUserByLoggedInUser($this->getUser());
 
         if (!empty($existingLearningUser)) {
+            if ($existingLearningUser->hasLanguage($language)) {
+                return $this->createFailedJsonResponse();
+            }
+
+            $existingLearningUser->addLanguage($language);
+            $existingLearningUser->setCurrentLanguage($language);
+
+            $em->persist($existingLearningUser);
+            $em->flush();
+
             return $this->createSuccessJsonResponse();
         }
 

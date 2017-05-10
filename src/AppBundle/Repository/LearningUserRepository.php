@@ -34,8 +34,8 @@ class LearningUserRepository extends EntityRepository
 
         $result = $qb
             ->innerJoin('lu.languages', 'l')
-            ->where('l.id = :user_id')
-            ->setParameter(':user_id', $language->getId())
+            ->where('l.id = :language_id')
+            ->setParameter(':language_id', $language->getId())
             ->getQuery()
             ->getResult();
 
@@ -43,6 +43,6 @@ class LearningUserRepository extends EntityRepository
             return null;
         }
 
-        return $result;
+        return $result[0];
     }
 }

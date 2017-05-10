@@ -9,9 +9,9 @@
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
 
-    <one-to-one field="user" target-entity="ArmorBundle\Entity\User" />
+    <many-to-one field="user" target-entity="ArmorBundle\Entity\User" />
 
-    <one-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
+    <many-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
 
     <many-to-many field="languages" target-entity="AdminBundle\Entity\Language">
       <join-table name="learning_user_languages">

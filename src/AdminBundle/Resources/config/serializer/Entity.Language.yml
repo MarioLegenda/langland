@@ -3,10 +3,10 @@ AdminBundle\Entity\Language:
     properties:
         id:
             expose: true
-            groups: [learnable_language]
+            groups: [learnable_language, signed_courses]
         name:
             expose: true
-            groups: [learnable_language]
+            groups: [learnable_language, signed_courses]
         listDescription:
             expose: true
             groups: [learnable_language]

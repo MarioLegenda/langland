@@ -64,8 +64,26 @@ class ResponseController extends Controller
             $context->setGroups($groups);
         }
 
+        if (is_array($data)) {
+            return $this->serializeSimpleArray($data, $context);
+        }
+
         $serialized = $this->get('jms_serializer')->serialize($data, 'json', $context);
 
         return json_decode($serialized, true);
+    }
+
+    private function serializeSimpleArray(array $data, SerializationContext $context = null) : array
+    {
+        $serialized = array();
+        foreach ($data as $object) {
+            if (!is_object($object)) {
+                return null;
+            }
+
+            $serialized[] = json_decode($this->get('jms_serializer')->serialize($object, 'json', $context));
+        }
+
+        return $serialized;
     }
 }

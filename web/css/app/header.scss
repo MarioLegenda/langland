@@ -56,10 +56,6 @@
 
         margin-top: 15px;
 
-        &:hover {
-          color: $appMainColor;
-        }
-
         i {
           display: inline-block;
 
@@ -78,31 +74,59 @@
         background-color: $highlight-gray;
       }
     }
-  }
 
-  .user-bar {
     .bar-popup {
       display:none;
       right: 5px;
     }
   }
 
-  .user-bar:hover .bar-popup {
-    display:block;
-  }
-
   .course-bar {
-    .course-link {
-      position:relative;
+    .bar-popup {
+      width: 230px;
+    }
 
-      color: $appMainColor;
+    h1 {
+      color: $highlight-gray;
 
-      span:first-child {
-        position:absolute;
+      padding: 10px 10px 5px 0;
 
-        right: 75px;
+      border-bottom: 1px solid $highlight-gray;
+    }
+
+    .language-link {
+      font-size: 1.1em;
+      color: $highlight-gray;
+
+      &:hover {
+        font-weight: bold;
+        color: $appMainColor;
       }
     }
+
+    .new-language {
+      display:block;
+
+      border: 1px solid $highlight-gray;
+
+      padding: 10px;
+
+      border-radius: 20px;
+
+      &:hover {
+        border: 1px solid $appMainColor;
+        color: $appMainColor;
+      }
+    }
+
+    .current-course {
+      font-weight:bold;
+      color: $appMainColor !important;
+    }
+  }
+
+  .user-bar:hover .bar-popup {
+    display:block;
   }
 
   .course-bar:hover .bar-popup {

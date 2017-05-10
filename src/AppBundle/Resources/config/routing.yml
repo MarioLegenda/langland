@@ -3,6 +3,10 @@ app_dashboard:
     defaults: { _controller: AppBundle:Dashboard:dashboard }
     methods: [GET]
 
+app_course_dashboard:
+    path: /langland/course/{id}
+    defaults: { _controller: AppBundle:Course:dashboard }
+
 app_course:
   resource: "@AppBundle/Resources/config/routing/api/course/course.yml"
   prefix: /langland/courses

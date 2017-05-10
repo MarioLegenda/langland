@@ -53,22 +53,32 @@
 
     &:hover {
       cursor: pointer;
-      border: 1px solid $appMainColor;
       color: $appMainColor;
+      border: 1px solid $appMainColor;
     }
+  }
+
+  .title-holder {
+    width: 80px;
+    float:left;
   }
 
   .language-link {
     display:block;
-    width: 100px;
+    width: 80px;
     float:left;
 
     padding: 0 10px 10px 0;
 
     margin-bottom: 25px;
 
-    color: $highlight-gray;
+    text-align: center;
+
+    color: $appMainColor;
 
     font-family: $mallanna;
+
+    font-size: 1.4em;
+    font-weight: bold;
   }
 }

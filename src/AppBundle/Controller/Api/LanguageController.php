@@ -15,6 +15,32 @@ class LanguageController extends ResponseController
         return $this->createSuccessJsonResponse($this->createLanguages($dbLanguages));
     }
 
+    public function findLearningLanguagesAction()
+    {
+        $learningUser = $this->getRepository('AppBundle:LearningUser')->findBy(array(
+            'user' => $this->getUser(),
+        ));
+
+        if (empty($learningUser)) {
+            return $this->createFailedJsonResponse();
+        }
+
+        $learningUser = $learningUser[0];
+
+        $signedUpLanguages = $learningUser->getLanguages();
+
+        if (empty($signedUpLanguages)) {
+            return $this->createSuccessJsonResponse();
+        }
+
+        $currentLanguage = $learningUser->getCurrentLanguage();
+
+        return $this->createSuccessJsonResponse(array(
+            'signedLanguages' => $this->serialize($signedUpLanguages, array('signed_courses')),
+            'currentLanguage' => $this->serialize($currentLanguage, array('signed_courses')),
+        ));
+    }
+
     private function createLanguages(array $languages) : array
     {
         $data = array();

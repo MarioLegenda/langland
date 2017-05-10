@@ -11053,7 +11053,7 @@ var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(60);
+var _env = __webpack_require__(225);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11076,7 +11076,7 @@ var LanguageList = function (_React$Component) {
         key: 'createLearningUser',
         value: function createLearningUser(e) {
             jQuery.ajax({
-                url: 'langland/user/create-learning-user',
+                url: _env.envr + 'langland/user/create-learning-user',
                 method: 'POST',
                 data: {
                     languageId: e.currentTarget.getAttribute('data-item-id')
@@ -11114,7 +11114,7 @@ var LanguageList = function (_React$Component) {
                         { className: 'course-start-link' },
                         _react2.default.createElement(
                             'a',
-                            { onClick: that.createLearningUser, 'data-item-id': item.id, href: "/app_dev.php/langland/course/" + item.id },
+                            { onClick: that.createLearningUser, 'data-item-id': item.id, href: _env.envr + "langland/course/" + item.id },
                             title
                         ),
                         item.isLearning === true && _react2.default.createElement(
@@ -11155,7 +11155,7 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
         key: '_fetchLearnableLanguages',
         value: function _fetchLearnableLanguages() {
             jQuery.ajax({
-                url: 'langland/language/find-learnable-languages',
+                url: _env.envr + 'langland/language/find-learnable-languages',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 this.setState({
@@ -11200,6 +11200,8 @@ var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _env = __webpack_require__(225);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11218,25 +11220,25 @@ var UserProfileBar = function (_React$Component) {
     }
 
     _createClass(UserProfileBar, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var user = this.props.user;
 
             return _react2.default.createElement(
-                "div",
-                { className: "bar align-left relative user-bar" },
+                'div',
+                { className: 'bar align-left relative user-bar' },
                 _react2.default.createElement(
-                    "button",
-                    { className: "menu-button" },
-                    _react2.default.createElement("i", { className: "fa fa-user fa-2x bar-icon" })
+                    'button',
+                    { className: 'menu-button' },
+                    _react2.default.createElement('i', { className: 'fa fa-user fa-2x bar-icon' })
                 ),
                 _react2.default.createElement(
-                    "div",
-                    { className: "bar-popup absolute user-bar-popup" },
+                    'div',
+                    { className: 'bar-popup absolute user-bar-popup' },
                     _react2.default.createElement(
-                        "h2",
+                        'h2',
                         null,
-                        "Hello, ",
+                        'Hello, ',
                         user.name
                     )
                 )
@@ -11262,10 +11264,10 @@ var UserProfileBarContainer = exports.UserProfileBarContainer = function (_React
     }
 
     _createClass(UserProfileBarContainer, [{
-        key: "_fetchLoggedInUser",
+        key: '_fetchLoggedInUser',
         value: function _fetchLoggedInUser() {
             jQuery.ajax({
-                url: 'langland/user/find-logged-in-user',
+                url: _env.envr + 'langland/user/find-logged-in-user',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
@@ -11276,12 +11278,12 @@ var UserProfileBarContainer = exports.UserProfileBarContainer = function (_React
             }, this));
         }
     }, {
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             this._fetchLoggedInUser();
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var user = this.state.user;
 
@@ -11306,41 +11308,41 @@ var CourseBar = function (_React$Component3) {
     }
 
     _createClass(CourseBar, [{
-        key: "render",
+        key: 'render',
         value: function render() {
             var that = this;
             var items = this.props.items.map(function (item) {
                 var currentLangClass = item.id === that.props.currentItem.id ? 'current-course' : '';
 
                 return _react2.default.createElement(
-                    "a",
-                    { href: "/app_dev.php/langland/course/" + item.id, key: item.id, className: "language-link margin-bottom-20 " + currentLangClass },
+                    'a',
+                    { href: _env.envr + "langland/course/" + item.id, key: item.id, className: "language-link margin-bottom-20 " + currentLangClass },
                     item.name.toLowerCase()
                 );
             });
 
             return _react2.default.createElement(
-                "div",
-                { className: "bar align-left relative course-bar" },
+                'div',
+                { className: 'bar align-left relative course-bar' },
                 _react2.default.createElement(
-                    "button",
-                    { className: "menu-button" },
-                    _react2.default.createElement("i", { className: "fa fa-bank fa-2x bar-icon" })
+                    'button',
+                    { className: 'menu-button' },
+                    _react2.default.createElement('i', { className: 'fa fa-bank fa-2x bar-icon' })
                 ),
                 _react2.default.createElement(
-                    "div",
-                    { className: "bar-popup absolute course-bar-popup" },
+                    'div',
+                    { className: 'bar-popup absolute course-bar-popup' },
                     items.length > 0 && _react2.default.createElement(
-                        "h1",
-                        { className: "margin-bottom-20" },
-                        "Started languages"
+                        'h1',
+                        { className: 'margin-bottom-20' },
+                        'Started languages'
                     ),
                     items,
                     _react2.default.createElement(
-                        "a",
-                        { href: "/app_dev.php/langland", className: "new-language margin-top-20" },
-                        _react2.default.createElement("i", { className: "fa fa-plus" }),
-                        "Learn new language"
+                        'a',
+                        { href: _env.envr + "langland", className: 'new-language margin-top-20' },
+                        _react2.default.createElement('i', { className: 'fa fa-plus' }),
+                        'Learn new language'
                     )
                 )
             );
@@ -11365,10 +11367,10 @@ var CourseBarContainer = function (_React$Component4) {
     }
 
     _createClass(CourseBarContainer, [{
-        key: "_fetchSignedCourses",
+        key: '_fetchSignedCourses',
         value: function _fetchSignedCourses() {
             jQuery.ajax({
-                url: 'langland/language/find-learning-languages',
+                url: _env.envr + 'langland/language/find-learning-languages',
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
@@ -11379,15 +11381,19 @@ var CourseBarContainer = function (_React$Component4) {
             }, this));
         }
     }, {
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             this._fetchSignedCourses();
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var items = [];
             var currentItem = null;
+
+            if (this.state.item.length === 0) {
+                return null;
+            }
 
             if (this.state.item.hasOwnProperty('currentLanguage')) {
                 items = this.state.item.signedLanguages;
@@ -11403,20 +11409,20 @@ var CourseBarContainer = function (_React$Component4) {
 
 function Header() {
     return _react2.default.createElement(
-        "header",
-        { className: "animated full-width app-header", id: "react-header" },
+        'header',
+        { className: 'animated full-width app-header', id: 'react-header' },
         _react2.default.createElement(
-            "div",
-            { className: "full-width" },
+            'div',
+            { className: 'full-width' },
             _react2.default.createElement(
-                "h1",
-                { className: "align-left main-title" },
-                "Langland"
+                'h1',
+                { className: 'align-left main-title' },
+                'Langland'
             )
         ),
         _react2.default.createElement(
-            "div",
-            { className: "align-right" },
+            'div',
+            { className: 'align-right' },
             _react2.default.createElement(CourseBarContainer, null),
             _react2.default.createElement(UserProfileBarContainer, null)
         )
@@ -11460,6 +11466,8 @@ var _courses = __webpack_require__(96);
 
 var _course = __webpack_require__(95);
 
+var _env = __webpack_require__(225);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function App() {
@@ -11473,8 +11481,8 @@ function App() {
             _react2.default.createElement(
                 'div',
                 { className: 'app' },
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app_dev.php/langland', component: _courses.LanguageListContainer }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: '/app_dev.php/langland/course/:id', component: _course.Course })
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _courses.LanguageListContainer }),
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/course/:id", component: _course.Course })
             )
         )
     );
@@ -25763,6 +25771,31 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function env() {
+    var path = window.location.pathname;
+    var env = '';
+
+    if (/app_dev.php/.test(path)) {
+        env = '/app_dev.php/';
+    } else {
+        env = '/';
+    }
+
+    return env;
+}
+
+var envr = exports.envr = env();
 
 /***/ })
 /******/ ]);

@@ -5,6 +5,8 @@ namespace AdminBundle\Command;
 use AdminBundle\Entity\Category;
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Language;
+use AdminBundle\Entity\LanguageInfo;
+use AdminBundle\Entity\LanguageInfoText;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Sentence;
 use AdminBundle\Entity\SentenceTranslation;
@@ -58,7 +60,7 @@ class SeedCommand extends ContainerAwareCommand
             $language = new Language();
             $language->setName($lang);
             $language->setShowOnPage(true);
-            $language->setListDescription($faker->words(255, true));
+            $language->setListDescription($faker->sentence(60));
 
             $em->persist($language);
 
@@ -81,6 +83,23 @@ class SeedCommand extends ContainerAwareCommand
                 $em->persist($word);
 
                 $wordsArray[] = $word;
+            }
+
+            for ($q = 0; $q < 10; $q++) {
+                $languageInfo = new LanguageInfo();
+                $languageInfo->setLanguage($language);
+                $languageInfo->setName($faker->word);
+
+                for ($s = 0; $s < 10; $s++) {
+                    $text = new LanguageInfoText();
+                    $text->setName($faker->text(500));
+
+                    $text->setLanguageInfo($languageInfo);
+
+                    $languageInfo->addLanguageInfoText($text);
+                }
+
+                $em->persist($languageInfo);
             }
 
             $em->flush();

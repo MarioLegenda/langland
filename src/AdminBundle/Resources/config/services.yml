@@ -5,7 +5,7 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
-    word.form:
+    admin.form.word:
         class: AdminBundle\Form\Type\WordType
         arguments: ['@doctrine.orm.entity_manager']
         tags:
@@ -16,6 +16,17 @@ services:
         arguments: ['@doctrine.orm.entity_manager', '@admin.validation_group_resolver']
         tags:
             - { name: form.type }
+
+    admin.form.language_info:
+        class: AdminBundle\Form\Type\LanguageInfoType
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: form.type }
+
+    admin.entity_subscriber:
+        class: AdminBundle\Listener\EntitySubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
 
     admin.form.lesson_working_data:
         class: AdminBundle\Form\Type\LessonWorkingDataType

@@ -1,0 +1,25 @@
+{% extends '::Admin/baseContent.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Language Info</h1>
+            <a href="{{ path('admin_language_info_create') }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
+        {% if languageInfos is empty %}
+            <p class="no-data-message">No language infos have been added</p>
+        {% endif %}
+
+        {% if languageInfos is not empty %}
+            <div class="full-width align-left margin-top-30 page-content">
+                {% for languageInfo in languageInfos %}
+                    <div class="card full-width align-left margin-bottom-10">
+                        <a class="base-action-link align-left" href="#">{{ languageInfo.name }}</a>
+                        <a class="sub-base-action-link align-right" href="{{ path('admin_language_info_edit', {'languageInfoId': languageInfo.id}) }}"><i class="fa fa-edit"></i></a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

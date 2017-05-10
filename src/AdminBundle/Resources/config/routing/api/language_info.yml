@@ -1,0 +1,11 @@
+admin_language_info_index:
+    path: /
+    defaults: { _controller: AdminBundle:LanguageInfo:index }
+
+admin_language_info_create:
+    path: /create
+    defaults: { _controller: AdminBundle:LanguageInfo:create }
+
+admin_language_info_edit:
+    path: /edit/{languageInfoId}
+    defaults: { _controller: AdminBundle:LanguageInfo:edit }

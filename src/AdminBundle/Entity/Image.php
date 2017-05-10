@@ -2,10 +2,9 @@
 
 namespace AdminBundle\Entity;
 
-use AdminBundle\Form\Type\Contract\ImageTypeInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Image implements ImageTypeInterface
+class Image
 {
     private $id;
     /**

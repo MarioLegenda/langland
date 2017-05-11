@@ -6,7 +6,8 @@
       <generator strategy="AUTO"/>
     </id>
 
-    <field name="name" type="text" column="name"/>
+    <field name="name" type="string" length="255" column="name"/>
+    <field name="text" type="text" column="text"/>
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
 

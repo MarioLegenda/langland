@@ -1,0 +1,50 @@
+.language-info {
+  background-color: white;
+
+  width: 500px;
+  overflow:hidden;
+  margin: 0 auto;
+
+  padding: 20px;
+
+  border-radius: 20px;
+
+  h1 {
+    font-size: 1.2em;
+
+    font-weight: bold;
+
+    color: $appMainColor;
+
+    border-bottom: 1px solid $highlight-gray;
+
+    padding-bottom: 5px;
+  }
+
+  p {
+    font-size: 1.1em;
+    line-height: 1.4em;
+    word-spacing: 0.05em;
+    letter-spacing: 0.03em;
+
+    color: $text-color-gray;
+  }
+
+  a {
+    border:none;
+    background-color: unset;
+    color: $appMainColor;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  a:first-child {
+    float:left;
+  }
+
+  a:last-child {
+    float:right;
+  }
+}

@@ -11,6 +11,12 @@ class AdminSecurityController extends Controller implements UserLoggedInInterfac
 {
     public function adminLoginAction(Request $request)
     {
+        $securityContext = $this->get('security.authorization_checker');
+
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('admin_dashboard');
+        }
+
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one

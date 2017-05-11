@@ -1,3 +1,7 @@
-app_course_setup:
-    path: /
-    defaults: { _controller: AppBundle:Course:setup }
+app_course_language_info_exists:
+    path: /is-info-looked
+    defaults: { _controller: AppBundle:Api/Course:isInfoLooked }
+
+app_course_language_infos:
+    path: /find-language-info
+    defaults: { _controller: AppBundle:Api/Course:findLanguageInfos }

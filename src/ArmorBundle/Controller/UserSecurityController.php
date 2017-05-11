@@ -19,6 +19,12 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 {
     public function userLoginAction()
     {
+        $securityContext = $this->get('security.authorization_checker');
+
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app_dashboard');
+        }
+
         $authenticationUtils = $this->get('security.authentication_utils');
 
         // get the login error if there is one
@@ -48,6 +54,12 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 
     public function registerAction(Request $request)
     {
+        $securityContext = $this->get('security.authorization_checker');
+
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app_dashboard');
+        }
+        
         $user = new User();
         $form = $this->createForm(RegistrationForm::class, $user);
 

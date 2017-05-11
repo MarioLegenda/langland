@@ -23,7 +23,10 @@
                         {{ form_label(form.languageInfoTexts) }}
                         <div class="translations ace-text" data-prototype="{{ form_widget(form.languageInfoTexts.vars.prototype)|e('html_attr') }}">
                             {% for text in form.languageInfoTexts %}
-                                <div>{{ form_row(text.name) }}</div>
+                                <div class="translation">
+                                    <div class="full-width align-left margin-bottom-20">{{ form_row(text.name) }}</div>
+                                    <div class="full-width align-left margin-bottom-20">{{ form_row(text.text) }}</div>
+                                </div>
                             {% endfor %}
                         </div>
                     </div>

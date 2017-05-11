@@ -92,7 +92,8 @@ class SeedCommand extends ContainerAwareCommand
 
                 for ($s = 0; $s < 10; $s++) {
                     $text = new LanguageInfoText();
-                    $text->setName($faker->text(500));
+                    $text->setName($faker->word);
+                    $text->setText($faker->sentence(10));
 
                     $text->setLanguageInfo($languageInfo);
 

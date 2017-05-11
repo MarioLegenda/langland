@@ -1,0 +1,9 @@
+AdminBundle\Entity\LanguageInfoText:
+    exclusion_policy: ALL
+    properties:
+        name:
+            expose: true
+            groups: [language_info]
+        text:
+            expose: true
+            groups: [language_info]

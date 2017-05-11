@@ -18,8 +18,10 @@ class CourseController extends Controller
 
             $em->persist($language);
             $em->flush();
+
+            return $this->render('::App/Dashboard/dashboard.html.twig');
         }
 
-        return $this->render('::App/Dashboard/dashboard.html.twig');
+        throw $this->createNotFoundException();
     }
 }

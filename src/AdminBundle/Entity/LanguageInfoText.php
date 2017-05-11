@@ -16,6 +16,10 @@ class LanguageInfoText
      */
     private $name;
     /**
+     * @var string $text
+     */
+    private $text;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -57,6 +61,18 @@ class LanguageInfoText
     public function getName()
     {
         return $this->name;
+    }
+
+    public function setText($text) : LanguageInfoText
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    public function getText()
+    {
+        return $this->text;
     }
     /**
      * @return mixed

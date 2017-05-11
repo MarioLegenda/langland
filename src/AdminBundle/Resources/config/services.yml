@@ -28,6 +28,12 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+#    admin.validator.language_info_validator:
+#        class: AdminBundle\Validator\Constraint\OneLanguageInfoConstraintValidator
+#        arguments: ['@doctrine.orm.entity_manager']
+#        tags:
+#            - { name: validator.constraint_validator }
+
     admin.form.lesson_working_data:
         class: AdminBundle\Form\Type\LessonWorkingDataType
         arguments: ['@doctrine.orm.entity_manager']

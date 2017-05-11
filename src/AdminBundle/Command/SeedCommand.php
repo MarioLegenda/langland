@@ -85,24 +85,21 @@ class SeedCommand extends ContainerAwareCommand
                 $wordsArray[] = $word;
             }
 
-            for ($q = 0; $q < 10; $q++) {
-                $languageInfo = new LanguageInfo();
-                $languageInfo->setLanguage($language);
-                $languageInfo->setName($faker->word);
+            $languageInfo = new LanguageInfo();
+            $languageInfo->setLanguage($language);
+            $languageInfo->setName($faker->word);
 
-                for ($s = 0; $s < 10; $s++) {
-                    $text = new LanguageInfoText();
-                    $text->setName($faker->word);
-                    $text->setText($faker->sentence(10));
+            for ($s = 0; $s < 5; $s++) {
+                $text = new LanguageInfoText();
+                $text->setName($faker->word);
+                $text->setText($faker->sentence(10));
 
-                    $text->setLanguageInfo($languageInfo);
+                $text->setLanguageInfo($languageInfo);
 
-                    $languageInfo->addLanguageInfoText($text);
-                }
-
-                $em->persist($languageInfo);
+                $languageInfo->addLanguageInfoText($text);
             }
 
+            $em->persist($languageInfo);
             $em->flush();
 
             $course = new Course();

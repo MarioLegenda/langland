@@ -4,6 +4,7 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\LanguageInfo;
 use AdminBundle\Form\Type\LanguageInfoType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 
 class LanguageInfoController extends RepositoryController
@@ -29,6 +30,20 @@ class LanguageInfoController extends RepositoryController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
+
+                $existingLanguageInfo = $this->getRepository('AdminBundle:LanguageInfo')->findBy(array(
+                    'language' => $languageInfo->getLanguage(),
+                ));
+
+                if (!empty($existingLanguageInfo) and $existingLanguageInfo[0] instanceof LanguageInfo) {
+                    $form->addError(new FormError(
+                        sprintf('Language info for language %s has already been created', $languageInfo->getLanguage()->getName())
+                    ));
+
+                    return $this->render('::Admin/LanguageInfo/create.html.twig', array(
+                        'form' => $form->createView(),
+                    ));
+                }
 
                 $em->persist($languageInfo);
                 $em->flush();

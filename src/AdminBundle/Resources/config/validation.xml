@@ -71,6 +71,7 @@
             <constraint name="NotNull">
                 <option name="message">You have to specify a language for a language info</option>
             </constraint>
+            
         </property>
     </class>
 

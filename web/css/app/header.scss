@@ -6,6 +6,8 @@
 
   padding: 20px;
 
+  height: 70px;
+
   .bar {
     position: relative;
 
@@ -37,6 +39,7 @@
 
     .bar-popup {
       border-radius: 10px;
+      z-index: 100;
 
       padding: 20px;
 

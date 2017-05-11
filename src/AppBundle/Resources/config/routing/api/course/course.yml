@@ -5,3 +5,7 @@ app_course_language_info_exists:
 app_course_language_infos:
     path: /find-language-info
     defaults: { _controller: AppBundle:Api/Course:findLanguageInfos }
+
+app_course_mark_info_looked:
+    path: /mark-info-looked
+    defaults: { _controller: AppBundle:Api/Course:markInfoLooked }

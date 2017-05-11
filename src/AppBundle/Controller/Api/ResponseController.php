@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -13,15 +14,22 @@ class ResponseController extends Controller
      * @param string $repository
      * @return EntityRepository
      */
-    public function getRepository(string $repository) : EntityRepository
+    protected function getRepository(string $repository) : EntityRepository
     {
         return $this->get('doctrine')->getRepository($repository);
+    }
+    /**
+     * @return EntityManager
+     */
+    protected function getManager() : EntityManager
+    {
+        return $this->get('doctrine')->getManager();
     }
     /**
      * @param array $data
      * @return JsonResponse
      */
-    public function createSuccessJsonResponse(array $data = array()) : JsonResponse
+    protected function createSuccessJsonResponse(array $data = array()) : JsonResponse
     {
         return new JsonResponse(array(
             'status' => 'success',
@@ -32,7 +40,7 @@ class ResponseController extends Controller
      * @param array $data
      * @return JsonResponse
      */
-    public function createFailedJsonResponse(array $data = array()) : JsonResponse
+    protected function createFailedJsonResponse(array $data = array()) : JsonResponse
     {
         return new JsonResponse(array(
             'status' => 'failure',
@@ -43,7 +51,7 @@ class ResponseController extends Controller
      * @param array $data
      * @return JsonResponse
      */
-    public function createErrorJsonResponse(array $data = array()) : JsonResponse
+    protected function createErrorJsonResponse(array $data = array()) : JsonResponse
     {
         return new JsonResponse(array(
             'status' => 'error',
@@ -55,7 +63,7 @@ class ResponseController extends Controller
      * @param array|null $groups
      * @return array
      */
-    public function serialize($data, array $groups = null) : array
+    protected function serialize($data, array $groups = null) : array
     {
         $context = null;
 

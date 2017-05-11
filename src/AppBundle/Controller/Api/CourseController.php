@@ -21,6 +21,24 @@ class CourseController extends ResponseController
         return $this->createSuccessJsonResponse();
     }
 
+    public function markInfoLookedAction()
+    {
+        $learningUser = $this
+            ->getRepository('AppBundle:LearningUser')
+            ->findLearningUserByLoggedInUser($this->getUser());
+
+        $languageInfo = $this
+            ->getRepository('AdminBundle:LanguageInfo')
+            ->findByLanguage($learningUser->getCurrentLanguage());
+
+        $languageInfo->setIsLooked(true);
+
+        $this->getManager()->persist($languageInfo);
+        $this->getManager()->flush();
+
+        return $this->createSuccessJsonResponse();
+    }
+
     public function findLanguageInfosAction()
     {
         $learningUser = $this

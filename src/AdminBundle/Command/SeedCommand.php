@@ -92,7 +92,7 @@ class SeedCommand extends ContainerAwareCommand
             for ($s = 0; $s < 5; $s++) {
                 $text = new LanguageInfoText();
                 $text->setName($faker->word);
-                $text->setText($faker->sentence(10));
+                $text->setText($faker->sentence(30));
 
                 $text->setLanguageInfo($languageInfo);
 
@@ -102,11 +102,14 @@ class SeedCommand extends ContainerAwareCommand
             $em->persist($languageInfo);
             $em->flush();
 
-            $course = new Course();
-            $course->setName($courses[0]);
-            $course->setLanguage($language);
+            for ($g = 0; $g < 10; $g++) {
+                $course = new Course();
+                $course->setName($courses[0]);
+                $course->setWhatToLearn($faker->sentence(30));
+                $course->setLanguage($language);
 
-            $em->persist($course);
+                $em->persist($course);
+            }
 
             for ($a = 0; $a < 5; $a++) {
                 $lesson = new Lesson();

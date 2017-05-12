@@ -47,7 +47,8 @@
         border-radius: 20px;
 
         &:hover {
-          cursor: pointer;
+          background-color: white;
+          color: $publicMainColor;
         }
       }
     }

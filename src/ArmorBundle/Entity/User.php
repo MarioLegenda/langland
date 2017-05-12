@@ -3,6 +3,7 @@
 namespace ArmorBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
@@ -202,9 +203,23 @@ class User implements UserInterface
      * @param Role $role
      * @return bool
      */
-    public function hasRole(Role $role) : bool
+    public function hasRole($role) : bool
     {
-        return $this->roles->contains($role);
+        if (!is_string($role) and !$role instanceof RoleInterface) {
+            return false;
+        }
+
+        if (is_string($role)) {
+            $role = new Role($role);
+        }
+
+        foreach ($this->roles as $r) {
+            if ($r->getRole() === $role->getRole()) {
+                return true;
+            }
+        }
+
+        return false;
     }
     /**
      * @param array $roles

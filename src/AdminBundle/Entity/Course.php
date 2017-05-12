@@ -15,11 +15,13 @@ class Course
      */
     private $name;
     /**
+     * @var string $whatToLearn
+     */
+    private $whatToLearn;
+    /**
      * @var Language $language
      */
     private $language;
-
-    private $showOnPage;
     /**
      * @var \DateTime $createdAt
      */
@@ -68,22 +70,24 @@ class Course
     {
         return $this->name;
     }
+
     /**
-     * @return mixed
-     */
-    public function getShowOnPage()
-    {
-        return $this->showOnPage;
-    }
-    /**
-     * @param mixed $showOnPage
+     * @param $whatToLearn
      * @return Course
      */
-    public function setShowOnPage($showOnPage) : Course
+    public function setWhatToLearn($whatToLearn) : Course
     {
-        $this->showOnPage = $showOnPage;
+        $this->whatToLearn = $whatToLearn;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWhatToLearn()
+    {
+        return $this->whatToLearn;
     }
     /**
      * Set createdAt

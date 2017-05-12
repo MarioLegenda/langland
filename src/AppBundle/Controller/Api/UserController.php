@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\LearningUser;
+use AppBundle\Entity\LearningUserCourse;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends ResponseController
@@ -38,7 +39,21 @@ class UserController extends ResponseController
             return $this->createSuccessJsonResponse();
         }
 
-        $em->persist(LearningUser::create($this->getUser(), $language));
+        $learningUser = LearningUser::create($this->getUser(), $language);
+
+        $courses = $this->getRepository('AdminBundle:Course')->findBy(array(
+            'language' => $language,
+        ));
+
+        foreach ($courses as $course) {
+            $learningUserCourse = new LearningUserCourse();
+            $learningUserCourse->setLearningUser($learningUser);
+            $learningUserCourse->setCourse($course);
+
+            $learningUser->addLearningUserCourse($learningUserCourse);
+        }
+
+        $em->persist($learningUser);
         $em->flush();
 
         return $this->createSuccessJsonResponse();

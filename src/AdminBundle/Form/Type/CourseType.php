@@ -6,6 +6,7 @@ use AdminBundle\Entity\Course;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -50,6 +51,14 @@ class CourseType extends AbstractType
                     'placeholder' => 'click \'n type ...',
                     'autofocus' => true,
                 )
+            ))
+            ->add('whatToLearn', TextareaType::class, array(
+                'label' => 'What the user will learn?',
+                'attr' => array(
+                    'placeholder' => 'This will be shown in the course list of a language',
+                    'rows' => 10,
+                    'cols' => 40,
+                ),
             ));
 
         $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(

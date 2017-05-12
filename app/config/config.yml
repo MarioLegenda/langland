@@ -6,6 +6,8 @@ imports:
     - { resource: "@AdminBundle/Resources/config/services.yml" }
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
+    - { resource: vendor_config/jms_serializer.yml }
+
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
@@ -70,8 +72,3 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
-
-jms_serializer:
-    metadata:
-        cache: file
-        auto_detection: true

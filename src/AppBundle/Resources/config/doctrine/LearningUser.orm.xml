@@ -13,6 +13,12 @@
 
     <many-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
 
+    <one-to-many target-entity="AppBundle\Entity\LearningUserCourse" mapped-by="learningUser" field="learningUserCourses">
+      <cascade>
+        <cascade-persist/>
+      </cascade>
+    </one-to-many>
+
     <many-to-many field="languages" target-entity="AdminBundle\Entity\Language">
       <join-table name="learning_user_languages">
         <join-columns>

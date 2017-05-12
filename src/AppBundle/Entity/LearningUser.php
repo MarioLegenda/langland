@@ -33,10 +33,15 @@ class LearningUser
      * @var Language $currentLanguage
      */
     private $currentLanguage;
+    /**
+     * @var ArrayCollection $learningUserCourses
+     */
+    private $learningUserCourses;
 
     public function __construct()
     {
         $this->languages = new ArrayCollection();
+        $this->learningUserCourses = new ArrayCollection();
     }
     /**
      * Get id
@@ -108,6 +113,41 @@ class LearningUser
         $this->currentLanguage = $currentLanguage;
 
         return $this;
+    }
+    /**
+     * @param LearningUserCourse $learningUserCourse
+     * @return bool
+     */
+    public function hasLearningUserCourse(LearningUserCourse $learningUserCourse) : bool
+    {
+        return $this->learningUserCourses->contains($learningUserCourse);
+    }
+    /**
+     * @param LearningUserCourse $learningUserCourse
+     * @return LearningUser
+     */
+    public function addLearningUserCourse(LearningUserCourse $learningUserCourse) : LearningUser
+    {
+        if (!$this->hasLearningUserCourse($learningUserCourse)) {
+            $learningUserCourse->setLearningUser($this);
+            $this->learningUserCourses->add($learningUserCourse);
+        }
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getLearningUserCourses()
+    {
+        return $this->learningUserCourses;
+    }
+    /**
+     * @param mixed $learningUserCourses
+     */
+    public function setLearningUserCourses($learningUserCourses)
+    {
+        $this->learningUserCourses = $learningUserCourses;
     }
     /**
      * Set createdAt

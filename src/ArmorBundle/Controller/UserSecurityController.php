@@ -19,10 +19,9 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 {
     public function userLoginAction()
     {
-        $securityContext = $this->get('security.authorization_checker');
-
-        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('app_dashboard');
+        $doRedirect = $this->tryRedirectIfAuthorized();
+        if ($doRedirect !== null) {
+            return $doRedirect;
         }
 
         $authenticationUtils = $this->get('security.authentication_utils');
@@ -54,6 +53,12 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 
     public function registerAction(Request $request)
     {
+        $doRedirect = $this->tryRedirectIfAuthorized();
+
+        if ($doRedirect !== null) {
+            return $doRedirect;
+        }
+
         $securityContext = $this->get('security.authorization_checker');
 
         if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -159,5 +164,17 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
         );
 
         return $this->redirectToRoute('armor_user_login');
+    }
+
+    private function tryRedirectIfAuthorized()
+    {
+        $securityContext = $this->get('security.authorization_checker');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            if ($this->getUser()->hasRole('ROLE_USER')) {
+                return $this->redirectToRoute('app_dashboard');
+            }
+
+            return null;
+        }
     }
 }

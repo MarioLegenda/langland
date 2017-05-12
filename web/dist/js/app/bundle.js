@@ -11067,8 +11067,6 @@ var CourseContainer = exports.CourseContainer = function (_React$Component2) {
         value: function render() {
             var isInfoLooked = this.state.isInfoLooked;
 
-            console.log(this.state.isInfoLooked);
-
             if (isInfoLooked === true) {
                 return _react2.default.createElement(Course, null);
             } else if (isInfoLooked === false) {
@@ -11116,18 +11114,37 @@ var LanguageList = function (_React$Component) {
     function LanguageList(props) {
         _classCallCheck(this, LanguageList);
 
-        return _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
+
+        _this.state = {
+            pendingTitle: null,
+            itemId: null
+        };
+
+        _this.createLearningUser = _this.createLearningUser.bind(_this);
+        return _this;
     }
 
     _createClass(LanguageList, [{
         key: 'createLearningUser',
         value: function createLearningUser(e) {
+            e.preventDefault();
+
+            var target = e.currentTarget;
+
+            this.setState({
+                pendingTitle: 'Setting up...',
+                itemId: target.getAttribute('data-item-id')
+            });
+
             jQuery.ajax({
                 url: _env.envr + 'langland/user/create-learning-user',
                 method: 'POST',
                 data: {
-                    languageId: e.currentTarget.getAttribute('data-item-id')
+                    languageId: target.getAttribute('data-item-id')
                 }
+            }).done(function () {
+                window.location.href = target.getAttribute('href');
             });
         }
     }, {
@@ -11137,6 +11154,10 @@ var LanguageList = function (_React$Component) {
 
             var items = this.props.items.map(function (item) {
                 var title = item.isLearning === true ? 'Continue' : 'Learn ' + item.name;
+
+                if (item.id == that.state.itemId) {
+                    title = that.state.pendingTitle;
+                }
 
                 return _react2.default.createElement(
                     'div',
@@ -11654,6 +11675,10 @@ var LanguageInfo = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            if (typeof this.props.item === 'undefined') {
+                return null;
+            }
+
             var name = this.props.item.name;
             var text = this.props.item.text;
 

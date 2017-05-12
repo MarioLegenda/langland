@@ -11161,7 +11161,6 @@ var LanguageList = function (_React$Component) {
             e.preventDefault();
 
             if (this.isInUserCreation === true) {
-                console.log('ulazak');
                 return;
             }
 
@@ -11182,8 +11181,10 @@ var LanguageList = function (_React$Component) {
                 data: {
                     languageId: target.getAttribute('data-item-id')
                 }
-            }).done(function () {
-                window.location.href = target.getAttribute('href');
+            }).done(function (data) {
+                if (data.status === 'success') {
+                    window.location.href = target.getAttribute('href');
+                }
             });
         }
     }, {

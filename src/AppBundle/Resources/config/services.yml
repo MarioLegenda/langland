@@ -1,5 +1,10 @@
 services:
-    registration_listener:
+    custom_registration_listener:
         class: AppBundle\Listener\AccountConfirmedListener
         tags:
             - { name: 'kernel.event_listener', event: 'armor.account_confirmed', method: 'onAccountConfirmed' }
+
+    custom_learning_user_create_listener:
+        class: AppBundle\Listener\CreateLearningUserListener
+        tags:
+            - { name: 'kernel.event_listener', event: 'app.create_learning_user', method: 'onLearningUserCreate'}

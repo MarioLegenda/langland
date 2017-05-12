@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CourseController extends Controller
 {
-    public function dashboardAction($id)
+    public function dashboardAction($languageName, $id)
     {
         $em = $this->get('doctrine')->getManager();
 

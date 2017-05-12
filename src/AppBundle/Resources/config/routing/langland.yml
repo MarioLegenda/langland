@@ -1,0 +1,17 @@
+app_course:
+  resource: "@AppBundle/Resources/config/routing/api/course/course.yml"
+  prefix: /courses
+  host: '%host%'
+  methods: [POST]
+
+app_user:
+  resource: "@AppBundle/Resources/config/routing/api/user/user.yml"
+  prefix: /user
+  host: '%host%'
+  methods: [POST]
+
+app_language:
+  resource: "@AppBundle/Resources/config/routing/api/language/language.yml"
+  prefix: /language
+  host: '%host%'
+  methods: [POST]

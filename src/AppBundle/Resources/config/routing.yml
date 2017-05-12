@@ -4,24 +4,11 @@ app_dashboard:
     methods: [GET]
 
 app_course_dashboard:
-    path: /langland/course/{id}
+    path: /langland/language-course/{languageName}/{id}
     defaults: { _controller: AppBundle:Course:dashboard }
+    methods: [GET]
 
 app_course:
-  resource: "@AppBundle/Resources/config/routing/api/course/course.yml"
-  prefix: /langland/courses
+  resource: "@AppBundle/Resources/config/routing/langland.yml"
+  prefix: /langland
   host: '%host%'
-  methods: [POST, GET]
-
-app_user:
-  resource: "@AppBundle/Resources/config/routing/api/user/user.yml"
-  prefix: /langland/user
-  host: '%host%'
-  methods: [POST]
-
-app_language:
-  resource: "@AppBundle/Resources/config/routing/api/language/language.yml"
-  prefix: /langland/language
-  host: '%host%'
-  methods: [POST]
-

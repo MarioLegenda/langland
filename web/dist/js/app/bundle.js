@@ -10971,9 +10971,9 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(24);
-
 var _languageInfo = __webpack_require__(101);
+
+var _routes = __webpack_require__(227);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11025,7 +11025,7 @@ var CourseContainer = exports.CourseContainer = function (_React$Component2) {
         key: 'markInfoLooked',
         value: function markInfoLooked() {
             jQuery.ajax({
-                url: _env.envr + 'langland/courses/mark-info-looked',
+                url: _routes.routes.app_course_mark_info_looked,
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
@@ -11039,7 +11039,7 @@ var CourseContainer = exports.CourseContainer = function (_React$Component2) {
         key: '_fetchIsLookedInfo',
         value: function _fetchIsLookedInfo() {
             jQuery.ajax({
-                url: _env.envr + 'langland/courses/is-info-looked',
+                url: _routes.routes.app_course_language_info_exists,
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
@@ -11099,6 +11099,8 @@ var _react = __webpack_require__(6);
 var _react2 = _interopRequireDefault(_react);
 
 var _env = __webpack_require__(24);
+
+var _routes = __webpack_require__(227);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11182,7 +11184,7 @@ var LanguageList = function (_React$Component) {
                         { className: 'course-start-link' },
                         _react2.default.createElement(
                             'a',
-                            { onClick: that.createLearningUser, 'data-item-id': item.id, href: _env.envr + "langland/course/" + item.id },
+                            { onClick: that.createLearningUser, 'data-item-id': item.id, href: _env.envr + "langland/language-course/" + item.name + '/' + item.id },
                             title
                         ),
                         item.isLearning === true && _react2.default.createElement(
@@ -11223,7 +11225,7 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
         key: '_fetchLearnableLanguages',
         value: function _fetchLearnableLanguages() {
             jQuery.ajax({
-                url: _env.envr + 'langland/language/find-learnable-languages',
+                url: _routes.routes.app_find_learnable_languages,
                 method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 this.setState({
@@ -11384,7 +11386,7 @@ var CourseBar = function (_React$Component3) {
 
                 return _react2.default.createElement(
                     'a',
-                    { href: _env.envr + "langland/course/" + item.id, key: item.id, className: "language-link margin-bottom-20 " + currentLangClass },
+                    { href: _env.envr + "langland/language-course/" + item.name + '/' + item.id, key: item.id, className: "language-link margin-bottom-20 " + currentLangClass },
                     item.name.toLowerCase()
                 );
             });
@@ -11613,7 +11615,7 @@ function App() {
                 { className: 'app' },
                 _react2.default.createElement(_header.HeaderContainer, null),
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _courses.LanguageListContainer }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/course/:id", component: _course.CourseContainer })
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:name/:id", component: _course.CourseContainer })
             )
         )
     );
@@ -26107,6 +26109,29 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.routes = undefined;
+
+var _env = __webpack_require__(24);
+
+var routes = exports.routes = {
+    app_course_language_info_exists: _env.envr + 'langland/courses/is-info-looked',
+    app_course_language_infos: _env.envr + 'langland/courses/find-language-info',
+    app_course_mark_info_looked: _env.envr + 'langland/courses/mark-info-looked',
+
+    app_find_learnable_languages: _env.envr + 'langland/language/find-learnable-languages',
+    app_find_learning_languages: _env.envr + 'langland/language/find-learning-languages'
+};
 
 /***/ })
 /******/ ]);

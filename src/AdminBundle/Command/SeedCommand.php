@@ -64,8 +64,6 @@ class SeedCommand extends ContainerAwareCommand
 
             $em->persist($language);
 
-            $em->flush();
-
             $wordsArray = array();
             for ($m = 0; $m < 10; $m++) {
                 $word = new Word();
@@ -100,7 +98,6 @@ class SeedCommand extends ContainerAwareCommand
             }
 
             $em->persist($languageInfo);
-            $em->flush();
 
             for ($g = 0; $g < 6; $g++) {
                 $course = new Course();
@@ -114,58 +111,57 @@ class SeedCommand extends ContainerAwareCommand
                 $course->setLanguage($language);
 
                 $em->persist($course);
-            }
 
-            for ($a = 0; $a < 5; $a++) {
-                $lesson = new Lesson();
-                $lesson->setName($faker->name);
-                $lesson->setCourse($course);
 
-                $em->persist($lesson);
-            }
+                for ($a = 0; $a < 5; $a++) {
+                    $lesson = new Lesson();
+                    $lesson->setName($faker->name);
+                    $lesson->setCourse($course);
 
-            $em->flush();
-
-            for ($r = 0; $r < 10; $r++) {
-                $sentence = new Sentence();
-                $sentence->setName($faker->name);
-                $sentence->setSentence($faker->sentence(25));
-                $sentence->setCourse($course);
-
-                for ($o = 0; $o < 10; $o++) {
-                    $sentenceTranslation = new SentenceTranslation();
-                    $sentenceTranslation->setSentence($faker->sentence(25));
-                    $sentenceTranslation->setMarkedCorrect(0);
-                    $sentenceTranslation->setName($faker->name);
-
-                    $sentence->addSentenceTranslation($sentenceTranslation);
+                    $em->persist($lesson);
                 }
 
-                $em->persist($sentence);
-            }
+                for ($r = 0; $r < 10; $r++) {
+                    $sentence = new Sentence();
+                    $sentence->setName($faker->name);
+                    $sentence->setSentence($faker->sentence(25));
+                    $sentence->setCourse($course);
 
-            for ($t = 0; $t < 5; $t++) {
-                $wordPool = new SentenceWordPool();
+                    for ($o = 0; $o < 10; $o++) {
+                        $sentenceTranslation = new SentenceTranslation();
+                        $sentenceTranslation->setSentence($faker->sentence(25));
+                        $sentenceTranslation->setMarkedCorrect(0);
+                        $sentenceTranslation->setName($faker->name);
 
-                $wordPool->setName($faker->name);
-                $wordPool->setCourse($course);
-
-                $poolWord = new ArrayCollection();
-
-                $count = 0;
-                for (;;) {
-
-                    if ($count === 10) {
-                        break;
+                        $sentence->addSentenceTranslation($sentenceTranslation);
                     }
 
-                    $poolWord->add($wordsArray[$count]);
-                    $count++;
+                    $em->persist($sentence);
                 }
 
-                $wordPool->setWords($poolWord);
+                for ($t = 0; $t < 5; $t++) {
+                    $wordPool = new SentenceWordPool();
 
-                $em->persist($wordPool);
+                    $wordPool->setName($faker->name);
+                    $wordPool->setCourse($course);
+
+                    $poolWord = new ArrayCollection();
+
+                    $count = 0;
+                    for (;;) {
+
+                        if ($count === 10) {
+                            break;
+                        }
+
+                        $poolWord->add($wordsArray[$count]);
+                        $count++;
+                    }
+
+                    $wordPool->setWords($poolWord);
+
+                    $em->persist($wordPool);
+                }
             }
         }
 

@@ -48,7 +48,8 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
     public function userLogoutAction(Request $request)
     {
         $this->get('security.token_storage')->setToken(null);
-        $request->getSession()->invalidate();
+
+        return $this->redirectToRoute('armor_user_login');
     }
 
     public function registerAction(Request $request)

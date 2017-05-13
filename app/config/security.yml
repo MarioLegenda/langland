@@ -22,10 +22,6 @@ security:
                 login_path: armor_admin_login
                 check_path: armor_admin_login
 
-            logout:
-                path: armor_admin_logout
-                target: armor_admin_login
-
             anonymous: ~
 
         langland:
@@ -36,10 +32,6 @@ security:
                 default_target_path: app_dashboard
                 login_path: armor_user_login
                 check_path: armor_user_login
-
-            logout:
-                path: armor_user_logout
-                target: armor_user_login
 
             anonymous: ~
 

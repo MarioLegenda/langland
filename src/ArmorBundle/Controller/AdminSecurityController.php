@@ -39,6 +39,7 @@ class AdminSecurityController extends Controller implements UserLoggedInInterfac
     public function adminLogoutAction(Request $request)
     {
         $this->get('security.token_storage')->setToken(null);
-        $request->getSession()->invalidate();
+
+        return $this->redirectToRoute('armor_admin_login');
     }
 }

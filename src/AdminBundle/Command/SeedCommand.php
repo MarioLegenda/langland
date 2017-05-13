@@ -102,7 +102,7 @@ class SeedCommand extends ContainerAwareCommand
             $em->persist($languageInfo);
             $em->flush();
 
-            for ($g = 0; $g < 10; $g++) {
+            for ($g = 0; $g < 6; $g++) {
                 $course = new Course();
 
                 if ($g === 0) {

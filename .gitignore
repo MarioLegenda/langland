@@ -18,6 +18,7 @@
 /lib/bluedot/
 /web/uploads
 /web/node_modules
+/web/node_modules/.yarn-integrity
 /web/.babelrc
 /web/js/*
 /web/webpack.config.js

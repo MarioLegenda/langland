@@ -104,7 +104,12 @@ class SeedCommand extends ContainerAwareCommand
 
             for ($g = 0; $g < 10; $g++) {
                 $course = new Course();
-                $course->setName($courses[0]);
+
+                if ($g === 0) {
+                    $course->setInitialCourse(true);
+                }
+
+                $course->setName($faker->word);
                 $course->setWhatToLearn($faker->sentence(30));
                 $course->setLanguage($language);
 

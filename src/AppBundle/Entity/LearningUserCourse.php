@@ -27,9 +27,18 @@ class LearningUserCourse
      */
     private $learningUser;
     /**
+     * @var bool $hasPassed
+     */
+    private $hasPassed;
+    /**
      * @var ArrayCollection $courses
      */
     private $course;
+
+    public function __construct()
+    {
+        $this->hasPassed = false;
+    }
     /**
      * Get id
      *
@@ -38,6 +47,23 @@ class LearningUserCourse
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * @return bool
+     */
+    public function getHasPassed(): bool
+    {
+        return $this->hasPassed;
+    }
+    /**
+     * @param bool $hasPassed
+     * @return LearningUserCourse
+     */
+    public function setHasPassed(bool $hasPassed) : LearningUserCourse
+    {
+        $this->hasPassed = $hasPassed;
+
+        return $htis;
     }
     /**
      * Set learningUser

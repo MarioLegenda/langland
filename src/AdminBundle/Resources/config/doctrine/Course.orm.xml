@@ -8,6 +8,7 @@
 
     <field name="name" type="string" column="name" length="255"/>
     <field name="whatToLearn" type="text" column="what_to_learn" />
+    <field name="initialCourse" type="boolean" column="initial_course" />
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
 

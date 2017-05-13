@@ -4939,6 +4939,7 @@ var routes = exports.routes = {
     app_course_language_info_exists: _env.envr + 'langland/courses/is-info-looked',
     app_course_language_infos: _env.envr + 'langland/courses/find-language-info',
     app_course_mark_info_looked: _env.envr + 'langland/courses/mark-info-looked',
+    app_language_course_list: _env.envr + 'langland/courses/find-language-course-list',
 
     app_find_learnable_languages: _env.envr + 'langland/language/find-learnable-languages',
     app_find_learning_languages: _env.envr + 'langland/language/find-learning-languages',
@@ -10980,133 +10981,7 @@ function getIteratorFn(maybeIterable) {
 module.exports = getIteratorFn;
 
 /***/ }),
-/* 96 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.CourseContainer = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _languageInfo = __webpack_require__(102);
-
-var _routes = __webpack_require__(39);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Course = function (_React$Component) {
-    _inherits(Course, _React$Component);
-
-    function Course(props) {
-        _classCallCheck(this, Course);
-
-        return _possibleConstructorReturn(this, (Course.__proto__ || Object.getPrototypeOf(Course)).call(this, props));
-    }
-
-    _createClass(Course, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
-        key: 'render',
-        value: function render() {
-            return _react2.default.createElement('div', { className: 'component' });
-        }
-    }]);
-
-    return Course;
-}(_react2.default.Component);
-
-var CourseContainer = exports.CourseContainer = function (_React$Component2) {
-    _inherits(CourseContainer, _React$Component2);
-
-    function CourseContainer(props) {
-        _classCallCheck(this, CourseContainer);
-
-        var _this2 = _possibleConstructorReturn(this, (CourseContainer.__proto__ || Object.getPrototypeOf(CourseContainer)).call(this, props));
-
-        _this2.state = {
-            isInfoLooked: null
-        };
-
-        _this2.markInfoLooked = _this2.markInfoLooked.bind(_this2);
-        return _this2;
-    }
-
-    _createClass(CourseContainer, [{
-        key: 'markInfoLooked',
-        value: function markInfoLooked() {
-            jQuery.ajax({
-                url: _routes.routes.app_course_mark_info_looked,
-                method: 'POST'
-            }).done(jQuery.proxy(function (data) {
-                if (data.status === 'success') {
-                    this.setState({
-                        isInfoLooked: true
-                    });
-                }
-            }, this));
-        }
-    }, {
-        key: '_fetchIsLookedInfo',
-        value: function _fetchIsLookedInfo() {
-            jQuery.ajax({
-                url: _routes.routes.app_course_language_info_exists,
-                method: 'POST'
-            }).done(jQuery.proxy(function (data) {
-                if (data.status === 'success') {
-                    this.setState({
-                        isInfoLooked: true
-                    });
-
-                    return null;
-                }
-
-                if (data.status === 'failure') {
-                    this.setState({
-                        isInfoLooked: false
-                    });
-                }
-            }, this));
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this._fetchIsLookedInfo();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var isInfoLooked = this.state.isInfoLooked;
-
-            if (isInfoLooked === true) {
-                return _react2.default.createElement(Course, null);
-            } else if (isInfoLooked === false) {
-                return _react2.default.createElement(_languageInfo.LanguageInfoContainer, { markInfoLooked: this.markInfoLooked });
-            }
-
-            return null;
-        }
-    }]);
-
-    return CourseContainer;
-}(_react2.default.Component);
-
-/***/ }),
+/* 96 */,
 /* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11194,41 +11069,45 @@ var LanguageList = function (_React$Component) {
 
             var items = this.props.items.map(function (item) {
                 var title = item.isLearning === true ? 'Continue' : 'Learn ' + item.name;
+                var learningClass = '';
 
                 if (item.id == that.state.itemId) {
                     title = that.state.pendingTitle;
                 }
 
+                if (item.isLearning === true) {
+                    learningClass = 'item-started';
+                }
+
                 return _react2.default.createElement(
                     'div',
-                    { key: item.id, className: 'language' },
+                    { key: item.id, className: 'item' },
                     _react2.default.createElement(
                         'div',
-                        { className: 'title-holder' },
+                        { className: 'title-holder margin-bottom-30' },
                         _react2.default.createElement(
                             'h2',
-                            { className: 'language-link' },
+                            { className: 'item-name' },
                             item.name
                         ),
                         item.image && _react2.default.createElement('img', { src: item.image.fullPath }) || !item.image && _react2.default.createElement('img', { width: '50', height: '50' })
                     ),
                     _react2.default.createElement(
                         'p',
-                        null,
+                        { className: 'margin-bottom-30' },
                         item.listDescription
                     ),
                     _react2.default.createElement(
                         'div',
-                        { className: 'course-start-link' },
+                        { className: 'start-link' },
                         _react2.default.createElement(
                             'a',
-                            { onClick: that.createLearningUser, 'data-item-id': item.id, href: _env.envr + "langland/language-course/" + item.name + '/' + item.id },
+                            {
+                                className: learningClass,
+                                onClick: that.createLearningUser,
+                                'data-item-id': item.id,
+                                href: _env.envr + "langland/language-course/" + item.name + '/' + item.id },
                             title
-                        ),
-                        item.isLearning === true && _react2.default.createElement(
-                            'span',
-                            { className: 'margin-top-10' },
-                            'Already learning'
                         )
                     )
                 );
@@ -11236,7 +11115,7 @@ var LanguageList = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { className: 'component language-course-list' },
+                { className: 'component list' },
                 items
             );
         }
@@ -11637,7 +11516,7 @@ var _header = __webpack_require__(98);
 
 var _courses = __webpack_require__(97);
 
-var _course = __webpack_require__(96);
+var _courseInit = __webpack_require__(228);
 
 var _env = __webpack_require__(24);
 
@@ -11655,7 +11534,7 @@ function App() {
                 { className: 'app' },
                 _react2.default.createElement(_header.HeaderContainer, null),
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _courses.LanguageListContainer }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:name/:id", component: _course.CourseContainer })
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:name/:id", component: _courseInit.CourseInitContainer })
             )
         )
     );
@@ -26149,6 +26028,289 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.CourseInitContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _languageInfo = __webpack_require__(102);
+
+var _courseList = __webpack_require__(229);
+
+var _routes = __webpack_require__(39);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CourseInitContainer = exports.CourseInitContainer = function (_React$Component) {
+    _inherits(CourseInitContainer, _React$Component);
+
+    function CourseInitContainer(props) {
+        _classCallCheck(this, CourseInitContainer);
+
+        var _this = _possibleConstructorReturn(this, (CourseInitContainer.__proto__ || Object.getPrototypeOf(CourseInitContainer)).call(this, props));
+
+        _this.state = {
+            isInfoLooked: null
+        };
+
+        _this.markInfoLooked = _this.markInfoLooked.bind(_this);
+        return _this;
+    }
+
+    _createClass(CourseInitContainer, [{
+        key: '_fetchIsLookedInfo',
+        value: function _fetchIsLookedInfo() {
+            jQuery.ajax({
+                url: _routes.routes.app_course_language_info_exists,
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        isInfoLooked: true
+                    });
+
+                    return null;
+                }
+
+                if (data.status === 'failure') {
+                    this.setState({
+                        isInfoLooked: false
+                    });
+                }
+            }, this));
+        }
+    }, {
+        key: '_fetchMarkInfoLooked',
+        value: function _fetchMarkInfoLooked() {
+            jQuery.ajax({
+                url: _routes.routes.app_course_mark_info_looked,
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        isInfoLooked: true
+                    });
+                }
+            }, this));
+        }
+    }, {
+        key: 'markInfoLooked',
+        value: function markInfoLooked() {
+            this._fetchMarkInfoLooked();
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchIsLookedInfo();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var isInfoLooked = this.state.isInfoLooked;
+
+            if (isInfoLooked === true) {
+                return _react2.default.createElement(_courseList.CourseListContainer, null);
+            } else if (isInfoLooked === false) {
+                return _react2.default.createElement(_languageInfo.LanguageInfoContainer, { markInfoLooked: this.markInfoLooked });
+            }
+
+            return null;
+        }
+    }]);
+
+    return CourseInitContainer;
+}(_react2.default.Component);
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.CourseListContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _routes = __webpack_require__(39);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CourseItem = function (_React$Component) {
+    _inherits(CourseItem, _React$Component);
+
+    function CourseItem(props) {
+        _classCallCheck(this, CourseItem);
+
+        var _this = _possibleConstructorReturn(this, (CourseItem.__proto__ || Object.getPrototypeOf(CourseItem)).call(this, props));
+
+        _this.startCourse = _this.startCourse.bind(_this);
+        return _this;
+    }
+
+    _createClass(CourseItem, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
+        key: 'startCourse',
+        value: function startCourse(e) {
+            e.preventDefault();
+            console.log('start course');
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var that = this;
+
+            var items = this.props.items.map(function (item) {
+                var inactiveItemClass = '',
+                    inactiveStartLinkClass = '';
+
+                if (item.hasPassed === false && item.course.initialCourse === false) {
+                    inactiveItemClass = 'inactive';
+                    inactiveStartLinkClass = 'inactive-start-link';
+                }
+
+                return _react2.default.createElement(
+                    'div',
+                    { key: item.id, className: "item relative " + inactiveItemClass },
+                    item.hasPassed === false && item.course.initialCourse === false && _react2.default.createElement('div', { className: 'inactive-capsule absolute' }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'title-holder margin-bottom-30' },
+                        _react2.default.createElement(
+                            'h2',
+                            { className: 'full-width-item-name' },
+                            item.course.name
+                        )
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'margin-bottom-30' },
+                        item.course.whatToLearn
+                    ),
+                    item.hasPassed === false && item.course.initialCourse === false && _react2.default.createElement(
+                        'div',
+                        { className: 'start-link' },
+                        _react2.default.createElement(
+                            'a',
+                            {
+                                className: inactiveStartLinkClass,
+                                onClick: that.startCourse,
+                                'data-item-id': item.id },
+                            'Start'
+                        )
+                    ),
+                    item.course.initialCourse === true && _react2.default.createElement(
+                        'div',
+                        { className: 'start-link' },
+                        _react2.default.createElement(
+                            'a',
+                            {
+                                onClick: that.startCourse,
+                                'data-item-id': item.id },
+                            'Start'
+                        )
+                    )
+                );
+            });
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'list' },
+                items
+            );
+        }
+    }]);
+
+    return CourseItem;
+}(_react2.default.Component);
+
+var CourseListContainer = exports.CourseListContainer = function (_React$Component2) {
+    _inherits(CourseListContainer, _React$Component2);
+
+    function CourseListContainer(props) {
+        _classCallCheck(this, CourseListContainer);
+
+        var _this2 = _possibleConstructorReturn(this, (CourseListContainer.__proto__ || Object.getPrototypeOf(CourseListContainer)).call(this, props));
+
+        _this2.state = {
+            items: null
+        };
+        return _this2;
+    }
+
+    _createClass(CourseListContainer, [{
+        key: '_fetchCourseList',
+        value: function _fetchCourseList() {
+            jQuery.ajax({
+                url: _routes.routes.app_language_course_list,
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        items: data.data
+                    });
+                }
+            }, this));
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchCourseList();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.state.items === null) {
+                return null;
+            }
+
+            var items = this.state.items;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'component' },
+                _react2.default.createElement(CourseItem, { items: items })
+            );
+        }
+    }]);
+
+    return CourseListContainer;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

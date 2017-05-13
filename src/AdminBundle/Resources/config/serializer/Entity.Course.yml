@@ -1,0 +1,14 @@
+AdminBundle\Entity\Course:
+    exclusion_policy: ALL
+    properties:
+        name:
+            expose: true
+            groups: [course_list]
+        whatToLearn:
+            expose: true
+            groups: [course_list]
+            serialized_name: whatToLearn
+        initialCourse:
+            expose: true
+            groups: [course_list]
+            serialized_name: initialCourse

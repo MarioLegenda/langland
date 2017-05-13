@@ -1,7 +1,0 @@
-AppBundle\Entity\LearningUserPreference:
-    exclusion_policy: ALL
-    properties:
-        investingTime:
-            expose: true
-            type: string
-            groups: [initial_data]

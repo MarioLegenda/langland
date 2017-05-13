@@ -48,6 +48,8 @@ class CourseController extends RepositoryController
                     ));
                 }
 
+                $this->unmarkInitialCourse();
+
                 $em->persist($course);
                 $em->flush();
 
@@ -82,6 +84,8 @@ class CourseController extends RepositoryController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
+
+                $this->unmarkInitialCourse();
 
                 $em->persist($course);
                 $em->flush();
@@ -136,5 +140,20 @@ class CourseController extends RepositoryController
         }
 
         return null;
+    }
+
+    private function unmarkInitialCourse()
+    {
+        $initialCourse = $this->getRepository('AdminBundle:Course')->findBy(array(
+            'initialCourse' => true,
+        ));
+
+        if (!empty($initialCourse)) {
+            $initialCourse = $initialCourse[0];
+
+            $initialCourse->setInitialCourse(false);
+
+            $this->getDoctrine()->getManager()->persist($initialCourse);
+        }
     }
 }

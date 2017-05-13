@@ -2,13 +2,11 @@
 
 namespace AppBundle\Controller\Api;
 
-class CourseController extends ResponseController
+class CourseController extends CommonOperationController
 {
     public function isInfoLookedAction()
     {
-        $learningUser = $this
-            ->getRepository('AppBundle:LearningUser')
-            ->findLearningUserByLoggedInUser($this->getUser());
+        $learningUser = $this->getLearningUser();
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
@@ -23,9 +21,7 @@ class CourseController extends ResponseController
 
     public function markInfoLookedAction()
     {
-        $learningUser = $this
-            ->getRepository('AppBundle:LearningUser')
-            ->findLearningUserByLoggedInUser($this->getUser());
+        $learningUser = $this->getLearningUser();
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
@@ -41,15 +37,26 @@ class CourseController extends ResponseController
 
     public function findLanguageInfosAction()
     {
-        $learningUser = $this
-            ->getRepository('AppBundle:LearningUser')
-            ->findLearningUserByLoggedInUser($this->getUser());
+        $learningUser = $this->getLearningUser();
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
             ->findByLanguage($learningUser->getCurrentLanguage());
 
         $serialized = $this->serialize($languageInfo, array('language_info'));
+
+        return $this->createSuccessJsonResponse($serialized);
+    }
+
+    public function findLanguageCoursesAction()
+    {
+        $learningUser = $this->getLearningUser();
+
+        $courses = $this
+            ->getRepository('AppBundle:LearningUserCourse')
+            ->findCoursesByLearningUserDesc($learningUser);
+
+        $serialized = $this->serialize($courses, array('course_list'));
 
         return $this->createSuccessJsonResponse($serialized);
     }

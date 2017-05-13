@@ -19,6 +19,10 @@ class Course
      */
     private $whatToLearn;
     /**
+     * @var bool $initialCourse
+     */
+    private $initialCourse;
+    /**
      * @var Language $language
      */
     private $language;
@@ -38,6 +42,7 @@ class Course
     public function __construct()
     {
         $this->lessons = new ArrayCollection();
+        $this->initialCourse = false;
     }
     /**
      * Get id
@@ -88,6 +93,23 @@ class Course
     public function getWhatToLearn()
     {
         return $this->whatToLearn;
+    }
+    /**
+     * @return bool
+     */
+    public function isInitialCourse(): bool
+    {
+        return $this->initialCourse;
+    }
+    /**
+     * @param bool $initialCourse
+     * @return Course
+     */
+    public function setInitialCourse(bool $initialCourse) : Course
+    {
+        $this->initialCourse = $initialCourse;
+
+        return $this;
     }
     /**
      * Set createdAt

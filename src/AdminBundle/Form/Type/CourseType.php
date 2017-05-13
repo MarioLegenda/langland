@@ -59,6 +59,12 @@ class CourseType extends AbstractType
                     'rows' => 10,
                     'cols' => 40,
                 ),
+            ))
+            ->add('initialCourse', CheckboxType::class, array(
+                'label' => 'Mark as initial first course',
+                'attr' => array(
+                    'placeholder' => 'This course will be the first in course items list',
+                ),
             ));
 
         $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(

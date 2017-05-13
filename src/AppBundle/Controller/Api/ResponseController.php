@@ -67,13 +67,13 @@ class ResponseController extends Controller
     {
         $context = null;
 
+        if (is_array($data)) {
+            return $this->serializeSimpleArray($data, $groups);
+        }
+
         if (!empty($groups)) {
             $context = SerializationContext::create();
             $context->setGroups($groups);
-        }
-
-        if (is_array($data)) {
-            return $this->serializeSimpleArray($data, $context);
         }
 
         $serialized = $this->get('jms_serializer')->serialize($data, 'json', $context);
@@ -81,12 +81,19 @@ class ResponseController extends Controller
         return json_decode($serialized, true);
     }
 
-    private function serializeSimpleArray(array $data, SerializationContext $context = null) : array
+    private function serializeSimpleArray(array $data, array $groups = null) : array
     {
         $serialized = array();
         foreach ($data as $object) {
             if (!is_object($object)) {
                 return null;
+            }
+
+            $context = null;
+
+            if (!empty($groups)) {
+                $context = SerializationContext::create();
+                $context->setGroups($groups);
             }
 
             $serialized[] = json_decode($this->get('jms_serializer')->serialize($object, 'json', $context));

@@ -9,3 +9,7 @@ app_course_language_infos:
 app_course_mark_info_looked:
     path: /mark-info-looked
     defaults: { _controller: AppBundle:Api/Course:markInfoLooked }
+
+app_language_course_list:
+    path: /find-language-course-list
+    defaults: { _controller: AppBundle:Api/Course:findLanguageCourses }

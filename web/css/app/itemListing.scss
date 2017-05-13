@@ -1,0 +1,157 @@
+.list {
+  overflow:hidden;
+
+  .item {
+    width: 45%;
+    float: left;
+
+    margin-right: 15px;
+
+    word-wrap: break-word;
+
+    background-color: white;
+
+    padding: 20px;
+
+    border-radius: 15px;
+
+    margin-bottom: 50px;
+
+    border: 1px solid white;
+
+    .item-name {
+      display:block;
+      width: 80px;
+      float:left;
+
+      padding: 0 10px 10px 0;
+
+      margin-top:10px;
+
+      text-align: center;
+
+      color: $appMainColor;
+
+      font-family: $mallanna;
+
+      font-size: 1.4em;
+      font-weight: bold;
+    }
+
+    .full-width-item-name {
+      @extend .item-name;
+
+      width: 100%;
+    }
+
+    img {
+      display:block;
+      width: 50px;
+      height: 50px;
+      float:right;
+
+      border-radius: 30px;
+    }
+
+    p {
+      width: 100%;
+      height: 220px;
+      font-size: 1.2em;
+
+      color: $text-color-gray;
+      line-height: 1.4em;
+
+      float:right;
+    }
+  }
+
+  .inactive {
+    @extend .item;
+
+    background-color: $background-color;
+
+    border: 1px solid white;
+
+    .item-name {
+      color: $highlight-gray;
+    }
+
+    p {
+      color: $highlight-gray;
+    }
+
+    .inactive-start-link {
+      border: 1px solid $highlight-gray;
+      color: $highlight-gray;
+
+      &:hover {
+        color: $highlight-gray;
+        cursor: auto;
+        background-color: $background-color;
+      }
+    }
+  }
+
+  .inactive-capsule {
+    width: 100%;
+    overflow:hidden;
+
+    z-index: 200;
+
+    right: 1px;
+
+    height: 400px;
+  }
+
+  .start-link {
+    width: 170px;
+    display: block;
+    overflow:hidden;
+
+    margin: 0 auto;
+
+    padding: 15px;
+
+    a {
+      display:block;
+      width: 100%;
+      text-align: center;
+
+      padding: 15px;
+
+      border: 1px solid $appMainColor;
+      color: $appMainColor;
+      border-radius: 20px;
+
+      &:hover {
+        cursor: pointer;
+        color: white;
+        background-color: $appMainColor;
+      }
+    }
+
+    .item-started {
+      color: $appMainColor;
+      border: 1px solid $appMainColor;
+
+      &:hover {
+        background-color: $appMainColor;
+        color:white;
+      }
+    }
+
+    span {
+      display:block;
+      text-align: center;
+      font-size: 0.9em;
+      color: $appMainColor;
+      font-weight: bold;
+    }
+  }
+
+
+  .title-holder {
+    width: 100%;
+    float:left;
+  }
+}

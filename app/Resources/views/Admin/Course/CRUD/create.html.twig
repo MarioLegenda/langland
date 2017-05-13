@@ -26,6 +26,8 @@
 
                         {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.whatToLearn} only %}
 
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.initialCourse} only %}
+
                         {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
                     </div>
 

@@ -4,6 +4,10 @@ namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Language;
 use AdminBundle\Entity\LanguageInfo;
+use AdminBundle\Form\Type\Generic\NameTextCollectionType;
+use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
+use AdminBundle\Form\Type\Generic\TraitType\NameTextTrait;
+use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
 use Symfony\Component\Form\AbstractType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LanguageInfoType extends AbstractType
 {
+    use NameTrait, NameTextTrait, LanguageChoiceTrait;
     /**
      * @var EntityManager $em
      */
@@ -35,33 +40,11 @@ class LanguageInfoType extends AbstractType
     {
         $languageInfo = $options['languageInfo'];
 
-        $builder
-            ->add('language', ChoiceType::class, array(
-                'label' => 'Language: ',
-                'placeholder' => 'Choose language',
-                'choices' => $this->createLanguageChoices(),
-                'choice_label' => function($choice, $key, $value) {
-                    return ucfirst($key);
-                }
-            ))
-            ->add('name', TextType::class, array(
-                'label' => 'Info name: ',
-                'attr' => array(
-                    'placeholder' => 'This will be rendered as a heading for this info',
-                ),
-            ))
-            ->add('languageInfoTexts', CollectionType::class, array(
-                'label' => 'Add text ...',
-                'entry_type' => LanguageInfoTextType::class,
-                'by_reference' => false,
-                'allow_add' => true,
-                'allow_delete' => true,
-            ));
+        $this
+            ->buildName($builder)
+            ->buildLanguageChoice($builder, $this->em, $languageInfo);
 
-        $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(
-            ($languageInfo->getLanguage()) instanceof Language ? $languageInfo->getLanguage()->getId() : null,
-            $this->em->getRepository('AdminBundle:Language')
-        ));
+        $builder->add($this->createNameText('languageInfoTexts', $builder));
     }
     /**
      * @return string
@@ -80,18 +63,5 @@ class LanguageInfoType extends AbstractType
         ));
 
         $resolver->setRequired('languageInfo');
-    }
-
-    private function createLanguageChoices()
-    {
-        $languages = $this->em->getRepository('AdminBundle:Language')->findAll();
-
-        $choices = array();
-
-        foreach ($languages as $language) {
-            $choices[$language->getName()] = $language->getId();
-        }
-
-        return $choices;
     }
 }

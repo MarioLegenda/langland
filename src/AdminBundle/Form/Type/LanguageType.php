@@ -3,41 +3,30 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Language;
+use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LanguageType extends AbstractType
 {
+    use NameTrait, TextTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->buildName($builder);
+
         $builder
-            ->add('name', TextType::class, array(
-                'label' => 'Language: ',
-                'attr' => array(
-                    'placeholder' => '... click \'n type',
-                    'autofocus' => true,
-                ),
-            ))
             ->add('showOnPage', CheckboxType::class)
             ->add('image', ImageType::class, array(
                 'label' => false,
             ))
-            ->add('listDescription', TextareaType::class, array(
-                'label' => 'Frontend list description ...',
-                'attr' => array(
-                    'placeholder' => '... this description goes in language courses list',
-                    'rows' => 5,
-                    'cols' => 40,
-                ),
-            ));
+            ->add($this->createText($builder, 'listDescription'));
     }
     /**
      * @return string

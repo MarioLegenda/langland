@@ -3,6 +3,8 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Language;
+use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
+use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
 use AdminBundle\Transformer\MultipleChoiceTransformer;
 use AdminBundle\Transformer\SingleChoiceTransformer;
 use Doctrine\ORM\EntityManager;
@@ -17,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class WordType extends AbstractType
 {
+    use LanguageChoiceTrait, NameTrait;
     /**
      * @var EntityManager $em
      */
@@ -37,21 +40,11 @@ class WordType extends AbstractType
     {
         $word = $options['word'];
 
+        $this
+            ->buildName($builder)
+            ->buildLanguageChoice($builder, $this->em, $word);
+
         $builder
-            ->add('language', ChoiceType::class, array(
-                'label' => 'Language: ',
-                'placeholder' => 'Choose language',
-                'choices' => $this->createLanguageChoices(),
-                'choice_label' => function($choice, $key, $value) {
-                    return ucfirst($key);
-                }
-            ))
-            ->add('name', TextType::class, array(
-                'label' => 'Word: ',
-                'attr' => array(
-                    'placeholder' => '... click \'n type',
-                ),
-            ))
             ->add('type', TextType::class, array(
                 'label' => 'Type: ',
                 'attr' => array(
@@ -85,11 +78,6 @@ class WordType extends AbstractType
                 'allow_delete' => true,
             ));
 
-            $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(
-                ($word->getLanguage()) instanceof Language ? $word->getLanguage()->getId() : null,
-                $this->em->getRepository('AdminBundle:Language')
-            ));
-
             $builder->get('categories')->addModelTransformer(new MultipleChoiceTransformer(
                 (!$word->getCategories()->isEmpty()) ? $word->getCategories() : array(),
                 $this->em->getRepository('AdminBundle:Category')
@@ -112,19 +100,6 @@ class WordType extends AbstractType
         ));
 
         $resolver->setRequired('word');
-    }
-
-    private function createLanguageChoices()
-    {
-        $languages = $this->em->getRepository('AdminBundle:Language')->findAll();
-
-        $choices = array();
-
-        foreach ($languages as $language) {
-            $choices[$language->getName()] = $language->getId();
-        }
-
-        return $choices;
     }
 
     private function createCategoryChoices()

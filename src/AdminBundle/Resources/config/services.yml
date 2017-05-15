@@ -23,6 +23,12 @@ services:
         tags:
             - { name: form.type }
 
+    admin.form.name_text_collection_type:
+        class: AdminBundle\Form\Type\Generic\NameTextCollectionType
+        arguments: ['AdminBundle\Entity\LanguageInfoText']
+        tags:
+            - { name: form.type }
+
     admin.entity_subscriber:
         class: AdminBundle\Listener\EntitySubscriber
         tags:

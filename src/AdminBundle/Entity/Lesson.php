@@ -2,9 +2,8 @@
 
 namespace AdminBundle\Entity;
 
-/**
- * Lesson
- */
+use Doctrine\Common\Collections\ArrayCollection;
+
 class Lesson
 {
     /**
@@ -27,8 +26,10 @@ class Lesson
      * @var Course $course
      */
     private $course;
-
-    private $workingData;
+    /**
+     * @var ArrayCollection $lessonTexts
+     */
+    private $lessonTexts;
     /**
      * Get id
      *
@@ -59,20 +60,6 @@ class Lesson
     public function getName()
     {
         return $this->name;
-    }
-    /**
-     * @return mixed
-     */
-    public function getWorkingData()
-    {
-        return $this->workingData;
-    }
-    /**
-     * @param mixed $workingData
-     */
-    public function setWorkingData($workingData)
-    {
-        $this->workingData = $workingData;
     }
     /**
      * Set createdAt
@@ -134,6 +121,45 @@ class Lesson
     public function getCourse()
     {
         return $this->course;
+    }
+    /**
+     * @param LessonText $lessonText
+     * @return bool
+     */
+    public function hasLessonText(LessonText $lessonText) : bool
+    {
+        return $this->lessonTexts->contains($lessonText);
+    }
+    /**
+     * @param LessonText $lessonText
+     * @return Lesson
+     */
+    public function addLessonText(LessonText $lessonText) : Lesson
+    {
+        if (!$this->hasLessonText($lessonText)) {
+            $this->lessonTexts->add($lessonText);
+        }
+
+        return $this;
+    }
+    /**
+     * @param LessonText $lessonText
+     * @return Lesson
+     */
+    public function removeLessonText(LessonText $lessonText) : Lesson
+    {
+        if ($this->hasLessonText($lessonText)) {
+            $this->lessonTexts->removeElement($lessonText);
+        }
+
+        return $this;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getLessonTexts()
+    {
+        return $this->lessonTexts;
     }
 
     public function updateTimestamps()

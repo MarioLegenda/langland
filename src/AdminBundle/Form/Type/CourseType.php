@@ -3,19 +3,18 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Course;
+use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
+use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use AdminBundle\Transformer\SingleChoiceTransformer;
-use AdminBundle\Entity\Language;
 
 class CourseType extends AbstractType
 {
+    use NameTrait, LanguageChoiceTrait;
     /**
      * @var EntityManager $em
      */
@@ -36,22 +35,11 @@ class CourseType extends AbstractType
     {
         $course = $options['course'];
 
+        $this
+            ->buildName($builder)
+            ->buildLanguageChoice($builder, $this->em, $course);
+
         $builder
-            ->add('language', ChoiceType::class, array(
-                'label' => 'Language: ',
-                'placeholder' => 'Choose language',
-                'choices' => $this->createLanguageChoices(),
-                'choice_label' => function($choice, $key, $value) {
-                    return ucfirst($key);
-                }
-            ))
-            ->add('name', TextType::class, array(
-                'label' => 'Name: ',
-                'attr' => array(
-                    'placeholder' => 'click \'n type ...',
-                    'autofocus' => true,
-                )
-            ))
             ->add('whatToLearn', TextareaType::class, array(
                 'label' => 'What the user will learn?',
                 'attr' => array(
@@ -66,11 +54,6 @@ class CourseType extends AbstractType
                     'placeholder' => 'This course will be the first in course items list',
                 ),
             ));
-
-        $builder->get('language')->addModelTransformer(new SingleChoiceTransformer(
-            ($course->getLanguage()) instanceof Language ? $course->getLanguage()->getId() : null,
-            $this->em->getRepository('AdminBundle:Language')
-        ));
     }
     /**
      * @return string
@@ -89,18 +72,5 @@ class CourseType extends AbstractType
         ));
 
         $resolver->setRequired('course');
-    }
-
-    private function createLanguageChoices()
-    {
-        $languages = $this->em->getRepository('AdminBundle:Language')->findAll();
-
-        $choices = array();
-
-        foreach ($languages as $language) {
-            $choices[$language->getName()] = $language->getId();
-        }
-
-        return $choices;
     }
 }

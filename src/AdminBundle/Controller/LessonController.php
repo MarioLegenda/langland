@@ -83,6 +83,8 @@ class LessonController extends RepositoryController
                 $em = $this->get('doctrine')->getManager();
                 $lesson->setCourse($course);
 
+                $this->removeDeletetedLessonTexts($lesson);
+
                 $em->persist($lesson);
                 $em->flush();
 
@@ -116,5 +118,20 @@ class LessonController extends RepositoryController
         return $this->render('::Admin/Course/Lesson/dashboard.html.twig', array(
             'lesson' => $lesson,
         ));
+    }
+
+    private function removeDeletetedLessonTexts(Lesson $lesson)
+    {
+        $em = $this->get('doctrine')->getManager();
+
+        $dbLessonTexts = $em->getRepository('AdminBundle:LessonText')->findBy(array(
+            'lesson' => $lesson,
+        ));
+
+        foreach ($dbLessonTexts as $text) {
+            if (!$lesson->hasLessonText($text)) {
+                $em->remove($text);
+            }
+        }
     }
 }

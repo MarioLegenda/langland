@@ -2,6 +2,9 @@
 
 namespace AdminBundle\Entity;
 
+/**
+ * LessonText
+ */
 class LessonText
 {
     /**
@@ -60,6 +63,28 @@ class LessonText
         return $this->name;
     }
     /**
+     * Set text
+     *
+     * @param string $text
+     *
+     * @return LessonText
+     */
+    public function setText($text) : LessonText
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+    /**
+     * Get text
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+    /**
      * @return Lesson
      */
     public function getLesson(): Lesson
@@ -75,20 +100,6 @@ class LessonText
         $this->lesson = $lesson;
 
         return $this;
-    }
-    /**
-     * @return string
-     */
-    public function getText(): string
-    {
-        return $this->text;
-    }
-    /**
-     * @param string $text
-     */
-    public function setText(string $text)
-    {
-        $this->text = $text;
     }
     /**
      * Set createdAt
@@ -112,6 +123,7 @@ class LessonText
     {
         return $this->createdAt;
     }
+
     /**
      * Set updatedAt
      *

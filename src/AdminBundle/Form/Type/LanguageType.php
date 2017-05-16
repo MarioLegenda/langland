@@ -3,30 +3,28 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Language;
-use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextTrait;
+use AdminBundle\Form\Type\Generic\TraitType\CheckboxTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\ImageTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LanguageType extends AbstractType
 {
-    use NameTrait, TextTrait;
+    use TextTypeTrait, TextareaTypeTrait, CheckboxTypeTrait, ImageTypeTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->buildName($builder);
-
-        $builder
-            ->add('showOnPage', CheckboxType::class)
-            ->add('image', ImageType::class, array(
-                'label' => false,
-            ))
-            ->add($this->createText($builder, 'listDescription'));
+        $this
+            ->addTextType('name', $builder)
+            ->addCheckboxType('showOnPage', $builder)
+            ->addTextareaType('listDescription', $builder)
+            ->addImageType('image', $builder);
     }
     /**
      * @return string

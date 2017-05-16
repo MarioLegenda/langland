@@ -2,24 +2,18 @@
 
 namespace AdminBundle\Form\Type;
 
-use AdminBundle\Entity\Language;
 use AdminBundle\Entity\LanguageInfo;
-use AdminBundle\Form\Type\Generic\NameTextCollectionType;
 use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
-use AdminBundle\Form\Type\Generic\TraitType\NameTextTrait;
-use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use AdminBundle\Transformer\SingleChoiceTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LanguageInfoType extends AbstractType
 {
-    use NameTrait, NameTextTrait, LanguageChoiceTrait;
+    use TextTypeTrait, LanguageChoiceTrait;
     /**
      * @var EntityManager $em
      */
@@ -41,10 +35,16 @@ class LanguageInfoType extends AbstractType
         $languageInfo = $options['languageInfo'];
 
         $this
-            ->buildName($builder)
-            ->buildLanguageChoice($builder, $this->em, $languageInfo);
+            ->addTextType('name', $builder)
+            ->addLanguageChoice($builder, $this->em, $languageInfo);
 
-        $builder->add($this->createNameText('languageInfoTexts', $builder));
+        $builder->add('languageInfoTexts', CollectionType::class, array(
+            'label' => 'Add language text: ',
+            'entry_type' => LanguageInfoTextType::class,
+            'allow_add' => true,
+            'by_reference' => false,
+            'allow_delete' => true,
+        ));
     }
     /**
      * @return string

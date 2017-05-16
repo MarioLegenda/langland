@@ -3,7 +3,6 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Image;
-use AdminBundle\Form\Type\Contract\ImageTypeInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;

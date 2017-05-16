@@ -3,21 +3,31 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Lesson;
-use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LessonType extends AbstractType
 {
-    use NameTrait;
+    use TextTypeTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->buildName($builder);
+        $this->addTextType('name', $builder);
+
+        $builder
+            ->add('lessonTexts', CollectionType::class, array(
+                'label' => 'Add lesson text ...',
+                'entry_type' => LessonTextType::class,
+                'by_reference' => false,
+                'allow_add' => true,
+                'allow_delete' => true,
+            ));
     }
     /**
      * @return string

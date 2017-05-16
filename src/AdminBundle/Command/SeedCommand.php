@@ -8,9 +8,11 @@ use AdminBundle\Entity\Language;
 use AdminBundle\Entity\LanguageInfo;
 use AdminBundle\Entity\LanguageInfoText;
 use AdminBundle\Entity\Lesson;
+use AdminBundle\Entity\LessonText;
 use AdminBundle\Entity\Sentence;
 use AdminBundle\Entity\SentenceTranslation;
 use AdminBundle\Entity\SentenceWordPool;
+use AdminBundle\Entity\Translation;
 use AdminBundle\Entity\Word;
 use AdminBundle\Entity\Image;
 use ArmorBundle\Entity\User;
@@ -78,6 +80,14 @@ class SeedCommand extends ContainerAwareCommand
                 $word->setDescription($faker->sentence(60));
                 $word->setType($faker->company);
 
+                for ($w = 0; $w < 5; $w++) {
+                    $translation = new Translation();
+                    $translation->setWord($word);
+                    $translation->setName($faker->word);
+
+                    $word->addTranslation($translation);
+                }
+
                 $em->persist($word);
 
                 $wordsArray[] = $word;
@@ -117,6 +127,15 @@ class SeedCommand extends ContainerAwareCommand
                     $lesson = new Lesson();
                     $lesson->setName($faker->name);
                     $lesson->setCourse($course);
+
+                    for ($v = 0; $v < 5; $v++) {
+                        $lessonText = new LessonText();
+                        $lessonText->setName($faker->word);
+                        $lessonText->setText($faker->sentence(20));
+                        $lessonText->setLesson($lesson);
+
+                        $lesson->addLessonText($lessonText);
+                    }
 
                     $em->persist($lesson);
                 }

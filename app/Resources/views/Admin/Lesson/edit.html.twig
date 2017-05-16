@@ -19,7 +19,24 @@
 
                     {% include '::Admin/Form/_include/flashNotice.html.twig' %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name} only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name, 'description': 'add a name for this lesson'} only %}
+
+                    <div class="full-width align-left form-field field-break">
+                        {{ form_label(form.lessonTexts) }}
+
+                        <i class="description">
+                            <span class="highlight">*</span>These fields will be shown as the actual lesson with heading and text. Text could also be html
+                        </i>
+
+                        <div class="translations" data-prototype="{{ form_widget(form.lessonTexts.vars.prototype)|e('html_attr') }}">
+                            {% for text in form.lessonTexts %}
+                                <div class="translation">
+                                    <div class="full-width align-left margin-bottom-20">{{ form_row(text.name) }}</div>
+                                    <div class="full-width align-left margin-bottom-20">{{ form_row(text.text) }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
 
                     {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Edit'} %}
                 </div>

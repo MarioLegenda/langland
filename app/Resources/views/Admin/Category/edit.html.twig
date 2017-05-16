@@ -12,7 +12,7 @@
 
                         {% include '::Admin/Form/_include/flashNotice.html.twig' %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name, 'description': 'name of the category' } only %}
 
                         {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Edit'} %}
                     </div>

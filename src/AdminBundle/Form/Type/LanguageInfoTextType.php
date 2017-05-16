@@ -2,29 +2,32 @@
 
 namespace AdminBundle\Form\Type;
 
-use AdminBundle\Entity\Translation;
+use AdminBundle\Entity\LanguageInfoText;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TranslationType extends AbstractType
+class LanguageInfoTextType extends AbstractType
 {
-    use TextTypeTrait;
+    use TextTypeTrait, TextareaTypeTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->addTextType('name', $builder);
+        $this
+            ->addTextType('name', $builder)
+            ->addTextareaType('text', $builder);
     }
     /**
      * @return string
      */
     public function getBlockPrefix()
     {
-        return 'translation';
+        return 'form';
     }
     /**
      * @param OptionsResolver $resolver
@@ -32,7 +35,7 @@ class TranslationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Translation::class
+            'data_class' => LanguageInfoText::class,
         ));
     }
 }

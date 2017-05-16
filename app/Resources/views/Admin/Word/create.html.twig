@@ -20,17 +20,17 @@
 
                         {% include '::Admin/Form/_include/flashNotice.html.twig' %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.language } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.language, 'description': 'choose a language for this word' } only %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name, 'description': 'the word to be translated' } only %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.type } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.type, 'description': 'is it an adjective, a noun, a verb?' } only %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.description } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.description, 'description': 'optional description of this word' } only %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.categories } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.categories, 'description': 'in what category in life would you place this word?' } only %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.image } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.image, 'description': 'add a unique image describing this word' } only %}
 
                         <div class="full-width align-left form-field field-break">
                             {{ form_label(form.translations) }}

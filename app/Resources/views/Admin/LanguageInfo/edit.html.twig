@@ -15,12 +15,17 @@
 
                     {% include '::Admin/Form/_include/flashNotice.html.twig' %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name, 'description': 'language info name' } only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.language } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.language, 'description': 'choose a language for this language info' } only %}
 
                     <div class="full-width align-left form-field field-break">
                         {{ form_label(form.languageInfoTexts) }}
+
+                        <i class="description">
+                            <span class="highlight">*</span>These fields will be show as a carousel when the user first time picks a language to learn
+                        </i>
+
                         <div class="translations ace-text" data-prototype="{{ form_widget(form.languageInfoTexts.vars.prototype)|e('html_attr') }}">
                             {% for text in form.languageInfoTexts %}
                                 <div class="translation">

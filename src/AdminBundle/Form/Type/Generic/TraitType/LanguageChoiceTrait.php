@@ -17,7 +17,7 @@ trait LanguageChoiceTrait
      *
      * @return LanguageChoiceTrait
      */
-    public function buildLanguageChoice(
+    public function addLanguageChoice(
         FormBuilderInterface $builder,
         EntityManager $em,
         $entity)

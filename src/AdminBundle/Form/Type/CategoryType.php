@@ -3,21 +3,21 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Category;
-use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends AbstractType
 {
-    use NameTrait;
+    use TextTypeTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->buildName($builder);
+        $this->addTextType('name', $builder);
     }
     /**
      * @return string

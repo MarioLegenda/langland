@@ -2,15 +2,15 @@
 
 namespace AdminBundle\Form\Type\Generic;
 
-use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NameTextCollectionType extends AbstractType
 {
-    use NameTrait, TextTrait;
+    use TextTypeTrait, TextareaTypeTrait;
     /**
      * @var string $dataClass
      */
@@ -22,8 +22,8 @@ class NameTextCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->buildText($builder)
-            ->buildName($builder);
+            ->buildName($builder)
+            ->buildText($builder);
     }
     /**
      * NameTextCollectionType constructor.

@@ -3,8 +3,8 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Sentence;
-use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class SentenceType extends AbstractType
 {
-    use NameTrait, TextTrait;
+    use TextTypeTrait, TextareaTypeTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options

@@ -11,7 +11,7 @@
   -moz-border-radius:20px;
   border-radius:20px;
 
-  font-family: $palaquin;
+  font-family: $mallanna;
 
   .actions {
     a {
@@ -19,7 +19,7 @@
       background-color: white;
       border: none;
 
-      font-family: $palaquin;
+      font-family: $mallanna;
 
       color: $text-color-gray;
 
@@ -87,7 +87,7 @@
           padding-left: 5px;
 
           font-size: 1em;
-          font-family:$muli;
+          font-family:$mallanna;
 
           margin-left: 10px;
         }
@@ -113,7 +113,7 @@
 
         padding: 6px 6px 6px 6px;
 
-        font-family: $palaquin;
+        font-family: $mallanna;
 
         &:hover {
           cursor: pointer;
@@ -129,7 +129,7 @@
 
     line-height: 1.2em;
 
-    font-family: $muli;
+    font-family: $mallanna;
   }
 
   .success {
@@ -148,7 +148,7 @@
 
     line-height: 1.2em;
 
-    font-family: $muli;
+    font-family: $mallanna;
   }
 
   .highlight {

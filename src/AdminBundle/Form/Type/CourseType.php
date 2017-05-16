@@ -3,18 +3,18 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Course;
+use AdminBundle\Form\Type\Generic\TraitType\CheckboxTypeTrait;
 use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
-use AdminBundle\Form\Type\Generic\TraitType\NameTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CourseType extends AbstractType
 {
-    use NameTrait, LanguageChoiceTrait;
+    use TextTypeTrait, LanguageChoiceTrait, TextareaTypeTrait, CheckboxTypeTrait;
     /**
      * @var EntityManager $em
      */
@@ -36,24 +36,10 @@ class CourseType extends AbstractType
         $course = $options['course'];
 
         $this
-            ->buildName($builder)
-            ->buildLanguageChoice($builder, $this->em, $course);
-
-        $builder
-            ->add('whatToLearn', TextareaType::class, array(
-                'label' => 'What the user will learn?',
-                'attr' => array(
-                    'placeholder' => 'This will be shown in the course list of a language',
-                    'rows' => 10,
-                    'cols' => 40,
-                ),
-            ))
-            ->add('initialCourse', CheckboxType::class, array(
-                'label' => 'Mark as initial first course',
-                'attr' => array(
-                    'placeholder' => 'This course will be the first in course items list',
-                ),
-            ));
+            ->addTextType('name', $builder)
+            ->addTextareaType('whatToLearn', $builder)
+            ->addCheckboxType('initialCourse', $builder)
+            ->addLanguageChoice($builder, $this->em, $course);
     }
     /**
      * @return string

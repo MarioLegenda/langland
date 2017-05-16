@@ -15,13 +15,13 @@
 
                     {% include '::Admin/Form/_include/flashNotice.html.twig' %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name, 'description': 'add language' } only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.listDescription } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.listDescription, 'description': 'This field will be shown in frontend language list' } only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.image } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.image, 'description': 'Upload an icon that will be shown in the language list' } only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.showOnPage } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.showOnPage, 'description': 'Is this language ready for production?' } only %}
 
                     {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
                 </div>

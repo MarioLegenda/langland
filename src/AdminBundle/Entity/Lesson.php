@@ -30,6 +30,11 @@ class Lesson
      * @var ArrayCollection $lessonTexts
      */
     private $lessonTexts;
+
+    public function __construct()
+    {
+        $this->lessonTexts = new ArrayCollection();
+    }
     /**
      * Get id
      *
@@ -137,6 +142,7 @@ class Lesson
     public function addLessonText(LessonText $lessonText) : Lesson
     {
         if (!$this->hasLessonText($lessonText)) {
+            $lessonText->setLesson($this);
             $this->lessonTexts->add($lessonText);
         }
 

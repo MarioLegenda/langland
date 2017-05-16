@@ -15,13 +15,13 @@
 
                     {% include '::Admin/Form/_include/flashNotice.html.twig' %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.language } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.language, 'description': 'choose a language for this course'} only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name } only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name, 'description': 'what is the course name?'} only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.whatToLearn} only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.whatToLearn, 'description': 'This field will be shown in course listing'} only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.initialCourse} only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.initialCourse, 'description': 'Is this the first course the user should learn?'} only %}
 
                     {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Edit'} %}
                 </div>

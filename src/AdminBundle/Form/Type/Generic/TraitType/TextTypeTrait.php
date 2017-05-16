@@ -5,36 +5,32 @@ namespace AdminBundle\Form\Type\Generic\TraitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
-trait NameTrait
+trait TextTypeTrait
 {
     /**
      * @param FormBuilderInterface $builder
+     * @param string $name
      * @return $this
      */
-    public function buildName(FormBuilderInterface $builder)
+    public function addTextType(string $name, FormBuilderInterface $builder)
     {
         $builder
-            ->add('name', TextType::class, array(
+            ->add($name, TextType::class, array(
                 'label' => 'Name: ',
-                'attr' => array(
-                    'placeholder' => 'Type name...'
-                ),
             ));
 
         return $this;
     }
     /**
      * @param FormBuilderInterface $builder
+     * @param string $name
      * @return FormBuilderInterface
      */
-    public function createName(FormBuilderInterface $builder) : FormBuilderInterface
+    public function createTextType(string $name, FormBuilderInterface $builder) : FormBuilderInterface
     {
         return $builder
-            ->create('name', TextType::class, array(
+            ->create($name, TextType::class, array(
                 'label' => 'Name: ',
-                'attr' => array(
-                    'placeholder' => 'Type name...'
-                ),
             ));
     }
 }

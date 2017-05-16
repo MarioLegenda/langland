@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Lesson
 {
@@ -167,6 +168,19 @@ class Lesson
     {
         return $this->lessonTexts;
     }
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (count($this->getLessonTexts()) < 1) {
+            $context->buildViolation('There has to be at least one lesson text for this lesson')
+                ->atPath('lessonTexts')
+                ->addViolation();
+        }
+    }
+
+
 
     public function updateTimestamps()
     {

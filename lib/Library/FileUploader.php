@@ -80,19 +80,26 @@ class FileUploader
 
     public function uploadSound(UploadedFile $file, array $options)
     {
-        $this->fileName = $this->fileNamer->createName($options).'.mp3';
-        $this->originalName = $file->getClientOriginalName();
+        $fileName = $this->fileNamer->createName($options).'.mp3';
+        $originalName = $file->getClientOriginalName();
 
-        $file->move($this->soundDir.'/temp', $this->fileName);
+        $file->move($this->soundDir.'/temp', $fileName);
 
-        $src = $this->soundDir.'/temp/'.$this->fileName;
-        $dest = $this->soundDir.'/'.$this->fileName;
+        $src = $this->soundDir.'/temp/'.$fileName;
+        $dest = $this->soundDir.'/'.$fileName;
 
         exec(sprintf('/usr/bin/sox -t %s %s %s', 'mp3', $src, $dest), $output);
 
         if (file_exists($src)) {
             unlink($src);
         }
+
+        $this->data = array(
+            'fileName' => $fileName,
+            'targetDir' => $this->soundDir,
+            'originalName' => $originalName,
+            'fullPath' => '/uploads/sounds/'.$fileName,
+        );
     }
     /**
      * @return string

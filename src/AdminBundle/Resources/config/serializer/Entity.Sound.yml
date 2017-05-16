@@ -1,0 +1,3 @@
+AdminBundle\Entity\Sound:
+    exclusion_policy: ALL
+    properties:

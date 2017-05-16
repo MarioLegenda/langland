@@ -114,7 +114,7 @@
 
     <class name="AdminBundle\Entity\Lesson">
         <constraint name="Callback">validate</constraint>
-        
+
         <property name="name">
             <constraint name="NotBlank">
                 <option name="message">Lesson name cannot be empty</option>

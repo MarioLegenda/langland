@@ -57,12 +57,15 @@ class SoundController extends RepositoryController
                 'field' => 'name',
             ));
 
+            $fileData = $fileUploader->getData();
+
             $newSound = new Sound();
 
             $newSound
-                ->setTargetDir($fileUploader->getSoundDir())
-                ->setOriginalName($fileUploader->getOriginalName())
-                ->setName($fileUploader->getFileName());
+                ->setName($fileData['fileName'])
+                ->setOriginalName($fileData['originalName'])
+                ->setTargetDir($fileData['targetDir'])
+                ->setFullPath($fileData['fullPath']);
 
             $em->persist($newSound);
         }

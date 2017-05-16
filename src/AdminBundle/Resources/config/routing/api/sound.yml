@@ -7,3 +7,7 @@ sound_index:
     path: /
     defaults: { _controller: AdminBundle:Sound:index }
     methods: [GET]
+
+admin_get_sounds:
+    path: /
+    defaults: { _controller: AdminBundle:Sound:findAllSounds }

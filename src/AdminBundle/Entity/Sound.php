@@ -23,6 +23,10 @@ class Sound
      */
     private $originalName;
     /**
+     * @var string $fullPath
+     */
+    private $fullPath;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -106,6 +110,23 @@ class Sound
     public function setOriginalName($originalName) : Sound
     {
         $this->originalName = $originalName;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getFullPath()
+    {
+        return $this->fullPath;
+    }
+    /**
+     * @param mixed $fullPath
+     * @return Sound
+     */
+    public function setFullPath($fullPath) : Sound
+    {
+        $this->fullPath = $fullPath;
 
         return $this;
     }

@@ -19,7 +19,9 @@ class Image
      * @var string $targetDir
      */
     private $targetDir;
-
+    /**
+     * @var string $fullPath
+     */
     private $fullPath;
     /**
      * @var UploadedFile $imageFile

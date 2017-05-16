@@ -8,6 +8,7 @@ sound_index:
     defaults: { _controller: AdminBundle:Sound:index }
     methods: [GET]
 
-admin_get_sounds:
-    path: /
-    defaults: { _controller: AdminBundle:Sound:findAllSounds }
+admin_find_sounds:
+    path: /find-sounds
+    defaults: { _controller: AdminBundle:Ajax/Sound:findSounds }
+    methods: [GET]

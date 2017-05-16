@@ -1,3 +1,17 @@
 AdminBundle\Entity\Sound:
     exclusion_policy: ALL
     properties:
+        id:
+            expose: true
+            groups: [sounds]
+        name:
+            expose: true
+            groups: [sounds]
+        fullPath:
+            expose: true
+            groups: [sounds]
+            serialized_name: fullPath
+        originalName:
+            expose: true
+            groups: [sounds]
+            serialized_name: originalName

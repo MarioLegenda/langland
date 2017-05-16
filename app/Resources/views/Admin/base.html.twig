@@ -10,6 +10,8 @@
         {% block stylesheets %}
             <link href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" />
             <link href="{{ asset('dist/css/admin.css') }}?v={{ random(99999999) }}" rel="stylesheet"/>
+
+            <link rel="stylesheet" href="https://unpkg.com/react-select/dist/react-select.css">
         {% endblock %}
 
     </head>
@@ -23,6 +25,8 @@
             <script src="{{ asset('dist/js/lib/ace-html-mode.min.js') }}"></script>
 
             <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
+
+            <script src="{{ asset('js/admin/lib/select2-4.0.3/dist/js/select2.min.js') }}"></script>
 
             <script src="{{ asset('dist/js/admin/bundle.js') }}?v={{ random(9999999) }}"></script>
         {% endblock %}

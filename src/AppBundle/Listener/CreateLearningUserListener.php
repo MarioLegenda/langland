@@ -20,7 +20,9 @@ class CreateLearningUserListener
 
         $learningUserRepo = $em->getRepository('AppBundle:LearningUser');
 
-        $existingLearningUser = $learningUserRepo->findLearningUserByLoggedInUser($user);
+        $existingLearningUser = $learningUserRepo->findOneBy(array(
+            'currentLanguage' => $language,
+        ));
 
         if (!empty($existingLearningUser)) {
             if ($existingLearningUser->hasLanguage($language)) {

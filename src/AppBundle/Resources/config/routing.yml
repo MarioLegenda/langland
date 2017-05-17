@@ -8,6 +8,11 @@ app_course_dashboard:
     defaults: { _controller: AppBundle:Course:dashboard }
     methods: [GET]
 
+app_course_actual_app:
+    path: /langland/language-course/{languageName}/{courseName}/{courseId}
+    defaults: { _controller: AppBundle:Api/Course:initApp }
+    methods: [GET]
+
 app_course:
   resource: "@AppBundle/Resources/config/routing/langland.yml"
   prefix: /langland

@@ -16,7 +16,6 @@ class UserController extends ResponseController
 
     public function createLearningUserAction(Request $request)
     {
-        $em = $this->get('doctrine')->getManager();
         $languageId = $request->request->get('languageId');
 
         $language = $this->getRepository('AdminBundle:Language')->find($languageId);

@@ -11691,30 +11691,26 @@ var MethodNaviagation = function (_React$Component) {
 
         _this.showLessons = _this.showLessons.bind(_this);
         _this.showGames = _this.showGames.bind(_this);
+
+        _this.handleMenuChange = _this.handleMenuChange.bind(_this);
         return _this;
     }
 
     _createClass(MethodNaviagation, [{
-        key: 'showLessons',
-        value: function showLessons(e) {
-            var target = e.currentTarget;
-
+        key: '_highlightMenu',
+        value: function _highlightMenu(target) {
             jQuery('.nav-item').removeClass('highlighted-nav-item');
 
             jQuery(target).addClass('highlighted-nav-item');
-
-            this.props.showLessons();
         }
     }, {
-        key: 'showGames',
-        value: function showGames(e) {
-            var target = e.currentTarget;
+        key: 'handleMenuChange',
+        value: function handleMenuChange(e) {
+            this._highlightMenu(e.currentTarget);
 
-            jQuery('.nav-item').removeClass('highlighted-nav-item');
+            var changeMethod = this.props[e.currentTarget.getAttribute('data-change-id')];
 
-            jQuery(target).addClass('highlighted-nav-item');
-
-            this.props.showGames();
+            changeMethod();
         }
     }, {
         key: 'render',
@@ -11724,7 +11720,7 @@ var MethodNaviagation = function (_React$Component) {
                 { className: 'method-navigation' },
                 _react2.default.createElement(
                     'div',
-                    { onClick: this.showLessons, className: 'nav-item lesson-item' },
+                    { 'data-change-id': 'showLessons', onClick: this.handleMenuChange, className: 'nav-item lesson-item' },
                     _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-3x' }),
                     _react2.default.createElement(
                         'span',
@@ -11734,7 +11730,7 @@ var MethodNaviagation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { onClick: this.showGames, className: 'nav-item game-item' },
+                    { 'data-change-id': 'showGames', onClick: this.handleMenuChange, className: 'nav-item game-item' },
                     _react2.default.createElement('i', { className: 'fa fa-gamepad fa-3x' }),
                     _react2.default.createElement(
                         'span',
@@ -11875,27 +11871,31 @@ var MethodApp = function (_React$Component4) {
     }
 
     _createClass(MethodApp, [{
+        key: '_changeDashboard',
+        value: function _changeDashboard(type) {
+            var newPage = {};
+            for (var page in this.state.page) {
+                if (type === page) {
+                    newPage[type] = true;
+                } else {
+                    newPage[page] = false;
+                }
+            }
+
+            return newPage;
+        }
+    }, {
         key: 'showLessons',
         value: function showLessons() {
-            var page = {
-                showLessons: true,
-                showGames: false
-            };
-
             this.setState({
-                page: page
+                page: this._changeDashboard('showLessons')
             });
         }
     }, {
         key: 'showGames',
         value: function showGames() {
-            var page = {
-                showLessons: false,
-                showGames: true
-            };
-
             this.setState({
-                page: page
+                page: this._changeDashboard('showGames')
             });
         }
     }, {

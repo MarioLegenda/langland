@@ -11126,10 +11126,7 @@ var CourseInitContainer = exports.CourseInitContainer = function (_React$Compone
         value: function _fetchIsLookedInfo() {
             jQuery.ajax({
                 url: _routes.routes.app_course_language_info_exists,
-                method: 'POST',
-                data: {
-                    languageId: this.props.match.params.id
-                }
+                method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
                     this.setState({
@@ -11151,10 +11148,7 @@ var CourseInitContainer = exports.CourseInitContainer = function (_React$Compone
         value: function _fetchMarkInfoLooked() {
             jQuery.ajax({
                 url: _routes.routes.app_course_mark_info_looked,
-                method: 'POST',
-                data: {
-                    languageId: this.props.match.params.id
-                }
+                method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
                     this.setState({
@@ -11199,192 +11193,6 @@ var CourseInitContainer = exports.CourseInitContainer = function (_React$Compone
 
 /***/ }),
 /* 98 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.LanguageListContainer = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(6);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _env = __webpack_require__(21);
-
-var _routes = __webpack_require__(31);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LanguageList = function (_React$Component) {
-    _inherits(LanguageList, _React$Component);
-
-    function LanguageList(props) {
-        _classCallCheck(this, LanguageList);
-
-        var _this = _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
-
-        _this.state = {
-            pendingTitle: null,
-            itemId: null
-        };
-
-        _this.isInUserCreation = false;
-
-        _this.createLearningUser = _this.createLearningUser.bind(_this);
-        return _this;
-    }
-
-    _createClass(LanguageList, [{
-        key: 'createLearningUser',
-        value: function createLearningUser(e) {
-            e.preventDefault();
-
-            if (this.isInUserCreation === true) {
-                return;
-            }
-
-            if (this.isInUserCreation === false) {
-                this.isInUserCreation = true;
-            }
-
-            var target = e.currentTarget;
-
-            this.setState({
-                pendingTitle: 'Setting up...',
-                itemId: target.getAttribute('data-item-id')
-            });
-
-            jQuery.ajax({
-                url: _routes.routes.app_create_learning_user,
-                method: 'POST',
-                data: {
-                    languageId: target.getAttribute('data-item-id')
-                }
-            }).done(function (data) {
-                if (data.status === 'success') {
-                    window.location.href = target.getAttribute('href');
-                }
-            });
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var that = this;
-
-            var items = this.props.items.map(function (item) {
-                var title = item.isLearning === true ? 'Continue' : 'Learn ' + item.name;
-                var learningClass = '';
-
-                if (item.id == that.state.itemId) {
-                    title = that.state.pendingTitle;
-                }
-
-                if (item.isLearning === true) {
-                    learningClass = 'item-started';
-                }
-
-                return _react2.default.createElement(
-                    'div',
-                    { key: item.id, className: 'item' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'title-holder margin-bottom-30' },
-                        _react2.default.createElement(
-                            'h2',
-                            { className: 'item-name' },
-                            item.name
-                        ),
-                        item.image && _react2.default.createElement('img', { src: item.image.fullPath }) || !item.image && _react2.default.createElement('img', { width: '50', height: '50' })
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        { className: 'margin-bottom-30' },
-                        item.listDescription
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'start-link' },
-                        _react2.default.createElement(
-                            'a',
-                            {
-                                className: learningClass,
-                                onClick: that.createLearningUser,
-                                'data-item-id': item.id,
-                                href: _env.envr + "langland/language-course/" + item.name + '/' + item.id },
-                            title
-                        )
-                    )
-                );
-            });
-
-            return _react2.default.createElement(
-                'div',
-                { className: 'component list' },
-                items
-            );
-        }
-    }]);
-
-    return LanguageList;
-}(_react2.default.Component);
-
-var LanguageListContainer = exports.LanguageListContainer = function (_React$Component2) {
-    _inherits(LanguageListContainer, _React$Component2);
-
-    function LanguageListContainer(props) {
-        _classCallCheck(this, LanguageListContainer);
-
-        var _this2 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
-
-        _this2.state = {
-            items: []
-        };
-        return _this2;
-    }
-
-    _createClass(LanguageListContainer, [{
-        key: '_fetchLearnableLanguages',
-        value: function _fetchLearnableLanguages() {
-            jQuery.ajax({
-                url: _routes.routes.app_find_learnable_languages,
-                method: 'POST'
-            }).done(jQuery.proxy(function (data) {
-                this.setState({
-                    items: data.data
-                });
-            }, this));
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            this._fetchLearnableLanguages();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var items = this.state.items;
-
-            return _react2.default.createElement(LanguageList, { items: items });
-        }
-    }]);
-
-    return LanguageListContainer;
-}(_react2.default.Component);
-
-/***/ }),
-/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11643,6 +11451,192 @@ function HeaderContainer() {
 }
 
 /***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LanguageListContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _env = __webpack_require__(21);
+
+var _routes = __webpack_require__(31);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LanguageList = function (_React$Component) {
+    _inherits(LanguageList, _React$Component);
+
+    function LanguageList(props) {
+        _classCallCheck(this, LanguageList);
+
+        var _this = _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
+
+        _this.state = {
+            pendingTitle: null,
+            itemId: null
+        };
+
+        _this.isInUserCreation = false;
+
+        _this.createLearningUser = _this.createLearningUser.bind(_this);
+        return _this;
+    }
+
+    _createClass(LanguageList, [{
+        key: 'createLearningUser',
+        value: function createLearningUser(e) {
+            e.preventDefault();
+
+            if (this.isInUserCreation === true) {
+                return;
+            }
+
+            if (this.isInUserCreation === false) {
+                this.isInUserCreation = true;
+            }
+
+            var target = e.currentTarget;
+
+            this.setState({
+                pendingTitle: 'Setting up...',
+                itemId: target.getAttribute('data-item-id')
+            });
+
+            jQuery.ajax({
+                url: _routes.routes.app_create_learning_user,
+                method: 'POST',
+                data: {
+                    languageId: target.getAttribute('data-item-id')
+                }
+            }).done(function (data) {
+                if (data.status === 'success') {
+                    window.location.href = target.getAttribute('href');
+                }
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var that = this;
+
+            var items = this.props.items.map(function (item) {
+                var title = item.isLearning === true ? 'Continue' : 'Learn ' + item.name;
+                var learningClass = '';
+
+                if (item.id == that.state.itemId) {
+                    title = that.state.pendingTitle;
+                }
+
+                if (item.isLearning === true) {
+                    learningClass = 'item-started';
+                }
+
+                return _react2.default.createElement(
+                    'div',
+                    { key: item.id, className: 'item' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'title-holder margin-bottom-30' },
+                        _react2.default.createElement(
+                            'h2',
+                            { className: 'item-name' },
+                            item.name
+                        ),
+                        item.image && _react2.default.createElement('img', { src: item.image.fullPath }) || !item.image && _react2.default.createElement('img', { width: '50', height: '50' })
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'margin-bottom-30' },
+                        item.listDescription
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'start-link' },
+                        _react2.default.createElement(
+                            'a',
+                            {
+                                className: learningClass,
+                                onClick: that.createLearningUser,
+                                'data-item-id': item.id,
+                                href: _env.envr + "langland/language-course/" + item.name + '/' + item.id },
+                            title
+                        )
+                    )
+                );
+            });
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'component list' },
+                items
+            );
+        }
+    }]);
+
+    return LanguageList;
+}(_react2.default.Component);
+
+var LanguageListContainer = exports.LanguageListContainer = function (_React$Component2) {
+    _inherits(LanguageListContainer, _React$Component2);
+
+    function LanguageListContainer(props) {
+        _classCallCheck(this, LanguageListContainer);
+
+        var _this2 = _possibleConstructorReturn(this, (LanguageListContainer.__proto__ || Object.getPrototypeOf(LanguageListContainer)).call(this, props));
+
+        _this2.state = {
+            items: []
+        };
+        return _this2;
+    }
+
+    _createClass(LanguageListContainer, [{
+        key: '_fetchLearnableLanguages',
+        value: function _fetchLearnableLanguages() {
+            jQuery.ajax({
+                url: _routes.routes.app_find_learnable_languages,
+                method: 'POST'
+            }).done(jQuery.proxy(function (data) {
+                this.setState({
+                    items: data.data
+                });
+            }, this));
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchLearnableLanguages();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var items = this.state.items;
+
+            return _react2.default.createElement(LanguageList, { items: items });
+        }
+    }]);
+
+    return LanguageListContainer;
+}(_react2.default.Component);
+
+/***/ }),
 /* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11671,9 +11665,9 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(63);
 
-var _header = __webpack_require__(99);
+var _header = __webpack_require__(98);
 
-var _courses = __webpack_require__(98);
+var _languages = __webpack_require__(99);
 
 var _courseInit = __webpack_require__(97);
 
@@ -11693,10 +11687,7 @@ var CourseApp = function (_React$Component) {
     function CourseApp(props) {
         _classCallCheck(this, CourseApp);
 
-        var _this = _possibleConstructorReturn(this, (CourseApp.__proto__ || Object.getPrototypeOf(CourseApp)).call(this, props));
-
-        console.log('kreten');
-        return _this;
+        return _possibleConstructorReturn(this, (CourseApp.__proto__ || Object.getPrototypeOf(CourseApp)).call(this, props));
     }
 
     _createClass(CourseApp, [{
@@ -11720,7 +11711,7 @@ function App() {
                 'div',
                 { className: 'app' },
                 _react2.default.createElement(_header.HeaderContainer, null),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _courses.LanguageListContainer }),
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _languages.LanguageListContainer }),
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:id", component: _courseInit.CourseInitContainer }),
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:courseName/:id", component: CourseApp })
             )
@@ -11785,7 +11776,7 @@ var CourseItem = function (_React$Component) {
         value: function render() {
             var that = this;
 
-            var items = this.props.items.map(function (item) {
+            var items = this.props.items.map(function (item, index) {
                 var inactiveItemClass = '',
                     inactiveStartLinkClass = '';
 
@@ -11798,7 +11789,7 @@ var CourseItem = function (_React$Component) {
 
                 return _react2.default.createElement(
                     'div',
-                    { key: item.id, className: "item relative " + inactiveItemClass },
+                    { key: index, className: "item relative " + inactiveItemClass },
                     item.hasPassed === false && item.course.initialCourse === false && _react2.default.createElement('div', { className: 'inactive-capsule absolute' }),
                     _react2.default.createElement(
                         'div',
@@ -11867,10 +11858,7 @@ var CourseListContainer = exports.CourseListContainer = function (_React$Compone
         value: function _fetchCourseList() {
             jQuery.ajax({
                 url: _routes.routes.app_language_course_list,
-                method: 'POST',
-                data: {
-                    languageId: this.props.languageData.id
-                }
+                method: 'POST'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
                     this.setState({

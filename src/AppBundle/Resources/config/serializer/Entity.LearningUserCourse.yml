@@ -2,13 +2,17 @@ AppBundle\Entity\LearningUserCourse:
     exclusion_policy: ALL
     properties:
         id:
-            expose:
+            expose: true
             groups: [course_list]
         hasPassed:
             expose: true
             groups: [course_list]
             serialized_name: hasPassed
+        language:
+            expose: true
+            groups: [course_list]
+            type: AdminBundle\Entity\Language
         course:
             expose: true
-            type: AdminBundle\Entity\Course
             groups: [course_list]
+            type: AdminBundle\Entity\Course

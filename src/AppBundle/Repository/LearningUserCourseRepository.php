@@ -20,8 +20,10 @@ class LearningUserCourseRepository extends EntityRepository
             ->innerJoin('luc.course', 'c')
             ->innerJoin('luc.learningUser', 'lu')
             ->andWhere('luc.learningUser = :learning_user_id')
+            ->andWhere('lu.currentLanguage = :current_language_id')
             ->addOrderBy('c.initialCourse', 'DESC')
             ->setParameter(':learning_user_id', $learningUser->getId())
+            ->setParameter(':current_language_id', $learningUser->getCurrentLanguage()->getId())
             ->getQuery()
             ->getResult();
 

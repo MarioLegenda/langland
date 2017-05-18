@@ -11,9 +11,9 @@
 
     <many-to-one field="user" target-entity="ArmorBundle\Entity\User" />
 
-    <many-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
+    <one-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
 
-    <one-to-many target-entity="AppBundle\Entity\LearningUserCourse" mapped-by="learningUser" field="learningUserCourses">
+    <one-to-many target-entity="AppBundle\Entity\CourseHolder" mapped-by="learningUser" field="courseHolders">
       <cascade>
         <cascade-persist/>
       </cascade>

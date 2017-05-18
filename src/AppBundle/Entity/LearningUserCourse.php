@@ -15,6 +15,18 @@ class LearningUserCourse
      */
     private $id;
     /**
+     * @var bool $hasPassed
+     */
+    private $hasPassed;
+    /**
+     * @var CourseHolder $courseHolder
+     */
+    private $courseHolder;
+    /**
+     * @var ArrayCollection $courses
+     */
+    private $course;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -22,22 +34,11 @@ class LearningUserCourse
      * @var \DateTime $updatedAt
      */
     private $updatedAt;
-    /**
-     * @var LearningUser
-     */
-    private $learningUser;
-    /**
-     * @var bool $hasPassed
-     */
-    private $hasPassed;
-    /**
-     * @var ArrayCollection $courses
-     */
-    private $course;
 
     public function __construct()
     {
         $this->hasPassed = false;
+        $this->courses = new ArrayCollection();
     }
     /**
      * Get id
@@ -63,51 +64,36 @@ class LearningUserCourse
     {
         $this->hasPassed = $hasPassed;
 
-        return $htis;
-    }
-    /**
-     * Set learningUser
-     *
-     * @param LearningUser $learningUser
-     *
-     * @return LearningUserCourse
-     */
-    public function setLearningUser($learningUser) : LearningUserCourse
-    {
-        $this->learningUser = $learningUser;
-
         return $this;
     }
     /**
-     * Get learningUser
-     *
-     * @return LearningUser
+     * @return mixed
      */
-    public function getLearningUser()
+    public function getCourseHolder()
     {
-        return $this->learningUser;
+        return $this->courseHolder;
     }
     /**
-     * Set courses
-     *
-     * @param \stdClass $courses
-     *
+     * @param mixed $courseHolder
+     */
+    public function setCourseHolder($courseHolder)
+    {
+        $this->courseHolder = $courseHolder;
+    }
+    /**
+     * @param $courses
      * @return LearningUserCourse
      */
-    public function setCourse($courses) : LearningUserCourse
+    public function setCourses($courses) : LearningUserCourse
     {
-        $this->course = $courses;
-
-        return $this;
+        $this->courses = $courses;
     }
     /**
-     * Get courses
-     *
      * @return ArrayCollection
      */
-    public function getCourse()
+    public function getCourses()
     {
-        return $this->course;
+        return $this->courses;
     }
     /**
      * Set createdAt
@@ -161,6 +147,21 @@ class LearningUserCourse
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
         }
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getCourse()
+    {
+        return $this->course;
+    }
+
+    /**
+     * @param Course $course
+     */
+    public function setCourse(Course $course)
+    {
+        $this->course = $course;
     }
 }
 

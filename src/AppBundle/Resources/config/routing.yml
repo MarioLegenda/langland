@@ -9,7 +9,7 @@ app_course_dashboard:
     methods: [GET]
 
 app_course_actual_app:
-    path: /langland/language-course/{languageName}/{courseName}/{courseId}
+    path: /langland/language-course/{languageName}/{courseName}/{courseHolerId}
     defaults: { _controller: AppBundle:Api/Course:initApp }
     methods: [GET]
 

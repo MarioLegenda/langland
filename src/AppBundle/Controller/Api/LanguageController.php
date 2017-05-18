@@ -4,33 +4,28 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\LearningUser;
 
-class LanguageController extends ResponseController
+class LanguageController extends CommonOperationController
 {
     public function findLearnableLanguagesAction()
     {
-        $dbLanguages = $this->getRepository('AdminBundle:Language')->findLearnableLanguages();
-        $learningUser = $this->getRepository('AppBundle:LearningUser')->findLearningUserByLoggedInUser($this->getUser());
+        $languages = $this->getRepository('AdminBundle:Language')->findLearnableLanguages();
 
-        if (empty($dbLanguages)) {
+        if (empty($languages)) {
             return $this->createFailedJsonResponse();
         }
 
         return $this->createSuccessJsonResponse(
-            $this->createLanguages($dbLanguages, $learningUser)
+            $this->createLanguages($languages, $this->getLearningUser())
         );
     }
 
     public function findLearningLanguagesAction()
     {
-        $learningUser = $this->getRepository('AppBundle:LearningUser')->findBy(array(
-            'user' => $this->getUser(),
-        ));
+        $learningUser = $this->getLearningUser();
 
-        if (empty($learningUser)) {
+        if (!$learningUser instanceof LearningUser) {
             return $this->createFailedJsonResponse();
         }
-
-        $learningUser = $learningUser[0];
 
         $signedUpLanguages = $learningUser->getLanguages();
 
@@ -49,6 +44,7 @@ class LanguageController extends ResponseController
     private function createLanguages(array $languages, LearningUser $learningUser = null) : array
     {
         $data = array();
+
         foreach ($languages as $language) {
             $langArray = $this->serialize($language, array('learnable_language'));
 

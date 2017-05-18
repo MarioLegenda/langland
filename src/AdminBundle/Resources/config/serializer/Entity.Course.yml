@@ -1,6 +1,9 @@
 AdminBundle\Entity\Course:
     exclusion_policy: ALL
     properties:
+        id:
+            expose: true
+            groups: [course_list]
         name:
             expose: true
             groups: [course_list]

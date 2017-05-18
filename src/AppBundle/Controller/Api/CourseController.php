@@ -2,14 +2,15 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\CourseHolder;
 use AppBundle\Entity\LearningUserCourse;
 use Symfony\Component\HttpFoundation\Request;
 
 class CourseController extends CommonOperationController
 {
-    public function isInfoLookedAction(Request $request)
+    public function isInfoLookedAction()
     {
-        $learningUser = $this->getLearningUser($request->request->get('languageId'));
+        $learningUser = $this->getLearningUser();
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
@@ -22,9 +23,9 @@ class CourseController extends CommonOperationController
         return $this->createSuccessJsonResponse();
     }
 
-    public function markInfoLookedAction(Request $request)
+    public function markInfoLookedAction()
     {
-        $learningUser = $this->getLearningUser($request->request->get('languageId'));
+        $learningUser = $this->getLearningUser();
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
@@ -40,7 +41,7 @@ class CourseController extends CommonOperationController
 
     public function findLanguageInfosAction(Request $request)
     {
-        $learningUser = $this->getLearningUser($request->request->get('languageId'));
+        $learningUser = $this->getLearningUser();
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
@@ -53,24 +54,20 @@ class CourseController extends CommonOperationController
 
     public function findLanguageCoursesAction(Request $request)
     {
-        $learningUser = $this->getLearningUser($request->request->get('languageId'));
+        $learningUser = $this->getLearningUser();
 
-        $courses = $this
-            ->getRepository('AppBundle:LearningUserCourse')
-            ->findCoursesByLearningUserDesc($learningUser);
+        $courseHolder = $learningUser->getCourseHolderByCurrentLanguage();
 
-        $serialized = $this->serialize($courses, array('course_list'));
+        $serialized = $this->serialize($courseHolder->getLearningUserCourses(), array('course_list'));
 
         return $this->createSuccessJsonResponse($serialized);
     }
 
-    public function initAppAction($languageName, $courseName, $courseId)
+    public function initAppAction($languageName, $courseName, $courseHolderId)
     {
-        $learningUserCourse = $this->getRepository('AppBundle:LearningUserCourse')->findOneBy(array(
-            'learningUser' => $this->getLearningUser(),
-        ));
+        $courseHolder = $this->getRepository('AppBundle:CourseHolder')->find($courseHolderId);
 
-        if ($learningUserCourse instanceof LearningUserCourse) {
+        if ($courseHolder instanceof CourseHolder) {
             return $this->render('::App/Dashboard/dashboard.html.twig');
         }
 

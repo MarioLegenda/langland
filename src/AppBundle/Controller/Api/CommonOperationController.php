@@ -6,12 +6,10 @@ use AppBundle\Entity\LearningUser;
 
 class CommonOperationController extends ResponseController
 {
-    public function getLearningUser($languageId)
+    public function getLearningUser()
     {
-        $language = $this->getRepository('AdminBundle:Language')->find($languageId);
-
         $learningUser = $this->getRepository('AppBundle:LearningUser')->findOneBy(array(
-            'currentLanguage' => $language,
+            'user' => $this->getUser(),
         ));
 
         if (!$learningUser instanceof LearningUser) {

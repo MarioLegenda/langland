@@ -30,18 +30,18 @@ class LearningUser
      */
     private $languages;
     /**
+     * @var ArrayCollection $courseHolders
+     */
+    private $courseHolders;
+    /**
      * @var Language $currentLanguage
      */
     private $currentLanguage;
-    /**
-     * @var ArrayCollection $learningUserCourses
-     */
-    private $learningUserCourses;
 
     public function __construct()
     {
         $this->languages = new ArrayCollection();
-        $this->learningUserCourses = new ArrayCollection();
+        $this->courseHolders = new ArrayCollection();
     }
     /**
      * Get id
@@ -115,39 +115,65 @@ class LearningUser
         return $this;
     }
     /**
-     * @param LearningUserCourse $learningUserCourse
+     * @param CourseHolder $courseHolder
      * @return bool
      */
-    public function hasLearningUserCourse(LearningUserCourse $learningUserCourse) : bool
+    public function hasCourseHolder(CourseHolder $courseHolder) : bool
     {
-        return $this->learningUserCourses->contains($learningUserCourse);
+        return $this->courseHolders->contains($courseHolder);
     }
     /**
-     * @param LearningUserCourse $learningUserCourse
+     * @param CourseHolder $courseHolder
      * @return LearningUser
      */
-    public function addLearningUserCourse(LearningUserCourse $learningUserCourse) : LearningUser
+    public function addCourseHolder(CourseHolder $courseHolder) : LearningUser
     {
-        if (!$this->hasLearningUserCourse($learningUserCourse)) {
-            $learningUserCourse->setLearningUser($this);
-            $this->learningUserCourses->add($learningUserCourse);
+        if (!$this->hasCourseHolder($courseHolder)) {
+            $courseHolder->setLearningUser($this);
+            $this->courseHolders->add($courseHolder);
         }
 
         return $this;
     }
     /**
-     * @return mixed
+     * @param CourseHolder $courseHolder
+     * @return LearningUser
      */
-    public function getLearningUserCourses()
+    public function removeCourseHolder(CourseHolder $courseHolder) : LearningUser
     {
-        return $this->learningUserCourses;
+        if ($this->hasCourseHolder($courseHolder)) {
+            $this->courseHolders->removeElement($courseHolder);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return CourseHolder|null
+     */
+    public function getCourseHolderByCurrentLanguage()
+    {
+        foreach ($this->courseHolders as $courseHolder) {
+            if ($this->getCurrentLanguage() === $courseHolder->getLanguage()) {
+                return $courseHolder;
+            }
+        }
+
+        return null;
     }
     /**
-     * @param mixed $learningUserCourses
+     * @return mixed
      */
-    public function setLearningUserCourses($learningUserCourses)
+    public function getCourseHolders()
     {
-        $this->learningUserCourses = $learningUserCourses;
+        return $this->courseHolders;
+    }
+    /**
+     * @param mixed $courseHolders
+     */
+    public function setCourseHolders($courseHolders)
+    {
+        $this->courseHolders = $courseHolders;
     }
     /**
      * Set createdAt

@@ -1,0 +1,14 @@
+AppBundle\Entity\LearningUserLesson:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            groups: [lesson_list]
+        hasPassed:
+            expose: true
+            groups: [lesson_list]
+            serialized_name: hasPassed
+        lesson:
+            expose: true
+            groups: [lesson_list]
+            type: AdminBundle\Entity\Lesson

@@ -3,10 +3,13 @@
 namespace AppBundle\Listener;
 
 
+use AdminBundle\Entity\Language;
 use AppBundle\Entity\CourseHolder;
+use AppBundle\Entity\LearningUserLesson;
 use AppBundle\Event\LearningUserCreateEvent;
 use AppBundle\Entity\LearningUser;
 use AppBundle\Entity\LearningUserCourse;
+use Doctrine\ORM\EntityManager;
 
 class CreateLearningUserListener
 {
@@ -28,24 +31,7 @@ class CreateLearningUserListener
                 return;
             }
 
-            $courses = $em->getRepository('AdminBundle:Course')->findBy(array(
-                'language' => $language,
-            ));
-
-            $courseHolder = new CourseHolder();
-            $courseHolder->setLanguage($language);
-
-            foreach ($courses as $course) {
-                $learningUserCourse = new LearningUserCourse();
-                $learningUserCourse->setCourse($course);
-
-                $courseHolder->addLearningUserCourse($learningUserCourse);
-            }
-
-            $learningUser->addCourseHolder($courseHolder);
-
-            $learningUser->addLanguage($language);
-            $learningUser->setCurrentLanguage($language);
+            $this->addDependencies($learningUser, $em, $language);
 
             $em->persist($learningUser);
             $em->flush();
@@ -55,6 +41,14 @@ class CreateLearningUserListener
 
         $learningUser = LearningUser::create($user, $language);
 
+        $this->addDependencies($learningUser, $em, $language);
+
+        $em->persist($learningUser);
+        $em->flush();;
+    }
+
+    private function addDependencies(LearningUser $learningUser, EntityManager $em, Language $language)
+    {
         $courses = $em->getRepository('AdminBundle:Course')->findBy(array(
             'language' => $language,
         ));
@@ -67,14 +61,20 @@ class CreateLearningUserListener
             $learningUserCourse->setCourse($course);
 
             $courseHolder->addLearningUserCourse($learningUserCourse);
+
+            $lessons = $course->getLessons();
+
+            foreach ($lessons as $lesson) {
+                $learningUserLesson = new LearningUserLesson();
+                $learningUserLesson->setLesson($lesson);
+
+                $learningUserCourse->addLearningUserLesson($learningUserLesson);
+            }
         }
 
         $learningUser->addCourseHolder($courseHolder);
 
         $learningUser->addLanguage($language);
         $learningUser->setCurrentLanguage($language);
-
-        $em->persist($learningUser);
-        $em->flush();;
     }
 }

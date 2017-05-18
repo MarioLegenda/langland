@@ -1,0 +1,9 @@
+AdminBundle\Entity\Lesson:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            groups: [lesson_list]
+        name:
+            expose: true
+            groups: [lesson_list]

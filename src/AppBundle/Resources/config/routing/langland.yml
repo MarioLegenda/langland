@@ -15,3 +15,9 @@ app_language:
   prefix: /language
   host: '%host%'
   methods: [POST]
+
+app_main_data:
+  resource: "@AppBundle/Resources/config/routing/api/data/data.yml"
+  prefix: /data
+  host: '%host%'
+  methods: [GET]

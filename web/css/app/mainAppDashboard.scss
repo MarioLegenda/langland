@@ -1,0 +1,34 @@
+.main-app-dashboard {
+  width: 80%;
+
+  overflow: hidden;
+
+  margin: 0 auto;
+
+  .lesson {
+    width: 100px;
+    height: 100px;
+    float:left;
+
+    padding: 0 10px 10px 10px;
+
+    border-radius: 10px;
+
+    border: 1px solid $highlight-gray;
+
+    margin: 0 2% 0 0;
+
+    h1 {
+      color: $highlight-gray;
+      font-weight: bold;
+
+      text-align: center;
+
+      margin-top: 10px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

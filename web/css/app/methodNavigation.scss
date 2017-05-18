@@ -31,12 +31,19 @@
       color: $appMainColor;
       border: 1px solid $appMainColor;
 
-      margin-left: 30px;
+      margin-left: 35px;
     }
 
     i {
       display:block;
     }
+  }
+
+  .highlighted-nav-item {
+    color: $appMainColor;
+    border: 1px solid $appMainColor;
+
+    margin-left: 35px;
   }
 
   .lesson-item {

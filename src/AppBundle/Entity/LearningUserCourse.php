@@ -23,7 +23,11 @@ class LearningUserCourse
      */
     private $courseHolder;
     /**
-     * @var ArrayCollection $courses
+     * @var $learningUserLessons
+     */
+    private $learningUserLessons;
+    /**
+     * @var Course $courses
      */
     private $course;
     /**
@@ -37,8 +41,8 @@ class LearningUserCourse
 
     public function __construct()
     {
+        $this->learningUserLessons = new ArrayCollection();
         $this->hasPassed = false;
-        $this->courses = new ArrayCollection();
     }
     /**
      * Get id
@@ -91,9 +95,67 @@ class LearningUserCourse
     /**
      * @return ArrayCollection
      */
-    public function getCourses()
+    public function getCourse()
     {
-        return $this->courses;
+        return $this->course;
+    }
+
+    /**
+     * @param Course $course
+     */
+    public function setCourse(Course $course)
+    {
+        $this->course = $course;
+    }
+    /**
+     * @param LearningUserLesson $lesson
+     * @return bool
+     */
+    public function hasLearningUserLesson(LearningUserLesson $lesson) : bool
+    {
+        return $this->learningUserLessons->contains($lesson);
+    }
+    /**
+     * @param LearningUserLesson $lesson
+     * @return LearningUserCourse
+     */
+    public function addLearningUserLesson(LearningUserLesson $lesson) : LearningUserCourse
+    {
+        if (!$this->hasLearningUserLesson($lesson)) {
+            $lesson->setLearningUserCourse($this);
+            $this->learningUserLessons->add($lesson);
+        }
+
+        return $this;
+    }
+    /**
+     * @param LearningUserLesson $lesson
+     * @return LearningUserCourse
+     */
+    public function removeLearningUserLesson(LearningUserLesson $lesson) : LearningUserCourse
+    {
+        if ($this->hasLearningUserLesson($lesson)) {
+            $this->learningUserLessons->removeElement($lesson);
+        }
+
+        return $this;
+    }
+    /**
+     * @param $learningUserLessons
+     * @return LearningUserCourse
+     */
+    public function setLearningUserLessons($learningUserLessons) : LearningUserCourse
+    {
+        $this->learningUserLessons = $learningUserLessons;
+
+        return $this;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getLearningUserLessons()
+    {
+        return $this->learningUserLessons;
     }
     /**
      * Set createdAt
@@ -147,21 +209,6 @@ class LearningUserCourse
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
         }
-    }
-    /**
-     * @return ArrayCollection
-     */
-    public function getCourse()
-    {
-        return $this->course;
-    }
-
-    /**
-     * @param Course $course
-     */
-    public function setCourse(Course $course)
-    {
-        $this->course = $course;
     }
 }
 

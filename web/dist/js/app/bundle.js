@@ -11687,10 +11687,36 @@ var MethodNaviagation = function (_React$Component) {
     function MethodNaviagation(props) {
         _classCallCheck(this, MethodNaviagation);
 
-        return _possibleConstructorReturn(this, (MethodNaviagation.__proto__ || Object.getPrototypeOf(MethodNaviagation)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (MethodNaviagation.__proto__ || Object.getPrototypeOf(MethodNaviagation)).call(this, props));
+
+        _this.showLessons = _this.showLessons.bind(_this);
+        _this.showGames = _this.showGames.bind(_this);
+        return _this;
     }
 
     _createClass(MethodNaviagation, [{
+        key: 'showLessons',
+        value: function showLessons(e) {
+            var target = e.currentTarget;
+
+            jQuery('.nav-item').removeClass('highlighted-nav-item');
+
+            jQuery(target).addClass('highlighted-nav-item');
+
+            this.props.showLessons();
+        }
+    }, {
+        key: 'showGames',
+        value: function showGames(e) {
+            var target = e.currentTarget;
+
+            jQuery('.nav-item').removeClass('highlighted-nav-item');
+
+            jQuery(target).addClass('highlighted-nav-item');
+
+            this.props.showGames();
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -11698,7 +11724,7 @@ var MethodNaviagation = function (_React$Component) {
                 { className: 'method-navigation' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'nav-item lesson-item' },
+                    { onClick: this.showLessons, className: 'nav-item lesson-item' },
                     _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-3x' }),
                     _react2.default.createElement(
                         'span',
@@ -11708,7 +11734,7 @@ var MethodNaviagation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'nav-item game-item' },
+                    { onClick: this.showGames, className: 'nav-item game-item' },
                     _react2.default.createElement('i', { className: 'fa fa-gamepad fa-3x' }),
                     _react2.default.createElement(
                         'span',
@@ -11733,22 +11759,161 @@ var MethodNaviagation = function (_React$Component) {
     return MethodNaviagation;
 }(_react2.default.Component);
 
-var MethodApp = function (_React$Component2) {
-    _inherits(MethodApp, _React$Component2);
+var LessonList = function (_React$Component2) {
+    _inherits(LessonList, _React$Component2);
+
+    function LessonList(props) {
+        _classCallCheck(this, LessonList);
+
+        return _possibleConstructorReturn(this, (LessonList.__proto__ || Object.getPrototypeOf(LessonList)).call(this, props));
+    }
+
+    _createClass(LessonList, [{
+        key: 'render',
+        value: function render() {
+            var items = this.props.items.map(function (item, index) {
+                return _react2.default.createElement(
+                    'div',
+                    { key: index, className: 'lesson' },
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        item.lesson.name
+                    )
+                );
+            });
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                items
+            );
+        }
+    }]);
+
+    return LessonList;
+}(_react2.default.Component);
+
+var LessonListContainer = function (_React$Component3) {
+    _inherits(LessonListContainer, _React$Component3);
+
+    function LessonListContainer(props) {
+        _classCallCheck(this, LessonListContainer);
+
+        var _this3 = _possibleConstructorReturn(this, (LessonListContainer.__proto__ || Object.getPrototypeOf(LessonListContainer)).call(this, props));
+
+        _this3.state = {
+            items: null,
+            itemsFetched: false
+        };
+        return _this3;
+    }
+
+    _createClass(LessonListContainer, [{
+        key: '_fetchLessons',
+        value: function _fetchLessons() {
+            jQuery.ajax({
+                url: _env.envr + 'langland/data/lesson-list/' + this.props.learningUserCourseId,
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                this.setState({
+                    items: data.data,
+                    itemsFetched: true
+                });
+            }, this));
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchLessons();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var items = this.state.items;
+            var itemsFetched = this.state.itemsFetched;
+
+            if (items === null) {
+                return null;
+            }
+
+            if (itemsFetched === false) {
+                return null;
+            }
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(LessonList, { items: items })
+            );
+        }
+    }]);
+
+    return LessonListContainer;
+}(_react2.default.Component);
+
+var MethodApp = function (_React$Component4) {
+    _inherits(MethodApp, _React$Component4);
 
     function MethodApp(props) {
         _classCallCheck(this, MethodApp);
 
-        return _possibleConstructorReturn(this, (MethodApp.__proto__ || Object.getPrototypeOf(MethodApp)).call(this, props));
+        var _this4 = _possibleConstructorReturn(this, (MethodApp.__proto__ || Object.getPrototypeOf(MethodApp)).call(this, props));
+
+        _this4.routeParams = _this4.props.match.params;
+
+        _this4.state = {
+            page: {
+                showLessons: false,
+                showGames: false
+            }
+        };
+
+        _this4.showLessons = _this4.showLessons.bind(_this4);
+        _this4.showGames = _this4.showGames.bind(_this4);
+        return _this4;
     }
 
     _createClass(MethodApp, [{
+        key: 'showLessons',
+        value: function showLessons() {
+            var page = {
+                showLessons: true,
+                showGames: false
+            };
+
+            this.setState({
+                page: page
+            });
+        }
+    }, {
+        key: 'showGames',
+        value: function showGames() {
+            var page = {
+                showLessons: false,
+                showGames: true
+            };
+
+            this.setState({
+                page: page
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 { className: 'big-component' },
-                _react2.default.createElement(MethodNaviagation, null)
+                _react2.default.createElement(MethodNaviagation, {
+                    showLessons: this.showLessons,
+                    showGames: this.showGames
+                }),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'main-app-dashboard' },
+                    this.state.page.showLessons === true && _react2.default.createElement(LessonListContainer, { learningUserCourseId: this.routeParams.learningUserCourseId }),
+                    this.state.page.showGames === true && _react2.default.createElement('div', null)
+                )
             );
         }
     }]);
@@ -11769,7 +11934,7 @@ function App() {
                 null,
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _languages.LanguageListContainer }),
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:id", component: _courseInit.CourseInitContainer }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:courseName/:id", component: MethodApp })
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:courseName/:learningUserCourseId", component: MethodApp })
             )
         )
     );

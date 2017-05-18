@@ -16,6 +16,12 @@
 
         <one-to-one field="course" target-entity="AdminBundle\Entity\Course" />
 
+        <one-to-many target-entity="AppBundle\Entity\LearningUserLesson" mapped-by="learningUserCourse" field="learningUserLessons">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
         <lifecycle-callbacks>
             <lifecycle-callback type="prePersist" method="updateTimestamps" />
             <lifecycle-callback type="preUpdate" method="updateTimestamps" />

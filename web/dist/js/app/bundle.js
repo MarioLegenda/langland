@@ -11681,23 +11681,79 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var CourseApp = function (_React$Component) {
-    _inherits(CourseApp, _React$Component);
+var MethodNaviagation = function (_React$Component) {
+    _inherits(MethodNaviagation, _React$Component);
 
-    function CourseApp(props) {
-        _classCallCheck(this, CourseApp);
+    function MethodNaviagation(props) {
+        _classCallCheck(this, MethodNaviagation);
 
-        return _possibleConstructorReturn(this, (CourseApp.__proto__ || Object.getPrototypeOf(CourseApp)).call(this, props));
+        return _possibleConstructorReturn(this, (MethodNaviagation.__proto__ || Object.getPrototypeOf(MethodNaviagation)).call(this, props));
     }
 
-    _createClass(CourseApp, [{
+    _createClass(MethodNaviagation, [{
         key: 'render',
         value: function render() {
-            return _react2.default.createElement('div', null);
+            return _react2.default.createElement(
+                'div',
+                { className: 'method-navigation' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'nav-item lesson-item' },
+                    _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-3x' }),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        'Lessons'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'nav-item game-item' },
+                    _react2.default.createElement('i', { className: 'fa fa-gamepad fa-3x' }),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        'Games'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'nav-item trophy-item' },
+                    _react2.default.createElement('i', { className: 'fa fa-trophy fa-3x' }),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        'Trophies'
+                    )
+                )
+            );
         }
     }]);
 
-    return CourseApp;
+    return MethodNaviagation;
+}(_react2.default.Component);
+
+var MethodApp = function (_React$Component2) {
+    _inherits(MethodApp, _React$Component2);
+
+    function MethodApp(props) {
+        _classCallCheck(this, MethodApp);
+
+        return _possibleConstructorReturn(this, (MethodApp.__proto__ || Object.getPrototypeOf(MethodApp)).call(this, props));
+    }
+
+    _createClass(MethodApp, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'big-component' },
+                _react2.default.createElement(MethodNaviagation, null)
+            );
+        }
+    }]);
+
+    return MethodApp;
 }(_react2.default.Component);
 
 function App() {
@@ -11706,14 +11762,14 @@ function App() {
         null,
         _react2.default.createElement(
             'div',
-            null,
+            { className: 'app' },
+            _react2.default.createElement(_header.HeaderContainer, null),
             _react2.default.createElement(
                 'div',
-                { className: 'app' },
-                _react2.default.createElement(_header.HeaderContainer, null),
+                null,
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _languages.LanguageListContainer }),
                 _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:id", component: _courseInit.CourseInitContainer }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:courseName/:id", component: CourseApp })
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:courseName/:id", component: MethodApp })
             )
         )
     );

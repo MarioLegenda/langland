@@ -1,0 +1,53 @@
+.method-navigation {
+  width: 160px;
+  float:left;
+
+  border-right: 1px solid $highlight-gray;
+
+  .nav-item {
+    width: 120px;
+    height: 120px;
+    overflow:hidden;
+
+    margin-left: 20px;
+
+    color: $highlight-gray;
+
+    border-radius: 70px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid $highlight-gray;
+
+    -webkit-transition: color 0.5s, border 0.5s, margin-left 0.5s;
+    -moz-transition: color 0.5s, border 0.5s, margin-left 0.5s;
+    -ms-transition: color 0.5s, border 0.5s, margin-left 0.5s;
+    -o-transition: color 0.5s, border 0.5s, margin-left 0.5s;
+    transition: color 0.5s, border 0.5s, margin-left 0.5s;
+
+    &:hover {
+      cursor: pointer;
+
+      color: $appMainColor;
+      border: 1px solid $appMainColor;
+
+      margin-left: 30px;
+    }
+
+    i {
+      display:block;
+    }
+  }
+
+  .lesson-item {
+    padding: 25px 0 25px 30px;
+  }
+
+  .game-item {
+    padding: 25px 0 25px 35px;
+  }
+
+  .trophy-item {
+    padding: 25px 0 25px 38px;
+  }
+}

@@ -2,9 +2,14 @@
 
 namespace AdminBundle\Command;
 
-use AdminBundle\Entity\Category;
+use AdminBundle\Command\Helper\CategoryFactory;
+use AdminBundle\Command\Helper\CourseFactory;
+use AdminBundle\Command\Helper\LanguageFactory;
+use AdminBundle\Command\Helper\LanguageInfoFactory;
+use AdminBundle\Command\Helper\LessonFactory;
+use AdminBundle\Command\Helper\WordFactory;
+use AdminBundle\Command\Helper\WordTranslationFactory;
 use AdminBundle\Entity\Course;
-use AdminBundle\Entity\Language;
 use AdminBundle\Entity\LanguageInfo;
 use AdminBundle\Entity\LanguageInfoText;
 use AdminBundle\Entity\Lesson;
@@ -12,12 +17,7 @@ use AdminBundle\Entity\LessonText;
 use AdminBundle\Entity\Sentence;
 use AdminBundle\Entity\SentenceTranslation;
 use AdminBundle\Entity\SentenceWordPool;
-use AdminBundle\Entity\Translation;
 use AdminBundle\Entity\Word;
-use AdminBundle\Entity\Image;
-use ArmorBundle\Entity\User;
-use BlueDot\BlueDotInterface;
-use BlueDot\Entity\PromiseInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,110 +42,35 @@ class SeedCommand extends ContainerAwareCommand
 
         $languages = array('french', 'spanish', 'italian');
         $categories = array('nature', 'body', 'soul', 'love');
-        $courses = array('I know this ...');
-
-        $categoryObjects = array();
-
-        foreach ($categories as $cat) {
-            $category = new Category();
-            $category->setName($cat);
-
-            $categoryObjects[] = $category;
-
-            $em->persist($category);
-            $em->flush();
-        }
-
-        for ($i = 0; $i < count($languages); $i++) {
-            $lang = $languages[$i];
-
-            $language = new Language();
-            $language->setName($lang);
-            $language->setShowOnPage(true);
-            $language->setListDescription($faker->sentence(60));
-
-            $em->persist($language);
-
-            $wordsArray = array();
-            for ($m = 0; $m < 10; $m++) {
-                $word = new Word();
-                $word->setName($faker->word);
-                $word->setLanguage($language);
-
-                $categoryCollection = new ArrayCollection();
-                $categoryCollection->add($categoryObjects[$i]);
-                $categoryCollection->add($categoryObjects[$i + 1]);
-
-                $word->setCategories($categoryCollection);
-                $word->setDescription($faker->sentence(60));
-                $word->setType($faker->company);
-
-                for ($w = 0; $w < 5; $w++) {
-                    $translation = new Translation();
-                    $translation->setWord($word);
-                    $translation->setName($faker->word);
-
-                    $word->addTranslation($translation);
-                }
-
-                $em->persist($word);
-
-                $wordsArray[] = $word;
-            }
-
-            $languageInfo = new LanguageInfo();
-            $languageInfo->setLanguage($language);
-            $languageInfo->setName($faker->word);
-
-            for ($s = 0; $s < 5; $s++) {
-                $text = new LanguageInfoText();
-                $text->setName($faker->word);
-                $text->setText($faker->sentence(30));
-
-                $text->setLanguageInfo($languageInfo);
-
-                $languageInfo->addLanguageInfoText($text);
-            }
-
-            $em->persist($languageInfo);
-
-            for ($g = 0; $g < 6; $g++) {
-                $course = new Course();
-
-                if ($g === 0) {
-                    $course->setInitialCourse(true);
-                }
-
-                $course->setName($faker->word);
-                $course->setWhatToLearn($faker->sentence(30));
-                $course->setLanguage($language);
-
-                $em->persist($course);
 
 
-                for ($a = 0; $a < 5; $a++) {
-                    $lesson = new Lesson();
+        $languageFactory = new LanguageFactory($em);
+        $categoryFactory = new CategoryFactory($em);
+        $wordTranslationFactory = new WordTranslationFactory();
+        $wordFactory = new WordFactory($em);
+        $languageInfoFactory = new LanguageInfoFactory($em);
+        $courseFactory = new CourseFactory($em);
+        $lessonFactory = new LessonFactory($em);
 
-                    if ($a === 0) {
-                        $lesson->setIsInitialLesson(true);
-                    }
+        $categoryFactory->create($categories, true);
+        $languageObjects = $languageFactory->create($languages, true);
 
-                    $lesson->setName($faker->name);
-                    $lesson->setCourse($course);
+        foreach ($languageObjects as $i => $languageObject) {
+            $wordsArray = $wordFactory->create(
+                $categoryFactory,
+                $wordTranslationFactory,
+                $languageObject,
+                10
+            );
 
-                    for ($v = 0; $v < 5; $v++) {
-                        $lessonText = new LessonText();
-                        $lessonText->setName($faker->word);
-                        $lessonText->setText($faker->sentence(20));
-                        $lessonText->setLesson($lesson);
+            $languageInfoFactory->create($languageObject);
 
-                        $lesson->addLessonText($lessonText);
-                    }
+            $courses = $courseFactory->create($languageObject, 6);
 
-                    $em->persist($lesson);
-                }
+            foreach ($courses as $course) {
+                $lessonFactory->create($course, 5);
 
-                for ($r = 0; $r < 10; $r++) {
+/*                for ($r = 0; $r < 10; $r++) {
                     $sentence = new Sentence();
                     $sentence->setName($faker->name);
                     $sentence->setSentence($faker->sentence(25));
@@ -161,9 +86,9 @@ class SeedCommand extends ContainerAwareCommand
                     }
 
                     $em->persist($sentence);
-                }
+                }*/
 
-                for ($t = 0; $t < 5; $t++) {
+/*                for ($t = 0; $t < 5; $t++) {
                     $wordPool = new SentenceWordPool();
 
                     $wordPool->setName($faker->name);
@@ -185,7 +110,7 @@ class SeedCommand extends ContainerAwareCommand
                     $wordPool->setWords($poolWord);
 
                     $em->persist($wordPool);
-                }
+                }*/
             }
         }
 

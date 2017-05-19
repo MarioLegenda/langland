@@ -4,6 +4,7 @@ namespace AdminBundle\Command;
 
 use ArmorBundle\Entity\Role;
 use ArmorBundle\Entity\User;
+use AdminBundle\Command\Helper\UserFactory;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

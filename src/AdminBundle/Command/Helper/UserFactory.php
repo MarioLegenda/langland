@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Command;
+namespace AdminBundle\Command\Helper;
 
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\Role\RoleInterface;

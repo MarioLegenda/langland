@@ -1,3 +1,9 @@
+
+{% set version = '' %}
+{% if app.environment == 'dev' %}
+     {% set version = '?v=' ~ random(999999999) %}
+{% endif %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +16,7 @@
         <link href="https://fonts.googleapis.com/css?family=Mallanna" rel="stylesheet">
 
         <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('dist/css/app.css') ~ '?v=' ~ random(999999999) }}" />
+        <link rel="stylesheet" href="{{ asset('dist/css/app.css') ~ version }}" />
     {% endblock %}
 </head>
 
@@ -25,7 +31,7 @@
 {% block javascripts %}
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
 
-    <script src="{{ asset('dist/js/app/bundle.js') ~ '?v=' ~ random(999999999) }}"></script>
+    <script src="{{ asset('dist/js/app/bundle.js') ~ version }}"></script>
 {% endblock %}
 
 </body>

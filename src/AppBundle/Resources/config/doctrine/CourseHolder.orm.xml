@@ -15,7 +15,7 @@
 
         <one-to-one field="language" target-entity="AdminBundle\Entity\Language" />
 
-        <one-to-many target-entity="AppBundle\Entity\LearningUserCourse" mapped-by="courseHolder" field="learningUserCourses">
+        <one-to-many target-entity="AppBundle\Entity\LearningUserCourse" mapped-by="courseHolder" field="learningUserCourses" fetch="EXTRA_LAZY">
             <cascade>
                 <cascade-persist/>
             </cascade>

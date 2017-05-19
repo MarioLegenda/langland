@@ -16,7 +16,7 @@
 
         <one-to-one field="course" target-entity="AdminBundle\Entity\Course" />
 
-        <one-to-many target-entity="AppBundle\Entity\LearningUserLesson" mapped-by="learningUserCourse" field="learningUserLessons">
+        <one-to-many target-entity="AppBundle\Entity\LearningUserLesson" mapped-by="learningUserCourse" field="learningUserLessons" fetch="EXTRA_LAZY">
             <cascade>
                 <cascade-persist/>
             </cascade>

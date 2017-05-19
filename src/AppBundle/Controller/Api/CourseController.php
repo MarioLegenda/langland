@@ -65,9 +65,9 @@ class CourseController extends CommonOperationController
 
     public function initAppAction($languageName, $courseName, $courseHolderId)
     {
-        $courseHolder = $this->getRepository('AppBundle:CourseHolder')->find($courseHolderId);
+        $courseHolder = $this->getRepository('AppBundle:LearningUserCourse')->find($courseHolderId);
 
-        if ($courseHolder instanceof CourseHolder) {
+        if ($courseHolder instanceof LearningUserCourse) {
             return $this->render('::App/Dashboard/dashboard.html.twig');
         }
 

@@ -11768,11 +11768,16 @@ var LessonList = function (_React$Component2) {
 
                 return _react2.default.createElement(
                     'div',
-                    { key: index, className: lessonClass },
+                    { key: index, className: "relative " + lessonClass },
+                    item.hasPassed === false && item.lesson.isInitialLesson === false && _react2.default.createElement('div', { className: 'forbidden-overlay absolute' }),
                     _react2.default.createElement(
-                        'h1',
+                        'div',
                         null,
-                        item.lesson.name
+                        _react2.default.createElement(
+                            'h1',
+                            null,
+                            item.lesson.name
+                        )
                     )
                 );
             });

@@ -42,4 +42,17 @@
       color: $highlight-gray;
     }
   }
+
+  .forbidden-overlay {
+    right: 1px;
+
+    width: 150px;
+    height: 150px;
+
+    z-index: 100;
+
+    &:hover {
+      cursor: auto;
+    }
+  }
 }

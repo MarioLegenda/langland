@@ -16,6 +16,10 @@ class Lesson
      */
     private $name;
     /**
+     * @var bool $isInitialLesson
+     */
+    private $isInitialLesson;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -35,6 +39,7 @@ class Lesson
     public function __construct()
     {
         $this->lessonTexts = new ArrayCollection();
+        $this->isInitialLesson = false;
     }
     /**
      * Get id
@@ -103,6 +108,23 @@ class Lesson
     public function setUpdatedAt(\DateTime $updatedAt) : Lesson
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function getIsInitialLesson(): bool
+    {
+        return $this->isInitialLesson;
+    }
+    /**
+     * @param bool $isInitialLesson
+     * @return Lesson
+     */
+    public function setIsInitialLesson(bool $isInitialLesson) : Lesson
+    {
+        $this->isInitialLesson = $isInitialLesson;
 
         return $this;
     }

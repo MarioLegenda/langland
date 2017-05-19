@@ -125,6 +125,11 @@ class SeedCommand extends ContainerAwareCommand
 
                 for ($a = 0; $a < 5; $a++) {
                     $lesson = new Lesson();
+
+                    if ($a === 0) {
+                        $lesson->setIsInitialLesson(true);
+                    }
+
                     $lesson->setName($faker->name);
                     $lesson->setCourse($course);
 

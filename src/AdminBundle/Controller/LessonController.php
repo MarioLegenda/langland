@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Form\Type\LessonType;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,6 +40,11 @@ class LessonController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
                 $lesson->setCourse($course);
+
+                if ($lesson->getIsInitialLesson()) {
+                    $this->uncheckInitialLessons($course);
+                    $lesson->setIsInitialLesson(true);
+                }
 
                 $em->persist($lesson);
                 $em->flush();
@@ -85,6 +91,11 @@ class LessonController extends RepositoryController
 
                 $this->removeDeletetedLessonTexts($lesson);
 
+                if ($lesson->getIsInitialLesson() === true) {
+                    $this->uncheckInitialLessons($course);
+                    $lesson->setIsInitialLesson(true);
+                }
+
                 $em->persist($lesson);
                 $em->flush();
 
@@ -118,6 +129,19 @@ class LessonController extends RepositoryController
         return $this->render('::Admin/Course/Lesson/dashboard.html.twig', array(
             'lesson' => $lesson,
         ));
+    }
+
+    public function uncheckInitialLessons(Course $course)
+    {
+        foreach ($course->getLessons() as $dbLesson) {
+            $dbLesson->setIsInitialLesson(false);
+
+            $this->get('doctrine')->getManager()->persist($dbLesson);
+        }
+
+        $this->get('doctrine')->getManager()->flush();
+
+        return true;
     }
 
     private function removeDeletetedLessonTexts(Lesson $lesson)

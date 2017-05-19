@@ -7,3 +7,7 @@ AdminBundle\Entity\Lesson:
         name:
             expose: true
             groups: [lesson_list]
+        isInitialLesson:
+            expose: true
+            groups: [lesson_list]
+            serialized_name: isInitialLesson

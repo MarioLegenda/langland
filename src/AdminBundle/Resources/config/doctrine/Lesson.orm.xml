@@ -10,6 +10,7 @@
     <field name="name" type="string" column="name" length="255"/>
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
+    <field name="isInitialLesson" type="boolean" column="is_initial_lesson"/>
 
     <many-to-one target-entity="AdminBundle\Entity\Course" field="course" inversed-by="lessons">
       <join-column name="course_id" referenced-column-name="id" />

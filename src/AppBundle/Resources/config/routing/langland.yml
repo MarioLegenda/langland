@@ -1,23 +1,23 @@
 app_course:
-  resource: "@AppBundle/Resources/config/routing/api/course/course.yml"
+  resource: "@AppBundle/Resources/config/routing/api/course.yml"
   prefix: /courses
   host: '%host%'
   methods: [POST]
 
 app_user:
-  resource: "@AppBundle/Resources/config/routing/api/user/user.yml"
+  resource: "@AppBundle/Resources/config/routing/api/user.yml"
   prefix: /user
   host: '%host%'
   methods: [POST]
 
 app_language:
-  resource: "@AppBundle/Resources/config/routing/api/language/language.yml"
+  resource: "@AppBundle/Resources/config/routing/api/language.yml"
   prefix: /language
   host: '%host%'
   methods: [POST]
 
 app_main_data:
-  resource: "@AppBundle/Resources/config/routing/api/data/data.yml"
+  resource: "@AppBundle/Resources/config/routing/api/data.yml"
   prefix: /data
   host: '%host%'
   methods: [GET]

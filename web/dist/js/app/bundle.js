@@ -11689,9 +11689,6 @@ var MethodNaviagation = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (MethodNaviagation.__proto__ || Object.getPrototypeOf(MethodNaviagation)).call(this, props));
 
-        _this.showLessons = _this.showLessons.bind(_this);
-        _this.showGames = _this.showGames.bind(_this);
-
         _this.handleMenuChange = _this.handleMenuChange.bind(_this);
         return _this;
     }
@@ -11708,9 +11705,8 @@ var MethodNaviagation = function (_React$Component) {
         value: function handleMenuChange(e) {
             this._highlightMenu(e.currentTarget);
 
-            var changeMethod = this.props[e.currentTarget.getAttribute('data-change-id')];
-
-            changeMethod();
+            var type = e.currentTarget.getAttribute('data-change-id');
+            this.props.changeDashboard(type);
         }
     }, {
         key: 'render',
@@ -11768,9 +11764,11 @@ var LessonList = function (_React$Component2) {
         key: 'render',
         value: function render() {
             var items = this.props.items.map(function (item, index) {
+                var lessonClass = item.lesson.isInitialLesson === true ? 'lesson' : 'unpassed-lesson';
+
                 return _react2.default.createElement(
                     'div',
-                    { key: index, className: 'lesson' },
+                    { key: index, className: lessonClass },
                     _react2.default.createElement(
                         'h1',
                         null,
@@ -11865,8 +11863,7 @@ var MethodApp = function (_React$Component4) {
             }
         };
 
-        _this4.showLessons = _this4.showLessons.bind(_this4);
-        _this4.showGames = _this4.showGames.bind(_this4);
+        _this4.changeDashboard = _this4.changeDashboard.bind(_this4);
         return _this4;
     }
 
@@ -11885,17 +11882,10 @@ var MethodApp = function (_React$Component4) {
             return newPage;
         }
     }, {
-        key: 'showLessons',
-        value: function showLessons() {
+        key: 'changeDashboard',
+        value: function changeDashboard(type) {
             this.setState({
-                page: this._changeDashboard('showLessons')
-            });
-        }
-    }, {
-        key: 'showGames',
-        value: function showGames() {
-            this.setState({
-                page: this._changeDashboard('showGames')
+                page: this._changeDashboard(type)
             });
         }
     }, {
@@ -11905,8 +11895,7 @@ var MethodApp = function (_React$Component4) {
                 'div',
                 { className: 'big-component' },
                 _react2.default.createElement(MethodNaviagation, {
-                    showLessons: this.showLessons,
-                    showGames: this.showGames
+                    changeDashboard: this.changeDashboard
                 }),
                 _react2.default.createElement(
                     'div',

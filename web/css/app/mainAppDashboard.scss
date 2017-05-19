@@ -6,20 +6,20 @@
   margin: 0 auto;
 
   .lesson {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     float:left;
+
+    background-color: white;
 
     padding: 0 10px 10px 10px;
 
     border-radius: 10px;
 
-    border: 1px solid $highlight-gray;
-
     margin: 0 2% 0 0;
 
     h1 {
-      color: $highlight-gray;
+      color: $appMainColor;
       font-weight: bold;
 
       text-align: center;
@@ -29,6 +29,17 @@
 
     &:hover {
       cursor: pointer;
+    }
+  }
+
+  .unpassed-lesson {
+    @extend .lesson;
+
+    background-color: unset;
+    border: 1px solid $highlight-gray;
+
+    h1 {
+      color: $highlight-gray;
     }
   }
 }

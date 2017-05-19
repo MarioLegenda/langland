@@ -21,6 +21,8 @@
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name, 'description': 'add a name for this lesson'} only %}
 
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.isInitialLesson, 'description': 'is this the first lesson a user should learn? There can only be one initial lesson per course'} only %}
+
                     <div class="full-width align-left form-field field-break">
                         {{ form_label(form.lessonTexts) }}
 

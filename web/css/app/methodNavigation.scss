@@ -2,8 +2,6 @@
   width: 160px;
   float:left;
 
-  border-right: 1px solid $highlight-gray;
-
   .nav-item {
     width: 120px;
     height: 120px;
@@ -17,19 +15,18 @@
 
     margin-bottom: 10px;
 
-    border: 1px solid $highlight-gray;
+    background-color: white;
 
-    -webkit-transition: color 0.5s, border 0.5s, margin-left 0.5s;
-    -moz-transition: color 0.5s, border 0.5s, margin-left 0.5s;
-    -ms-transition: color 0.5s, border 0.5s, margin-left 0.5s;
-    -o-transition: color 0.5s, border 0.5s, margin-left 0.5s;
-    transition: color 0.5s, border 0.5s, margin-left 0.5s;
+    -webkit-transition: color 0.5s, margin-left 0.5s;
+    -moz-transition: color 0.5s, margin-left 0.5s;
+    -ms-transition: color 0.5s, margin-left 0.5s;
+    -o-transition: color 0.5s, margin-left 0.5s;
+    transition: color 0.5s, margin-left 0.5s;
 
     &:hover {
       cursor: pointer;
 
       color: $appMainColor;
-      border: 1px solid $appMainColor;
 
       margin-left: 35px;
     }
@@ -37,11 +34,14 @@
     i {
       display:block;
     }
+
+    span {
+      font-weight: bold;
+    }
   }
 
   .highlighted-nav-item {
     color: $appMainColor;
-    border: 1px solid $appMainColor;
 
     margin-left: 35px;
   }

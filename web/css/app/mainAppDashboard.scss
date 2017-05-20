@@ -6,23 +6,22 @@
   margin: 0 auto;
 
   .lesson {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
+
+    margin-left: 10px;
+
     float:left;
 
+    padding: 50px 20px 20px 23px;
+
+    border-radius: 100px;
+
     background-color: white;
-
-    padding: 0 10px 10px 10px;
-
-    border-radius: 10px;
-
-    margin: 0 2% 0 0;
 
     h1 {
       color: $appMainColor;
       font-weight: bold;
-
-      margin-top: 10px;
     }
 
     &:hover {
@@ -34,20 +33,13 @@
     @extend .lesson;
 
     background-color: unset;
+
     border: 1px solid $highlight-gray;
 
     h1 {
+      font-weight: normal;
       color: $highlight-gray;
     }
-  }
-
-  .forbidden-overlay {
-    right: 1px;
-
-    width: 150px;
-    height: 150px;
-
-    z-index: 100;
 
     &:hover {
       cursor: auto;

@@ -22,7 +22,10 @@ class LessonFactory
     {
         $this->em = $em;
     }
-
+    /**
+     * @param Course $course
+     * @param int $numberOfEntries
+     */
     public function create(Course $course, int $numberOfEntries)
     {
         for ($i = 0; $i < $numberOfEntries; $i++) {
@@ -32,7 +35,7 @@ class LessonFactory
                 $lesson->setIsInitialLesson(true);
             }
 
-            $lesson->setName($this->getFaker()->name);
+            $lesson->setName('Lesson '.($i + 1));
             $lesson->setCourse($course);
 
             for ($v = 0; $v < 5; $v++) {

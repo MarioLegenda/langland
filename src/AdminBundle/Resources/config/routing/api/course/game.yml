@@ -1,0 +1,9 @@
+admin_game_index:
+    path: /
+    defaults: { _controller: AdminBundle:Game:index }
+    methods: [GET]
+
+admin_game_create:
+    path: /create
+    defaults: { _controller: AdminBundle:Game:create }
+    methods: [GET, POST]

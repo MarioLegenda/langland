@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Controller\Api\CommonOperationController;
+use AppBundle\Entity\LearningUser;
 
 class CourseController extends CommonOperationController
 {
@@ -10,9 +11,14 @@ class CourseController extends CommonOperationController
     {
         $em = $this->get('doctrine')->getManager();
 
+        $learningUser = $this->getLearningUser();
+
+        if (!$learningUser instanceof LearningUser) {
+            throw $this->createNotFoundException();
+        }
+
         $language = $em->getRepository('AdminBundle:Language')->find($id);
 
-        $learningUser = $this->getLearningUser();
         $learningUser->setCurrentLanguage($language);
 
         $em->persist($learningUser);

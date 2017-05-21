@@ -11865,6 +11865,8 @@ var _react = __webpack_require__(7);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _env = __webpack_require__(93);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11873,8 +11875,177 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var GameInit = exports.GameInit = function (_React$Component) {
-    _inherits(GameInit, _React$Component);
+var FieldTemplate = function (_React$Component) {
+    _inherits(FieldTemplate, _React$Component);
+
+    function FieldTemplate(props) {
+        _classCallCheck(this, FieldTemplate);
+
+        return _possibleConstructorReturn(this, (FieldTemplate.__proto__ || Object.getPrototypeOf(FieldTemplate)).call(this, props));
+    }
+
+    _createClass(FieldTemplate, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'full-width align-left form-field field-break relative' },
+                _react2.default.createElement(
+                    'label',
+                    null,
+                    this.props.labelName
+                ),
+                this.props.type === 'text' && _react2.default.createElement('input', { type: 'text', name: this.props.name, onChange: this.props.handleChange }),
+                this.props.type === 'textarea' && _react2.default.createElement('textarea', { rows: '6', cols: '50', onChange: this.props.handleChange, name: this.props.name }),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'form-error full-width align-right' },
+                    this.props.error
+                ),
+                _react2.default.createElement(
+                    'i',
+                    { className: 'description' },
+                    _react2.default.createElement(
+                        'span',
+                        { className: 'highlight' },
+                        '*'
+                    ),
+                    ' ',
+                    this.props.description
+                )
+            );
+        }
+    }]);
+
+    return FieldTemplate;
+}(_react2.default.Component);
+
+var Field = function (_React$Component2) {
+    _inherits(Field, _React$Component2);
+
+    function Field(props) {
+        _classCallCheck(this, Field);
+
+        var _this2 = _possibleConstructorReturn(this, (Field.__proto__ || Object.getPrototypeOf(Field)).call(this, props));
+
+        _this2.handleChange = _this2.handleChange.bind(_this2);
+        return _this2;
+    }
+
+    _createClass(Field, [{
+        key: 'handleChange',
+        value: function handleChange(e) {
+            var name = e.currentTarget.name;
+            var value = e.currentTarget.value;
+
+            this.props.setField(name, value);
+        }
+    }]);
+
+    return Field;
+}(_react2.default.Component);
+
+var TextField = function (_Field) {
+    _inherits(TextField, _Field);
+
+    function TextField(props) {
+        _classCallCheck(this, TextField);
+
+        return _possibleConstructorReturn(this, (TextField.__proto__ || Object.getPrototypeOf(TextField)).call(this, props));
+    }
+
+    _createClass(TextField, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(FieldTemplate, {
+                type: 'text',
+                labelName: this.props.labelName,
+                name: this.props.name,
+                handleChange: this.handleChange,
+                description: this.props.description
+            });
+        }
+    }]);
+
+    return TextField;
+}(Field);
+
+var TextareaField = function (_Field2) {
+    _inherits(TextareaField, _Field2);
+
+    function TextareaField(props) {
+        _classCallCheck(this, TextareaField);
+
+        return _possibleConstructorReturn(this, (TextareaField.__proto__ || Object.getPrototypeOf(TextareaField)).call(this, props));
+    }
+
+    _createClass(TextareaField, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(FieldTemplate, {
+                type: 'textarea',
+                labelName: this.props.labelName,
+                name: this.props.name,
+                handleChange: this.handleChange,
+                description: this.props.description
+            });
+        }
+    }]);
+
+    return TextareaField;
+}(Field);
+
+var Form = function (_React$Component3) {
+    _inherits(Form, _React$Component3);
+
+    function Form(props) {
+        _classCallCheck(this, Form);
+
+        var _this5 = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+
+        _this5.formValues = {};
+
+        _this5.setField = _this5.setField.bind(_this5);
+        return _this5;
+    }
+
+    _createClass(Form, [{
+        key: 'setField',
+        value: function setField(name, value) {
+            this.formValues[name] = value;
+            console.log(this.formValues);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'page-content form' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'margin-top-40 align-left full-width' },
+                    _react2.default.createElement(TextField, {
+                        labelName: 'Game name: ',
+                        name: 'name',
+                        setField: this.setField,
+                        description: 'name of the game'
+                    }),
+                    _react2.default.createElement(TextareaField, {
+                        labelName: 'Game description: ',
+                        name: 'description',
+                        setField: this.setField,
+                        description: 'a short description of the game. This description will be shown in a game filed box in the Games menu'
+                    })
+                )
+            );
+        }
+    }]);
+
+    return Form;
+}(_react2.default.Component);
+
+var GameInit = exports.GameInit = function (_React$Component4) {
+    _inherits(GameInit, _React$Component4);
 
     function GameInit(props) {
         _classCallCheck(this, GameInit);
@@ -11885,7 +12056,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
     _createClass(GameInit, [{
         key: 'render',
         value: function render() {
-            return _react2.default.createElement('div', null);
+            return _react2.default.createElement(Form, null);
         }
     }]);
 

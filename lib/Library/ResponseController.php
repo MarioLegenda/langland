@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace Library;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;

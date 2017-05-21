@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use Library\ResponseController;
 use AppBundle\Entity\LearningUser;
 
 class CommonOperationController extends ResponseController

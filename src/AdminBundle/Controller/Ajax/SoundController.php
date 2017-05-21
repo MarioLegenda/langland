@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mario
- * Date: 16.05.17.
- * Time: 14:54
- */
 
 namespace AdminBundle\Controller\Ajax;
-
 
 use AdminBundle\Controller\RepositoryController;
 use JMS\Serializer\SerializationContext;

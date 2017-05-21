@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\CourseHolder;
 use AppBundle\Entity\LearningUserCourse;
 use Symfony\Component\HttpFoundation\Request;
 

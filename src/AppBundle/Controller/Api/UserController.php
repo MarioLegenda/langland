@@ -5,7 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Event\LearningUserCreateEvent;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserController extends ResponseController
+class UserController extends CommonOperationController
 {
     public function findLoggedInUserAction()
     {

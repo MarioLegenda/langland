@@ -2,10 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AdminBundle\Controller\RepositoryController;
-use AppBundle\Entity\LearningUser;
+use Library\ResponseController;
 
-class DashboardController extends RepositoryController
+class DashboardController extends ResponseController
 {
     public function dashboardAction()
     {

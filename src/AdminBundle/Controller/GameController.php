@@ -1,18 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mario
- * Date: 20.05.17.
- * Time: 14:53
- */
 
 namespace AdminBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class GameController extends RepositoryController
 {
-    public function indexAction(Request $request, $courseId)
+    public function indexAction($courseId)
     {
         $course = $this->getRepository('AdminBundle:Course')->find($courseId);
 
@@ -21,7 +13,7 @@ class GameController extends RepositoryController
         ));
     }
 
-    public function createAction(Request $request, $courseId)
+    public function createAction($courseId)
     {
         $course = $this->getRepository('AdminBundle:Course')->find($courseId);
 

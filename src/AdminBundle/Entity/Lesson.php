@@ -31,6 +31,8 @@ class Lesson
      * @var Course $course
      */
     private $course;
+
+    private $games;
     /**
      * @var ArrayCollection $lessonTexts
      */
@@ -39,6 +41,7 @@ class Lesson
     public function __construct()
     {
         $this->lessonTexts = new ArrayCollection();
+        $this->games = new ArrayCollection();
         $this->isInitialLesson = false;
     }
     /**
@@ -151,6 +154,53 @@ class Lesson
         return $this->course;
     }
     /**
+     * @param WordGame $game
+     * @return Lesson
+     */
+    public function hasGame(WordGame $game) : Lesson
+    {
+        return $this->games->contains($game);
+    }
+    /**
+     * @param WordGame $game
+     * @return Lesson
+     */
+    public function addGame(WordGame $game) : Lesson
+    {
+        if (!$this->hasGame($game)) {
+            $game->setLesson($this);
+            $this->games->add($game);
+        }
+
+        return $this;
+    }
+    /**
+     * @param WordGame $game
+     * @return Lesson
+     */
+    public function removeGame(WordGame $game) : Lesson
+    {
+        if ($this->hasGame($game)) {
+            $this->games->removeElement($game);
+        }
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGames()
+    {
+        return $this->games;
+    }
+    /**
+     * @param mixed $games
+     */
+    public function setGames($games)
+    {
+        $this->games = $games;
+    }
+    /**
      * @param LessonText $lessonText
      * @return bool
      */
@@ -201,8 +251,6 @@ class Lesson
                 ->addViolation();
         }
     }
-
-
 
     public function updateTimestamps()
     {

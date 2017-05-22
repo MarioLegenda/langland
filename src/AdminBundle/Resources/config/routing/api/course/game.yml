@@ -7,3 +7,7 @@ admin_game_create:
     path: /create
     defaults: { _controller: AdminBundle:Game:create }
     methods: [GET, POST]
+
+admin_find_game_words:
+    path: /find-game-words
+    defaults: { _controller: AdminBundle:Ajax/Game:findGameWords }

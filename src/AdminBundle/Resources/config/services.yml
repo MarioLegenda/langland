@@ -66,3 +66,11 @@ services:
     admin.file_uploader:
         class: Library\FileUploader
         arguments: ['%upload_dirs%', '@admin.image_resizer', '@admin.file_namer']
+
+    lib.manual_validator:
+        class: Library\ManualValidator
+        arguments: ['@validator']
+
+    admin.game_entity_creator:
+        class: AdminBundle\Helper\GameEntityCreator
+        arguments: ['@doctrine.orm.entity_manager']

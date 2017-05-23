@@ -25,6 +25,8 @@ class WordGameUnit
      * @var Word $word
      */
     private $word;
+
+    private $game;
     /**
      * Get id
      *
@@ -47,6 +49,23 @@ class WordGameUnit
     public function setWord($word)
     {
         $this->word = $word;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGame()
+    {
+        return $this->game;
+    }
+    /**
+     * @param mixed $game
+     * @return WordGameUnit
+     */
+    public function setGame($game) : WordGameUnit
+    {
+        $this->game = $game;
+
+        return $this;
     }
     /**
      * Set createdAt
@@ -91,6 +110,15 @@ class WordGameUnit
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    public function updateTimestamps()
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }
 

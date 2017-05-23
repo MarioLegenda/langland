@@ -9,7 +9,16 @@
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
 
-    <one-to-one field="word" target-entity="AdminBundle\Entity\Word" />
+    <many-to-one field="word" target-entity="AdminBundle\Entity\Word" />
+
+    <many-to-one target-entity="AdminBundle\Entity\Game\WordGame" field="game" inversed-by="games">
+      <join-column referenced-column-name="id" name="word_game_id" />
+    </many-to-one>
+
+    <lifecycle-callbacks>
+      <lifecycle-callback type="prePersist" method="updateTimestamps" />
+      <lifecycle-callback type="preUpdate" method="updateTimestamps" />
+    </lifecycle-callbacks>
 
   </entity>
 </doctrine-mapping>

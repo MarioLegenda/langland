@@ -7,6 +7,10 @@ use Doctrine\ORM\Query;
 
 class WordRepository extends EntityRepository
 {
+    /**
+     * @param string $pattern
+     * @return array
+     */
     public function findWordsByPattern(string $pattern)
     {
         $result = $this
@@ -40,7 +44,10 @@ class WordRepository extends EntityRepository
 
         return $word;
     }
-
+    /**
+     * @param array $ids
+     * @return array
+     */
     public function findMultipleById(array $ids)
     {
         $result = $this

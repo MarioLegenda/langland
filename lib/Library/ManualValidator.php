@@ -33,8 +33,8 @@ class ManualValidator
             }
 
             return new JsonResponse(array(
-                'status' => 'failure',
-                'errors' => $errors,
+                'status' => 'error',
+                'data' => $errors,
             ));
         }
 

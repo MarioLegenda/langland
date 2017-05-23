@@ -3,6 +3,9 @@
 namespace AdminBundle\Entity\Game;
 
 use AdminBundle\Entity\Lesson;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 /**
  * Game
  */
@@ -25,6 +28,10 @@ class WordGame
      */
     private $lesson;
     /**
+     * @var ArrayCollection $gameUnits
+     */
+    private $gameUnits;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -32,6 +39,11 @@ class WordGame
      * @var \DateTime $updatedAt
      */
     private $updatedAt;
+
+    public function __construct()
+    {
+        $this->gameUnits = new ArrayCollection();
+    }
     /**
      * Get id
      *
@@ -100,6 +112,56 @@ class WordGame
         return $this->description;
     }
     /**
+     * @param WordGameUnit $gameUnit
+     * @return bool
+     */
+    public function hasGameUnit(WordGameUnit $gameUnit) : bool
+    {
+        return $this->gameUnits->contains($gameUnit);
+    }
+    /**
+     * @param WordGameUnit $gameUnit
+     * @return WordGame
+     */
+    public function addGameUnit(WordGameUnit $gameUnit) : WordGame
+    {
+        if (!$this->hasGameUnit($gameUnit)) {
+            $gameUnit->setGame($this);
+            $this->gameUnits->add($gameUnit);
+        }
+
+        return $this;
+    }
+    /**
+     * @param WordGameUnit $gameUnit
+     * @return WordGame
+     */
+    public function removeGameUnit(WordGameUnit $gameUnit) : WordGame
+    {
+        if ($this->hasGameUnit($gameUnit)) {
+            $this->gameUnits->removeElement($gameUnit);
+        }
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGameUnits()
+    {
+        return $this->gameUnits;
+    }
+    /**
+     * @param mixed $gameUnits
+     * @return WordGame
+     */
+    public function setGameUnits($gameUnits) : WordGame
+    {
+        $this->gameUnits = $gameUnits;
+
+        return $this;
+    }
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
@@ -142,6 +204,35 @@ class WordGame
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (count($this->getGameUnits()) === 0) {
+            $context->buildViolation('There has to be at least one game unit present')
+                ->atPath('name')
+                ->addViolation();
+        }
+    }
+    /**
+     * @param array $data
+     * @return WordGame
+     */
+    public static function create(array $data) : WordGame
+    {
+        $game = new WordGame();
+
+        if (array_key_exists('name', $data)) {
+            $game->setName($data['name']);
+        }
+
+        if (array_key_exists('description', $data)) {
+            $game->setDescription($data['description']);
+        }
+
+        return $game;
     }
 
     public function updateTimestamps()

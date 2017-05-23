@@ -33,8 +33,12 @@
 
         text-align: center;
 
+        a {
+          color: $highlight-gray;
+        }
+
         a:hover {
-          color: $main-color;
+          color: red;
           cursor: pointer;
         }
       }

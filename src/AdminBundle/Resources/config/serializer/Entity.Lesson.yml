@@ -3,10 +3,14 @@ AdminBundle\Entity\Lesson:
     properties:
         id:
             expose: true
-            groups: [lesson_list]
+            groups: [lesson_list, word_games_list]
         name:
             expose: true
-            groups: [lesson_list]
+            groups: [lesson_list, word_games_list]
+        games:
+            expose: true
+            type: AdminBundle\Entity\Game\WordGame
+            groups: [word_games_list]
         isInitialLesson:
             expose: true
             groups: [lesson_list]

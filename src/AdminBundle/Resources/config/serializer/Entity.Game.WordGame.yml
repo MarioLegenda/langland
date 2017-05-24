@@ -1,0 +1,12 @@
+AdminBundle\Entity\Game\WordGame:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            groups: [word_games_list]
+        name:
+            expose: true
+            groups: [word_games_list]
+        description:
+            expose: true
+            groups: [word_games_list]

@@ -18,6 +18,11 @@ admin_find_lessons_by_course:
     defaults: { _controller: AdminBundle:Ajax/Game:findLessonsByCourse }
     methods: [GET]
 
+admin_find_games:
+    path: /find-games
+    defaults: { _controller: AdminBundle:Ajax/Game:findGames }
+    methods: [GET]
+
 admin_create_game:
     path: /create-game
     defaults: { _controller: AdminBundle:Ajax/Game:createGame }

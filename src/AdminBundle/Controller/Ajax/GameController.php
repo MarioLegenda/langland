@@ -38,6 +38,17 @@ class GameController extends ResponseController
         return $this->createSuccessJsonResponse($this->serialize($lessons, array('lesson_list')));
     }
 
+    public function findGamesAction($courseId)
+    {
+        $course = $this->getRepository('AdminBundle:Course')->find($courseId);
+
+        $lessons = $course->getLessons();
+
+        $serialized = $this->serialize($lessons, array('word_games_list'));
+
+        return $this->createSuccessJsonResponse($serialized);
+    }
+
     public function createGameAction(Request $request)
     {
         $game = $this->get('admin.game_entity_creator')->createFromRequest($request);

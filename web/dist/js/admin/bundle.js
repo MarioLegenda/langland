@@ -12308,11 +12308,10 @@ var FieldTemplate = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (FieldTemplate.__proto__ || Object.getPrototypeOf(FieldTemplate)).call(this, props));
 
-        if (_this.props.type === 'select') {
-            _this.state = {
-                selectValue: _this.props.value
-            };
-        }
+        _this.state = {
+            selectValue: _this.props.value,
+            value: _this.props.value
+        };
 
         _this.handleChange = _this.handleChange.bind(_this);
         return _this;
@@ -12327,6 +12326,12 @@ var FieldTemplate = function (_React$Component) {
                 this.setState({
                     selectValue: e.currentTarget.value
                 });
+            } else {
+                this.props.handleChange(e);
+
+                this.setState({
+                    value: e.currentTarget.value
+                });
             }
         }
     }, {
@@ -12340,8 +12345,8 @@ var FieldTemplate = function (_React$Component) {
                     null,
                     this.props.labelName
                 ),
-                this.props.type === 'text' && _react2.default.createElement('input', { value: this.props.value, type: 'text', name: this.props.name, onChange: this.props.handleChange }),
-                this.props.type === 'textarea' && _react2.default.createElement('textarea', { rows: '6', cols: '50', onChange: this.props.handleChange, name: this.props.name }),
+                this.props.type === 'text' && _react2.default.createElement('input', { value: this.state.value, type: 'text', name: this.props.name, onChange: this.handleChange }),
+                this.props.type === 'textarea' && _react2.default.createElement('textarea', { value: this.state.value, rows: '6', cols: '50', onChange: this.handleChange, name: this.props.name }),
                 this.props.type === 'select' && _react2.default.createElement(
                     'select',
                     { value: this.state.selectValue, name: this.props.name, onChange: this.handleChange },
@@ -12589,19 +12594,36 @@ var Form = exports.Form = function (_React$Component) {
             lessonOptions: [],
             errors: [],
             formValues: {
-                name: ''
-            }
+                name: '',
+                description: '',
+                lesson: '',
+                words: []
+            },
+            gameOptions: []
         };
 
-        _this.formValues = {};
-
         _this.setField = _this.setField.bind(_this);
-
         _this.onSubmit = _this.onSubmit.bind(_this);
+        _this.handleGameLoad = _this.handleGameLoad.bind(_this);
+        _this.onGameChoosing = _this.onGameChoosing.bind(_this);
         return _this;
     }
 
     _createClass(Form, [{
+        key: '_loadGameSelectableData',
+        value: function _loadGameSelectableData() {
+            jQuery.ajax({
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/find-games',
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        gameOptions: data.data
+                    });
+                }
+            }, this));
+        }
+    }, {
         key: '_fetchLessons',
         value: function _fetchLessons() {
             jQuery.ajax({
@@ -12626,44 +12648,88 @@ var Form = exports.Form = function (_React$Component) {
             }, this));
         }
     }, {
+        key: '_saveGame',
+        value: function _saveGame() {
+            jQuery.ajax({
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/create-game',
+                method: 'POST',
+                data: {
+                    game: this.state.formValues
+                }
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {
+                    window.location.reload(false);
+                }
+
+                if (data.status === 'error') {
+                    this.setState({
+                        errors: data.data
+                    });
+
+                    $("html, body").animate({ scrollTop: "0px" });
+                }
+            }, this));
+        }
+    }, {
+        key: '_createGameOptions',
+        value: function _createGameOptions() {
+            var games = this.state.gameOptions;
+
+            var realGames = [];
+            for (var index in games) {
+                var game = games[index];
+
+                var options = [];
+                for (var gameIndex in game.games) {
+                    var trueGame = game.games[gameIndex];
+
+                    options.push(_react2.default.createElement(
+                        'option',
+                        { key: gameIndex, value: trueGame.id },
+                        trueGame.name
+                    ));
+                }
+
+                realGames.push(_react2.default.createElement(
+                    'optgroup',
+                    { key: index, label: game.name },
+                    options
+                ));
+            }
+
+            return realGames;
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this._fetchLessons();
+            this._loadGameSelectableData();
         }
+    }, {
+        key: 'handleGameLoad',
+        value: function handleGameLoad(name, value) {}
     }, {
         key: 'setField',
         value: function setField(name, value) {
-            this.formValues[name] = value;
+            this.setState(function (prevState, prevProps) {
+                var formValues = prevState.formValues;
 
-            console.log(this.formValues);
+                formValues[name] = value;
+
+                return formValues;
+            });
+        }
+    }, {
+        key: 'onGameChoosing',
+        value: function onGameChoosing(e) {
+            console.log(e.currentTarget.value);
         }
     }, {
         key: 'onSubmit',
         value: function onSubmit(e) {
             e.preventDefault();
 
-            console.log(this.state);
-            /*        jQuery.ajax({
-                        url: envr + 'admin/course/manage/' + url.getParsed()[3] + '/game/create-game',
-                        method: 'POST',
-                        data: {
-                            game: this.formValues
-                        }
-                    }).done(jQuery.proxy(function(data) {
-                        if (data.status === 'success') {
-                            this.setState({
-                                errors: []
-                            });
-                        }
-            
-                        if (data.status === 'error') {
-                            this.setState({
-                                errors: data.data
-                            });
-            
-                            $("html, body").animate({ scrollTop: "0px" });
-                        }
-                    }, this));*/
+            this._saveGame();
         }
     }, {
         key: 'render',
@@ -12679,12 +12745,26 @@ var Form = exports.Form = function (_React$Component) {
                 );
             });
 
+            var items = this.state.formValues.words;
+
+            var gameOptions = this._createGameOptions();
+
             return _react2.default.createElement(
                 'div',
                 { className: 'page-content form margin-bottom-30' },
                 _react2.default.createElement(
                     'div',
                     { className: 'margin-top-40 align-left full-width' },
+                    _react2.default.createElement(
+                        'select',
+                        { onChange: this.onGameChoosing },
+                        _react2.default.createElement(
+                            'option',
+                            { defaultValue: 'default' },
+                            'Select game'
+                        ),
+                        gameOptions
+                    ),
                     _react2.default.createElement(
                         'div',
                         { className: 'full-width align-left' },
@@ -12702,18 +12782,19 @@ var Form = exports.Form = function (_React$Component) {
                         name: 'description',
                         setField: this.setField,
                         description: 'a short description of the game. This description will be shown in a game filed box in the Games menu',
-                        value: ''
+                        value: this.state.formValues.description
                     }),
                     _react2.default.createElement(_form.SelectField, {
                         labelName: 'Select lesson: ',
                         name: 'lesson',
                         setField: this.setField,
                         description: 'a lesson that will unlock this game. One game can have only one lesson but a lesson can have many games. If you create a new game, you can connect it to the sam lesson',
-                        value: '',
+                        value: this.state.formValues.lesson,
                         options: lessonOptions
                     }),
                     _react2.default.createElement(_unitContainer.UnitContainer, {
-                        setField: this.setField
+                        setField: this.setField,
+                        items: items
                     }),
                     _react2.default.createElement(_form.SubmitButton, {
                         onClick: this.onSubmit

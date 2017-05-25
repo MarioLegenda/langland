@@ -12613,7 +12613,7 @@ var Form = exports.Form = function (_React$Component) {
         key: '_loadGameSelectableData',
         value: function _loadGameSelectableData() {
             jQuery.ajax({
-                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/find-games',
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/word-game/find-games',
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
@@ -12627,7 +12627,7 @@ var Form = exports.Form = function (_React$Component) {
         key: '_fetchLessons',
         value: function _fetchLessons() {
             jQuery.ajax({
-                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/find-lessons-by-course',
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/word-game/find-lessons-by-course',
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
                 var options = [];
@@ -12651,7 +12651,7 @@ var Form = exports.Form = function (_React$Component) {
         key: '_saveGame',
         value: function _saveGame() {
             jQuery.ajax({
-                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/create-game',
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/word-game/create-game',
                 method: 'POST',
                 data: {
                     game: this.state.formValues
@@ -12756,19 +12756,33 @@ var Form = exports.Form = function (_React$Component) {
                     'div',
                     { className: 'margin-top-40 align-left full-width' },
                     _react2.default.createElement(
-                        'select',
-                        { onChange: this.onGameChoosing },
-                        _react2.default.createElement(
-                            'option',
-                            { defaultValue: 'default' },
-                            'Select game'
-                        ),
-                        gameOptions
-                    ),
-                    _react2.default.createElement(
                         'div',
                         { className: 'full-width align-left' },
                         errors
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'full-width align-left form-field field-brake' },
+                        _react2.default.createElement(
+                            'select',
+                            { onChange: this.onGameChoosing },
+                            _react2.default.createElement(
+                                'option',
+                                { defaultValue: 'default' },
+                                'Select game'
+                            ),
+                            gameOptions
+                        ),
+                        _react2.default.createElement(
+                            'i',
+                            { className: 'description margin-top-10' },
+                            _react2.default.createElement(
+                                'span',
+                                { className: 'highlight' },
+                                '*'
+                            ),
+                            'load a previously created game for editing'
+                        )
                     ),
                     _react2.default.createElement(_form.TextField, {
                         labelName: 'Game name: ',
@@ -12843,25 +12857,11 @@ var UnitContainer = exports.UnitContainer = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (UnitContainer.__proto__ || Object.getPrototypeOf(UnitContainer)).call(this, props));
 
-        _this.state = {
-            unit: 'defaultVal'
-        };
-
-        _this.handleSelectedUnit = _this.handleSelectedUnit.bind(_this);
         _this.setField = _this.setField.bind(_this);
         return _this;
     }
 
     _createClass(UnitContainer, [{
-        key: 'handleSelectedUnit',
-        value: function handleSelectedUnit(e) {
-            var val = e.currentTarget.value;
-
-            this.setState({
-                unit: val
-            });
-        }
-    }, {
         key: 'setField',
         value: function setField(name, value) {
             this.props.setField(name, value);
@@ -12875,31 +12875,7 @@ var UnitContainer = exports.UnitContainer = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'full-width align-left form-field relative' },
-                    _react2.default.createElement(
-                        'h1',
-                        null,
-                        'Select a unit for this game'
-                    ),
-                    _react2.default.createElement(
-                        'select',
-                        { value: this.state.unit, onChange: this.handleSelectedUnit },
-                        _react2.default.createElement(
-                            'option',
-                            { value: 'defaultVal' },
-                            'Select a unit'
-                        ),
-                        _react2.default.createElement(
-                            'option',
-                            { value: 'wordUnit' },
-                            'Word unit'
-                        )
-                    )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'full-width align-left form-field relative' },
-                    this.state.unit === 'defaultVal' && _react2.default.createElement('div', null),
-                    this.state.unit === 'wordUnit' && _react2.default.createElement(_wordUnit.WordUnitContainer, {
+                    _react2.default.createElement(_wordUnit.WordUnitContainer, {
                         setField: this.setField
                     })
                 )
@@ -13170,8 +13146,6 @@ var WordUnit = function (_React$Component3) {
         key: 'onSelectedCorrect',
         value: function onSelectedCorrect(index) {
             var isCorrectWord = this.state.selectedWords[index];
-
-            console.log(isCorrectWord);
         }
     }, {
         key: 'render',
@@ -13185,10 +13159,25 @@ var WordUnit = function (_React$Component3) {
                 _react2.default.createElement(
                     'div',
                     { className: 'full-width align-left word-select' },
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'Select words for this game'
+                    ),
                     _react2.default.createElement(WordSelect, {
                         items: items,
                         onSelectedValue: this.onSelectedWord
                     }),
+                    _react2.default.createElement(
+                        'i',
+                        { className: 'description margin-top-10' },
+                        _react2.default.createElement(
+                            'span',
+                            { className: 'highlight' },
+                            '*'
+                        ),
+                        'add words to this game. Duplicated words will be ignored'
+                    ),
                     this.state.error === true && _react2.default.createElement(
                         'div',
                         { className: 'error margin-top-20' },
@@ -13228,7 +13217,7 @@ var WordUnitContainer = exports.WordUnitContainer = function (_React$Component4)
         key: 'componentDidMount',
         value: function componentDidMount() {
             jQuery.ajax({
-                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/find-game-words',
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/word-game/find-game-words',
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {

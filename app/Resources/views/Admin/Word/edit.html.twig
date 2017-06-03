@@ -6,9 +6,14 @@
             <h1 class="full-width page-title margin-top-30 align-left">Words - edit <span class="text-highlight">{{ word.name }}</span> word</h1>
         </div>
 
+        <div class="full-width align-left">
+            <a href="{{ path('admin_word_create') }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
         <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('word_edit', {'id': word.id}) }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
+            <form action="{{ path('admin_word_edit', {'id': word.id}) }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">
+
                     <div class="form-error full-width align-right">
                         {{ form_errors(form) }}
                     </div>

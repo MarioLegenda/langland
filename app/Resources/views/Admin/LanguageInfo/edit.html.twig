@@ -6,6 +6,10 @@
             <h1 class="full-width page-title margin-top-30 align-left">Language Info - edit <span class="text-highlight">{{ languageInfo.name }}</span> language info</h1>
         </div>
 
+        <div class="full-width align-left">
+            <a href="{{ path('admin_language_info_create') }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
         <div class="full-width align-left margin-top-30 page-content form">
             <form action="{{ path('admin_language_info_edit', {'languageInfoId' : languageInfo.id}) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
                 <div class="margin-top-40 align-left full-width">

@@ -30,6 +30,11 @@
     </class>
 
     <class name="AdminBundle\Entity\Language">
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+        </constraint>
+
         <property name="name">
             <constraint name="NotNull">
                 <option name="message">Language name cannot be empty</option>
@@ -56,6 +61,11 @@
     <class name="AdminBundle\Entity\LanguageInfo">
         <constraint name="Callback">validate</constraint>
 
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">language</option>
+            <option name="message">This language already has its own language info</option>
+        </constraint>
+
         <property name="name">
             <constraint name="NotNull">
                 <option name="message">Language info name cannot be empty</option>
@@ -71,7 +81,6 @@
             <constraint name="NotNull">
                 <option name="message">You have to specify a language for a language info</option>
             </constraint>
-            
         </property>
     </class>
 
@@ -79,6 +88,11 @@
         <property name="name">
             <constraint name="NotNull">
                 <option name="message">Language name cannot be empty</option>
+            </constraint>
+
+            <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+                <option name="fields">name</option>
+                <option name="message">Category already exists</option>
             </constraint>
 
             <constraint name="Length">
@@ -99,6 +113,11 @@
                 <option name="message">You have to specify a language for a course</option>
             </constraint>
         </property>
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+            <option name="message">Course for this language already exists</option>
+        </constraint>
 
         <property name="name">
             <constraint name="NotBlank">

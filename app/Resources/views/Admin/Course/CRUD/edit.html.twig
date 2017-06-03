@@ -7,7 +7,7 @@
         </div>
 
         <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('course_edit', {'id': course.id}) }}" method="POST" class="form" name="addCourseForm" enctype="multipart/form-data" novalidate>
+            <form action="{{ path('admin_course_edit', {'id': course.id}) }}" method="POST" class="form" name="addCourseForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">
                     <div class="form-error full-width align-right">
                         {{ form_errors(form) }}

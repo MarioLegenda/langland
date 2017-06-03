@@ -12,8 +12,3 @@ armor:
 
 admin:
     resource: '@AdminBundle/Resources/config/routing/routing.yml'
-
-easy_admin_bundle:
-    resource: "@AdminBundle/Controller/AdminController.php"
-    type:     annotation
-    prefix:   /admin

@@ -6,8 +6,12 @@
             <h1 class="full-width page-title margin-top-30 align-left">Languages - edit <span class="text-highlight">{{ language.name }}</span> language</h1>
         </div>
 
+        <div class="full-width align-left">
+            <a href="{{ path('admin_language_create') }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
         <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('language_edit', { 'id': language.id }) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data" novalidate>
+            <form action="{{ path('admin_language_edit', { 'id': language.id }) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">
 
                     {% include '::Admin/Form/_include/flashNotice.html.twig' %}
@@ -16,13 +20,7 @@
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.listDescription, 'description': 'This field will be shown in frontend language list' } only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.image, 'description': 'Upload an icon that will be shown in the language list' } only %}
-
-                    {% if language.image is not empty %}
-                        <div class="full-width align-left">
-                            <img width="56" height="56" src="{{ language.image.fullPath }}" />
-                        </div>
-                    {% endif %}
+                    {% include '::Admin/Form/_include/imageField.html.twig' with {'field': form.image, entity: language, 'description': 'Upload an icon that will be shown in the language list' } only %}
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.showOnPage, 'description': 'Is this language ready for production?' } only %}
 

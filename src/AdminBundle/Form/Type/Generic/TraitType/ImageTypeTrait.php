@@ -3,7 +3,6 @@
 namespace AdminBundle\Form\Type\Generic\TraitType;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use AdminBundle\Form\Type\ImageType;
 
 trait ImageTypeTrait

@@ -4,8 +4,8 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Word;
 use AdminBundle\Form\Type\WordType;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use AdminBundle\Event\FileUploadEvent;
 
 class WordController extends RepositoryController
 {
@@ -39,14 +39,9 @@ class WordController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->tryUploadImage($word);
+                $this->dispatchEvent(FileUploadEvent::class, $word);
 
                 $this->removeEmptyTranslations($word);
-
-                if ($word->getImage()->getImageFile() instanceof UploadedFile) {
-                    $word->getImage()->setWord($word);
-                    $em->persist($word->getImage());
-                }
 
                 $em->persist($word);
                 $em->flush();
@@ -56,7 +51,7 @@ class WordController extends RepositoryController
                     sprintf('Word created successfully')
                 );
 
-                return $this->redirectToRoute('word_create');
+                return $this->redirectToRoute('admin_word_create');
             }
         }
 
@@ -92,13 +87,8 @@ class WordController extends RepositoryController
                 $em = $this->get('doctrine')->getManager();
 
                 $this->removeEmptyTranslations($word);
-                $this->tryRemovePreviousImage($word);
-                $this->tryUploadImage($word);
 
-                if ($word->getImage()->getImageFile() instanceof UploadedFile) {
-                    $word->getImage()->setWord($word);
-                    $em->persist($word->getImage());
-                }
+                $this->dispatchEvent(FileUploadEvent::class, $word);
 
                 $em->persist($word);
                 $em->flush();
@@ -108,7 +98,7 @@ class WordController extends RepositoryController
                     sprintf('Word edited successfully')
                 );
 
-                return $this->redirectToRoute('word_edit', array(
+                return $this->redirectToRoute('admin_word_edit', array(
                     'id' => $word->getId(),
                 ));
             }
@@ -129,6 +119,7 @@ class WordController extends RepositoryController
         }
 
         $em = $this->get('doctrine')->getManager();
+
         $wordImage = $this->getRepository('AdminBundle:Image')->findBy(array(
             'word' => $word,
         ));
@@ -151,46 +142,7 @@ class WordController extends RepositoryController
 
         $em->flush();
 
-        return $this->redirectToRoute('word_index');
-    }
-
-    private function tryUploadImage(Word $word)
-    {
-        if ($word->getImage()->getImageFile() instanceof UploadedFile) {
-            $fileUploader = $this->get('admin.file_uploader');
-
-            $fileUploader->uploadImage($word->getImage()->getImageFile(), array(
-                'repository' => 'AdminBundle:Image',
-                'field' => 'name',
-                'resize' => array(
-                    'width' => 250,
-                    'height' => 250,
-                ),
-            ));
-
-            $fileData = $fileUploader->getData();
-
-            $word->getImage()
-                ->setName($fileData['fileName'])
-                ->setOriginalName($fileData['originalName'])
-                ->setTargetDir($fileData['targetDir'])
-                ->setFullPath($fileData['fullPath']);
-        }
-    }
-
-    private function tryRemovePreviousImage(Word $word)
-    {
-        if ($word->getImage()->getImageFile() instanceof UploadedFile) {
-            $dbImage = $this->getRepository('AdminBundle:Image')->findBy(array(
-                'word' => $word,
-            ));
-
-            if (!empty($dbImage)) {
-                $image = $dbImage[0];
-
-                unlink($image->getTargetDir().'/'.$image->getName());
-            }
-        }
+        return $this->redirectToRoute('admin_word_index');
     }
 
     private function removeEmptyTranslations(Word $word)

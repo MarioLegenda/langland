@@ -1,13 +1,13 @@
-language_index:
+admin_language_index:
     path: /
     defaults: { _controller: AdminBundle:Language:index }
 
-language_create:
+admin_language_create:
     path: /create
     defaults: { _controller: AdminBundle:Language:create }
     methods: [POST, GET]
 
-language_edit:
+admin_language_edit:
     path: /edit/{id}
     defaults: { _controller: AdminBundle:Language:edit }
     methods: [POST, GET]

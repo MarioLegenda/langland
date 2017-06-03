@@ -12,8 +12,9 @@
 
         {% if form is defined %}
             <div class="full-width align-left margin-top-30 page-content form">
-                <form action="{{ path('word_create') }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
+                <form action="{{ path('admin_word_create') }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
                     <div class="margin-top-40 align-left full-width">
+
                         <div class="form-error full-width align-right">
                             {{ form_errors(form) }}
                         </div>

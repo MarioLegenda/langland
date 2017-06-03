@@ -1,0 +1,32 @@
+admin_language:
+  resource: "@AdminBundle/Resources/config/routing/api/language.yml"
+  prefix: /language
+  host: '%host%'
+
+admin_language_info:
+  resource: "@AdminBundle/Resources/config/routing/api/language_info.yml"
+  prefix: /language-info
+  host: '%host%'
+
+admin_word:
+  resource: "@AdminBundle/Resources/config/routing/api/word.yml"
+  prefix: /word
+  host: '%host%'
+
+admin_category:
+  resource: "@AdminBundle/Resources/config/routing/api/category.yml"
+  prefix: /category
+  host: '%host%'
+
+admin_sound:
+  resource: "@AdminBundle/Resources/config/routing/api/sound.yml"
+  prefix: /sound
+  host: '%host%'
+
+admin_course:
+  resource: "@AdminBundle/Resources/config/routing/api/course.yml"
+  prefix: /course
+
+admin_lesson_manage:
+  resource: "@AdminBundle/Resources/config/routing/api/lesson_manage.yml"
+  prefix: /lesson

@@ -5,6 +5,12 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    admin.custom_file_uploader_listener:
+        class: AdminBundle\Listener\Custom\FileUploaderListener
+        arguments: ['@admin.file_uploader', '@doctrine.orm.entity_manager']
+        tags:
+            - { name: kernel.event_listener, event: admin.upload_file_event, method: onFileUpload }
+
     admin.form.word:
         class: AdminBundle\Form\Type\WordType
         arguments: ['@doctrine.orm.entity_manager']

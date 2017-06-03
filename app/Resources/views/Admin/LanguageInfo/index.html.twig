@@ -15,7 +15,7 @@
             <div class="full-width align-left margin-top-30 page-content">
                 {% for languageInfo in languageInfos %}
                     <div class="card full-width align-left margin-bottom-10">
-                        <a class="base-action-link align-left" href="#">{{ languageInfo.name }}</a>
+                        <a class="base-action-link align-left" href="#">{{ languageInfo.name }} | <span class="text-highlight">{{ languageInfo.language.name }}</span></a>
                         <a class="sub-base-action-link align-right" href="{{ path('admin_language_info_edit', {'languageInfoId': languageInfo.id}) }}"><i class="fa fa-edit"></i></a>
                     </div>
                 {% endfor %}

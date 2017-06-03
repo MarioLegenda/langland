@@ -1,9 +1,9 @@
-sound_create:
+admin_sound_create:
     path: /create
     defaults: { _controller: AdminBundle:Sound:create }
     methods: [POST, GET]
 
-sound_index:
+admin_sound_index:
     path: /
     defaults: { _controller: AdminBundle:Sound:index }
     methods: [GET]

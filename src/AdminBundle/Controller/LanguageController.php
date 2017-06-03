@@ -3,9 +3,8 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Language;
+use AdminBundle\Event\FileUploadEvent;
 use AdminBundle\Form\Type\LanguageType;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 class LanguageController extends RepositoryController
@@ -30,26 +29,7 @@ class LanguageController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $potentionalLanguage = $this->getRepository('AdminBundle:Language')->findBy(array(
-                    'name' => $language->getName(),
-                ));
-
-                if (!empty($potentionalLanguage)) {
-                    $form->addError(new FormError(
-                        sprintf('Language with name \'%s\' already exists', $language->getName())
-                    ));
-
-                    return $this->render('::Admin/Language/create.html.twig', array(
-                        'form' => $form->createView(),
-                    ));
-                }
-
-                $this->tryUploadLanguageIcon($language);
-
-                if ($language->getImage()->getImageFile() instanceof UploadedFile) {
-                    $language->getImage()->setLanguage($language);
-                    $em->persist($language->getImage());
-                }
+                $this->dispatchEvent(FileUploadEvent::class, $language);
 
                 $em->persist($language);
                 $em->flush();
@@ -59,7 +39,7 @@ class LanguageController extends RepositoryController
                     sprintf('Language created successfully')
                 );
 
-                return $this->redirectToRoute('language_create');
+                return $this->redirectToRoute('admin_language_create');
             }
         }
 
@@ -72,16 +52,16 @@ class LanguageController extends RepositoryController
     {
         $language = $this->getRepository('AdminBundle:Language')->find($id);
 
-        $image = $this->getRepository('AdminBundle:Image')->findBy(array(
+        if (!$language instanceof Language) {
+            throw $this->createNotFoundException();
+        }
+
+        $image = $this->getRepository('AdminBundle:Image')->findOneBy(array(
             'language' => $language,
         ));
 
         if (!empty($image)) {
-            $language->setImage($image[0]);
-        }
-
-        if (!$language instanceof Language) {
-            throw $this->createNotFoundException();
+            $language->setImage($image);
         }
 
         $form = $this->createForm(LanguageType::class, $language);
@@ -92,13 +72,7 @@ class LanguageController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->tryRemovePreviousIcon($language);
-                $this->tryUploadLanguageIcon($language);
-
-                if ($language->getImage()->getImageFile() instanceof UploadedFile) {
-                    $language->getImage()->setLanguage($language);
-                    $em->persist($language->getImage());
-                }
+                $this->dispatchEvent(FileUploadEvent::class, $language);
 
                 $em->persist($language);
                 $em->flush();
@@ -108,7 +82,7 @@ class LanguageController extends RepositoryController
                     sprintf('Language edited successfully')
                 );
 
-                return $this->redirectToRoute('language_edit', array(
+                return $this->redirectToRoute('admin_language_edit', array(
                     'id' => $id,
                 ));
             }
@@ -118,40 +92,5 @@ class LanguageController extends RepositoryController
             'form' => $form->createView(),
             'language' => $language,
         ));
-    }
-
-    private function tryUploadLanguageIcon(Language $language)
-    {
-        if ($language->getImage()->getImageFile() instanceof UploadedFile) {
-            $fileUploader = $this->get('admin.file_uploader');
-
-            $fileUploader->uploadImage($language->getImage()->getImageFile(), array(
-                'repository' => 'AdminBundle:Image',
-                'field' => 'name',
-            ));
-
-            $data = $fileUploader->getData();
-
-            $language->getImage()
-                ->setName($data['fileName'])
-                ->setOriginalName($data['originalName'])
-                ->setTargetDir($data['targetDir'])
-                ->setFullPath($data['fullPath']);
-        }
-    }
-
-    private function tryRemovePreviousIcon(Language $language)
-    {
-        if ($language->getImage()->getImageFile() instanceof UploadedFile) {
-            $dbImage = $this->getRepository('AdminBundle:Image')->findBy(array(
-                'language' => $language,
-            ));
-
-            if (!empty($dbImage)) {
-                $image = $dbImage[0];
-
-                unlink($image->getTargetDir().'/'.$image->getName());
-            }
-        }
     }
 }

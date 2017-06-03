@@ -1,14 +1,14 @@
-course_create:
+admin_course_create:
     path: /create
     defaults: { _controller: AdminBundle:Course:create }
     methods: [POST, GET]
 
-course_index:
+admin_course_index:
     path: /
     defaults: { _controller: AdminBundle:Course:index }
     methods: [GET]
 
-course_edit:
+admin_course_edit:
     path: /edit/{id}
     defaults: { _controller: AdminBundle:Course:edit }
     methods: [GET, POST]

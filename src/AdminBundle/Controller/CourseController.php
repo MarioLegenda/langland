@@ -12,7 +12,9 @@ class CourseController extends RepositoryController
 {
     public function indexAction()
     {
-        $courses = $this->getRepository('AdminBundle:Course')->findAll();
+        $courses = $this->getRepository('AdminBundle:Course')->findBy(array(), array(
+            'id' => 'DESC',
+        ));
 
         return $this->render('::Admin/Course/CRUD/index.html.twig', array(
             'courses' => $courses,
@@ -40,14 +42,6 @@ class CourseController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $potencionalForm = $this->checkExistingCourse($course, $form);
-
-                if ($potencionalForm instanceof FormInterface) {
-                    return $this->render('::Admin/Course/CRUD/create.html.twig', array(
-                        'form' => $form->createView(),
-                    ));
-                }
-
                 $this->unmarkInitialCourse();
 
                 $em->persist($course);
@@ -58,7 +52,7 @@ class CourseController extends RepositoryController
                     sprintf('Course created successfully')
                 );
 
-                return $this->redirectToRoute('course_create');
+                return $this->redirectToRoute('admin_course_create');
             }
         }
 
@@ -95,7 +89,7 @@ class CourseController extends RepositoryController
                     sprintf('Course edited successfully')
                 );
 
-                return $this->redirectToRoute('course_edit', array(
+                return $this->redirectToRoute('admin_course_edit', array(
                     'id' => $course->getId(),
                 ));
             }
@@ -120,40 +114,16 @@ class CourseController extends RepositoryController
         ));
     }
 
-    private function checkExistingCourse(Course $course, $form)
-    {
-        $existingCourse = $this->getRepository('AdminBundle:Course')->findBy(array(
-            'language' => $course->getLanguage(),
-            'name' => $course->getName(),
-        ));
-
-        if (!empty($existingCourse)) {
-            $form->addError(new FormError(
-                sprintf(
-                    'A course for language \'%s\' with name \'%s\' already exists',
-                    $existingCourse[0]->getLanguage()->getName(),
-                    $existingCourse[0]->getName()
-                )
-            ));
-
-            return $form;
-        }
-
-        return null;
-    }
-
     private function unmarkInitialCourse()
     {
-        $initialCourse = $this->getRepository('AdminBundle:Course')->findBy(array(
+        $initialCourses = $this->getRepository('AdminBundle:Course')->findBy(array(
             'initialCourse' => true,
         ));
 
-        if (!empty($initialCourse)) {
-            $initialCourse = $initialCourse[0];
+        foreach ($initialCourses as $course) {
+            $course->setInitialCourse(false);
 
-            $initialCourse->setInitialCourse(false);
-
-            $this->getDoctrine()->getManager()->persist($initialCourse);
+            $this->getDoctrine()->getManager()->persist($course);
         }
     }
 }

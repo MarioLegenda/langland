@@ -1,19 +1,19 @@
-word_create:
+admin_word_create:
     path: /create
     defaults: { _controller: AdminBundle:Word:create }
     methods: [GET, POST]
 
-word_edit:
+admin_word_edit:
     path: /edit/{id}
     defaults: { _controller: AdminBundle:Word:edit }
     methods: [GET, POST]
 
-word_index:
+admin_word_index:
     path: /
     defaults: { _controller: AdminBundle:Word:index }
     methods: [GET]
 
-word_remove:
+admin_word_remove:
     path: /remove/{id}
     defaults: { _controller: AdminBundle:Word:remove }
     methods: [GET]

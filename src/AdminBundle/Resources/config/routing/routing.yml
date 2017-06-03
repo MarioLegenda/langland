@@ -1,32 +1,9 @@
-admin_language:
-  resource: "@AdminBundle/Resources/config/routing/api/language.yml"
-  prefix: /admin/language
+admin_dashboard:
+  path: /admin/dashboard
+  defaults: { _controller: AdminBundle:Main:dashboard}
+  methods: [GET]
+
+admin_main:
+  resource: "@AdminBundle/Resources/config/routing/api/main.yml"
+  prefix: /admin
   host: '%host%'
-
-admin_language_info:
-  resource: "@AdminBundle/Resources/config/routing/api/language_info.yml"
-  prefix: /admin/language-info
-  host: '%host%'
-
-admin_word:
-  resource: "@AdminBundle/Resources/config/routing/api/word.yml"
-  prefix: /admin/word
-  host: '%host%'
-
-admin_category:
-  resource: "@AdminBundle/Resources/config/routing/api/category.yml"
-  prefix: /admin/category
-  host: '%host%'
-
-admin_sound:
-  resource: "@AdminBundle/Resources/config/routing/api/sound.yml"
-  prefix: /admin/sound
-  host: '%host%'
-
-admin_course:
-  resource: "@AdminBundle/Resources/config/routing/api/course.yml"
-  prefix: /admin/course
-
-admin_lesson_manage:
-  resource: "@AdminBundle/Resources/config/routing/api/lesson_manage.yml"
-  prefix: /admin/lesson

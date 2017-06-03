@@ -1,0 +1,18 @@
+<div class="full-width align-left form-field field-break relative">
+
+    {% if entity is defined and entity.image is not empty %}
+        <div class="full-width align-left">
+            <img width="56" height="56" src="{{ entity.image.fullPath }}" />
+        </div>
+    {% endif %}
+
+    {{ form_label(field) }}
+    {{ form_widget(field) }}
+    <div class="form-error full-width align-right">
+        {{ form_errors(field.imageFile) }}
+    </div>
+
+    <i class="description">
+        <span class="highlight">*</span> {{ description }}
+    </i>
+</div>

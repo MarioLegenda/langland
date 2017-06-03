@@ -1,0 +1,27 @@
+easy_admin:
+    site_name: Langland
+    entities:
+        Language:
+            class: AdminBundle\Entity\Language
+            label: Languages
+            form:
+                fields: [id, name, listDescription]
+            list:
+                title: Languages
+                fields: [id, name, listDescription, createdAt, showOnPage]
+        Category:
+            class: AdminBundle\Entity\Category
+            label: Categories
+            list:
+                title: Categories
+            form:
+                fields: [name]
+
+        Word:
+            class: AdminBundle\Entity\Word
+            label: Words
+            list:
+                title: Words
+                fields: [id, name, type, createdAt]
+            form:
+                fields: [id, name, type, description, language, categories, translations]

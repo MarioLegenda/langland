@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new ArmorBundle\ArmorBundle(),
             new PublicBundle\PublicBundle(),
             new AppBundle\AppBundle(),
+            new JavierEguiluz\Bundle\EasyAdminBundle\EasyAdminBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

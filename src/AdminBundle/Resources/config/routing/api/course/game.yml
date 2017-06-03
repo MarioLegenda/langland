@@ -27,3 +27,8 @@ admin_create_word_game:
     path: /word-game/create-game
     defaults: { _controller: AdminBundle:Ajax/Game:createGame }
     methods: [POST]
+
+admin_load_word_game:
+    path: /word-game/load-game/{gameId}
+    defaults: { _controller: AdminBundle:Ajax/Game:loadGame }
+    methods: [GET]

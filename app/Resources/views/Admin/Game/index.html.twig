@@ -4,10 +4,19 @@
     <div class="fluid-container page language" id="react-game-create-app">
         <div class="full-width align-left">
             <h1 class="full-width page-title margin-top-30 align-left">Games</h1>
-            <a href="{{ path('admin_game_create_get', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create word game</a>
-            <a href="" class="main-action-link align-right margin-top-30">Create sentence game</a>
-            <a href="" class="main-action-link align-right margin-top-30">Create mixed game</a>
-        </div>
+            <a href="{{ path('admin_word_game_create_get', {'courseId' : course.id}) }}" class="main-action-link align-left margin-top-30">Create word game</a>
+            <a href="" class="main-action-link align-left margin-top-30">Create sentence game</a>
+            <a href="" class="main-action-link align-left margin-top-30">Create mixed game</a>
 
+            <h1 class="full-width page-title margin-top-30 align-left">Game list</h1>
+
+            <div class="form-field full-width align-left form margin-top-10">
+                <select>
+                    <option value="1">Word games</option>
+                    <option value="2">Sentence games</option>
+                    <option value="3">Mixed games</option>
+                </select>
+            </div>
+        </div>
     </div>
 {% endblock %}

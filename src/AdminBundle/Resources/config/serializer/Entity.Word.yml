@@ -3,14 +3,14 @@ AdminBundle\Entity\Word:
     properties:
         id:
             expose: true
-            groups: [words_by_language]
+            groups: [game, words_by_language]
         name:
             expose: true
-            groups: [words_by_language]
+            groups: [game, words_by_language]
         type:
             expose: true
-            groups: [words_by_language]
+            groups: [game, words_by_language]
         createdAt:
             expose: true
-            groups: [words_by_language]
+            groups: [game, words_by_language]
             serialized_name: createdAt

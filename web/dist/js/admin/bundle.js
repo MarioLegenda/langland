@@ -12722,7 +12722,19 @@ var Form = exports.Form = function (_React$Component) {
     }, {
         key: 'onGameChoosing',
         value: function onGameChoosing(e) {
-            console.log(e.currentTarget.value);
+            jQuery.ajax({
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed() + '/game/word-game/load-game/' + e.currentTarget.value,
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                console.log(data.data);
+                this.setState({
+                    formValues: {
+                        name: data.data.name,
+                        description: data.data.description,
+                        lesson: data.data.lesson.id
+                    }
+                });
+            }, this));
         }
     }, {
         key: 'onSubmit',
@@ -13141,11 +13153,6 @@ var WordUnit = function (_React$Component3) {
                     error: false
                 };
             });
-        }
-    }, {
-        key: 'onSelectedCorrect',
-        value: function onSelectedCorrect(index) {
-            var isCorrectWord = this.state.selectedWords[index];
         }
     }, {
         key: 'render',

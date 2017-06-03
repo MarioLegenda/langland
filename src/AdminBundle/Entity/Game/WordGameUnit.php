@@ -25,7 +25,9 @@ class WordGameUnit
      * @var Word $word
      */
     private $word;
-
+    /**
+     * @var WordGame $game
+     */
     private $game;
     /**
      * Get id

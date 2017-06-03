@@ -3,10 +3,19 @@ AdminBundle\Entity\Game\WordGame:
     properties:
         id:
             expose: true
-            groups: [word_games_list]
+            groups: [game, word_games_list]
         name:
             expose: true
-            groups: [word_games_list]
+            groups: [game, word_games_list]
         description:
             expose: true
-            groups: [word_games_list]
+            groups: [game, word_games_list]
+        gameUnits:
+            expose: true
+            type: AdminBundle\Entity\Game\WordGameUnit
+            groups: [game]
+            serialized_name: words
+        lesson:
+            expose: true
+            type: AdminBundle\Entity\Lesson
+            groups: [game]

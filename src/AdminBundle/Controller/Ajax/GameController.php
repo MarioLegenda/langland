@@ -42,11 +42,7 @@ class GameController extends ResponseController
     {
         $course = $this->getRepository('AdminBundle:Course')->find($courseId);
 
-        $lessons = $course->getLessons();
-
-        $serialized = $this->serialize($lessons, array('word_games_list'));
-
-        return $this->createSuccessJsonResponse($serialized);
+        return $this->createSuccessJsonResponse($this->serialize($course->getLessons(), array('word_games_list')));
     }
 
     public function createGameAction(Request $request)
@@ -63,5 +59,12 @@ class GameController extends ResponseController
         $this->getManager()->flush($game);
 
         return $this->createSuccessJsonResponse();
+    }
+
+    public function loadGameAction($courseId, $gameId)
+    {
+        $game = $this->getRepository('AdminBundle:Game\WordGame')->find($gameId);
+
+        return $this->createSuccessJsonResponse($this->serialize($game, array('game')));
     }
 }

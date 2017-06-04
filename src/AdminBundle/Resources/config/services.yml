@@ -23,6 +23,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: admin.post_persist_event, method: onPostPersist }
 
+    admin.custom_pre_update_listener:
+        class: AdminBundle\Listener\Custom\PreUpdateListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: kernel.event_listener, event: admin.pre_update_event, method: onPreUpdate }
+
     admin.form.word:
         class: AdminBundle\Form\Type\WordType
         arguments: ['@doctrine.orm.entity_manager']
@@ -58,11 +64,6 @@ services:
         arguments: ['AdminBundle\Entity\LessonText']
         tags:
             - { name: form.type }
-
-    admin.entity_subscriber:
-        class: AdminBundle\Listener\EntitySubscriber
-        tags:
-            - { name: doctrine.event_subscriber }
 
 #    admin.validator.language_info_validator:
 #        class: AdminBundle\Validator\Constraint\OneLanguageInfoConstraintValidator

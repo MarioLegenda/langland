@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Sentence;
+use AdminBundle\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\SentenceType;
 use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Event\PrePersistEvent;
@@ -93,6 +94,10 @@ class SentenceController extends RepositoryController
                 $this->dispatchEvent(PrePersistEvent::class, array(
                     'sentence' => $sentence,
                     'course' => $course,
+                ));
+
+                $this->dispatchEvent(PreUpdateEvent::class, array(
+                    'sentence' => $sentence
                 ));
 
                 $em->persist($sentence);

@@ -3,6 +3,8 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Word;
+use AdminBundle\Event\PrePersistEvent;
+use AdminBundle\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\WordType;
 use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Event\FileUploadEvent;
@@ -11,7 +13,9 @@ class WordController extends RepositoryController
 {
     public function indexAction()
     {
-        $words = $this->getRepository('AdminBundle:Word')->findAll();
+        $words = $this->getRepository('AdminBundle:Word')->findBy(array(), array(
+            'id' => 'DESC',
+        ));
 
         return $this->render('::Admin/Word/index.html.twig', array(
             'words' => $words,
@@ -41,7 +45,9 @@ class WordController extends RepositoryController
 
                 $this->dispatchEvent(FileUploadEvent::class, $word);
 
-                $this->removeEmptyTranslations($word);
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'word' => $word,
+                ));
 
                 $em->persist($word);
                 $em->flush();
@@ -86,9 +92,15 @@ class WordController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->removeEmptyTranslations($word);
-
                 $this->dispatchEvent(FileUploadEvent::class, $word);
+
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'word' => $word,
+                ));
+
+                $this->dispatchEvent(PreUpdateEvent::class, array(
+                    'word' => $word,
+                ));
 
                 $em->persist($word);
                 $em->flush();
@@ -143,14 +155,5 @@ class WordController extends RepositoryController
         $em->flush();
 
         return $this->redirectToRoute('admin_word_index');
-    }
-
-    private function removeEmptyTranslations(Word $word)
-    {
-        foreach ($word->getTranslations() as $translation) {
-            if (is_null($translation->getName())) {
-                $word->removeTranslation($translation);
-            }
-        }
     }
 }

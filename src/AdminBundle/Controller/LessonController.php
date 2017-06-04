@@ -6,6 +6,7 @@ use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Event\MultipleEntityEvent;
 use AdminBundle\Event\PrePersistEvent;
+use AdminBundle\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\LessonType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -55,7 +56,7 @@ class LessonController extends RepositoryController
                     sprintf('Lesson created successfully')
                 );
 
-                return $this->redirectToRoute('lesson_create', array(
+                return $this->redirectToRoute('admin_lesson_create', array(
                     'courseId' => $course->getId(),
                 ));
             }
@@ -94,6 +95,11 @@ class LessonController extends RepositoryController
                     'course' => $course,
                 ));
 
+                $this->dispatchEvent(PreUpdateEvent::class, array(
+                    'lesson' => $lesson,
+                    'course' => $course,
+                ));
+
                 $em->persist($lesson);
                 $em->flush();
 
@@ -102,7 +108,7 @@ class LessonController extends RepositoryController
                     sprintf('Lesson edited successfully')
                 );
 
-                return $this->redirectToRoute('lesson_edit', array(
+                return $this->redirectToRoute('admin_lesson_edit', array(
                     'courseId' => $course->getId(),
                     'lessonId' => $lesson->getId(),
                 ));

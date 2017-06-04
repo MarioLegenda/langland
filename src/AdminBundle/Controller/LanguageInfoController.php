@@ -3,6 +3,8 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\LanguageInfo;
+use AdminBundle\Event\PrePersistEvent;
+use AdminBundle\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\LanguageInfoType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,6 +32,10 @@ class LanguageInfoController extends RepositoryController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
+
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'languageInfo' => $languageInfo,
+                ));
 
                 $em->persist($languageInfo);
                 $em->flush();
@@ -66,7 +72,13 @@ class LanguageInfoController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->removeDeletetedTexts($languageInfo);
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'languageInfo' => $languageInfo,
+                ));
+
+                $this->dispatchEvent(PreUpdateEvent::class, array(
+                    'languageInfo' => $languageInfo,
+                ));
 
                 $em->persist($languageInfo);
                 $em->flush();

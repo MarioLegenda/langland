@@ -3,9 +3,11 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Game\QuestionGame;
+use AdminBundle\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\QuestionGameType;
 use Symfony\Component\HttpFoundation\Request;
 use AdminBundle\Event\PrePersistEvent;
+use AdminBundle\Event\PostPersistEvent;
 
 class QuestionGameController extends RepositoryController
 {
@@ -19,8 +21,12 @@ class QuestionGameController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isValid() and $form->isSubmitted()) {
+        if ($form->isSubmitted() and $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'questionGame' => $question,
+            ));
 
             $em->persist($question);
             $em->flush();
@@ -57,6 +63,11 @@ class QuestionGameController extends RepositoryController
             $this->dispatchEvent(PrePersistEvent::class, array(
                 'questionGame' => $question,
             ));
+
+            $this->dispatchEvent(PreUpdateEvent::class, array(
+                'questionGame' => $question,
+            ));
+
 
             $em->persist($question);
             $em->flush();

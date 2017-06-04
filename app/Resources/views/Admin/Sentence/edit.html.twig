@@ -6,6 +6,10 @@
             <h1 class="full-width page-title margin-top-30 align-left">Sentences - edit <span class="text-highlight">{{ sentence.name }}</span> sentence</h1>
         </div>
 
+        <div class="full-width align-left">
+            <a href="{{ path('admin_sentence_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
         <div class="full-width align-left margin-top-30 page-content form">
             <form action="{{ path('admin_sentence_edit', {'courseId' : course.id, 'sentenceId' : sentence.id}) }}" method="POST" class="form" name="addSentenceForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">

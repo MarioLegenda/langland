@@ -28,6 +28,6 @@ class RepositoryController extends Controller
 
         $event = new $eventClass($entity);
 
-        $eventDispatcher->dispatch(FileUploadEvent::NAME, $event);
+        $eventDispatcher->dispatch($event::NAME, $event);
     }
 }

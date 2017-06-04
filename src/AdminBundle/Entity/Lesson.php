@@ -252,6 +252,21 @@ class Lesson
             $context->buildViolation('There has to be at least one lesson text for this lesson')
                 ->atPath('lessonTexts')
                 ->addViolation();
+
+            return;
+        }
+
+        $emptyTexts = 0;
+        foreach ($this->getLessonTexts() as $lessonText) {
+            if (empty($lessonText->getName()) and empty($lessonText->getText())) {
+                ++$emptyTexts;
+            }
+        }
+
+        if ($emptyTexts === count($this->getLessonTexts())) {
+            $context->buildViolation('All lesson texts are empty')
+                ->atPath('lessonTexts')
+                ->addViolation();
         }
     }
 

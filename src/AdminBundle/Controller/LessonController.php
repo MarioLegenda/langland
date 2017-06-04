@@ -4,6 +4,8 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
+use AdminBundle\Event\MultipleEntityEvent;
+use AdminBundle\Event\PrePersistEvent;
 use AdminBundle\Form\Type\LessonType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -46,6 +48,11 @@ class LessonController extends RepositoryController
                     $lesson->setIsInitialLesson(true);
                 }
 
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'lesson' => $lesson,
+                    'course' => $course,
+                ));
+
                 $em->persist($lesson);
                 $em->flush();
 
@@ -87,14 +94,6 @@ class LessonController extends RepositoryController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
-                $lesson->setCourse($course);
-
-                $this->removeDeletetedLessonTexts($lesson);
-
-                if ($lesson->getIsInitialLesson() === true) {
-                    $this->uncheckInitialLessons($course);
-                    $lesson->setIsInitialLesson(true);
-                }
 
                 $em->persist($lesson);
                 $em->flush();

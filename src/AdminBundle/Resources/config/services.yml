@@ -11,6 +11,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: admin.upload_file_event, method: onFileUpload }
 
+    admin.custom_pre_persist_listener:
+        class: AdminBundle\Listener\Custom\PrePersistListener
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: kernel.event_listener, event: admin.pre_persist, method: onPersist }
+
     admin.form.word:
         class: AdminBundle\Form\Type\WordType
         arguments: ['@doctrine.orm.entity_manager']

@@ -17,6 +17,10 @@ class QuestionGameAnswer
      */
     private $question;
     /**
+     * @var bool $isCorrect
+     */
+    private $isCorrect;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -51,6 +55,20 @@ class QuestionGameAnswer
     /**
      * @return mixed
      */
+    public function getisCorrect()
+    {
+        return $this->isCorrect;
+    }
+    /**
+     * @param mixed $isCorrect
+     */
+    public function setIsCorrect($isCorrect)
+    {
+        $this->isCorrect = $isCorrect;
+    }
+    /**
+     * @return mixed
+     */
     public function getQuestion()
     {
         return $this->question;
@@ -62,15 +80,14 @@ class QuestionGameAnswer
     {
         $this->question = $question;
     }
-
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
      *
-     * @return WordGame
+     * @return QuestionGameAnswer
      */
-    public function setCreatedAt($createdAt) : WordGame
+    public function setCreatedAt($createdAt) : QuestionGameAnswer
     {
         $this->createdAt = $createdAt;
 
@@ -90,9 +107,9 @@ class QuestionGameAnswer
      *
      * @param \DateTime $updatedAt
      *
-     * @return WordGame
+     * @return QuestionGameAnswer
      */
-    public function setUpdatedAt($updatedAt) : WordGame
+    public function setUpdatedAt($updatedAt) : QuestionGameAnswer
     {
         $this->updatedAt = $updatedAt;
 

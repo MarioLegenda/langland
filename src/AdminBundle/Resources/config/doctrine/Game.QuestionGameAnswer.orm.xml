@@ -7,11 +7,12 @@
         </id>
 
         <field name="name" type="string" column="name" length="255"/>
-        <field name="createdAt" type="datetime" column="createdAt"/>
-        <field name="updatedAt" type="datetime" column="updatedAt"/>
+        <field name="createdAt" type="datetime" column="created_at"/>
+        <field name="updatedAt" type="datetime" column="updated_at"/>
+        <field name="isCorrect" type="boolean" column="is_correct"></field>
 
         <many-to-one target-entity="AdminBundle\Entity\Game\QuestionGame" field="question" inversed-by="answers">
-
+            <join-column name="question_game_id" referenced-column-name="id"></join-column>
         </many-to-one>
 
         <lifecycle-callbacks>

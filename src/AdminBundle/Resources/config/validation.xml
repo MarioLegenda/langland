@@ -178,6 +178,38 @@
         </property>
     </class>
 
+    <class name="AdminBundle\Entity\Game\QuestionGame">
+        <constraint name="Callback">validate</constraint>
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+            <option name="message">Question game with this name already exists</option>
+        </constraint>
+
+        <property name="name">
+            <constraint name="NotBlank">
+                <option name="message">Question name can not be blank</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">Question name can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
+
+        <property name="description">
+            <constraint name="NotBlank">
+                <option name="message">Description cannot be blank</option>
+            </constraint>
+        </property>
+
+        <property name="lesson">
+            <constraint name="NotBlank">
+                <option name="message">There is no lesson associated with this game</option>
+            </constraint>
+        </property>
+    </class>
+
     <class name="AdminBundle\Entity\Sentence">
         <constraint name="Callback">validateTranslations</constraint>
 

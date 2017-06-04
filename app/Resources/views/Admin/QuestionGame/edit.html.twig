@@ -1,0 +1,43 @@
+{% extends '::Admin/Course/baseContent.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Question game - create new question</h1>
+        </div>
+
+        {% if form is defined %}
+            <div class="full-width align-left margin-top-30 page-content form">
+                <form action="{{ path('admin_question_game_create', {'courseId': course.id}) }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
+                    <div class="margin-top-40 align-left full-width">
+
+                        <div class="form-error full-width align-right">
+                            {{ form_errors(form) }}
+                        </div>
+
+                        {% include '::Admin/Form/_include/flashNotice.html.twig' %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.lesson, 'description': 'choose a lesson to be associated with this game' } only %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name, 'description': 'choose a name for this question game' } only %}
+
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.description, 'description': 'description of the game. This description will be shown on the frontend' } only %}
+
+                        <div class="full-width align-left form-field field-break">
+                            {{ form_label(form.answers) }}
+                            <div class="translations" data-prototype="{{ form_widget(form.answers.vars.prototype)|e('html_attr') }}">
+                                {% for answer in form.answers %}
+                                    <div>{{ form_row(answer.name) }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
+                    </div>
+
+                    {{ form_widget(form._token) }}
+                </form>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

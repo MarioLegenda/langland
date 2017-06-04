@@ -21,7 +21,7 @@ class GameController extends RepositoryController
     {
         $course = $this->getRepository('AdminBundle:Course')->find($courseId);
 
-        return $this->render('::Admin/Game/create.html.twig', array(
+        return $this->render('::Admin/WordGame/create.html.twig', array(
             'course' => $course,
         ));
     }

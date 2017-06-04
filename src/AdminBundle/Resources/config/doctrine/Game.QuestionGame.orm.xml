@@ -8,8 +8,8 @@
 
         <field name="name" type="string" column="name" length="255"/>
         <field name="description" type="text" column="description"/>
-        <field name="createdAt" type="datetime" column="createdAt"/>
-        <field name="updatedAt" type="datetime" column="updatedAt"/>
+        <field name="createdAt" type="datetime" column="created_at"/>
+        <field name="updatedAt" type="datetime" column="updated_at"/>
 
         <many-to-one target-entity="AdminBundle\Entity\Lesson" field="lesson" inversed-by="questionGames">
             <join-column referenced-column-name="id" name="lesson_id" />

@@ -4,6 +4,7 @@ namespace AdminBundle\Entity\Game;
 
 use AdminBundle\Entity\Lesson;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class QuestionGame
 {
@@ -189,6 +190,27 @@ class QuestionGame
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (count($this->getAnswers()) === 0) {
+            $context->buildViolation('* There has to be at least one answer associated to this question')
+                ->atPath('answers')
+                ->addViolation();
+        }
+
+        foreach ($this->getAnswers() as $answer) {
+            if ($answer->getIsCorrect()) {
+                return;
+            }
+        }
+
+        $context->buildViolation('* You haven\'t labeled any answer as correct. At least one answer has to be the correct one')
+            ->atPath('answers')
+            ->addViolation();
     }
 
     public function updateTimestamps()

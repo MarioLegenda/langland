@@ -1,0 +1,9 @@
+admin_question_game_create:
+    path: /create
+    defaults: { _controller: AdminBundle:QuestionGame:create }
+    methods: [GET, POST]
+
+admin_question_game_edit:
+    path: /edit
+    defaults: { _controller: AdminBundle:QuestionGame:edit }
+    methods: [GET, POST]

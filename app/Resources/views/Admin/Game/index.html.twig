@@ -7,7 +7,7 @@
 
             <div class="games-create-menu">
                 <a href="{{ path('admin_word_game_create_get', {'courseId' : course.id}) }}" class="main-action-link align-left margin-top-30">Create word game</a>
-                <a href="" class="main-action-link align-left margin-top-30">Create question game</a>
+                <a href="{{ path('admin_question_game_create', {'courseId' : course.id}) }}" class="main-action-link align-left margin-top-30">Create question game</a>
                 <a href="" class="main-action-link align-left margin-top-30">Create sentence game</a>
                 <a href="" class="main-action-link align-left margin-top-30">Create mixed game</a>
             </div>

@@ -23,6 +23,12 @@ services:
         tags:
             - { name: form.type }
 
+    admin.form.question_game:
+        class: AdminBundle\Form\Type\QuestionGameType
+        arguments: ['@doctrine.orm.entity_manager']
+        tags:
+            - { name: form.type }
+
     admin.form.course:
         class: AdminBundle\Form\Type\CourseType
         arguments: ['@doctrine.orm.entity_manager', '@admin.validation_group_resolver']

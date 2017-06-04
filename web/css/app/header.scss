@@ -16,9 +16,12 @@
       position:relative;
     }
 
-    h2 {
-      text-align: center;
-      color: $appMainColor;
+    h1 {
+      color: $highlight-gray;
+
+      padding: 10px 10px 5px 0;
+
+      border-bottom: 1px solid $highlight-gray;
     }
 
     button {
@@ -86,14 +89,6 @@
       width: 230px;
     }
 
-    h1 {
-      color: $highlight-gray;
-
-      padding: 10px 10px 5px 0;
-
-      border-bottom: 1px solid $highlight-gray;
-    }
-
     .language-link {
       font-size: 1.1em;
       color: $highlight-gray;
@@ -122,6 +117,34 @@
     .current-course {
       font-weight:bold;
       color: $appMainColor !important;
+    }
+  }
+
+  .user-bar {
+    .bar-popup {
+      width: 230px;
+    }
+
+    .logout {
+
+      i {
+        position: absolute;
+
+        left: 12px;
+      }
+
+      display:block;
+
+      border: 1px solid $highlight-gray;
+
+      padding: 10px;
+
+      border-radius: 20px;
+
+      &:hover {
+        border: 1px solid $appMainColor;
+        color: $appMainColor;
+      }
     }
   }
 

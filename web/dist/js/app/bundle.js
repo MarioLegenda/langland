@@ -11249,10 +11249,16 @@ var UserProfileBar = function (_React$Component) {
                     'div',
                     { className: 'bar-popup absolute user-bar-popup' },
                     _react2.default.createElement(
-                        'h2',
-                        null,
-                        'Hel6lo, ',
+                        'h1',
+                        { className: 'margin-bottom-20' },
+                        'Hello, ',
                         user.name
+                    ),
+                    _react2.default.createElement(
+                        'a',
+                        { href: _env.envr + "langland/logout", className: 'logout margin-top-20 relative' },
+                        _react2.default.createElement('i', { className: 'fa fa-minus-square' }),
+                        'Logout'
                     )
                 )
             );

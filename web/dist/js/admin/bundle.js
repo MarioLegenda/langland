@@ -12602,10 +12602,10 @@ var Form = exports.Form = function (_React$Component) {
             gameOptions: []
         };
 
+        _this.gameSaving = false;
+
         _this.setField = _this.setField.bind(_this);
         _this.onSubmit = _this.onSubmit.bind(_this);
-        _this.handleGameLoad = _this.handleGameLoad.bind(_this);
-        _this.onGameChoosing = _this.onGameChoosing.bind(_this);
         return _this;
     }
 
@@ -12650,6 +12650,8 @@ var Form = exports.Form = function (_React$Component) {
     }, {
         key: '_saveGame',
         value: function _saveGame() {
+            this.gameSaving = true;
+
             jQuery.ajax({
                 url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/word-game/create-game',
                 method: 'POST',
@@ -12665,6 +12667,8 @@ var Form = exports.Form = function (_React$Component) {
                     this.setState({
                         errors: data.data
                     });
+
+                    this.gameSaving = false;
 
                     $("html, body").animate({ scrollTop: "0px" });
                 }
@@ -12706,9 +12710,6 @@ var Form = exports.Form = function (_React$Component) {
             this._loadGameSelectableData();
         }
     }, {
-        key: 'handleGameLoad',
-        value: function handleGameLoad(name, value) {}
-    }, {
         key: 'setField',
         value: function setField(name, value) {
             this.setState(function (prevState, prevProps) {
@@ -12720,28 +12721,14 @@ var Form = exports.Form = function (_React$Component) {
             });
         }
     }, {
-        key: 'onGameChoosing',
-        value: function onGameChoosing(e) {
-            jQuery.ajax({
-                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed() + '/game/word-game/load-game/' + e.currentTarget.value,
-                method: 'GET'
-            }).done(jQuery.proxy(function (data) {
-                console.log(data.data);
-                this.setState({
-                    formValues: {
-                        name: data.data.name,
-                        description: data.data.description,
-                        lesson: data.data.lesson.id
-                    }
-                });
-            }, this));
-        }
-    }, {
         key: 'onSubmit',
         value: function onSubmit(e) {
             e.preventDefault();
 
-            this._saveGame();
+            if (this.gameSaving === false) {
+                console.log('ulazak');
+                this._saveGame();
+            }
         }
     }, {
         key: 'render',

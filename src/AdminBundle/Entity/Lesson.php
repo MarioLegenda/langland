@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Entity;
 
+use AdminBundle\Entity\Game\QuestionGame;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use AdminBundle\Entity\Game\WordGame;
@@ -37,6 +38,10 @@ class Lesson
      */
     private $wordGames;
     /**
+     * @var ArrayCollection $questionGames
+     */
+    private $questionGames;
+    /**
      * @var ArrayCollection $lessonTexts
      */
     private $lessonTexts;
@@ -45,6 +50,8 @@ class Lesson
     {
         $this->lessonTexts = new ArrayCollection();
         $this->wordGames = new ArrayCollection();
+        $this->questionGames = new ArrayCollection();
+
         $this->isInitialLesson = false;
     }
     /**
@@ -203,6 +210,56 @@ class Lesson
     public function getLessonTexts()
     {
         return $this->lessonTexts;
+    }
+    /**
+     * @param QuestionGame $game
+     * @return bool
+     */
+    public function hasQuestionGame(QuestionGame $game) : bool
+    {
+        return $this->questionGames->contains($game);
+    }
+    /**
+     * @param QuestionGame $game
+     * @return Lesson
+     */
+    public function addQuestionGame(QuestionGame $game) : Lesson
+    {
+        if (!$this->hasQuestionGame($game)) {
+            $game->setLesson($this);
+            $this->questionGames->add($game);
+        }
+
+        return $this;
+    }
+    /**
+     * @param QuestionGame $game
+     * @return Lesson
+     */
+    public function removeQuestionGame(QuestionGame $game) : Lesson
+    {
+        if ($this->hasQuestionGame($game)) {
+            $this->questionGames->removeElement($game);
+        }
+
+        return $this;
+    }
+    /**
+     * @param $games
+     * @return Lesson
+     */
+    public function setQuestionGames($games) : Lesson
+    {
+        $this->questionGames = $games;
+
+        return $this;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getQuestionGames()
+    {
+        return $this->questionGames;
     }
     /**
      * Set createdAt

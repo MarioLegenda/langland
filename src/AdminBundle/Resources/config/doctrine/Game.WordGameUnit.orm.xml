@@ -11,7 +11,7 @@
 
     <many-to-one field="word" target-entity="AdminBundle\Entity\Word" />
 
-    <many-to-one target-entity="AdminBundle\Entity\Game\WordGame" field="game" inversed-by="games">
+    <many-to-one target-entity="AdminBundle\Entity\Game\WordGame" field="game" inversed-by="gameUnits">
       <join-column referenced-column-name="id" name="word_game_id" />
     </many-to-one>
 

@@ -59,6 +59,8 @@ class PrePersistListener
                 $this->em->persist($dbLesson);
             }
 
+            $lesson->setIsInitialLesson(true);
+
             $this->em->flush();
         }
     }

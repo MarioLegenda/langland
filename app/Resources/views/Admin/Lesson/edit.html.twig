@@ -6,6 +6,10 @@
             <h1 class="full-width page-title margin-top-30 align-left">Lessons - edit <span class="text-highlight">{{ lesson.name }}</span> lesson</h1>
         </div>
 
+        <div class="full-width align-left">
+            <a href="{{ path('lesson_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
         {% if no_language is defined %}
             <p class="full-width align-left no-data-message margin-top-30">There are no created languages</p>
         {% endif %}

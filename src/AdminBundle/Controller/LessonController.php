@@ -41,12 +41,6 @@ class LessonController extends RepositoryController
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
-                $lesson->setCourse($course);
-
-                if ($lesson->getIsInitialLesson()) {
-                    $this->uncheckInitialLessons($course);
-                    $lesson->setIsInitialLesson(true);
-                }
 
                 $this->dispatchEvent(PrePersistEvent::class, array(
                     'lesson' => $lesson,
@@ -95,6 +89,11 @@ class LessonController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'lesson' => $lesson,
+                    'course' => $course,
+                ));
+
                 $em->persist($lesson);
                 $em->flush();
 
@@ -128,33 +127,5 @@ class LessonController extends RepositoryController
         return $this->render('::Admin/Course/Lesson/dashboard.html.twig', array(
             'lesson' => $lesson,
         ));
-    }
-
-    public function uncheckInitialLessons(Course $course)
-    {
-        foreach ($course->getLessons() as $dbLesson) {
-            $dbLesson->setIsInitialLesson(false);
-
-            $this->get('doctrine')->getManager()->persist($dbLesson);
-        }
-
-        $this->get('doctrine')->getManager()->flush();
-
-        return true;
-    }
-
-    private function removeDeletetedLessonTexts(Lesson $lesson)
-    {
-        $em = $this->get('doctrine')->getManager();
-
-        $dbLessonTexts = $em->getRepository('AdminBundle:LessonText')->findBy(array(
-            'lesson' => $lesson,
-        ));
-
-        foreach ($dbLessonTexts as $text) {
-            if (!$lesson->hasLessonText($text)) {
-                $em->remove($text);
-            }
-        }
     }
 }

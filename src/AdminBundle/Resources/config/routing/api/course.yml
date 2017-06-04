@@ -13,7 +13,7 @@ admin_course_edit:
     defaults: { _controller: AdminBundle:Course:edit }
     methods: [GET, POST]
 
-course_manager:
+admin_course_manager:
   resource: "@AdminBundle/Resources/config/routing/api/course/course.yml"
   prefix: /manage
   host: '%host%'

@@ -7,7 +7,7 @@
         </div>
 
         <div class="full-width align-left">
-            <a href="{{ path('lesson_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
+            <a href="{{ path('admin_lesson_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
         </div>
 
         {% if no_language is defined %}
@@ -15,7 +15,7 @@
         {% endif %}
 
         <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('lesson_edit', {'courseId' : lesson.course.id, 'lessonId': lesson.id}) }}" method="POST" class="form" name="addLessonForm" enctype="multipart/form-data" novalidate>
+            <form action="{{ path('admin_lesson_edit', {'courseId' : lesson.course.id, 'lessonId': lesson.id}) }}" method="POST" class="form" name="addLessonForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">
                     <div class="form-error full-width align-right">
                         {{ form_errors(form) }}

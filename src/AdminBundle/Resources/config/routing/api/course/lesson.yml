@@ -1,14 +1,14 @@
-lesson_index:
+admin_lesson_index:
     path: /
     defaults: { _controller: AdminBundle:Lesson:index }
     methods: [GET]
 
-lesson_create:
+admin_lesson_create:
     path: /create
     defaults: { _controller: AdminBundle:Lesson:create }
     methods: [GET, POST]
 
-lesson_edit:
+admin_lesson_edit:
     path: /edit/{lessonId}
     defaults: { _controller: AdminBundle:Lesson:edit }
     methods: [GET, POST]

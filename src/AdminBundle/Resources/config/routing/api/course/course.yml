@@ -1,4 +1,4 @@
-course_manage:
+admin_course_manage:
     path: /{courseId}
     defaults: { _controller: AdminBundle:Course:manage }
     methods: [GET]

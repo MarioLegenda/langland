@@ -11,7 +11,7 @@
             <div class="full-width align-right react-lesson-app" id="react-lesson-app">
             </div>
 
-            <form action="{{ path('lesson_create', {'courseId' : course.id}) }}" method="POST" class="form" name="addLessonForm" enctype="multipart/form-data" novalidate>
+            <form action="{{ path('admin_lesson_create', {'courseId' : course.id}) }}" method="POST" class="form" name="addLessonForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">
                     <div class="form-error full-width align-right">
                         {{ form_errors(form) }}

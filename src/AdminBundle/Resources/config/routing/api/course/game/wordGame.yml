@@ -3,6 +3,11 @@ admin_word_game_create_get:
     defaults: { _controller: AdminBundle:Game:createWordGame }
     methods: [GET, POST]
 
+admin_word_game_remove:
+    path: /remove/{gameId}
+    defaults: { _controller: AdminBundle:Game:removeWordGame }
+    methods: [GET]
+
 admin_find_word_game_words:
     path: /find-game-words
     defaults: { _controller: AdminBundle:Ajax/WordGame:findGameWords }

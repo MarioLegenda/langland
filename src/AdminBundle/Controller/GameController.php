@@ -26,7 +26,7 @@ class GameController extends RepositoryController
         ));
     }
 
-    public function removeAction($courseId, $gameId)
+    public function removeWordGameAction($courseId, $gameId)
     {
         $game = $this->getRepository('AdminBundle:Game\WordGame')
             ->findSingleGameByCourse(
@@ -52,8 +52,15 @@ class GameController extends RepositoryController
 
     private function getGameList(Request $request, Course $course)
     {
-        if (!$request->query->has('gameType')) {
-            return $this->getRepository('AdminBundle:Game\WordGame')->findGamesByCourse($course);
+        if ($request->query->has('gameType')) {
+            $gameType = $request->query->get('gameType');
+
+            switch ($gameType) {
+                case 'wordGames':
+                    return $this->getRepository('AdminBundle:Game\WordGame')->findGamesByCourse($course);
+                case 'questionGames':
+                    return $this->getRepository('AdminBundle:Game\QuestionGame')->findGamesByCourse($course);
+            }
         }
     }
 }

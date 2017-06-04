@@ -184,28 +184,51 @@
         <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
             <option name="fields">name</option>
             <option name="message">Question game with this name already exists</option>
+
+            <option name="groups">
+                <value>Create</value>
+            </option>
         </constraint>
 
         <property name="name">
             <constraint name="NotBlank">
                 <option name="message">Question name can not be blank</option>
+                <option name="groups">
+                    <value>Create</value>
+                    <value>Edit</value>
+                </option>
             </constraint>
 
             <constraint name="Length">
                 <option name="max">50</option>
                 <option name="maxMessage">Question name can have up to {{ limit }} characters</option>
+
+                <option name="groups">
+                    <value>Create</value>
+                    <value>Edit</value>
+                </option>
             </constraint>
         </property>
 
         <property name="description">
             <constraint name="NotBlank">
                 <option name="message">Description cannot be blank</option>
+
+                <option name="groups">
+                    <value>Create</value>
+                    <value>Edit</value>
+                </option>
             </constraint>
         </property>
 
         <property name="lesson">
             <constraint name="NotBlank">
                 <option name="message">There is no lesson associated with this game</option>
+
+                <option name="groups">
+                    <value>Create</value>
+                    <value>Edit</value>
+                </option>
             </constraint>
         </property>
     </class>

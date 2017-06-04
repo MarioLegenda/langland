@@ -3,12 +3,16 @@
 {% block content %}
     <div class="fluid-container page language">
         <div class="full-width align-left">
-            <h1 class="full-width page-title margin-top-30 align-left">Question game - create new question</h1>
+            <h1 class="full-width page-title margin-top-30 align-left">Question game - edit {{ game.name }} question</h1>
+        </div>
+
+        <div class="games-create-menu">
+            <a href="{{ path('admin_question_game_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create question game</a>
         </div>
 
         {% if form is defined %}
             <div class="full-width align-left margin-top-30 page-content form">
-                <form action="{{ path('admin_question_game_create', {'courseId': course.id}) }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
+                <form action="{{ path('admin_question_game_edit', {'courseId': course.id, 'gameId': game.id}) }}" method="POST" class="form" name="addWordForm" enctype="multipart/form-data" novalidate>
                     <div class="margin-top-40 align-left full-width">
 
                         <div class="form-error full-width align-right">
@@ -27,12 +31,15 @@
                             {{ form_label(form.answers) }}
                             <div class="translations" data-prototype="{{ form_widget(form.answers.vars.prototype)|e('html_attr') }}">
                                 {% for answer in form.answers %}
-                                    <div>{{ form_row(answer.name) }}</div>
+                                    <div class="translation">
+                                        <div>{{ form_row(answer.name) }}</div>
+                                        <div>{{ form_row(answer.isCorrect) }}</div>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
 
-                        {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
+                        {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Edit'} %}
                     </div>
 
                     {{ form_widget(form._token) }}

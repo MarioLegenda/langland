@@ -3,6 +3,7 @@
 namespace AdminBundle\Listener\Custom;
 
 use AdminBundle\Entity\Course;
+use AdminBundle\Entity\Game\QuestionGame;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Event\MultipleEntityEvent;
 use Doctrine\ORM\EntityManager;
@@ -35,6 +36,29 @@ class PrePersistListener
                 $event->getEntities()['lesson'],
                 $event->getEntities()['course']
             );
+        }
+
+        if (array_key_exists('questionGame', $event->getEntities())) {
+            $this->handleQuestionGameJob($event->getEntities()['questionGame']);
+        }
+    }
+
+    private function handleQuestionGameJob(QuestionGame $game)
+    {
+        foreach ($game->getAnswers() as $answer) {
+            if (empty($answer->getName())) {
+                $game->removeAnswer($answer);
+            }
+        }
+
+        $dbAnswers = $this->em->getRepository('AdminBundle:Game\QuestionGameAnswer')->findBy(array(
+            'question' => $game,
+        ));
+
+        foreach ($dbAnswers as $answer) {
+            if (!$game->hasAnswer($answer)) {
+                $this->em->remove($answer);
+            }
         }
     }
 

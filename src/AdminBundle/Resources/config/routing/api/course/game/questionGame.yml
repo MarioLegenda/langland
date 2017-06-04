@@ -4,6 +4,6 @@ admin_question_game_create:
     methods: [GET, POST]
 
 admin_question_game_edit:
-    path: /edit
+    path: /edit/{gameId}
     defaults: { _controller: AdminBundle:QuestionGame:edit }
     methods: [GET, POST]

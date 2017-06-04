@@ -3,10 +3,6 @@ admin_game_index_get:
     defaults: { _controller: AdminBundle:Game:index }
     methods: [GET]
 
-admin_game_remove:
-    path: /remove/{gameId}
-    defaults: { _controller: AdminBundle:Game:remove }
-
 admin_word_game:
   resource: "@AdminBundle/Resources/config/routing/api/course/game/wordGame.yml"
   prefix: /word-game

@@ -203,7 +203,7 @@ class QuestionGame
         }
 
         foreach ($this->getAnswers() as $answer) {
-            if ($answer->getIsCorrect()) {
+            if ($answer->getIsCorrect() === true) {
                 return;
             }
         }

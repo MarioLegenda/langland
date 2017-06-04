@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-  <entity name="AdminBundle\Entity\Game\WordGame" table="word_games">
+  <entity repository-class="AdminBundle\Repository\WordGameRepository" name="AdminBundle\Entity\Game\WordGame" table="word_games">
 
     <id name="id" type="integer" column="id">
       <generator strategy="AUTO"/>
@@ -12,7 +12,7 @@
     <field name="createdAt" type="datetime" column="createdAt"/>
     <field name="updatedAt" type="datetime" column="updatedAt"/>
 
-    <many-to-one target-entity="AdminBundle\Entity\Lesson" field="lesson" inversed-by="games">
+    <many-to-one target-entity="AdminBundle\Entity\Lesson" field="lesson" inversed-by="wordGames">
       <join-column referenced-column-name="id" name="lesson_id" />
     </many-to-one>
 

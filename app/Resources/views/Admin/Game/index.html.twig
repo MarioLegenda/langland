@@ -4,9 +4,12 @@
     <div class="fluid-container page language" id="react-game-create-app">
         <div class="full-width align-left">
             <h1 class="full-width page-title margin-top-30 align-left">Games</h1>
-            <a href="{{ path('admin_word_game_create_get', {'courseId' : course.id}) }}" class="main-action-link align-left margin-top-30">Create word game</a>
-            <a href="" class="main-action-link align-left margin-top-30">Create sentence game</a>
-            <a href="" class="main-action-link align-left margin-top-30">Create mixed game</a>
+
+            <div class="games-create-menu">
+                <a href="{{ path('admin_word_game_create_get', {'courseId' : course.id}) }}" class="main-action-link align-left margin-top-30">Create word game</a>
+                <a href="" class="main-action-link align-left margin-top-30">Create sentence game</a>
+                <a href="" class="main-action-link align-left margin-top-30">Create mixed game</a>
+            </div>
 
             <h1 class="full-width page-title margin-top-30 align-left">Game list</h1>
 
@@ -17,6 +20,17 @@
                     <option value="3">Mixed games</option>
                 </select>
             </div>
+
+            {% if games is not empty %}
+                <div class="full-width align-left margin-top-30 page-content">
+                    {% for game in games %}
+                        <div class="card full-width align-left margin-bottom-10">
+                            <a class="base-action-link align-left" href="#">{{ game.name }}</a>
+                            <a class="danger-action-link align-right" href="{{ path('admin_game_remove', {'courseId': course.id, 'gameId': game.id}) }}"><i class="fa fa-remove"></i></a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

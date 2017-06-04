@@ -33,9 +33,9 @@ class Lesson
      */
     private $course;
     /**
-     * @var ArrayCollection $games
+     * @var ArrayCollection $wordGames
      */
-    private $games;
+    private $wordGames;
     /**
      * @var ArrayCollection $lessonTexts
      */
@@ -44,7 +44,7 @@ class Lesson
     public function __construct()
     {
         $this->lessonTexts = new ArrayCollection();
-        $this->games = new ArrayCollection();
+        $this->wordGames = new ArrayCollection();
         $this->isInitialLesson = false;
     }
     /**
@@ -77,45 +77,6 @@ class Lesson
     public function getName()
     {
         return $this->name;
-    }
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Lesson
-     */
-    public function setCreatedAt(\DateTime $createdAt) : Lesson
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-    /**
-     * @return mixed
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-    /**
-     * @param \DateTime $updatedAt
-     * @return Lesson
-     */
-    public function setUpdatedAt(\DateTime $updatedAt) : Lesson
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
     /**
      * @return bool
@@ -160,19 +121,19 @@ class Lesson
      * @param WordGame $game
      * @return Lesson
      */
-    public function hasGame(WordGame $game) : Lesson
+    public function hasWordGame(WordGame $game) : Lesson
     {
-        return $this->games->contains($game);
+        return $this->wordGames->contains($game);
     }
     /**
      * @param WordGame $game
      * @return Lesson
      */
-    public function addGame(WordGame $game) : Lesson
+    public function addWordGame(WordGame $game) : Lesson
     {
-        if (!$this->hasGame($game)) {
+        if (!$this->hasWordGame($game)) {
             $game->setLesson($this);
-            $this->games->add($game);
+            $this->wordGames->add($game);
         }
 
         return $this;
@@ -181,10 +142,10 @@ class Lesson
      * @param WordGame $game
      * @return Lesson
      */
-    public function removeGame(WordGame $game) : Lesson
+    public function removeWordGame(WordGame $game) : Lesson
     {
-        if ($this->hasGame($game)) {
-            $this->games->removeElement($game);
+        if ($this->hasWordGame($game)) {
+            $this->wordGames->removeElement($game);
         }
 
         return $this;
@@ -194,14 +155,14 @@ class Lesson
      */
     public function getGames()
     {
-        return $this->games;
+        return $this->wordGames;
     }
     /**
      * @param mixed $games
      */
     public function setGames($games)
     {
-        $this->games = $games;
+        $this->wordGames = $games;
     }
     /**
      * @param LessonText $lessonText
@@ -242,6 +203,45 @@ class Lesson
     public function getLessonTexts()
     {
         return $this->lessonTexts;
+    }
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Lesson
+     */
+    public function setCreatedAt(\DateTime $createdAt) : Lesson
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     * @return Lesson
+     */
+    public function setUpdatedAt(\DateTime $updatedAt) : Lesson
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
     /**
      * @param ExecutionContextInterface $context

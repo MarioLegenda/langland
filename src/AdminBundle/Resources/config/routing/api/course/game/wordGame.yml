@@ -1,0 +1,29 @@
+admin_word_game_create_get:
+    path: /create-word-game
+    defaults: { _controller: AdminBundle:Game:createWordGame }
+    methods: [GET, POST]
+
+admin_find_word_game_words:
+    path: /find-game-words
+    defaults: { _controller: AdminBundle:Ajax/WordGame:findGameWords }
+    methods: [GET]
+
+admin_find_lessons_by_course:
+    path: /find-lessons-by-course
+    defaults: { _controller: AdminBundle:Ajax/WordGame:findLessonsByCourse }
+    methods: [GET]
+
+admin_find_word_games:
+    path: /find-games
+    defaults: { _controller: AdminBundle:Ajax/WordGame:findGames }
+    methods: [GET]
+
+admin_create_word_game:
+    path: /create-game
+    defaults: { _controller: AdminBundle:Ajax/WordGame:createGame }
+    methods: [POST]
+
+admin_load_word_game:
+    path: /load-game/{gameId}
+    defaults: { _controller: AdminBundle:Ajax/WordGame:loadGame }
+    methods: [GET]

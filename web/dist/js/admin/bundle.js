@@ -12658,7 +12658,7 @@ var Form = exports.Form = function (_React$Component) {
                 }
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
-                    window.location.reload(false);
+                    window.location.href = _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game';
                 }
 
                 if (data.status === 'error') {
@@ -13105,7 +13105,6 @@ var WordUnit = function (_React$Component3) {
         };
 
         _this4.onSelectedWord = _this4.onSelectedWord.bind(_this4);
-        _this4.onSelectedCorrect = _this4.onSelectedCorrect.bind(_this4);
         return _this4;
     }
 

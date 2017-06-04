@@ -148,6 +148,12 @@
 
     <class name="AdminBundle\Entity\Game\WordGame">
         <constraint name="Callback">validate</constraint>
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+            <option name="message">Word game with this name already exists</option>
+        </constraint>
+
         <property name="name">
             <constraint name="NotBlank">
                 <option name="message">Game name can not be blank</option>
@@ -167,7 +173,7 @@
 
         <property name="lesson">
             <constraint name="NotBlank">
-                <option name="message">There is no lesson assosiated to this game</option>
+                <option name="message">There is no lesson associated with this game</option>
             </constraint>
         </property>
     </class>

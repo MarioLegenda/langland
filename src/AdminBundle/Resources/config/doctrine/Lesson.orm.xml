@@ -16,7 +16,7 @@
       <join-column name="course_id" referenced-column-name="id" />
     </many-to-one>
 
-    <one-to-many target-entity="AdminBundle\Entity\Game\WordGame" mapped-by="lesson" field="games">
+    <one-to-many target-entity="AdminBundle\Entity\Game\WordGame" mapped-by="lesson" field="wordGames">
       <cascade>
         <cascade-persist/>
         <cascade-remove/>

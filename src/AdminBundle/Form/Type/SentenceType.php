@@ -22,8 +22,9 @@ class SentenceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->buildName($builder);
-        $builder->add($this->createText('sentence', $builder));
+        $this
+            ->addTextType('name', $builder)
+            ->addTextareaType('sentence', $builder);
 
         $builder
             ->add('sentenceTranslations', CollectionType::class, array(

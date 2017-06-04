@@ -208,7 +208,7 @@ class Sentence
     /**
      * @param ExecutionContext $context
      */
-    public function validateTranslations(ExecutionContext $context)
+    public function validate(ExecutionContext $context)
     {
         if (count($this->sentenceTranslations) < 3) {
             $context->buildViolation('You have to provide at least 3 non empty translations for a sentence and one of them must be marked as correct')

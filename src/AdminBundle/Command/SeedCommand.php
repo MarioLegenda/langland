@@ -70,7 +70,7 @@ class SeedCommand extends ContainerAwareCommand
             foreach ($courses as $course) {
                 $lessonFactory->create($course, 5);
 
-/*                for ($r = 0; $r < 10; $r++) {
+                for ($r = 0; $r < 10; $r++) {
                     $sentence = new Sentence();
                     $sentence->setName($faker->name);
                     $sentence->setSentence($faker->sentence(25));
@@ -86,7 +86,7 @@ class SeedCommand extends ContainerAwareCommand
                     }
 
                     $em->persist($sentence);
-                }*/
+                }
 
 /*                for ($t = 0; $t < 5; $t++) {
                     $wordPool = new SentenceWordPool();

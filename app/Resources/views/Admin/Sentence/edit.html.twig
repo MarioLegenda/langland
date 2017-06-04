@@ -7,7 +7,7 @@
         </div>
 
         <div class="full-width align-left margin-top-30 page-content form">
-            <form action="{{ path('sentence_edit', {'courseId' : course.id, 'sentenceId' : sentence.id}) }}" method="POST" class="form" name="addSentenceForm" enctype="multipart/form-data" novalidate>
+            <form action="{{ path('admin_sentence_edit', {'courseId' : course.id, 'sentenceId' : sentence.id}) }}" method="POST" class="form" name="addSentenceForm" enctype="multipart/form-data" novalidate>
                 <div class="margin-top-40 align-left full-width">
                     <div class="form-field field-break full-width align-left">
                         <div class="form-error full-width align-right">
@@ -17,17 +17,17 @@
 
                     {% include '::Admin/Form/_include/flashNotice.html.twig' %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name} only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name, 'description': 'add an internal name for this sentence. This internal name will NOT be shown on the frontend' } only %}
 
-                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.sentence} only %}
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.sentence, 'description': 'add a sentence name. This WILL be shown on the frontend' } only %}
 
                     <div class="full-width align-left form-field field-break">
                         {{ form_label(form.sentenceTranslations) }}
                         <div class="translations" data-prototype="{{ form_widget(form.sentenceTranslations.vars.prototype)|e('html_attr') }}">
                             {% for translation in form.sentenceTranslations %}
-                                <div class="full-width align-left collection-holder margin-bottom-20 translation">
-                                    {{ form_widget(translation.name) }}
-                                    {{ form_widget(translation.markedCorrect) }}
+                                <div class="translation">
+                                    {{ form_row(translation.name) }}
+                                    {{ form_row(translation.markedCorrect) }}
                                 </div>
                             {% endfor %}
                         </div>

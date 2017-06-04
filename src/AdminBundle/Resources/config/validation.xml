@@ -234,7 +234,17 @@
     </class>
 
     <class name="AdminBundle\Entity\Sentence">
-        <constraint name="Callback">validateTranslations</constraint>
+        <constraint name="Callback">validate</constraint>
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+            <option name="message">Sentence with this name already exists</option>
+
+            <option name="groups">
+                <value>Create</value>
+            </option>
+
+        </constraint>
 
         <property name="name">
             <constraint name="NotBlank">

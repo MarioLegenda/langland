@@ -5,27 +5,15 @@ namespace AdminBundle\Listener\Custom;
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Game\QuestionGame;
 use AdminBundle\Entity\Lesson;
+use AdminBundle\Entity\Sentence;
 use AdminBundle\Event\MultipleEntityEvent;
-use Doctrine\ORM\EntityManager;
 
-class PrePersistListener
+class PrePersistListener extends AbstractEntityManagerBaseListener
 {
-    /**
-     * @var EntityManager $em
-     */
-    private $em;
-    /**
-     * PrePersistListener constructor.
-     * @param EntityManager $em
-     */
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
-    }
     /**
      * @param MultipleEntityEvent $event
      */
-    public function onPersist(MultipleEntityEvent $event)
+    public function onPrePersist(MultipleEntityEvent $event)
     {
         if (empty($event->getEntities())) {
             return;
@@ -40,6 +28,24 @@ class PrePersistListener
 
         if (array_key_exists('questionGame', $event->getEntities())) {
             $this->handleQuestionGameJob($event->getEntities()['questionGame']);
+        }
+
+        if (array_key_exists('sentence', $event->getEntities())) {
+            $this->handleSentenceJob(
+                $event->getEntities()['sentence'],
+                $event->getEntities()['course']
+            );
+        }
+    }
+
+    private function handleSentenceJob(Sentence $sentence, Course $course)
+    {
+        $sentence->setCourse($course);
+
+        foreach ($sentence->getSentenceTranslations() as $translation) {
+            if (is_null($translation->getName())) {
+                $sentence->removeSentenceTranslation($translation);
+            }
         }
     }
 

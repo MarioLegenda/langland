@@ -1,13 +1,13 @@
-sentence_index:
+admin_sentence_index:
     path: /
     defaults: { _controller: AdminBundle:Sentence:index }
     methods: [GET]
 
-sentence_create:
+admin_sentence_create:
     path: /create
     defaults: { _controller: AdminBundle:Sentence:create }
     methods: [GET, POST]
 
-sentence_edit:
+admin_sentence_edit:
     path: /edit/{sentenceId}
     defaults: { _controller: AdminBundle:Sentence:edit }

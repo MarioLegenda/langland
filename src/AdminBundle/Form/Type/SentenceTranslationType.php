@@ -21,13 +21,13 @@ class SentenceTranslationType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, array(
-                'label' => false,
+                'label' => 'Translation: ',
                 'attr' => array(
                     'placeholder' => 'add translation ...',
                 ),
             ))
             ->add('markedCorrect', CheckboxType::class, array(
-                'label' => false,
+                'label' => 'Is correct translation?',
             ));
     }
     /**

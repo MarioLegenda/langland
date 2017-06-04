@@ -4,8 +4,8 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Sentence;
 use AdminBundle\Form\Type\SentenceType;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use AdminBundle\Event\PrePersistEvent;
 
 class SentenceController extends RepositoryController
 {
@@ -19,6 +19,8 @@ class SentenceController extends RepositoryController
 
         $sentences = $this->getRepository('AdminBundle:Sentence')->findBy(array(
             'course' => $course,
+        ), array(
+            'id' => 'DESC',
         ));
 
         return $this->render('::Admin/Sentence/index.html.twig', array(
@@ -36,7 +38,9 @@ class SentenceController extends RepositoryController
         }
 
         $sentence = new Sentence();
-        $form = $this->createForm(SentenceType::class, $sentence);
+        $form = $this->createForm(SentenceType::class, $sentence, array(
+            'validation_groups' => array('Default', 'Create')
+        ));
 
         $form->handleRequest($request);
 
@@ -44,23 +48,10 @@ class SentenceController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->removeEmptyTranslations($sentence);
-
-                $existingSentence = $this->getRepository('AdminBundle:Sentence')->findBy(array(
-                    'name' => $sentence->getName(),
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'sentence' => $sentence,
+                    'course' => $course,
                 ));
-
-                if (!empty($existingSentence)) {
-                    $form->addError(new FormError(
-                        sprintf('Sentence with internal name \'%s\' already exists', $sentence->getName())
-                    ));
-
-                    return $this->render('AdminBundle:Sentence:create.html.twig', array(
-                        'course' => $course,
-                    ));
-                }
-
-                $sentence->setCourse($course);
 
                 $em->persist($sentence);
                 $em->flush();
@@ -70,7 +61,7 @@ class SentenceController extends RepositoryController
                     sprintf('Course created successfully')
                 );
 
-                return $this->redirectToRoute('sentence_create', array(
+                return $this->redirectToRoute('admin_sentence_create', array(
                     'courseId' => $course->getId(),
                 ));
             }
@@ -99,7 +90,10 @@ class SentenceController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->removeEmptyTranslations($sentence);
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'sentence' => $sentence,
+                    'course' => $course,
+                ));
 
                 $em->persist($sentence);
                 $em->flush();
@@ -109,7 +103,7 @@ class SentenceController extends RepositoryController
                     sprintf('Course edited successfully')
                 );
 
-                return $this->redirectToRoute('sentence_edit', array(
+                return $this->redirectToRoute('admin_sentence_edit', array(
                     'courseId' => $course->getId(),
                     'sentenceId' => $sentence->getId(),
                 ));
@@ -121,14 +115,5 @@ class SentenceController extends RepositoryController
             'sentence' => $sentence,
             'form' => $form->createView(),
         ));
-    }
-
-    private function removeEmptyTranslations(Sentence $sentence)
-    {
-        foreach ($sentence->getSentenceTranslations() as $translation) {
-            if (is_null($translation->getName())) {
-                $sentence->removeSentenceTranslation($translation);
-            }
-        }
     }
 }

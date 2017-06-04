@@ -4,7 +4,7 @@
     <div class="fluid-container page language">
         <div class="full-width align-left">
             <h1 class="full-width page-title margin-top-30 align-left">Sentences</h1>
-            <a href="{{ path('sentence_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
+            <a href="{{ path('admin_sentence_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
         </div>
 
         {% if sentences is empty %}
@@ -16,7 +16,7 @@
                 {% for sentence in sentences %}
                     <div class="card full-width align-left margin-bottom-10">
                         <a class="base-action-link align-left" href="#">{{ sentence.name }}</a>
-                        <a class="sub-base-action-link align-right" href="{{ path('sentence_edit', {'courseId': sentence.course.id, 'sentenceId': sentence.id}) }}"><i class="fa fa-edit"></i></a>
+                        <a class="sub-base-action-link align-right" href="{{ path('admin_sentence_edit', {'courseId': sentence.course.id, 'sentenceId': sentence.id}) }}"><i class="fa fa-edit"></i></a>
                     </div>
                 {% endfor %}
             </div>

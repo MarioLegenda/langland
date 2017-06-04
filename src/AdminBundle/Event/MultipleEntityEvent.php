@@ -33,4 +33,20 @@ class MultipleEntityEvent extends Event
     {
         return $this->entities;
     }
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasEntity(string $name) : bool
+    {
+        return array_key_exists($name, $this->getEntities());
+    }
+    /**
+     * @param string $name
+     * @return object
+     */
+    public function getEntity(string $name)
+    {
+        return $this->getEntities()[$name];
+    }
 }

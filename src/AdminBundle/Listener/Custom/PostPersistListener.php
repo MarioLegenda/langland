@@ -34,9 +34,4 @@ class PostPersistListener extends AbstractEntityManagerBaseListener
             }
         }
     }
-
-    private function handleSentenceJob(Sentence $sentence)
-    {
-
-    }
 }

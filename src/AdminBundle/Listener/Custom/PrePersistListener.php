@@ -21,30 +21,30 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
             return;
         }
 
-        if (array_key_exists('languageInfo', $event->getEntities())) {
-            $this->handleLanguageInfoJob($event->getEntities()['languageInfo']);
+        if ($event->hasEntity('languageInfo')) {
+            $this->handleLanguageInfoJob($event->getEntity('languageInfo'));
         }
 
-        if (array_key_exists('lesson', $event->getEntities())) {
+        if ($event->hasEntity('lesson')) {
             $this->handleLessonJob(
-                $event->getEntities()['lesson'],
-                $event->getEntities()['course']
+                $event->getEntity('lesson'),
+                $event->getEntity('course')
             );
         }
 
-        if (array_key_exists('questionGame', $event->getEntities())) {
-            $this->handleQuestionGameJob($event->getEntities()['questionGame']);
+        if ($event->hasEntity('questionGame')) {
+            $this->handleQuestionGameJob($event->getEntity('questionGame'));
         }
 
-        if (array_key_exists('sentence', $event->getEntities())) {
+        if ($event->hasEntity('sentence')) {
             $this->handleSentenceJob(
-                $event->getEntities()['sentence'],
-                $event->getEntities()['course']
+                $event->getEntity('sentence'),
+                $event->getEntity('course')
             );
         }
 
-        if (array_key_exists('word', $event->getEntities())) {
-            $this->handleWordJob($event->getEntities()['word']);
+        if ($event->hasEntity('word')) {
+            $this->handleWordJob($event->getEntity('word'));
         }
     }
 

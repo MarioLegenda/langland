@@ -18,4 +18,50 @@
     width: 1280px;
     max-width: 1280px;
   }
+
+  .start-link {
+    width: 170px;
+    display: block;
+    overflow:hidden;
+
+    margin: 0 auto;
+
+    padding: 15px;
+
+    a {
+      display:block;
+      width: 100%;
+      text-align: center;
+
+      padding: 15px;
+
+      border: 1px solid $appMainColor;
+      color: $appMainColor;
+      border-radius: 20px;
+
+      &:hover {
+        cursor: pointer;
+        color: white;
+        background-color: $appMainColor;
+      }
+    }
+
+    .item-started {
+      color: $appMainColor;
+      border: 1px solid $appMainColor;
+
+      &:hover {
+        background-color: $appMainColor;
+        color:white;
+      }
+    }
+
+    span {
+      display:block;
+      text-align: center;
+      font-size: 0.9em;
+      color: $appMainColor;
+      font-weight: bold;
+    }
+  }
 }

@@ -1,9 +1,7 @@
-.main-app-dashboard {
-  width: 80%;
+.lesson-list {
 
-  overflow: hidden;
-
-  margin: 0 auto;
+  width: 660px;
+  float:left;
 
   .lesson {
     width: 120px;
@@ -43,6 +41,30 @@
 
     &:hover {
       cursor: auto;
+    }
+  }
+
+  .lesson-start-item {
+    background-color: white;
+    color: $text-color-gray;
+
+    border-radius: 10px;
+
+    padding: 10px;
+
+    h1 {
+      border-bottom: 1px solid $highlight-gray;
+      color: $appMainColor;
+
+      font-size: 1.3em;
+      font-weight: bold;
+
+      padding: 10px 10px 10px 0;
+    }
+
+    p {
+      font-size: 1.2em;
+      line-height: 1.4em;
     }
   }
 }

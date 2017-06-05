@@ -12228,7 +12228,7 @@ var LessonList = function (_React$Component) {
                 return false;
             }
 
-            // handle chosen lesson here
+            this.props.showLesson(itemIndex);
         }
     }, {
         key: 'render',
@@ -12291,8 +12291,11 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
 
         _this2.state = {
             items: null,
-            itemsFetched: false
+            itemsFetched: false,
+            currentItem: null
         };
+
+        _this2.showLesson = _this2.showLesson.bind(_this2);
         return _this2;
     }
 
@@ -12303,11 +12306,19 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
                 url: _env.envr + 'langland/data/lesson-list/' + this.props.learningUserCourseId,
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
+                console.log(data);
                 this.setState({
                     items: data.data,
                     itemsFetched: true
                 });
             }, this));
+        }
+    }, {
+        key: 'showLesson',
+        value: function showLesson(index) {
+            this.setState({
+                currentItem: this.state.items[index]
+            });
         }
     }, {
         key: 'componentDidMount',
@@ -12319,6 +12330,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
         value: function render() {
             var items = this.state.items;
             var itemsFetched = this.state.itemsFetched;
+            var currentItem = this.state.currentItem;
 
             if (items === null) {
                 return null;
@@ -12330,8 +12342,31 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
 
             return _react2.default.createElement(
                 'div',
-                null,
-                _react2.default.createElement(LessonList, { items: items })
+                { className: 'lesson-list' },
+                _react2.default.createElement(LessonList, { items: items, showLesson: this.showLesson }),
+                currentItem !== null && _react2.default.createElement(
+                    'div',
+                    { className: 'lesson-start-item full-width align-left margin-top-30' },
+                    _react2.default.createElement(
+                        'h1',
+                        { className: 'full-width align-left margin-bottom-30' },
+                        currentItem.lesson.name
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'margin-bottom-30' },
+                        currentItem.lesson.description
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'start-link margin-bottom-30' },
+                        _react2.default.createElement(
+                            'a',
+                            { href: '#' },
+                            'Start'
+                        )
+                    )
+                )
             );
         }
     }]);

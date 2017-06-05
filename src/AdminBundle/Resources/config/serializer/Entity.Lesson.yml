@@ -7,6 +7,9 @@ AdminBundle\Entity\Lesson:
         name:
             expose: true
             groups: [game, lesson_list, word_games_list]
+        description:
+            expose: true
+            groups: [lesson_list]
         games:
             expose: true
             type: AdminBundle\Entity\Game\WordGame

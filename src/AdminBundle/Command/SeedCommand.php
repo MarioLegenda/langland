@@ -7,7 +7,10 @@ use AdminBundle\Command\Helper\CourseFactory;
 use AdminBundle\Command\Helper\LanguageFactory;
 use AdminBundle\Command\Helper\LanguageInfoFactory;
 use AdminBundle\Command\Helper\LessonFactory;
+use AdminBundle\Command\Helper\QuestionGameFactory;
+use AdminBundle\Command\Helper\SentenceFactory;
 use AdminBundle\Command\Helper\WordFactory;
+use AdminBundle\Command\Helper\WordGameFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\LanguageInfo;
@@ -51,6 +54,9 @@ class SeedCommand extends ContainerAwareCommand
         $languageInfoFactory = new LanguageInfoFactory($em);
         $courseFactory = new CourseFactory($em);
         $lessonFactory = new LessonFactory($em);
+        $sentenceFactory = new SentenceFactory($em);
+        $wordGameFactory = new WordGameFactory($em);
+        $questionGameFactory = new QuestionGameFactory($em);
 
         $categoryFactory->create($categories, true);
         $languageObjects = $languageFactory->create($languages, true);
@@ -68,25 +74,10 @@ class SeedCommand extends ContainerAwareCommand
             $courses = $courseFactory->create($languageObject, 6);
 
             foreach ($courses as $course) {
-                $lessonFactory->create($course, 5);
-
-                for ($r = 0; $r < 10; $r++) {
-                    $sentence = new Sentence();
-                    $sentence->setName($faker->name);
-                    $sentence->setSentence($faker->sentence(25));
-                    $sentence->setCourse($course);
-
-                    for ($o = 0; $o < 10; $o++) {
-                        $sentenceTranslation = new SentenceTranslation();
-                        $sentenceTranslation->setSentence($faker->sentence(25));
-                        $sentenceTranslation->setMarkedCorrect(0);
-                        $sentenceTranslation->setName($faker->name);
-
-                        $sentence->addSentenceTranslation($sentenceTranslation);
-                    }
-
-                    $em->persist($sentence);
-                }
+                $lessons = $lessonFactory->create($course, 5);
+                $sentenceFactory->create($course);
+                $wordGameFactory->create($lessons, $wordsArray);
+                $questionGameFactory->create($lessons);
 
 /*                for ($t = 0; $t < 5; $t++) {
                     $wordPool = new SentenceWordPool();

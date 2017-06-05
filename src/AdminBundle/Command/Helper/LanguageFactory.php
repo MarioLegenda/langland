@@ -46,6 +46,8 @@ class LanguageFactory
             $this->languageObjects = $languageObjects;
         }
 
+        $this->em->flush();
+
         return $languageObjects;
     }
 }

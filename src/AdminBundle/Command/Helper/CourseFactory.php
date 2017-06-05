@@ -46,6 +46,8 @@ class CourseFactory
             $courseArray[] = $course;
         }
 
+        $this->em->flush();
+
         return $courseArray;
     }
 }

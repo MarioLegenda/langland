@@ -11,6 +11,10 @@ class LessonFactory
 {
     use FakerTrait;
     /**
+     * @var array $lessons
+     */
+    private $lessons;
+    /**
      * @var EntityManager $em
      */
     private $em;
@@ -48,6 +52,12 @@ class LessonFactory
             }
 
             $this->em->persist($lesson);
+
+            $this->lessons[] = $lesson;
         }
+
+        $this->em->flush();
+
+        return $this->lessons;
     }
 }

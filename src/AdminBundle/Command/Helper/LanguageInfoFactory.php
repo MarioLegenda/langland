@@ -42,6 +42,8 @@ class LanguageInfoFactory
             $languageInfo->addLanguageInfoText($text);
         }
 
+        $this->em->flush();
+
         $this->em->persist($languageInfo);
     }
 }

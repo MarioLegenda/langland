@@ -12842,7 +12842,7 @@ var Form = exports.Form = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { className: 'page-content form margin-bottom-30' },
+                { className: 'full-width align-left margin-top-30 page-content form' },
                 _react2.default.createElement(
                     'div',
                     { className: 'margin-top-40 align-left full-width' },

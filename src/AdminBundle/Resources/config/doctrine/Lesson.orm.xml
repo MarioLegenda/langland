@@ -8,6 +8,7 @@
     </id>
 
     <field name="name" type="string" column="name" length="255"/>
+    <field name="description" type="text" column="description"/>
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
     <field name="isInitialLesson" type="boolean" column="is_initial_lesson"/>

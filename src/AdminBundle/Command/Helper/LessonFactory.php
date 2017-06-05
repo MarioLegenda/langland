@@ -29,6 +29,7 @@ class LessonFactory
     /**
      * @param Course $course
      * @param int $numberOfEntries
+     * @return array
      */
     public function create(Course $course, int $numberOfEntries)
     {
@@ -40,6 +41,7 @@ class LessonFactory
             }
 
             $lesson->setName('Lesson '.($i + 1));
+            $lesson->setDescription($this->getFaker()->sentence(100));
             $lesson->setCourse($course);
 
             for ($v = 0; $v < 5; $v++) {

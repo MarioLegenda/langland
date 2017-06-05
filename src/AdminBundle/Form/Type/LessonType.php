@@ -4,6 +4,7 @@ namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Form\Type\Generic\TraitType\CheckboxTypeTrait;
+use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LessonType extends AbstractType
 {
-    use TextTypeTrait, CheckboxTypeTrait;
+    use TextTypeTrait, CheckboxTypeTrait, TextareaTypeTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -21,6 +22,7 @@ class LessonType extends AbstractType
     {
         $this
             ->addTextType('name', $builder)
+            ->addTextareaType('description', $builder)
             ->addCheckboxType('isInitialLesson', $builder);
 
         $builder

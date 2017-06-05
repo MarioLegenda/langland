@@ -18,6 +18,10 @@ class Lesson
      */
     private $name;
     /**
+     * @var string $description
+     */
+    private $description;
+    /**
      * @var bool $isInitialLesson
      */
     private $isInitialLesson;
@@ -84,6 +88,23 @@ class Lesson
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+    /**
+     * @param string $description
+     * @return Lesson
+     */
+    public function setDescription($description) : Lesson
+    {
+        $this->description = $description;
+
+        return $this;
     }
     /**
      * @return bool

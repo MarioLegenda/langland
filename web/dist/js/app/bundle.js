@@ -11662,7 +11662,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _methodNavigation = __webpack_require__(106);
 
-var _lessonList = __webpack_require__(105);
+var _lessonDashboard = __webpack_require__(232);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11685,7 +11685,8 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
         _this.state = {
             page: {
                 showLessons: false,
-                showGames: false
+                showGames: false,
+                showVocabulary: false
             }
         };
 
@@ -11698,10 +11699,12 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
         value: function _changeDashboard(type) {
             var newPage = {};
             for (var page in this.state.page) {
-                if (type === page) {
-                    newPage[type] = true;
-                } else {
-                    newPage[page] = false;
+                if (this.state.page.hasOwnProperty(page)) {
+                    if (type === page) {
+                        newPage[type] = true;
+                    } else {
+                        newPage[page] = false;
+                    }
                 }
             }
 
@@ -11726,7 +11729,7 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'main-app-dashboard' },
-                    this.state.page.showLessons === true && _react2.default.createElement(_lessonList.LessonListContainer, { learningUserCourseId: this.routeParams.learningUserCourseId }),
+                    this.state.page.showLessons === true && _react2.default.createElement(_lessonDashboard.LessonDashboard, { learningUserCourseId: this.routeParams.learningUserCourseId }),
                     this.state.page.showGames === true && _react2.default.createElement('div', null)
                 )
             );
@@ -12347,8 +12350,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
         _this3.state = {
             items: null,
             itemsFetched: false,
-            currentItem: null,
-            startLesson: false
+            currentItem: null
         };
 
         _this3.showLessonStart = _this3.showLessonStart.bind(_this3);
@@ -12382,9 +12384,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
     }, {
         key: 'startLesson',
         value: function startLesson() {
-            this.setState({
-                startLesson: true
-            });
+            this.props.changeDashboard('lessonDashboard');
         }
     }, {
         key: 'componentDidMount',
@@ -12410,12 +12410,8 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             return _react2.default.createElement(
                 'div',
                 { className: 'animated fadeInDown lesson-dashboard' },
-                startLesson === false && _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(LessonList, { items: items, showLesson: this.showLessonStart }),
-                    _react2.default.createElement(LessonStart, { item: currentItem, startLesson: this.startLesson })
-                )
+                _react2.default.createElement(LessonList, { items: items, showLesson: this.showLessonStart }),
+                _react2.default.createElement(LessonStart, { item: currentItem, startLesson: this.startLesson })
             );
         }
     }]);
@@ -12485,7 +12481,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { 'data-change-id': 'showLessons', onClick: this.handleMenuChange, className: 'nav-item lesson-item' },
-                    _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-3x' }),
+                    _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x' }),
                     _react2.default.createElement(
                         'span',
                         null,
@@ -12495,7 +12491,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { 'data-change-id': 'showGames', onClick: this.handleMenuChange, className: 'nav-item game-item' },
-                    _react2.default.createElement('i', { className: 'fa fa-gamepad fa-3x' }),
+                    _react2.default.createElement('i', { className: 'fa fa-gamepad fa-2x' }),
                     _react2.default.createElement(
                         'span',
                         null,
@@ -12504,8 +12500,18 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'nav-item trophy-item' },
-                    _react2.default.createElement('i', { className: 'fa fa-trophy fa-3x' }),
+                    { 'data-change-id': 'showVocabulary', onClick: this.handleMenuChange, className: 'nav-item vocabulary-item' },
+                    _react2.default.createElement('i', { className: 'fa fa-header fa-2x' }),
+                    _react2.default.createElement(
+                        'span',
+                        null,
+                        'Vocabulary'
+                    )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'nav-item trophy-item', onClick: this.handleMenuChange },
+                    _react2.default.createElement('i', { className: 'fa fa-trophy fa-2x' }),
                     _react2.default.createElement(
                         'span',
                         null,
@@ -26805,6 +26811,92 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LessonDashboard = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lessonList = __webpack_require__(105);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LessonDashboard = exports.LessonDashboard = function (_React$Component) {
+    _inherits(LessonDashboard, _React$Component);
+
+    function LessonDashboard(props) {
+        _classCallCheck(this, LessonDashboard);
+
+        var _this = _possibleConstructorReturn(this, (LessonDashboard.__proto__ || Object.getPrototypeOf(LessonDashboard)).call(this, props));
+
+        _this.state = {
+            page: {
+                listDashboard: true,
+                lessonDashboard: false
+            }
+        };
+
+        _this.changeDashboard = _this.changeDashboard.bind(_this);
+        return _this;
+    }
+
+    _createClass(LessonDashboard, [{
+        key: '_changeDashboard',
+        value: function _changeDashboard(type) {
+            var newPage = {};
+            for (var page in this.state.page) {
+                if (type === page) {
+                    newPage[type] = true;
+                } else {
+                    newPage[page] = false;
+                }
+            }
+
+            return newPage;
+        }
+    }, {
+        key: 'changeDashboard',
+        value: function changeDashboard(type) {
+            this.setState({
+                page: this._changeDashboard(type)
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                this.state.page.listDashboard === true && _react2.default.createElement(_lessonList.LessonListContainer, {
+                    learningUserCourseId: this.props.learningUserCourseId,
+                    changeDashboard: this.changeDashboard
+                }),
+                this.state.page.lessonDashboard === true && _react2.default.createElement('div', null)
+            );
+        }
+    }]);
+
+    return LessonDashboard;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

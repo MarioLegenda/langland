@@ -12281,22 +12281,79 @@ var LessonList = function (_React$Component) {
     return LessonList;
 }(_react2.default.Component);
 
-var LessonListContainer = exports.LessonListContainer = function (_React$Component2) {
-    _inherits(LessonListContainer, _React$Component2);
+var LessonStart = function (_React$Component2) {
+    _inherits(LessonStart, _React$Component2);
+
+    function LessonStart(props) {
+        _classCallCheck(this, LessonStart);
+
+        var _this2 = _possibleConstructorReturn(this, (LessonStart.__proto__ || Object.getPrototypeOf(LessonStart)).call(this, props));
+
+        _this2.startLesson = _this2.startLesson.bind(_this2);
+        return _this2;
+    }
+
+    _createClass(LessonStart, [{
+        key: 'startLesson',
+        value: function startLesson() {
+            this.props.startLesson();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var item = this.props.item;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                item !== null && _react2.default.createElement(
+                    'div',
+                    { className: 'animated fadeInDown lesson-start-item full-width align-left margin-top-30' },
+                    _react2.default.createElement(
+                        'h1',
+                        { className: 'full-width align-left margin-bottom-30' },
+                        item.lesson.name
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        { className: 'margin-bottom-30' },
+                        item.lesson.description
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'start-link margin-bottom-30' },
+                        _react2.default.createElement(
+                            'a',
+                            { onClick: this.startLesson },
+                            'Start'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return LessonStart;
+}(_react2.default.Component);
+
+var LessonListContainer = exports.LessonListContainer = function (_React$Component3) {
+    _inherits(LessonListContainer, _React$Component3);
 
     function LessonListContainer(props) {
         _classCallCheck(this, LessonListContainer);
 
-        var _this2 = _possibleConstructorReturn(this, (LessonListContainer.__proto__ || Object.getPrototypeOf(LessonListContainer)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (LessonListContainer.__proto__ || Object.getPrototypeOf(LessonListContainer)).call(this, props));
 
-        _this2.state = {
+        _this3.state = {
             items: null,
             itemsFetched: false,
-            currentItem: null
+            currentItem: null,
+            startLesson: false
         };
 
-        _this2.showLesson = _this2.showLesson.bind(_this2);
-        return _this2;
+        _this3.showLessonStart = _this3.showLessonStart.bind(_this3);
+        _this3.startLesson = _this3.startLesson.bind(_this3);
+        return _this3;
     }
 
     _createClass(LessonListContainer, [{
@@ -12314,10 +12371,17 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             }, this));
         }
     }, {
-        key: 'showLesson',
-        value: function showLesson(index) {
+        key: 'showLessonStart',
+        value: function showLessonStart(index) {
             this.setState({
                 currentItem: this.state.items[index]
+            });
+        }
+    }, {
+        key: 'startLesson',
+        value: function startLesson() {
+            this.setState({
+                startLesson: true
             });
         }
     }, {
@@ -12331,6 +12395,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             var items = this.state.items;
             var itemsFetched = this.state.itemsFetched;
             var currentItem = this.state.currentItem;
+            var startLesson = this.state.startLesson;
 
             if (items === null) {
                 return null;
@@ -12342,30 +12407,12 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
 
             return _react2.default.createElement(
                 'div',
-                { className: 'lesson-list' },
-                _react2.default.createElement(LessonList, { items: items, showLesson: this.showLesson }),
-                currentItem !== null && _react2.default.createElement(
+                { className: 'animated fadeInDown lesson-list' },
+                startLesson === false && _react2.default.createElement(
                     'div',
-                    { className: 'lesson-start-item full-width align-left margin-top-30' },
-                    _react2.default.createElement(
-                        'h1',
-                        { className: 'full-width align-left margin-bottom-30' },
-                        currentItem.lesson.name
-                    ),
-                    _react2.default.createElement(
-                        'p',
-                        { className: 'margin-bottom-30' },
-                        currentItem.lesson.description
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'start-link margin-bottom-30' },
-                        _react2.default.createElement(
-                            'a',
-                            { href: '#' },
-                            'Start'
-                        )
-                    )
+                    null,
+                    _react2.default.createElement(LessonList, { items: items, showLesson: this.showLessonStart }),
+                    _react2.default.createElement(LessonStart, { item: currentItem, startLesson: this.startLesson })
                 )
             );
         }

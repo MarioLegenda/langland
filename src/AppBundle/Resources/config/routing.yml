@@ -13,7 +13,7 @@ app_course_actual_app:
     defaults: { _controller: AppBundle:Api/Course:initApp }
     methods: [GET]
 
-app_course:
+app_api:
   resource: "@AppBundle/Resources/config/routing/langland.yml"
-  prefix: /langland
+  prefix: /langland/api
   host: '%host%'

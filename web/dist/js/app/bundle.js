@@ -3707,22 +3707,64 @@ module.exports = SyntheticUIEvent;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.routes = undefined;
+exports.RouteCreator = exports.routes = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _env = __webpack_require__(17);
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var routes = exports.routes = {
-    app_course_language_info_exists: _env.envr + 'langland/courses/is-info-looked',
-    app_course_language_infos: _env.envr + 'langland/courses/find-language-info',
-    app_course_mark_info_looked: _env.envr + 'langland/courses/mark-info-looked',
-    app_language_course_list: _env.envr + 'langland/courses/find-language-course-list',
+    app_course_language_info_exists: _env.envr + 'langland/api/courses/is-info-looked',
+    app_course_language_infos: _env.envr + 'langland/api/courses/find-language-info',
+    app_course_mark_info_looked: _env.envr + 'langland/api/courses/mark-info-looked',
+    app_language_course_list: _env.envr + 'langland/api/courses/find-language-course-list',
 
-    app_find_learnable_languages: _env.envr + 'langland/language/find-learnable-languages',
-    app_find_learning_languages: _env.envr + 'langland/language/find-learning-languages',
+    app_find_learnable_languages: _env.envr + 'langland/api/language/find-learnable-languages',
+    app_find_learning_languages: _env.envr + 'langland/api/language/find-learning-languages',
 
-    app_logged_in_user: _env.envr + 'langland/user/find-logged-in-user',
-    app_create_learning_user: _env.envr + 'langland/user/create-learning-user'
+    app_logged_in_user: _env.envr + 'langland/api/user/find-logged-in-user',
+    app_create_learning_user: _env.envr + 'langland/api/user/create-learning-user',
+
+    app_logout: _env.envr + 'langland/logout',
+    app_dashboard: _env.envr + 'langland'
 };
+
+var AppRouter = function () {
+    function AppRouter() {
+        _classCallCheck(this, AppRouter);
+
+        this.routes = {
+            app_course_dashboard: _env.envr + 'langland/language-course/:0/:1',
+            app_course_actual_app: _env.envr + 'langland/language-course/:0/:1/:2',
+            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0'
+        };
+    }
+
+    _createClass(AppRouter, [{
+        key: 'create',
+        value: function create(name, parameters) {
+            if (this.routes.hasOwnProperty(name)) {
+                var foundRoute = this.routes[name];
+
+                for (var i = 0; i < parameters.length; i++) {
+                    var r = new RegExp(':' + i);
+
+                    foundRoute = foundRoute.replace(r, parameters[i]);
+                }
+
+                return foundRoute;
+            }
+
+            throw new Error('AppRouter: Route ' + name + ' not found');
+        }
+    }]);
+
+    return AppRouter;
+}();
+
+var RouteCreator = exports.RouteCreator = new AppRouter();
 
 /***/ }),
 /* 32 */
@@ -11256,7 +11298,7 @@ var UserProfileBar = function (_React$Component) {
                     ),
                     _react2.default.createElement(
                         'a',
-                        { href: _env.envr + "langland/logout", className: 'logout margin-top-20 relative' },
+                        { href: _routes.routes.app_logout, className: 'logout margin-top-20 relative' },
                         _react2.default.createElement('i', { className: 'fa fa-minus-square' }),
                         'Logout'
                     )
@@ -11332,10 +11374,11 @@ var CourseBar = function (_React$Component3) {
             var that = this;
             var items = this.props.items.map(function (item) {
                 var currentLangClass = item.id === that.props.currentItem.id ? 'current-course' : '';
+                var languageUrl = _routes.RouteCreator.create('app_course_dashboard', [item.name, item.id]);
 
                 return _react2.default.createElement(
                     'a',
-                    { href: _env.envr + "langland/language-course/" + item.name + '/' + item.id, key: item.id, className: "language-link margin-bottom-20 " + currentLangClass },
+                    { href: languageUrl, key: item.id, className: "language-link margin-bottom-20 " + currentLangClass },
                     item.name.toLowerCase()
                 );
             });
@@ -11359,7 +11402,7 @@ var CourseBar = function (_React$Component3) {
                     items,
                     _react2.default.createElement(
                         'a',
-                        { href: _env.envr + "langland", className: 'new-language margin-top-20' },
+                        { href: _routes.routes.app_dashboard, className: 'new-language margin-top-20' },
                         _react2.default.createElement('i', { className: 'fa fa-plus' }),
                         'Learn new language'
                     )
@@ -11438,7 +11481,7 @@ function Header() {
                 { className: 'align-left main-title' },
                 _react2.default.createElement(
                     'a',
-                    { href: _env.envr + "langland" },
+                    { href: _routes.routes.app_dashboard },
                     'Langland'
                 )
             )
@@ -11581,7 +11624,7 @@ var LanguageList = function (_React$Component) {
                                 className: learningClass,
                                 onClick: that.createLearningUser,
                                 'data-item-id': item.id,
-                                href: _env.envr + "langland/language-course/" + item.name + '/' + item.id },
+                                href: _routes.RouteCreator.create('app_course_dashboard', [item.name, item.id]) },
                             title
                         )
                     )
@@ -11660,6 +11703,10 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(63);
+
+var _env = __webpack_require__(17);
+
 var _methodNavigation = __webpack_require__(106);
 
 var _lessonDashboard = __webpack_require__(232);
@@ -11701,6 +11748,7 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
             for (var page in this.state.page) {
                 if (this.state.page.hasOwnProperty(page)) {
                     if (type === page) {
+                        if (this.state.page[page] === true) {}
                         newPage[type] = true;
                     } else {
                         newPage[page] = false;
@@ -11720,17 +11768,26 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var _this2 = this;
+
+            var lessonDashboard = function lessonDashboard() {
+                return _react2.default.createElement(_lessonDashboard.LessonDashboard, { learningUserCourseId: _this2.routeParams.learningUserCourseId });
+            };
+
             return _react2.default.createElement(
-                'div',
-                { className: 'animated fadeInDown big-component' },
-                _react2.default.createElement(_methodNavigation.MethodNavigation, {
-                    changeDashboard: this.changeDashboard
-                }),
+                _reactRouterDom.BrowserRouter,
+                null,
                 _react2.default.createElement(
                     'div',
-                    { className: 'main-app-dashboard' },
-                    this.state.page.showLessons === true && _react2.default.createElement(_lessonDashboard.LessonDashboard, { learningUserCourseId: this.routeParams.learningUserCourseId }),
-                    this.state.page.showGames === true && _react2.default.createElement('div', null)
+                    { className: 'animated fadeInDown big-component' },
+                    _react2.default.createElement(_methodNavigation.MethodNavigation, {
+                        changeDashboard: this.changeDashboard
+                    }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'main-app-dashboard' },
+                        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/lessons", render: lessonDashboard })
+                    )
                 )
             );
         }
@@ -11819,8 +11876,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _routes = __webpack_require__(31);
 
-var _env = __webpack_require__(17);
-
 var _reactRouterDom = __webpack_require__(63);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -11844,9 +11899,6 @@ var CourseItem = function (_React$Component) {
     }
 
     _createClass(CourseItem, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {}
-    }, {
         key: 'startCourse',
         value: function startCourse() {}
     }, {
@@ -11858,7 +11910,11 @@ var CourseItem = function (_React$Component) {
                 var inactiveItemClass = '',
                     inactiveStartLinkClass = '';
 
-                var courseUrl = _env.envr + 'langland/language-course/' + that.props.languageData.languageName + '/' + item.course.name + '/' + item.id;
+                var languageName = that.props.languageData.languageName,
+                    courseName = item.course.name,
+                    courseHolderId = item.id;
+
+                var courseUrl = _routes.RouteCreator.create('app_course_actual_app', [languageName, courseName, courseHolderId]);
 
                 if (item.hasPassed === false && item.course.initialCourse === false) {
                     inactiveItemClass = 'inactive';
@@ -11988,6 +12044,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _routes = __webpack_require__(31);
 
 var _env = __webpack_require__(17);
 
@@ -12141,7 +12199,7 @@ var LanguageInfoContainer = exports.LanguageInfoContainer = function (_React$Com
         key: 'componentDidMount',
         value: function componentDidMount() {
             jQuery.ajax({
-                url: _env.envr + 'langland/courses/find-language-info',
+                url: _routes.routes.app_course_language_infos,
                 method: 'POST',
                 data: {
                     languageId: this.props.languageData.id
@@ -12197,7 +12255,7 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(17);
+var _routes = __webpack_require__(31);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12362,7 +12420,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
         key: '_fetchLessons',
         value: function _fetchLessons() {
             jQuery.ajax({
-                url: _env.envr + 'langland/data/lesson-list/' + this.props.learningUserCourseId,
+                url: _routes.RouteCreator.create('app_lesson_list', [this.props.learningUserCourseId]),
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
                 console.log(data);
@@ -12437,6 +12495,10 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(63);
+
+var _env = __webpack_require__(17);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12481,11 +12543,15 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { 'data-change-id': 'showLessons', onClick: this.handleMenuChange, className: 'nav-item lesson-item' },
-                    _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x' }),
                     _react2.default.createElement(
-                        'span',
-                        null,
-                        'Lessons'
+                        _reactRouterDom.Link,
+                        { to: _env.envr + "langland/language-course/lessons" },
+                        _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x' }),
+                        _react2.default.createElement(
+                            'span',
+                            null,
+                            'Lessons'
+                        )
                     )
                 ),
                 _react2.default.createElement(

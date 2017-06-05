@@ -11429,7 +11429,7 @@ var CourseBarContainer = function (_React$Component4) {
 function Header() {
     return _react2.default.createElement(
         'header',
-        { className: 'animated fadeInDown full-width app-header', id: 'react-header' },
+        { className: 'full-width app-header', id: 'react-header' },
         _react2.default.createElement(
             'div',
             { className: 'full-width' },
@@ -11556,7 +11556,7 @@ var LanguageList = function (_React$Component) {
 
                 return _react2.default.createElement(
                     'div',
-                    { key: item.id, className: 'item' },
+                    { key: item.id, className: 'animated fadeInDown item' },
                     _react2.default.createElement(
                         'div',
                         { className: 'title-holder margin-bottom-30' },
@@ -11719,7 +11719,7 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'big-component' },
+                { className: 'animated fadeInDown big-component' },
                 _react2.default.createElement(_methodNavigation.MethodNavigation, {
                     changeDashboard: this.changeDashboard
                 }),
@@ -11864,7 +11864,7 @@ var CourseItem = function (_React$Component) {
 
                 return _react2.default.createElement(
                     'div',
-                    { key: index, className: "item relative " + inactiveItemClass },
+                    { key: index, className: "animated fadeInDown item relative " + inactiveItemClass },
                     item.hasPassed === false && item.course.initialCourse === false && _react2.default.createElement('div', { className: 'inactive-capsule absolute' }),
                     _react2.default.createElement(
                         'div',
@@ -12380,6 +12380,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
     }, {
         key: 'startLesson',
         value: function startLesson() {
+
             this.setState({
                 startLesson: true
             });

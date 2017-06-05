@@ -42,6 +42,7 @@ class CategoryFactory
             $this->em->persist($category);
         }
 
+        $this->em->flush();
         if ($save) {
             $this->categoryObjects = $categoryObjects;
         }

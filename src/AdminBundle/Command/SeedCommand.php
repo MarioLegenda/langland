@@ -62,49 +62,39 @@ class SeedCommand extends ContainerAwareCommand
         $languageObjects = $languageFactory->create($languages, true);
 
         foreach ($languageObjects as $i => $languageObject) {
-            $wordsArray = $wordFactory->create(
+            $wordFactory->create(
                 $categoryFactory,
                 $wordTranslationFactory,
                 $languageObject,
                 10
             );
-
-            $languageInfoFactory->create($languageObject);
-
-            $courses = $courseFactory->create($languageObject, 6);
-
-            foreach ($courses as $course) {
-                $lessons = $lessonFactory->create($course, 5);
-                $sentenceFactory->create($course);
-                $wordGameFactory->create($lessons, $wordsArray);
-                $questionGameFactory->create($lessons);
-
-/*                for ($t = 0; $t < 5; $t++) {
-                    $wordPool = new SentenceWordPool();
-
-                    $wordPool->setName($faker->name);
-                    $wordPool->setCourse($course);
-
-                    $poolWord = new ArrayCollection();
-
-                    $count = 0;
-                    for (;;) {
-
-                        if ($count === 10) {
-                            break;
-                        }
-
-                        $poolWord->add($wordsArray[$count]);
-                        $count++;
-                    }
-
-                    $wordPool->setWords($poolWord);
-
-                    $em->persist($wordPool);
-                }*/
-            }
         }
 
-        $em->flush();
+        foreach ($languageObjects as $i => $languageObject) {
+            $languageInfoFactory->create($languageObject);
+
+            $courseFactory->create($languageObject, 6);
+        }
+
+        $courses = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Course')->findAll();
+
+        foreach ($courses as $course) {
+            $lessonFactory->create($course, 10);
+
+            $sentenceFactory->create($course);
+        }
+
+        foreach ($courses as $course) {
+            $lessons = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Lesson')->findBy(array(
+                'course' => $course,
+            ));
+
+            $words = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Word')->findBy(array(
+                'language' => $course->getLanguage(),
+            ));
+
+            $wordGameFactory->create($lessons, $words);
+            $questionGameFactory->create($lessons);
+        }
     }
 }

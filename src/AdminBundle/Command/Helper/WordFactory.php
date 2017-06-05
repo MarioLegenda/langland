@@ -48,6 +48,8 @@ class WordFactory
             $wordsArray[] = $word;
         }
 
+        $this->em->flush();
+
         return $wordsArray;
     }
 }

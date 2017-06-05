@@ -12272,7 +12272,7 @@ var LessonList = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'lesson-list' },
                 items
             );
         }
@@ -12308,7 +12308,7 @@ var LessonStart = function (_React$Component2) {
                 null,
                 item !== null && _react2.default.createElement(
                     'div',
-                    { className: 'animated fadeInDown lesson-start-item full-width align-left margin-top-30' },
+                    { className: 'animated fadeInDown lesson-start-item margin-top-30' },
                     _react2.default.createElement(
                         'h1',
                         { className: 'full-width align-left margin-bottom-30' },
@@ -12376,11 +12376,12 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             this.setState({
                 currentItem: this.state.items[index]
             });
+
+            $("html, body").animate({ scrollTop: $(document).height() }, 4000);
         }
     }, {
         key: 'startLesson',
         value: function startLesson() {
-
             this.setState({
                 startLesson: true
             });
@@ -12408,7 +12409,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
 
             return _react2.default.createElement(
                 'div',
-                { className: 'animated fadeInDown lesson-list' },
+                { className: 'animated fadeInDown lesson-dashboard' },
                 startLesson === false && _react2.default.createElement(
                     'div',
                     null,

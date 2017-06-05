@@ -1,13 +1,19 @@
-.lesson-list {
+.lesson-dashboard {
 
-  width: 660px;
+  width: 1020px;
   float:left;
+
+  .lesson-list {
+    width: 100%;
+    overflow:hidden;
+  }
 
   .lesson {
     width: 120px;
     height: 120px;
 
     margin-left: 10px;
+    margin-bottom: 10px;
 
     float:left;
 
@@ -48,9 +54,17 @@
     background-color: white;
     color: $text-color-gray;
 
+    width: 480px;
+
+    overflow:hidden;
+    margin: 0 auto;
+
+    margin-top: 30px;
+    margin-left: 220px;
+
     border-radius: 10px;
 
-    padding: 10px;
+    padding: 20px;
 
     h1 {
       border-bottom: 1px solid $highlight-gray;

@@ -12,11 +12,11 @@ trait TextareaTypeTrait
      * @param string $name
      * @return $this
      */
-    public function addTextareaType(string $name, FormBuilderInterface $builder)
+    public function addTextareaType(string $label, string $name, FormBuilderInterface $builder)
     {
         $builder
             ->add($name, TextareaType::class, array(
-                'label' => 'Text: ',
+                'label' => $label,
             ));
 
         return $this;

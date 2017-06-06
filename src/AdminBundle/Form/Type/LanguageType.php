@@ -21,9 +21,9 @@ class LanguageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->addTextType('name', $builder)
-            ->addCheckboxType('showOnPage', $builder)
-            ->addTextareaType('listDescription', $builder)
+            ->addTextType('Language name: ', 'name', $builder)
+            ->addCheckboxType('Show on page', 'showOnPage', $builder)
+            ->addTextareaType('Description', 'listDescription', $builder)
             ->addImageType('image', $builder);
     }
     /**

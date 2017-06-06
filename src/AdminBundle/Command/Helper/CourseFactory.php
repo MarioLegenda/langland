@@ -37,7 +37,7 @@ class CourseFactory
                 $course->setInitialCourse(true);
             }
 
-            $course->setName($this->getFaker()->word);
+            $course->setName($language->getName() . ' course ' . $i);
             $course->setWhatToLearn($this->getFaker()->sentence(30));
             $course->setLanguage($language);
 

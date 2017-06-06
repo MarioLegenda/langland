@@ -40,7 +40,7 @@ class LessonFactory
                 $lesson->setIsInitialLesson(true);
             }
 
-            $lesson->setName('Lesson '.($i + 1));
+            $lesson->setName($course->getLanguage()->getName(). ' ' .($i + 1));
             $lesson->setDescription($this->getFaker()->sentence(100));
             $lesson->setCourse($course);
 

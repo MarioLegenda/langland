@@ -19,8 +19,8 @@ class LanguageInfoTextType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->addTextType('name', $builder)
-            ->addTextareaType('text', $builder);
+            ->addTextType('Language info name: ', 'name', $builder)
+            ->addTextareaType('Language info text: ', 'text', $builder);
     }
     /**
      * @return string

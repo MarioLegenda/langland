@@ -35,7 +35,7 @@ class LanguageInfoType extends AbstractType
         $languageInfo = $options['languageInfo'];
 
         $this
-            ->addTextType('name', $builder)
+            ->addTextType('Name: ', 'name', $builder)
             ->addLanguageChoice($builder, $this->em, $languageInfo);
 
         $builder->add('languageInfoTexts', CollectionType::class, array(

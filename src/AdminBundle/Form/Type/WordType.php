@@ -38,9 +38,9 @@ class WordType extends AbstractType
         $word = $options['word'];
 
         $this
-            ->addTextType('name', $builder)
-            ->addTextType('type', $builder)
-            ->addTextareaType('description', $builder)
+            ->addTextType('Word name:', 'name', $builder)
+            ->addTextType('Word type: ', 'type', $builder)
+            ->addTextareaType('Word description', 'description', $builder)
             ->addImageType('image', $builder)
             ->addLanguageChoice($builder, $this->em, $word)
             ->addCategoryChoice($builder, $this->em, $word);

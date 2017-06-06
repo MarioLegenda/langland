@@ -17,7 +17,7 @@ class CategoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->addTextType('name', $builder);
+        $this->addTextType('Category name:', 'name', $builder);
     }
     /**
      * @return string

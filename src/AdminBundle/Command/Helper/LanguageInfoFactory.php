@@ -34,7 +34,7 @@ class LanguageInfoFactory
 
         for ($s = 0; $s < 5; $s++) {
             $text = new LanguageInfoText();
-            $text->setName($this->getFaker()->word);
+            $text->setName($language->getName().' language info');
             $text->setText($this->getFaker()->sentence(30));
 
             $text->setLanguageInfo($languageInfo);

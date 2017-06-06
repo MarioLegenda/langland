@@ -38,8 +38,8 @@ class QuestionGameType extends AbstractType
 
         $this
             ->addLessonChoice($builder, $this->em, $question)
-            ->addTextType('name', $builder)
-            ->addTextareaType('description', $builder);
+            ->addTextType('Question: ', 'name', $builder)
+            ->addTextareaType('Description', 'description', $builder);
 
         $builder
             ->add('answers', CollectionType::class, array(

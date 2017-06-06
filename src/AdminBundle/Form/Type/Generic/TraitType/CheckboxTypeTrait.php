@@ -12,10 +12,12 @@ trait CheckboxTypeTrait
      * @param FormBuilderInterface $builder
      * @return $this
      */
-    public function addCheckboxType(string $name, FormBuilderInterface $builder)
+    public function addCheckboxType(string $label, string $name, FormBuilderInterface $builder)
     {
         $builder
-            ->add($name, CheckboxType::class);
+            ->add($name, CheckboxType::class, array(
+                'label' => $label,
+            ));
 
         return $this;
     }

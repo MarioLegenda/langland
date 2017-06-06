@@ -19,8 +19,8 @@ class QuestionGameAnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->addTextType('name', $builder)
-            ->addCheckboxType('isCorrect', $builder);
+            ->addTextType('Answer: ', 'name', $builder)
+            ->addCheckboxType('Is this answer correct?', 'isCorrect', $builder);
     }
     /**
      * @return string

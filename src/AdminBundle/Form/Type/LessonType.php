@@ -21,9 +21,9 @@ class LessonType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->addTextType('name', $builder)
-            ->addTextareaType('description', $builder)
-            ->addCheckboxType('isInitialLesson', $builder);
+            ->addTextType('Lesson name: ', 'name', $builder)
+            ->addTextareaType('Description: ', 'description', $builder)
+            ->addCheckboxType('Initial lesson?', 'isInitialLesson', $builder);
 
         $builder
             ->add('lessonTexts', CollectionType::class, array(

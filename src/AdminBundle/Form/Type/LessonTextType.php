@@ -20,8 +20,8 @@ class LessonTextType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this
-            ->addTextType('name', $builder)
-            ->addTextareaType('text', $builder);
+            ->addTextType('Name: ', 'name', $builder)
+            ->addTextareaType('Text: ', 'text', $builder);
     }
     /**
      * @return string

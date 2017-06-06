@@ -12,11 +12,11 @@ trait TextTypeTrait
      * @param string $name
      * @return $this
      */
-    public function addTextType(string $name, FormBuilderInterface $builder)
+    public function addTextType(string $label, string $name, FormBuilderInterface $builder)
     {
         $builder
             ->add($name, TextType::class, array(
-                'label' => 'Name: ',
+                'label' => $label,
             ));
 
         return $this;

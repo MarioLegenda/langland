@@ -46,6 +46,25 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
         if ($event->hasEntity('word')) {
             $this->handleWordJob($event->getEntity('word'));
         }
+
+        if ($event->hasEntity('course')) {
+            $this->handleCourseJob($event->getEntity('course'));
+        }
+    }
+
+    private function handleCourseJob(Course $course)
+    {
+        \URLify::filter($course->setCourseUrl($course->getName()));
+
+        $initialCourses = $this->em->getRepository('AdminBundle:Course')->findBy(array(
+            'initialCourse' => true,
+        ));
+
+        foreach ($initialCourses as $course) {
+            $course->setInitialCourse(false);
+
+            $this->em->persist($course);
+        }
     }
 
     private function handleWordJob(Word $word)

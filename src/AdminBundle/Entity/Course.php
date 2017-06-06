@@ -22,6 +22,8 @@ class Course
      * @var bool $initialCourse
      */
     private $initialCourse;
+
+    private $courseUrl;
     /**
      * @var Language $language
      */
@@ -108,6 +110,23 @@ class Course
     public function setInitialCourse(bool $initialCourse) : Course
     {
         $this->initialCourse = $initialCourse;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCourseUrl()
+    {
+        return $this->courseUrl;
+    }
+    /**
+     * @param mixed $courseUrl
+     * @return Course
+     */
+    public function setCourseUrl($courseUrl) : Course
+    {
+        $this->courseUrl = $courseUrl;
 
         return $this;
     }

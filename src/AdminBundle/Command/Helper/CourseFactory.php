@@ -40,6 +40,7 @@ class CourseFactory
             $course->setName($language->getName() . ' course ' . $i);
             $course->setWhatToLearn($this->getFaker()->sentence(30));
             $course->setLanguage($language);
+            $course->setCourseUrl(\URLify::filter($course->getName()));
 
             $this->em->persist($course);
 

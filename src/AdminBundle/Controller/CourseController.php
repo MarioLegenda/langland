@@ -4,9 +4,8 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Form\Type\CourseType;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use AdminBundle\Event\PrePersistEvent;
 
 class CourseController extends RepositoryController
 {
@@ -42,7 +41,9 @@ class CourseController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->unmarkInitialCourse();
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'course' => $course,
+                ));
 
                 $em->persist($course);
                 $em->flush();
@@ -79,7 +80,9 @@ class CourseController extends RepositoryController
             if ($form->isValid()) {
                 $em = $this->get('doctrine')->getManager();
 
-                $this->unmarkInitialCourse();
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'course' => $course,
+                ));
 
                 $em->persist($course);
                 $em->flush();

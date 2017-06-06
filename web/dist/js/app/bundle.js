@@ -12542,11 +12542,18 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
     }
 
     _createClass(MethodNavigation, [{
+        key: '_highlightMenuBasedOnRoutes',
+        value: function _highlightMenuBasedOnRoutes() {
+            if (/lessons/.test(window.location.pathname)) {
+                this._highlightMenu(jQuery('.lesson-item'));
+            } else {
+                this._unHighlightMenu();
+            }
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            if (/lessons/.test(this.props.match.url)) {
-                this._highlightMenu(jQuery('.lesson-item'));
-            } else {}
+            this._highlightMenuBasedOnRoutes();
         }
     }, {
         key: '_unHighlightMenu',
@@ -12572,6 +12579,8 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            this._highlightMenuBasedOnRoutes();
+
             var courseHolderId = this.props.match.params.courseHolderId;
 
             return _react2.default.createElement(

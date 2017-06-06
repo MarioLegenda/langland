@@ -2699,7 +2699,8 @@ var AppRouter = function () {
         this.routes = {
             app_course_dashboard: _env.envr + 'langland/language-course/:0/:1',
             app_course_actual_app: _env.envr + 'langland/language-course/dashboard/:0/:1',
-            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0'
+            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
+            app_page_lesson_list: _env.envr + 'langland/language-course/dashboard/lessons/:0'
         };
     }
 
@@ -11728,31 +11729,28 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (MethodApp.__proto__ || Object.getPrototypeOf(MethodApp)).call(this, props));
 
         _this.routeParams = _this.props.match.params;
-
-        console.log(_this.routeParams);
+        _this.match = _this.props.match;
         return _this;
     }
 
     _createClass(MethodApp, [{
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
-            var lessonDashboard = function lessonDashboard() {
-                return _react2.default.createElement(_lessonDashboard.LessonDashboard, { learningUserCourseId: _this2.routeParams.courseHolderId });
-            };
-
             return _react2.default.createElement(
                 _reactRouterDom.BrowserRouter,
                 null,
                 _react2.default.createElement(
                     'div',
                     { className: 'animated fadeInDown big-component' },
-                    _react2.default.createElement(_methodNavigation.MethodNavigation, null),
+                    _react2.default.createElement(_methodNavigation.MethodNavigation, { match: this.match }),
                     _react2.default.createElement(
                         'div',
                         { className: 'main-app-dashboard' },
-                        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/lessons", render: lessonDashboard })
+                        _react2.default.createElement(
+                            _reactRouterDom.Switch,
+                            null,
+                            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/dashboard/lessons/:courseHolderId", component: _lessonDashboard.LessonDashboard })
+                        )
                     )
                 )
             );
@@ -12241,25 +12239,18 @@ var LessonDashboard = exports.LessonDashboard = function (_React$Component) {
     function LessonDashboard(props) {
         _classCallCheck(this, LessonDashboard);
 
-        var _this = _possibleConstructorReturn(this, (LessonDashboard.__proto__ || Object.getPrototypeOf(LessonDashboard)).call(this, props));
-
-        _this.state = {
-            page: {
-                listDashboard: true,
-                lessonDashboard: false
-            }
-        };
-        return _this;
+        return _possibleConstructorReturn(this, (LessonDashboard.__proto__ || Object.getPrototypeOf(LessonDashboard)).call(this, props));
     }
 
     _createClass(LessonDashboard, [{
         key: 'render',
         value: function render() {
+            var learningUserCourseId = this.props.match.params.courseHolderId;
+
             return _react2.default.createElement(
                 'div',
                 null,
-                this.state.page.listDashboard === true && _react2.default.createElement(_lessonList.LessonListContainer, { learningUserCourseId: this.props.learningUserCourseId }),
-                this.state.page.lessonDashboard === true && _react2.default.createElement('div', null)
+                _react2.default.createElement(_lessonList.LessonListContainer, { learningUserCourseId: learningUserCourseId })
             );
         }
     }]);
@@ -12325,8 +12316,6 @@ var LessonList = function (_React$Component) {
         key: 'render',
         value: function render() {
             var that = this;
-
-            console.log(this.props.items);
 
             var items = this.props.items.map(function (item, index) {
                 var lessonClass = item.lesson.isInitialLesson === true ? 'lesson' : 'unpassed-lesson';
@@ -12455,7 +12444,6 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
                 url: _routes.RouteCreator.create('app_lesson_list', [this.props.learningUserCourseId]),
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
-                console.log(data);
                 this.setState({
                     items: data.data,
                     itemsFetched: true
@@ -12529,7 +12517,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(32);
 
-var _env = __webpack_require__(17);
+var _routes = __webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12547,17 +12535,33 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (MethodNavigation.__proto__ || Object.getPrototypeOf(MethodNavigation)).call(this, props));
 
+        console.log(_this.props.match);
+
         _this.handleMenuHighlight = _this.handleMenuHighlight.bind(_this);
         return _this;
     }
 
     _createClass(MethodNavigation, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            if (/lessons/.test(this.props.match.url)) {
+                this._highlightMenu(jQuery('.lesson-item'));
+            } else {}
+        }
+    }, {
+        key: '_unHighlightMenu',
+        value: function _unHighlightMenu() {
+            jQuery('.nav-item').removeClass('position-nav-item');
+            jQuery('.nav-item').find('.highlightable').removeClass('highlight-nav-item');
+        }
+    }, {
         key: '_highlightMenu',
         value: function _highlightMenu(target) {
-            jQuery('.nav-item').removeClass('position-nav-item');
-            jQuery(target).addClass('position-nav-item');
+            this._unHighlightMenu();
 
-            jQuery('.nav-item').find('.highlightable').removeClass('highlight-nav-item');
+            console.log(target);
+
+            jQuery(target).addClass('position-nav-item');
             jQuery(target).find('.highlightable').addClass('highlight-nav-item');
         }
     }, {
@@ -12568,6 +12572,8 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var courseHolderId = this.props.match.params.courseHolderId;
+
             return _react2.default.createElement(
                 'div',
                 { className: 'method-navigation' },
@@ -12576,7 +12582,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                     { onClick: this.handleMenuHighlight, className: 'nav-item lesson-item' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: _env.envr + "langland/language-course/lessons" },
+                        { to: _routes.RouteCreator.create('app_page_lesson_list', [courseHolderId]) },
                         _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x highlightable' }),
                         _react2.default.createElement(
                             'span',

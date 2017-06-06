@@ -1,0 +1,27 @@
+app_page_dashboard:
+    path:     /
+    defaults: { _controller: AppBundle:Dashboard:dashboard }
+    methods: [GET]
+
+app_page_course_dashboard:
+    path: /language-course/{languageName}/{id}
+    defaults: { _controller: AppBundle:Course:dashboard }
+    requirements:
+        languageName: \w+
+        id: \d+
+    methods: [GET]
+
+app_page_course_actual_app:
+    path: /language-course/dashboard/{courseName}/{courseHolderId}
+    defaults: { _controller: AppBundle:Api/Course:initApp }
+    requirements:
+        courseName: ^[A-Za-z0-9\-]+$
+        courseHolderId: \d+
+    methods: [GET]
+
+app_page_lesson_list:
+    path: /language-course/dashboard/lessons/{courseHolderId}
+    defaults: { _controller: AppBundle:Api/Data:lessonList }
+    methods: [GET]
+    requirements:
+        courseHolderId: \d+

@@ -1,25 +1,9 @@
-app_dashboard:
-    path:     /langland
-    defaults: { _controller: AppBundle:Dashboard:dashboard }
-    methods: [GET]
-
-app_course_dashboard:
-    path: /langland/language-course/{languageName}/{id}
-    defaults: { _controller: AppBundle:Course:dashboard }
-    requirements:
-        languageName: \w+
-        id: \d+
-    methods: [GET]
-
-app_course_actual_app:
-    path: /langland/language-course/dashboard/{courseName}/{courseHolderId}
-    defaults: { _controller: AppBundle:Api/Course:initApp }
-    requirements:
-        courseName: ^[A-Za-z0-9\-]+$
-        courseHolderId: \d+
-    methods: [GET]
+app_page:
+  resource: "@AppBundle/Resources/config/routing/page/page.yml"
+  prefix: /langland
+  host: '%host%'
 
 app_api:
-  resource: "@AppBundle/Resources/config/routing/langland.yml"
+  resource: "@AppBundle/Resources/config/routing/api.yml"
   prefix: /langland/api
   host: '%host%'

@@ -4,6 +4,7 @@ AppBundle\Entity\LearningUserLesson:
         id:
             expose: true
             groups: [lesson_list]
+            serialized_name: learningUserLessonId
         hasPassed:
             expose: true
             groups: [lesson_list]

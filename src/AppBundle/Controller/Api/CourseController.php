@@ -62,7 +62,7 @@ class CourseController extends CommonOperationController
         return $this->createSuccessJsonResponse($serialized);
     }
 
-    public function initAppAction($languageName, $courseName, $courseHolderId)
+    public function initAppAction($courseName, $courseHolderId)
     {
         $courseHolder = $this->getRepository('AppBundle:LearningUserCourse')->find($courseHolderId);
 

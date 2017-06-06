@@ -6,11 +6,17 @@ app_dashboard:
 app_course_dashboard:
     path: /langland/language-course/{languageName}/{id}
     defaults: { _controller: AppBundle:Course:dashboard }
+    requirements:
+        languageName: \w+
+        id: \d+
     methods: [GET]
 
 app_course_actual_app:
-    path: /langland/language-course/{languageName}/{courseName}/{courseHolderId}
+    path: /langland/language-course/dashboard/{courseName}/{courseHolderId}
     defaults: { _controller: AppBundle:Api/Course:initApp }
+    requirements:
+        courseName: ^[A-Za-z0-9\-]+$
+        courseHolderId: \d+
     methods: [GET]
 
 app_api:

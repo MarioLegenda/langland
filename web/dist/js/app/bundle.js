@@ -2698,7 +2698,7 @@ var AppRouter = function () {
 
         this.routes = {
             app_course_dashboard: _env.envr + 'langland/language-course/:0/:1',
-            app_course_actual_app: _env.envr + 'langland/language-course/:0/:1/:2',
+            app_course_actual_app: _env.envr + 'langland/language-course/dashboard/:0/:1',
             app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0'
         };
     }
@@ -11729,49 +11729,17 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
 
         _this.routeParams = _this.props.match.params;
 
-        _this.state = {
-            page: {
-                showLessons: false,
-                showGames: false,
-                showVocabulary: false
-            }
-        };
-
-        _this.changeDashboard = _this.changeDashboard.bind(_this);
+        console.log(_this.routeParams);
         return _this;
     }
 
     _createClass(MethodApp, [{
-        key: '_changeDashboard',
-        value: function _changeDashboard(type) {
-            var newPage = {};
-            for (var page in this.state.page) {
-                if (this.state.page.hasOwnProperty(page)) {
-                    if (type === page) {
-                        if (this.state.page[page] === true) {}
-                        newPage[type] = true;
-                    } else {
-                        newPage[page] = false;
-                    }
-                }
-            }
-
-            return newPage;
-        }
-    }, {
-        key: 'changeDashboard',
-        value: function changeDashboard(type) {
-            this.setState({
-                page: this._changeDashboard(type)
-            });
-        }
-    }, {
         key: 'render',
         value: function render() {
             var _this2 = this;
 
             var lessonDashboard = function lessonDashboard() {
-                return _react2.default.createElement(_lessonDashboard.LessonDashboard, { learningUserCourseId: _this2.routeParams.learningUserCourseId });
+                return _react2.default.createElement(_lessonDashboard.LessonDashboard, { learningUserCourseId: _this2.routeParams.courseHolderId });
             };
 
             return _react2.default.createElement(
@@ -11780,9 +11748,7 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'animated fadeInDown big-component' },
-                    _react2.default.createElement(_methodNavigation.MethodNavigation, {
-                        changeDashboard: this.changeDashboard
-                    }),
+                    _react2.default.createElement(_methodNavigation.MethodNavigation, null),
                     _react2.default.createElement(
                         'div',
                         { className: 'main-app-dashboard' },
@@ -11846,9 +11812,13 @@ function App() {
             _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _languages.LanguageListContainer }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:id", component: _courseInit.CourseInitContainer }),
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:courseName/:learningUserCourseId", component: _methodApp.MethodApp })
+                _react2.default.createElement(
+                    _reactRouterDom.Switch,
+                    null,
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _languages.LanguageListContainer }),
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/dashboard/:courseName/:courseHolderId", component: _methodApp.MethodApp }),
+                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:id", component: _courseInit.CourseInitContainer })
+                )
             )
         )
     );
@@ -11914,7 +11884,7 @@ var CourseItem = function (_React$Component) {
                     courseName = item.course.courseUrl,
                     courseHolderId = item.id;
 
-                var courseUrl = _routes.RouteCreator.create('app_course_actual_app', [languageName, courseName, courseHolderId]);
+                var courseUrl = _routes.RouteCreator.create('app_course_actual_app', [courseName, courseHolderId]);
 
                 if (item.hasPassed === false && item.course.initialCourse === false) {
                     inactiveItemClass = 'inactive';
@@ -12279,42 +12249,16 @@ var LessonDashboard = exports.LessonDashboard = function (_React$Component) {
                 lessonDashboard: false
             }
         };
-
-        _this.changeDashboard = _this.changeDashboard.bind(_this);
         return _this;
     }
 
     _createClass(LessonDashboard, [{
-        key: '_changeDashboard',
-        value: function _changeDashboard(type) {
-            var newPage = {};
-            for (var page in this.state.page) {
-                if (type === page) {
-                    newPage[type] = true;
-                } else {
-                    newPage[page] = false;
-                }
-            }
-
-            return newPage;
-        }
-    }, {
-        key: 'changeDashboard',
-        value: function changeDashboard(type) {
-            this.setState({
-                page: this._changeDashboard(type)
-            });
-        }
-    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 null,
-                this.state.page.listDashboard === true && _react2.default.createElement(_lessonList.LessonListContainer, {
-                    learningUserCourseId: this.props.learningUserCourseId,
-                    changeDashboard: this.changeDashboard
-                }),
+                this.state.page.listDashboard === true && _react2.default.createElement(_lessonList.LessonListContainer, { learningUserCourseId: this.props.learningUserCourseId }),
                 this.state.page.lessonDashboard === true && _react2.default.createElement('div', null)
             );
         }
@@ -12381,6 +12325,8 @@ var LessonList = function (_React$Component) {
         key: 'render',
         value: function render() {
             var that = this;
+
+            console.log(this.props.items);
 
             var items = this.props.items.map(function (item, index) {
                 var lessonClass = item.lesson.isInitialLesson === true ? 'lesson' : 'unpassed-lesson';
@@ -12601,7 +12547,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (MethodNavigation.__proto__ || Object.getPrototypeOf(MethodNavigation)).call(this, props));
 
-        _this.handleMenuChange = _this.handleMenuChange.bind(_this);
+        _this.handleMenuHighlight = _this.handleMenuHighlight.bind(_this);
         return _this;
     }
 
@@ -12615,12 +12561,9 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
             jQuery(target).find('.highlightable').addClass('highlight-nav-item');
         }
     }, {
-        key: 'handleMenuChange',
-        value: function handleMenuChange(e) {
+        key: 'handleMenuHighlight',
+        value: function handleMenuHighlight(e) {
             this._highlightMenu(e.currentTarget);
-
-            var type = e.currentTarget.getAttribute('data-change-id');
-            this.props.changeDashboard(type);
         }
     }, {
         key: 'render',
@@ -12630,7 +12573,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 { className: 'method-navigation' },
                 _react2.default.createElement(
                     'div',
-                    { 'data-change-id': 'showLessons', onClick: this.handleMenuChange, className: 'nav-item lesson-item' },
+                    { onClick: this.handleMenuHighlight, className: 'nav-item lesson-item' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
                         { to: _env.envr + "langland/language-course/lessons" },
@@ -12644,7 +12587,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { 'data-change-id': 'showGames', onClick: this.handleMenuChange, className: 'nav-item game-item' },
+                    { onClick: this.handleMenuHighlight, className: 'nav-item game-item' },
                     _react2.default.createElement('i', { className: 'fa fa-gamepad fa-2x' }),
                     _react2.default.createElement(
                         'span',
@@ -12654,7 +12597,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { 'data-change-id': 'showVocabulary', onClick: this.handleMenuChange, className: 'nav-item vocabulary-item' },
+                    { onClick: this.handleMenuHighlight, className: 'nav-item vocabulary-item' },
                     _react2.default.createElement('i', { className: 'fa fa-header fa-2x' }),
                     _react2.default.createElement(
                         'span',
@@ -12664,7 +12607,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'nav-item trophy-item', onClick: this.handleMenuChange },
+                    { onClick: this.handleMenuHighlight },
                     _react2.default.createElement('i', { className: 'fa fa-trophy fa-2x' }),
                     _react2.default.createElement(
                         'span',

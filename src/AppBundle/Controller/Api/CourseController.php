@@ -62,9 +62,9 @@ class CourseController extends CommonOperationController
         return $this->createSuccessJsonResponse($serialized);
     }
 
-    public function initAppAction($courseName, $courseHolderId)
+    public function initAppAction($courseName, $learningUserCourseId)
     {
-        $courseHolder = $this->getRepository('AppBundle:LearningUserCourse')->find($courseHolderId);
+        $courseHolder = $this->getRepository('AppBundle:LearningUserCourse')->find($learningUserCourseId);
 
         if ($courseHolder instanceof LearningUserCourse) {
             return $this->render('::App/Dashboard/dashboard.html.twig');

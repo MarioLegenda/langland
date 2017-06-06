@@ -19,10 +19,10 @@ export const routes = {
 class AppRouter {
     constructor() {
         this.routes = {
-            app_course_dashboard: envr + 'langland/language-course/:0/:1',
-            app_course_actual_app: envr + 'langland/language-course/dashboard/course/:0/:1',
+            app_course_dashboard: envr + 'langland/course/:0/:1',
+            app_course_actual_app: envr + 'langland/dashboard/:0/:1',
             app_lesson_list: envr + 'langland/api/data/lesson-list/:0',
-            app_page_lesson_list: envr + 'langland/language-course/dashboard/lesson/lessons/:0',
+            app_page_lesson_list: envr + 'langland/dashboard/:0/:1/lessons',
             app_page_lesson_start: envr + 'langland/language-course/dashboard/lessons/lesson/:0'
         }
     }

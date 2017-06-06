@@ -2697,10 +2697,11 @@ var AppRouter = function () {
         _classCallCheck(this, AppRouter);
 
         this.routes = {
-            app_course_dashboard: _env.envr + 'langland/language-course/:0/:1',
-            app_course_actual_app: _env.envr + 'langland/language-course/dashboard/:0/:1',
+            app_course_dashboard: _env.envr + 'langland/course/:0/:1',
+            app_course_actual_app: _env.envr + 'langland/dashboard/:0/:1',
             app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
-            app_page_lesson_list: _env.envr + 'langland/language-course/dashboard/lessons/:0'
+            app_page_lesson_list: _env.envr + 'langland/dashboard/:0/:1/lessons',
+            app_page_lesson_start: _env.envr + 'langland/language-course/dashboard/lessons/lesson/:0'
         };
     }
 
@@ -11696,7 +11697,7 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.MethodApp = undefined;
+exports.MethodAppRouteContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -11710,6 +11711,8 @@ var _env = __webpack_require__(17);
 
 var _methodNavigation = __webpack_require__(107);
 
+var _lessonList = __webpack_require__(106);
+
 var _lessonDashboard = __webpack_require__(105);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -11720,36 +11723,43 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var MethodApp = exports.MethodApp = function (_React$Component) {
+var MethodApp = function (_React$Component) {
     _inherits(MethodApp, _React$Component);
 
     function MethodApp(props) {
         _classCallCheck(this, MethodApp);
 
-        var _this = _possibleConstructorReturn(this, (MethodApp.__proto__ || Object.getPrototypeOf(MethodApp)).call(this, props));
-
-        _this.routeParams = _this.props.match.params;
-        _this.match = _this.props.match;
-        return _this;
+        return _possibleConstructorReturn(this, (MethodApp.__proto__ || Object.getPrototypeOf(MethodApp)).call(this, props));
     }
 
     _createClass(MethodApp, [{
         key: 'render',
         value: function render() {
+            console.log(this.props);
+
+            var courseName = this.props.match.params.courseName;
+            var learningUserCourseId = this.props.match.params.learningUserCourseId;
+            var mainPath = this.props.match.url;
+
+            var lessonList = function lessonList() {
+                return _react2.default.createElement(_lessonList.LessonListContainer, { learningUserCourseId: learningUserCourseId });
+            };
             return _react2.default.createElement(
                 _reactRouterDom.BrowserRouter,
                 null,
                 _react2.default.createElement(
                     'div',
                     { className: 'animated fadeInDown big-component' },
-                    _react2.default.createElement(_methodNavigation.MethodNavigation, { match: this.match }),
+                    _react2.default.createElement(_methodNavigation.MethodNavigation, {
+                        courseName: courseName,
+                        learningUserCourseId: learningUserCourseId }),
                     _react2.default.createElement(
                         'div',
                         { className: 'main-app-dashboard' },
                         _react2.default.createElement(
                             _reactRouterDom.Switch,
                             null,
-                            _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/dashboard/lessons/:courseHolderId", component: _lessonDashboard.LessonDashboard })
+                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: lessonList })
                         )
                     )
                 )
@@ -11758,6 +11768,25 @@ var MethodApp = exports.MethodApp = function (_React$Component) {
     }]);
 
     return MethodApp;
+}(_react2.default.Component);
+
+var MethodAppRouteContainer = exports.MethodAppRouteContainer = function (_React$Component2) {
+    _inherits(MethodAppRouteContainer, _React$Component2);
+
+    function MethodAppRouteContainer(props) {
+        _classCallCheck(this, MethodAppRouteContainer);
+
+        return _possibleConstructorReturn(this, (MethodAppRouteContainer.__proto__ || Object.getPrototypeOf(MethodAppRouteContainer)).call(this, props));
+    }
+
+    _createClass(MethodAppRouteContainer, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(MethodApp, { match: this.props.match });
+        }
+    }]);
+
+    return MethodAppRouteContainer;
 }(_react2.default.Component);
 
 /***/ }),
@@ -11791,13 +11820,21 @@ var _header = __webpack_require__(98);
 
 var _languages = __webpack_require__(99);
 
-var _courseInit = __webpack_require__(97);
-
 var _env = __webpack_require__(17);
 
 var _methodApp = __webpack_require__(100);
 
+var _courseInit = __webpack_require__(97);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NoMatch = function NoMatch() {
+    return _react2.default.createElement(
+        'div',
+        null,
+        'No match'
+    );
+};
 
 function App() {
     return _react2.default.createElement(
@@ -11808,15 +11845,12 @@ function App() {
             { className: 'app' },
             _react2.default.createElement(_header.HeaderContainer, null),
             _react2.default.createElement(
-                'div',
+                _reactRouterDom.Switch,
                 null,
-                _react2.default.createElement(
-                    _reactRouterDom.Switch,
-                    null,
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _languages.LanguageListContainer }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/dashboard/:courseName/:courseHolderId", component: _methodApp.MethodApp }),
-                    _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/language-course/:languageName/:id", component: _courseInit.CourseInitContainer })
-                )
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland/course/:languageName/:languageId", component: _courseInit.CourseInitContainer }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: _env.envr + "langland/dashboard/:courseName/:learningUserCourseId", component: _methodApp.MethodAppRouteContainer }),
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _env.envr + "langland", component: _languages.LanguageListContainer }),
+                _react2.default.createElement(_reactRouterDom.Route, { component: NoMatch })
             )
         )
     );
@@ -11880,9 +11914,9 @@ var CourseItem = function (_React$Component) {
 
                 var languageName = that.props.languageData.languageName,
                     courseName = item.course.courseUrl,
-                    courseHolderId = item.id;
+                    learningUserCourseId = item.id;
 
-                var courseUrl = _routes.RouteCreator.create('app_course_actual_app', [courseName, courseHolderId]);
+                var courseUrl = _routes.RouteCreator.create('app_course_actual_app', [courseName, learningUserCourseId]);
 
                 if (item.hasPassed === false && item.course.initialCourse === false) {
                     inactiveItemClass = 'inactive';
@@ -12223,8 +12257,6 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _lessonList = __webpack_require__(106);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12245,13 +12277,7 @@ var LessonDashboard = exports.LessonDashboard = function (_React$Component) {
     _createClass(LessonDashboard, [{
         key: 'render',
         value: function render() {
-            var learningUserCourseId = this.props.match.params.courseHolderId;
-
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(_lessonList.LessonListContainer, { learningUserCourseId: learningUserCourseId })
-            );
+            return _react2.default.createElement('div', null);
         }
     }]);
 
@@ -12277,6 +12303,8 @@ var _react = __webpack_require__(4);
 var _react2 = _interopRequireDefault(_react);
 
 var _routes = __webpack_require__(22);
+
+var _reactRouterDom = __webpack_require__(32);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12369,18 +12397,10 @@ var LessonStart = function (_React$Component2) {
     function LessonStart(props) {
         _classCallCheck(this, LessonStart);
 
-        var _this2 = _possibleConstructorReturn(this, (LessonStart.__proto__ || Object.getPrototypeOf(LessonStart)).call(this, props));
-
-        _this2.startLesson = _this2.startLesson.bind(_this2);
-        return _this2;
+        return _possibleConstructorReturn(this, (LessonStart.__proto__ || Object.getPrototypeOf(LessonStart)).call(this, props));
     }
 
     _createClass(LessonStart, [{
-        key: 'startLesson',
-        value: function startLesson() {
-            this.props.startLesson();
-        }
-    }, {
         key: 'render',
         value: function render() {
             var item = this.props.item;
@@ -12405,8 +12425,8 @@ var LessonStart = function (_React$Component2) {
                         'div',
                         { className: 'start-link margin-bottom-30' },
                         _react2.default.createElement(
-                            'a',
-                            { onClick: this.startLesson },
+                            _reactRouterDom.Link,
+                            { to: _routes.RouteCreator.create('app_page_lesson_start', [item.learningUserLessonId]) },
                             'Start'
                         )
                     )
@@ -12433,7 +12453,6 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
         };
 
         _this3.showLessonStart = _this3.showLessonStart.bind(_this3);
-        _this3.startLesson = _this3.startLesson.bind(_this3);
         return _this3;
     }
 
@@ -12460,11 +12479,6 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             $("html, body").animate({ scrollTop: $(document).height() }, 3000);
         }
     }, {
-        key: 'startLesson',
-        value: function startLesson() {
-            this.props.changeDashboard('lessonDashboard');
-        }
-    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this._fetchLessons();
@@ -12475,7 +12489,6 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             var items = this.state.items;
             var itemsFetched = this.state.itemsFetched;
             var currentItem = this.state.currentItem;
-            var startLesson = this.state.startLesson;
 
             if (items === null) {
                 return null;
@@ -12489,7 +12502,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
                 'div',
                 { className: 'animated fadeInDown lesson-dashboard' },
                 _react2.default.createElement(LessonList, { items: items, showLesson: this.showLessonStart }),
-                _react2.default.createElement(LessonStart, { item: currentItem, startLesson: this.startLesson })
+                _react2.default.createElement(LessonStart, { item: currentItem })
             );
         }
     }]);
@@ -12564,8 +12577,6 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
         value: function _highlightMenu(target) {
             this._unHighlightMenu();
 
-            console.log(target);
-
             jQuery(target).addClass('position-nav-item');
             jQuery(target).find('.highlightable').addClass('highlight-nav-item');
         }
@@ -12579,7 +12590,8 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
         value: function render() {
             this._highlightMenuBasedOnRoutes();
 
-            var courseHolderId = this.props.match.params.courseHolderId;
+            var learningUserCourseId = this.props.learningUserCourseId;
+            var courseName = this.props.courseName;
 
             return _react2.default.createElement(
                 'div',
@@ -12589,7 +12601,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                     { onClick: this.handleMenuHighlight, className: 'nav-item lesson-item' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: _routes.RouteCreator.create('app_page_lesson_list', [courseHolderId]) },
+                        { to: _routes.RouteCreator.create('app_page_lesson_list', [courseName, learningUserCourseId]) },
                         _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x highlightable' }),
                         _react2.default.createElement(
                             'span',

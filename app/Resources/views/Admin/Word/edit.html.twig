@@ -24,6 +24,8 @@
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.name, 'description': 'the word to be translated' } only %}
 
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field': form.pluralForm, 'description': 'plural form of the word' } only %}
+
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.type, 'description': 'is it an adjective, a noun, a verb?' } only %}
 
                     {% include '::Admin/Form/_include/field.html.twig' with {'field': form.description, 'description': 'optional description of this word' } only %}

@@ -29,6 +29,10 @@ class Word
      */
     private $description;
     /**
+     * @var string $pluralForm
+     */
+    private $pluralForm;
+    /**
      * @var ArrayCollection $categories
      */
     private $categories;
@@ -210,6 +214,23 @@ class Word
     public function setDescription($description) : Word
     {
         $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getPluralForm()
+    {
+        return $this->pluralForm;
+    }
+    /**
+     * @param string $pluralForm
+     * @return Word
+     */
+    public function setPluralForm(string $pluralForm) : Word
+    {
+        $this->pluralForm = $pluralForm;
 
         return $this;
     }

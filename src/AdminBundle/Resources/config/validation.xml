@@ -21,6 +21,13 @@
             </constraint>
         </property>
 
+        <property name="pluralForm">
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">Word plural form can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
+
         <property name="type">
             <constraint name="Length">
                 <option name="max">50</option>

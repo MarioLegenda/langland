@@ -36,6 +36,7 @@ class WordFactory
             $word = new Word();
             $word->setName($this->getFaker()->word);
             $word->setLanguage($language);
+            $word->setPluralForm($this->getFaker()->word);
 
             $word->setCategories($categoryFactory->createCollection(2));
             $word->setDescription($this->getFaker()->sentence(60));

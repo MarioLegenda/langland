@@ -12457,7 +12457,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
                 currentItem: this.state.items[index]
             });
 
-            $("html, body").animate({ scrollTop: $(document).height() }, 4000);
+            $("html, body").animate({ scrollTop: $(document).height() }, 3000);
         }
     }, {
         key: 'startLesson',
@@ -12535,8 +12535,6 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (MethodNavigation.__proto__ || Object.getPrototypeOf(MethodNavigation)).call(this, props));
 
-        console.log(_this.props.match);
-
         _this.handleMenuHighlight = _this.handleMenuHighlight.bind(_this);
         return _this;
     }
@@ -12603,31 +12601,43 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { onClick: this.handleMenuHighlight, className: 'nav-item game-item' },
-                    _react2.default.createElement('i', { className: 'fa fa-gamepad fa-2x' }),
                     _react2.default.createElement(
-                        'span',
-                        null,
-                        'Games'
+                        _reactRouterDom.Link,
+                        { to: '' },
+                        _react2.default.createElement('i', { className: 'fa fa-gamepad fa-2x highlightable' }),
+                        _react2.default.createElement(
+                            'span',
+                            { className: 'highlightable' },
+                            'Games'
+                        )
                     )
                 ),
                 _react2.default.createElement(
                     'div',
                     { onClick: this.handleMenuHighlight, className: 'nav-item vocabulary-item' },
-                    _react2.default.createElement('i', { className: 'fa fa-header fa-2x' }),
                     _react2.default.createElement(
-                        'span',
-                        null,
-                        'Vocabulary'
+                        _reactRouterDom.Link,
+                        { to: '' },
+                        _react2.default.createElement('i', { className: 'fa fa-header fa-2x highlightable' }),
+                        _react2.default.createElement(
+                            'span',
+                            { className: 'highlightable' },
+                            'Vocabulary'
+                        )
                     )
                 ),
                 _react2.default.createElement(
                     'div',
-                    { onClick: this.handleMenuHighlight },
-                    _react2.default.createElement('i', { className: 'fa fa-trophy fa-2x' }),
+                    { onClick: this.handleMenuHighlight, className: 'nav-item vocabulary-item' },
                     _react2.default.createElement(
-                        'span',
-                        null,
-                        'Trophies'
+                        _reactRouterDom.Link,
+                        { to: '' },
+                        _react2.default.createElement('i', { className: 'fa fa-trophy fa-2x highlightable' }),
+                        _react2.default.createElement(
+                            'span',
+                            { className: 'highlightable' },
+                            'Trophies'
+                        )
                     )
                 )
             );

@@ -12608,9 +12608,11 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
     _createClass(MethodNavigation, [{
         key: '_highlightMenu',
         value: function _highlightMenu(target) {
-            jQuery('.nav-item').removeClass('highlighted-nav-item');
+            jQuery('.nav-item').removeClass('position-nav-item');
+            jQuery(target).addClass('position-nav-item');
 
-            jQuery(target).addClass('highlighted-nav-item');
+            jQuery('.nav-item').find('.highlightable').removeClass('highlight-nav-item');
+            jQuery(target).find('.highlightable').addClass('highlight-nav-item');
         }
     }, {
         key: 'handleMenuChange',
@@ -12631,11 +12633,11 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                     { 'data-change-id': 'showLessons', onClick: this.handleMenuChange, className: 'nav-item lesson-item' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: _env.envr + "langland/language-course/lessons", className: 'nav-item lesson-item' },
-                        _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x' }),
+                        { to: _env.envr + "langland/language-course/lessons" },
+                        _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x highlightable' }),
                         _react2.default.createElement(
                             'span',
-                            null,
+                            { className: 'highlightable' },
                             'Lessons'
                         )
                     )

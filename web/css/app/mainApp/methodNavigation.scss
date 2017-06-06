@@ -10,8 +10,6 @@
 
     margin-left: 20px;
 
-    color: $highlight-gray;
-
     border-radius: 70px;
 
     margin-bottom: 10px;
@@ -32,6 +30,14 @@
       margin-left: 35px;
     }
 
+    &:hover span, &:hover i {
+      color: $appMainColor;
+    }
+
+    a {
+      color: $highlight-gray;
+    }
+
 
     i {
       display: block;
@@ -49,10 +55,12 @@
     }
   }
 
-  .highlighted-nav-item {
-    color: $appMainColor;
-
+  .position-nav-item {
     margin-left: 35px;
+  }
+
+  .highlight-nav-item {
+    color: $appMainColor;
   }
 
   .lesson-item {

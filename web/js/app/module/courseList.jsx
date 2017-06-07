@@ -25,7 +25,7 @@ class CourseItem extends React.Component {
                   courseName = item.course.courseUrl,
                   learningUserCourseId = item.id;
 
-            const courseUrl = RouteCreator.create('app_course_actual_app', [courseName, learningUserCourseId]);
+            const courseUrl = RouteCreator.create('app_course_actual_app_dashboard', [courseName, learningUserCourseId]);
 
             if (item.hasPassed === false && item.course.initialCourse === false) {
                 inactiveItemClass = 'inactive';

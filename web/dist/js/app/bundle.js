@@ -2066,20 +2066,66 @@ module.exports = DOMProperty;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-function env() {
-    var path = window.location.pathname;
-    var env = '';
+exports.RouteCreator = exports.routes = undefined;
 
-    if (/app_dev.php/.test(path)) {
-        env = '/app_dev.php/';
-    } else {
-        env = '/';
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _env = __webpack_require__(22);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var routes = exports.routes = {
+    app_course_language_info_exists: _env.envr + 'langland/api/courses/is-info-looked',
+    app_course_language_infos: _env.envr + 'langland/api/courses/find-language-info',
+    app_course_mark_info_looked: _env.envr + 'langland/api/courses/mark-info-looked',
+    app_language_course_list: _env.envr + 'langland/api/courses/find-language-course-list',
+
+    app_find_learnable_languages: _env.envr + 'langland/api/language/find-learnable-languages',
+    app_find_learning_languages: _env.envr + 'langland/api/language/find-learning-languages',
+
+    app_logged_in_user: _env.envr + 'langland/api/user/find-logged-in-user',
+    app_create_learning_user: _env.envr + 'langland/api/user/create-learning-user',
+
+    app_logout: _env.envr + 'langland/logout',
+    app_dashboard: _env.envr + 'langland'
+};
+
+var AppRouter = function () {
+    function AppRouter() {
+        _classCallCheck(this, AppRouter);
+
+        this.routes = {
+            app_page_course_dashboard: _env.envr + 'langland/course/:0/:1',
+            app_course_actual_app_dashboard: _env.envr + 'langland/dashboard/:0/:1',
+            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
+            app_page_lesson_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/lessons',
+            app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3'
+        };
     }
 
-    return env;
-}
+    _createClass(AppRouter, [{
+        key: 'create',
+        value: function create(name, parameters) {
+            if (this.routes.hasOwnProperty(name)) {
+                var foundRoute = this.routes[name];
 
-var envr = exports.envr = env();
+                for (var i = 0; i < parameters.length; i++) {
+                    var r = new RegExp(':' + i);
+
+                    foundRoute = foundRoute.replace(r, parameters[i]);
+                }
+
+                return foundRoute;
+            }
+
+            throw new Error('AppRouter: Route ' + name + ' not found');
+        }
+    }]);
+
+    return AppRouter;
+}();
+
+var RouteCreator = exports.RouteCreator = new AppRouter();
 
 /***/ }),
 /* 18 */
@@ -2668,66 +2714,20 @@ module.exports = warning;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.RouteCreator = exports.routes = undefined;
+function env() {
+    var path = window.location.pathname;
+    var env = '';
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _env = __webpack_require__(17);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var routes = exports.routes = {
-    app_course_language_info_exists: _env.envr + 'langland/api/courses/is-info-looked',
-    app_course_language_infos: _env.envr + 'langland/api/courses/find-language-info',
-    app_course_mark_info_looked: _env.envr + 'langland/api/courses/mark-info-looked',
-    app_language_course_list: _env.envr + 'langland/api/courses/find-language-course-list',
-
-    app_find_learnable_languages: _env.envr + 'langland/api/language/find-learnable-languages',
-    app_find_learning_languages: _env.envr + 'langland/api/language/find-learning-languages',
-
-    app_logged_in_user: _env.envr + 'langland/api/user/find-logged-in-user',
-    app_create_learning_user: _env.envr + 'langland/api/user/create-learning-user',
-
-    app_logout: _env.envr + 'langland/logout',
-    app_dashboard: _env.envr + 'langland'
-};
-
-var AppRouter = function () {
-    function AppRouter() {
-        _classCallCheck(this, AppRouter);
-
-        this.routes = {
-            app_course_dashboard: _env.envr + 'langland/course/:0/:1',
-            app_course_actual_app: _env.envr + 'langland/dashboard/:0/:1',
-            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
-            app_page_lesson_list: _env.envr + 'langland/dashboard/:0/:1/lessons',
-            app_page_lesson_start: _env.envr + 'langland/language-course/dashboard/lessons/lesson/:0'
-        };
+    if (/app_dev.php/.test(path)) {
+        env = '/app_dev.php/';
+    } else {
+        env = '/';
     }
 
-    _createClass(AppRouter, [{
-        key: 'create',
-        value: function create(name, parameters) {
-            if (this.routes.hasOwnProperty(name)) {
-                var foundRoute = this.routes[name];
+    return env;
+}
 
-                for (var i = 0; i < parameters.length; i++) {
-                    var r = new RegExp(':' + i);
-
-                    foundRoute = foundRoute.replace(r, parameters[i]);
-                }
-
-                return foundRoute;
-            }
-
-            throw new Error('AppRouter: Route ' + name + ' not found');
-        }
-    }]);
-
-    return AppRouter;
-}();
-
-var RouteCreator = exports.RouteCreator = new AppRouter();
+var envr = exports.envr = env();
 
 /***/ }),
 /* 23 */
@@ -3138,6 +3138,65 @@ module.exports = React;
 
 /***/ }),
 /* 26 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BrowserRouter__ = __webpack_require__(200);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BrowserRouter", function() { return __WEBPACK_IMPORTED_MODULE_0__BrowserRouter__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__HashRouter__ = __webpack_require__(201);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "HashRouter", function() { return __WEBPACK_IMPORTED_MODULE_1__HashRouter__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Link__ = __webpack_require__(91);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return __WEBPACK_IMPORTED_MODULE_2__Link__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__MemoryRouter__ = __webpack_require__(202);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "MemoryRouter", function() { return __WEBPACK_IMPORTED_MODULE_3__MemoryRouter__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__NavLink__ = __webpack_require__(203);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NavLink", function() { return __WEBPACK_IMPORTED_MODULE_4__NavLink__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Prompt__ = __webpack_require__(204);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Prompt", function() { return __WEBPACK_IMPORTED_MODULE_5__Prompt__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Redirect__ = __webpack_require__(205);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Redirect", function() { return __WEBPACK_IMPORTED_MODULE_6__Redirect__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(206);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Route", function() { return __WEBPACK_IMPORTED_MODULE_7__Route__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(207);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Router", function() { return __WEBPACK_IMPORTED_MODULE_8__Router__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__StaticRouter__ = __webpack_require__(208);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StaticRouter", function() { return __WEBPACK_IMPORTED_MODULE_9__StaticRouter__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__Switch__ = __webpack_require__(209);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Switch", function() { return __WEBPACK_IMPORTED_MODULE_10__Switch__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__matchPath__ = __webpack_require__(210);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "matchPath", function() { return __WEBPACK_IMPORTED_MODULE_11__matchPath__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__withRouter__ = __webpack_require__(211);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "withRouter", function() { return __WEBPACK_IMPORTED_MODULE_12__withRouter__["a"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3163,7 +3222,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3228,7 +3287,7 @@ var createPath = exports.createPath = function createPath(location) {
 };
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3512,7 +3571,7 @@ module.exports = EventPluginHub;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3528,7 +3587,7 @@ module.exports = EventPluginHub;
 
 
 
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(47);
 
 var accumulateInto = __webpack_require__(83);
@@ -3652,7 +3711,7 @@ module.exports = EventPropagators;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3705,7 +3764,7 @@ var ReactInstanceMap = {
 module.exports = ReactInstanceMap;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3767,65 +3826,6 @@ function SyntheticUIEvent(dispatchConfig, dispatchMarker, nativeEvent, nativeEve
 SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
-
-/***/ }),
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__BrowserRouter__ = __webpack_require__(200);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "BrowserRouter", function() { return __WEBPACK_IMPORTED_MODULE_0__BrowserRouter__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__HashRouter__ = __webpack_require__(201);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "HashRouter", function() { return __WEBPACK_IMPORTED_MODULE_1__HashRouter__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Link__ = __webpack_require__(91);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Link", function() { return __WEBPACK_IMPORTED_MODULE_2__Link__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__MemoryRouter__ = __webpack_require__(202);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "MemoryRouter", function() { return __WEBPACK_IMPORTED_MODULE_3__MemoryRouter__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__NavLink__ = __webpack_require__(203);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "NavLink", function() { return __WEBPACK_IMPORTED_MODULE_4__NavLink__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__Prompt__ = __webpack_require__(204);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Prompt", function() { return __WEBPACK_IMPORTED_MODULE_5__Prompt__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Redirect__ = __webpack_require__(205);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Redirect", function() { return __WEBPACK_IMPORTED_MODULE_6__Redirect__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Route__ = __webpack_require__(206);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Route", function() { return __WEBPACK_IMPORTED_MODULE_7__Route__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Router__ = __webpack_require__(207);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Router", function() { return __WEBPACK_IMPORTED_MODULE_8__Router__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__StaticRouter__ = __webpack_require__(208);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "StaticRouter", function() { return __WEBPACK_IMPORTED_MODULE_9__StaticRouter__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__Switch__ = __webpack_require__(209);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Switch", function() { return __WEBPACK_IMPORTED_MODULE_10__Switch__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__matchPath__ = __webpack_require__(210);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "matchPath", function() { return __WEBPACK_IMPORTED_MODULE_11__matchPath__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__withRouter__ = __webpack_require__(211);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "withRouter", function() { return __WEBPACK_IMPORTED_MODULE_12__withRouter__["a"]; });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /***/ }),
 /* 33 */
@@ -4497,7 +4497,7 @@ module.exports = ReactBrowserEventEmitter;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 var ViewportMetrics = __webpack_require__(82);
 
 var getEventModifierState = __webpack_require__(55);
@@ -5144,7 +5144,7 @@ var _valueEqual = __webpack_require__(232);
 
 var _valueEqual2 = _interopRequireDefault(_valueEqual);
 
-var _PathUtils = __webpack_require__(27);
+var _PathUtils = __webpack_require__(28);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6155,7 +6155,7 @@ module.exports = ReactErrorUtils;
 var _prodInvariant = __webpack_require__(3);
 
 var ReactCurrentOwner = __webpack_require__(14);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(11);
 var ReactUpdates = __webpack_require__(13);
 
@@ -7268,7 +7268,7 @@ var _prodInvariant = __webpack_require__(20);
 var ReactNoopUpdateQueue = __webpack_require__(63);
 
 var canDefineProperty = __webpack_require__(40);
-var emptyObject = __webpack_require__(26);
+var emptyObject = __webpack_require__(27);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
@@ -9290,14 +9290,14 @@ var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDOMContainerInfo = __webpack_require__(145);
 var ReactDOMFeatureFlags = __webpack_require__(147);
 var ReactFeatureFlags = __webpack_require__(76);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(11);
 var ReactMarkupChecksum = __webpack_require__(167);
 var ReactReconciler = __webpack_require__(24);
 var ReactUpdateQueue = __webpack_require__(52);
 var ReactUpdates = __webpack_require__(13);
 
-var emptyObject = __webpack_require__(26);
+var emptyObject = __webpack_require__(27);
 var instantiateReactComponent = __webpack_require__(87);
 var invariant = __webpack_require__(1);
 var setInnerHTML = __webpack_require__(39);
@@ -11139,7 +11139,7 @@ var _languageInfo = __webpack_require__(104);
 
 var _courseList = __webpack_require__(103);
 
-var _routes = __webpack_require__(22);
+var _routes = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11255,9 +11255,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(17);
+var _env = __webpack_require__(22);
 
-var _routes = __webpack_require__(22);
+var _routes = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11376,7 +11376,7 @@ var CourseBar = function (_React$Component3) {
             var that = this;
             var items = this.props.items.map(function (item) {
                 var currentLangClass = item.id === that.props.currentItem.id ? 'current-course' : '';
-                var languageUrl = _routes.RouteCreator.create('app_course_dashboard', [item.name, item.id]);
+                var languageUrl = _routes.RouteCreator.create('app_page_course_dashboard', [item.name, item.id]);
 
                 return _react2.default.createElement(
                     'a',
@@ -11519,9 +11519,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(17);
+var _env = __webpack_require__(22);
 
-var _routes = __webpack_require__(22);
+var _routes = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11626,7 +11626,7 @@ var LanguageList = function (_React$Component) {
                                 className: learningClass,
                                 onClick: that.createLearningUser,
                                 'data-item-id': item.id,
-                                href: _routes.RouteCreator.create('app_course_dashboard', [item.name, item.id]) },
+                                href: _routes.RouteCreator.create('app_page_course_dashboard', [item.name, item.id]) },
                             title
                         )
                     )
@@ -11705,9 +11705,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(32);
+var _reactRouterDom = __webpack_require__(26);
 
-var _env = __webpack_require__(17);
+var _env = __webpack_require__(22);
 
 var _methodNavigation = __webpack_require__(107);
 
@@ -11735,15 +11735,17 @@ var MethodApp = function (_React$Component) {
     _createClass(MethodApp, [{
         key: 'render',
         value: function render() {
-            console.log(this.props);
-
             var courseName = this.props.match.params.courseName;
             var learningUserCourseId = this.props.match.params.learningUserCourseId;
             var mainPath = this.props.match.url;
 
             var lessonList = function lessonList() {
-                return _react2.default.createElement(_lessonList.LessonListContainer, { learningUserCourseId: learningUserCourseId });
+                return _react2.default.createElement(_lessonList.LessonListContainer, {
+                    courseName: courseName,
+                    learningUserCourseId: learningUserCourseId
+                });
             };
+
             return _react2.default.createElement(
                 _reactRouterDom.BrowserRouter,
                 null,
@@ -11759,7 +11761,8 @@ var MethodApp = function (_React$Component) {
                         _react2.default.createElement(
                             _reactRouterDom.Switch,
                             null,
-                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: lessonList })
+                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: lessonList }),
+                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:lessonId", component: _lessonDashboard.LessonDashboard })
                         )
                     )
                 )
@@ -11814,13 +11817,13 @@ var _reactDom = __webpack_require__(101);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactRouterDom = __webpack_require__(32);
+var _reactRouterDom = __webpack_require__(26);
 
 var _header = __webpack_require__(98);
 
 var _languages = __webpack_require__(99);
 
-var _env = __webpack_require__(17);
+var _env = __webpack_require__(22);
 
 var _methodApp = __webpack_require__(100);
 
@@ -11876,9 +11879,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(22);
+var _routes = __webpack_require__(17);
 
-var _reactRouterDom = __webpack_require__(32);
+var _reactRouterDom = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11916,7 +11919,7 @@ var CourseItem = function (_React$Component) {
                     courseName = item.course.courseUrl,
                     learningUserCourseId = item.id;
 
-                var courseUrl = _routes.RouteCreator.create('app_course_actual_app', [courseName, learningUserCourseId]);
+                var courseUrl = _routes.RouteCreator.create('app_course_actual_app_dashboard', [courseName, learningUserCourseId]);
 
                 if (item.hasPassed === false && item.course.initialCourse === false) {
                     inactiveItemClass = 'inactive';
@@ -12047,9 +12050,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(22);
+var _routes = __webpack_require__(17);
 
-var _env = __webpack_require__(17);
+var _env = __webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12302,9 +12305,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(22);
+var _routes = __webpack_require__(17);
 
-var _reactRouterDom = __webpack_require__(32);
+var _reactRouterDom = __webpack_require__(26);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12405,6 +12408,15 @@ var LessonStart = function (_React$Component2) {
         value: function render() {
             var item = this.props.item;
 
+            if (item === null) {
+                return null;
+            }
+
+            var courseName = this.props.courseName;
+            var learningUserCourseId = this.props.learningUserCourseId;
+            var learningUserLessonId = item.id;
+            var lessonName = item.lesson.name;
+
             return _react2.default.createElement(
                 'div',
                 null,
@@ -12426,7 +12438,7 @@ var LessonStart = function (_React$Component2) {
                         { className: 'start-link margin-bottom-30' },
                         _react2.default.createElement(
                             _reactRouterDom.Link,
-                            { to: _routes.RouteCreator.create('app_page_lesson_start', [item.learningUserLessonId]) },
+                            { to: _routes.RouteCreator.create('app_page_lesson_start', [courseName, learningUserCourseId, lessonName, learningUserLessonId]) },
                             'Start'
                         )
                     )
@@ -12490,6 +12502,9 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             var itemsFetched = this.state.itemsFetched;
             var currentItem = this.state.currentItem;
 
+            var courseName = this.props.courseName;
+            var learningUserCourseId = this.props.learningUserCourseId;
+
             if (items === null) {
                 return null;
             }
@@ -12502,7 +12517,11 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
                 'div',
                 { className: 'animated fadeInDown lesson-dashboard' },
                 _react2.default.createElement(LessonList, { items: items, showLesson: this.showLessonStart }),
-                _react2.default.createElement(LessonStart, { item: currentItem })
+                _react2.default.createElement(LessonStart, {
+                    item: currentItem,
+                    courseName: courseName,
+                    learningUserCourseId: learningUserCourseId
+                })
             );
         }
     }]);
@@ -12528,9 +12547,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(32);
+var _reactRouterDom = __webpack_require__(26);
 
-var _routes = __webpack_require__(22);
+var _routes = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12601,7 +12620,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                     { onClick: this.handleMenuHighlight, className: 'nav-item lesson-item' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: _routes.RouteCreator.create('app_page_lesson_list', [courseName, learningUserCourseId]) },
+                        { to: _routes.RouteCreator.create('app_page_lesson_list_dashboard', [courseName, learningUserCourseId]) },
                         _react2.default.createElement('i', { className: 'fa fa-mortar-board fa-2x highlightable' }),
                         _react2.default.createElement(
                             'span',
@@ -13421,7 +13440,7 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 var _LocationUtils = __webpack_require__(42);
 
-var _PathUtils = __webpack_require__(27);
+var _PathUtils = __webpack_require__(28);
 
 var _createTransitionManager = __webpack_require__(43);
 
@@ -13733,7 +13752,7 @@ var _invariant2 = _interopRequireDefault(_invariant);
 
 var _LocationUtils = __webpack_require__(42);
 
-var _PathUtils = __webpack_require__(27);
+var _PathUtils = __webpack_require__(28);
 
 var _createTransitionManager = __webpack_require__(43);
 
@@ -14057,7 +14076,7 @@ var _warning = __webpack_require__(21);
 
 var _warning2 = _interopRequireDefault(_warning);
 
-var _PathUtils = __webpack_require__(27);
+var _PathUtils = __webpack_require__(28);
 
 var _LocationUtils = __webpack_require__(42);
 
@@ -14974,7 +14993,7 @@ module.exports = AutoFocusUtils;
 
 
 
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ExecutionEnvironment = __webpack_require__(7);
 var FallbackCompositionState = __webpack_require__(138);
 var SyntheticCompositionEvent = __webpack_require__(181);
@@ -15579,8 +15598,8 @@ module.exports = CSSPropertyOperations;
 
 
 
-var EventPluginHub = __webpack_require__(28);
-var EventPropagators = __webpack_require__(29);
+var EventPluginHub = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactUpdates = __webpack_require__(13);
@@ -16015,7 +16034,7 @@ module.exports = DefaultEventPluginOrder;
 
 
 
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ReactDOMComponentTree = __webpack_require__(6);
 var SyntheticMouseEvent = __webpack_require__(36);
 
@@ -16663,7 +16682,7 @@ var React = __webpack_require__(25);
 var ReactComponentEnvironment = __webpack_require__(50);
 var ReactCurrentOwner = __webpack_require__(14);
 var ReactErrorUtils = __webpack_require__(51);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(11);
 var ReactNodeTypes = __webpack_require__(80);
 var ReactReconciler = __webpack_require__(24);
@@ -16672,7 +16691,7 @@ if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(190);
 }
 
-var emptyObject = __webpack_require__(26);
+var emptyObject = __webpack_require__(27);
 var invariant = __webpack_require__(1);
 var shallowEqual = __webpack_require__(41);
 var shouldUpdateReactComponent = __webpack_require__(58);
@@ -17692,7 +17711,7 @@ var DOMLazyTree = __webpack_require__(23);
 var DOMNamespaces = __webpack_require__(46);
 var DOMProperty = __webpack_require__(16);
 var DOMPropertyOperations = __webpack_require__(72);
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 var EventPluginRegistry = __webpack_require__(34);
 var ReactBrowserEventEmitter = __webpack_require__(35);
 var ReactDOMComponentFlags = __webpack_require__(73);
@@ -20790,7 +20809,7 @@ module.exports = REACT_ELEMENT_TYPE;
 
 
 
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 
 function runEventQueueInBatch(events) {
   EventPluginHub.enqueueEvents(events);
@@ -21028,7 +21047,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 var DOMProperty = __webpack_require__(16);
-var EventPluginHub = __webpack_require__(28);
+var EventPluginHub = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(47);
 var ReactComponentEnvironment = __webpack_require__(50);
 var ReactEmptyComponent = __webpack_require__(75);
@@ -21167,7 +21186,7 @@ module.exports = ReactMarkupChecksum;
 var _prodInvariant = __webpack_require__(3);
 
 var ReactComponentEnvironment = __webpack_require__(50);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(11);
 
 var ReactCurrentOwner = __webpack_require__(14);
@@ -22596,7 +22615,7 @@ module.exports = SVGDOMPropertyConfig;
 
 
 
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInputSelection = __webpack_require__(78);
@@ -22796,7 +22815,7 @@ module.exports = SelectEventPlugin;
 var _prodInvariant = __webpack_require__(3);
 
 var EventListener = __webpack_require__(64);
-var EventPropagators = __webpack_require__(29);
+var EventPropagators = __webpack_require__(30);
 var ReactDOMComponentTree = __webpack_require__(6);
 var SyntheticAnimationEvent = __webpack_require__(179);
 var SyntheticClipboardEvent = __webpack_require__(180);
@@ -22807,7 +22826,7 @@ var SyntheticMouseEvent = __webpack_require__(36);
 var SyntheticDragEvent = __webpack_require__(182);
 var SyntheticTouchEvent = __webpack_require__(186);
 var SyntheticTransitionEvent = __webpack_require__(187);
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 var SyntheticWheelEvent = __webpack_require__(188);
 
 var emptyFunction = __webpack_require__(9);
@@ -23195,7 +23214,7 @@ module.exports = SyntheticDragEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 
 /**
  * @interface FocusEvent
@@ -23278,7 +23297,7 @@ module.exports = SyntheticInputEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 
 var getEventCharCode = __webpack_require__(54);
 var getEventKey = __webpack_require__(194);
@@ -23367,7 +23386,7 @@ module.exports = SyntheticKeyboardEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(31);
+var SyntheticUIEvent = __webpack_require__(32);
 
 var getEventModifierState = __webpack_require__(55);
 
@@ -23751,7 +23770,7 @@ var _prodInvariant = __webpack_require__(3);
 
 var ReactCurrentOwner = __webpack_require__(14);
 var ReactDOMComponentTree = __webpack_require__(6);
-var ReactInstanceMap = __webpack_require__(30);
+var ReactInstanceMap = __webpack_require__(31);
 
 var getHostComponentFromComposite = __webpack_require__(85);
 var invariant = __webpack_require__(1);
@@ -24788,7 +24807,7 @@ Redirect.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_PathUtils__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_PathUtils__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_history_PathUtils___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_history_PathUtils__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Router__ = __webpack_require__(60);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -25487,7 +25506,7 @@ var ReactElement = __webpack_require__(19);
 var ReactPropTypeLocationNames = __webpack_require__(95);
 var ReactNoopUpdateQueue = __webpack_require__(63);
 
-var emptyObject = __webpack_require__(26);
+var emptyObject = __webpack_require__(27);
 var invariant = __webpack_require__(1);
 var warning = __webpack_require__(2);
 
@@ -26435,7 +26454,7 @@ var _assign = __webpack_require__(5);
 var ReactComponent = __webpack_require__(62);
 var ReactNoopUpdateQueue = __webpack_require__(63);
 
-var emptyObject = __webpack_require__(26);
+var emptyObject = __webpack_require__(27);
 
 /**
  * Base class helpers for the updating state of a component.

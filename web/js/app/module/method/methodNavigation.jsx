@@ -47,7 +47,7 @@ export class MethodNavigation extends React.Component {
             <div className="method-navigation">
 
                 <div onClick={this.handleMenuHighlight} className="nav-item lesson-item">
-                    <Link to={RouteCreator.create('app_page_lesson_list', [courseName, learningUserCourseId])}>
+                    <Link to={RouteCreator.create('app_page_lesson_list_dashboard', [courseName, learningUserCourseId])}>
                         <i className="fa fa-mortar-board fa-2x highlightable"></i>
                         <span className="highlightable">Lessons</span>
                     </Link>

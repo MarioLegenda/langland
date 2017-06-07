@@ -82,7 +82,7 @@ class LanguageList extends React.Component {
                             className={learningClass}
                             onClick={that.createLearningUser}
                             data-item-id={item.id}
-                            href={RouteCreator.create('app_course_dashboard', [item.name, item.id])}>
+                            href={RouteCreator.create('app_page_course_dashboard', [item.name, item.id])}>
                             {title}
                         </a>
                     </div>

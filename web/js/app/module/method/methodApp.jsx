@@ -13,13 +13,15 @@ class MethodApp extends React.Component {
     }
 
     render() {
-        console.log(this.props);
-
         const courseName = this.props.match.params.courseName;
         const learningUserCourseId = this.props.match.params.learningUserCourseId;
         const mainPath = this.props.match.url;
 
-        const lessonList = () => <LessonList learningUserCourseId={learningUserCourseId}/>;
+        const lessonList = () => <LessonList
+            courseName={courseName}
+            learningUserCourseId={learningUserCourseId}
+        />;
+
         return (
             <Router>
                 <div className="animated fadeInDown big-component">
@@ -30,6 +32,7 @@ class MethodApp extends React.Component {
                     <div className="main-app-dashboard">
                         <Switch>
                             <Route path={mainPath + "/lessons"} render={lessonList} />
+                            <Route path={mainPath + "/lesson/:lessonName/:lessonId"} component={LessonDashboard} />
                         </Switch>
                     </div>
                 </div>

@@ -65,6 +65,15 @@ class LessonStart extends React.Component {
     render() {
         const item = this.props.item;
 
+        if (item === null) {
+            return null;
+        }
+
+        const courseName = this.props.courseName;
+        const learningUserCourseId = this.props.learningUserCourseId;
+        const learningUserLessonId = item.id;
+        const lessonName = item.lesson.name;
+
         return (
             <div>
                 {item !== null &&
@@ -74,7 +83,7 @@ class LessonStart extends React.Component {
                     <p className="margin-bottom-30">{item.lesson.description}</p>
 
                     <div className="start-link margin-bottom-30">
-                        <Link to={RouteCreator.create('app_page_lesson_start', [item.learningUserLessonId])}>Start</Link>
+                        <Link to={RouteCreator.create('app_page_lesson_start', [courseName, learningUserCourseId, lessonName, learningUserLessonId])}>Start</Link>
                     </div>
                 </div>
                 }
@@ -116,7 +125,6 @@ export class LessonListContainer extends React.Component {
         $("html, body").animate({ scrollTop: $(document).height() }, 3000);
     }
 
-
     componentDidMount() {
         this._fetchLessons();
     }
@@ -125,6 +133,9 @@ export class LessonListContainer extends React.Component {
         const items = this.state.items;
         const itemsFetched = this.state.itemsFetched;
         const currentItem = this.state.currentItem;
+
+        const courseName = this.props.courseName;
+        const learningUserCourseId = this.props.learningUserCourseId;
 
         if (items === null) {
             return null;
@@ -137,7 +148,11 @@ export class LessonListContainer extends React.Component {
         return (
             <div className="animated fadeInDown lesson-dashboard">
                 <LessonList items={items} showLesson={this.showLessonStart}/>
-                <LessonStart item={currentItem}/>
+                <LessonStart
+                    item={currentItem}
+                    courseName={courseName}
+                    learningUserCourseId={learningUserCourseId}
+                />
             </div>
         )
     }

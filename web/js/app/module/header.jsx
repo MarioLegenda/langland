@@ -70,7 +70,7 @@ class CourseBar extends React.Component {
         const that = this;
         const items = this.props.items.map(function(item) {
             const currentLangClass = (item.id === that.props.currentItem.id) ? 'current-course' : '';
-            const languageUrl = RouteCreator.create('app_course_dashboard', [item.name, item.id]);
+            const languageUrl = RouteCreator.create('app_page_course_dashboard', [item.name, item.id]);
 
             return <a href={languageUrl} key={item.id} className={"language-link margin-bottom-20 " + currentLangClass}>{item.name.toLowerCase()}</a>
         });

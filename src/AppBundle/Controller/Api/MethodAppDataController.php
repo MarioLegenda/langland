@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
-class DataController extends CommonOperationController
+class MethodAppDataController extends CommonOperationController
 {
     public function lessonListAction($learningUserCourseId)
     {
@@ -11,6 +11,15 @@ class DataController extends CommonOperationController
         $lessons = $learningUserCourse->getLearningUserLessons();
 
         $serialized = $this->serialize($lessons, array('lesson_list'));
+
+        return $this->createSuccessJsonResponse($serialized);
+    }
+
+    public function findLearningUserLessonAction($learningUserLessonId)
+    {
+        $learningUserLesson = $this->getRepository('AppBundle:LearningUserLesson')->find($learningUserLessonId);
+
+        $serialized = $this->serialize($learningUserLesson, array('lesson_list', 'lesson_text'));
 
         return $this->createSuccessJsonResponse($serialized);
     }

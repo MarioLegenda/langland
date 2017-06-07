@@ -25,3 +25,7 @@ app_page_lesson_list_dashboard:
     methods: [GET]
     requirements:
         courseHolderId: \d+
+
+app_page_lesson_dashboard:
+    path: /dashboard/{courseName}/{learningUserCourseId}/lesson/{lessonName}/{learningUserLessonId}
+    defaults: { _controller: AppBundle:Dashboard:learningUserLessonDashboard }

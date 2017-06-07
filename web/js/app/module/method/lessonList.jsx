@@ -63,18 +63,16 @@ class LessonStart extends React.Component {
     }
 
     render() {
-        const item = this.props.item;
-
-        if (item === null) {
+        if (this.props.item === null) {
             return null;
         }
 
-        const courseName = this.props.courseName;
-        const learningUserCourseId = this.props.learningUserCourseId;
-        const learningUserLessonId = item.learningUserLessonId;
-        const lessonName = item.lesson.lessonUrl;
-
-        console.log(item);
+        const
+            item = this.props.item,
+            courseName = this.props.courseName,
+            learningUserCourseId = this.props.learningUserCourseId,
+            learningUserLessonId = item.learningUserLessonId,
+            lessonName = item.lesson.lessonUrl;
 
         return (
             <div>
@@ -132,12 +130,12 @@ export class LessonListContainer extends React.Component {
     }
 
     render() {
-        const items = this.state.items;
-        const itemsFetched = this.state.itemsFetched;
-        const currentItem = this.state.currentItem;
-
-        const courseName = this.props.courseName;
-        const learningUserCourseId = this.props.learningUserCourseId;
+        const
+            items = this.state.items,
+            itemsFetched = this.state.itemsFetched,
+            currentItem = this.state.currentItem,
+            courseName = this.props.courseName,
+            learningUserCourseId = this.props.learningUserCourseId;
 
         if (items === null) {
             return null;

@@ -5,7 +5,7 @@ import {envr} from './../env.js';
 import {MethodNavigation} from './methodNavigation.jsx';
 import {LessonListContainer as LessonList} from './lessonList.jsx';
 
-import {LessonDashboard} from './lessonDashboard.jsx';
+import {LessonDashboardContainer} from './lessonDashboard.jsx';
 
 class MethodApp extends React.Component {
     constructor(props) {
@@ -32,7 +32,7 @@ class MethodApp extends React.Component {
                     <div className="main-app-dashboard">
                         <Switch>
                             <Route path={mainPath + "/lessons"} render={lessonList} />
-                            <Route path={mainPath + "/lesson/:lessonName/:lessonId"} component={LessonDashboard} />
+                            <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} component={LessonDashboardContainer} />
                         </Switch>
                     </div>
                 </div>

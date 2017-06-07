@@ -2098,6 +2098,7 @@ var AppRouter = function () {
             app_page_course_dashboard: _env.envr + 'langland/course/:0/:1',
             app_course_actual_app_dashboard: _env.envr + 'langland/dashboard/:0/:1',
             app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
+            app_learning_user_lesson: _env.envr + 'langland/api/data/lesson/:0',
             app_page_lesson_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/lessons',
             app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3'
         };
@@ -11762,7 +11763,7 @@ var MethodApp = function (_React$Component) {
                             _reactRouterDom.Switch,
                             null,
                             _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: lessonList }),
-                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:lessonId", component: _lessonDashboard.LessonDashboard })
+                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:learningUserLessonId", component: _lessonDashboard.LessonDashboardContainer })
                         )
                     )
                 )
@@ -12252,13 +12253,15 @@ var LanguageInfoContainer = exports.LanguageInfoContainer = function (_React$Com
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LessonDashboard = undefined;
+exports.LessonDashboardContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _routes = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12268,27 +12271,77 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LessonDashboard = exports.LessonDashboard = function (_React$Component) {
+var LessonDashboard = function (_React$Component) {
     _inherits(LessonDashboard, _React$Component);
 
     function LessonDashboard(props) {
         _classCallCheck(this, LessonDashboard);
 
-        return _possibleConstructorReturn(this, (LessonDashboard.__proto__ || Object.getPrototypeOf(LessonDashboard)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (LessonDashboard.__proto__ || Object.getPrototypeOf(LessonDashboard)).call(this, props));
+
+        console.log(_this.props.item);
+        return _this;
     }
 
     _createClass(LessonDashboard, [{
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
-                'div',
-                null,
-                'Lesson dashboard'
-            );
+            return _react2.default.createElement('div', null);
         }
     }]);
 
     return LessonDashboard;
+}(_react2.default.Component);
+
+var LessonDashboardContainer = exports.LessonDashboardContainer = function (_React$Component2) {
+    _inherits(LessonDashboardContainer, _React$Component2);
+
+    function LessonDashboardContainer(props) {
+        _classCallCheck(this, LessonDashboardContainer);
+
+        var _this2 = _possibleConstructorReturn(this, (LessonDashboardContainer.__proto__ || Object.getPrototypeOf(LessonDashboardContainer)).call(this, props));
+
+        _this2.state = {
+            item: null
+        };
+
+        _this2.learningUserLessonId = _this2.props.match.params.learningUserLessonId;
+        return _this2;
+    }
+
+    _createClass(LessonDashboardContainer, [{
+        key: '_fetchLesson',
+        value: function _fetchLesson() {
+            jQuery.ajax({
+                url: _routes.RouteCreator.create('app_learning_user_lesson', [this.learningUserLessonId]),
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        item: data.data
+                    });
+                }
+            }, this));
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchLesson();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.state.item === null) {
+                return null;
+            }
+
+            var item = this.state.item;
+
+            return _react2.default.createElement(LessonDashboard, { item: item });
+        }
+    }]);
+
+    return LessonDashboardContainer;
 }(_react2.default.Component);
 
 /***/ }),
@@ -12410,18 +12463,15 @@ var LessonStart = function (_React$Component2) {
     _createClass(LessonStart, [{
         key: 'render',
         value: function render() {
-            var item = this.props.item;
-
-            if (item === null) {
+            if (this.props.item === null) {
                 return null;
             }
 
-            var courseName = this.props.courseName;
-            var learningUserCourseId = this.props.learningUserCourseId;
-            var learningUserLessonId = item.learningUserLessonId;
-            var lessonName = item.lesson.lessonUrl;
-
-            console.log(item);
+            var item = this.props.item,
+                courseName = this.props.courseName,
+                learningUserCourseId = this.props.learningUserCourseId,
+                learningUserLessonId = item.learningUserLessonId,
+                lessonName = item.lesson.lessonUrl;
 
             return _react2.default.createElement(
                 'div',
@@ -12504,12 +12554,11 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
     }, {
         key: 'render',
         value: function render() {
-            var items = this.state.items;
-            var itemsFetched = this.state.itemsFetched;
-            var currentItem = this.state.currentItem;
-
-            var courseName = this.props.courseName;
-            var learningUserCourseId = this.props.learningUserCourseId;
+            var items = this.state.items,
+                itemsFetched = this.state.itemsFetched,
+                currentItem = this.state.currentItem,
+                courseName = this.props.courseName,
+                learningUserCourseId = this.props.learningUserCourseId;
 
             if (items === null) {
                 return null;

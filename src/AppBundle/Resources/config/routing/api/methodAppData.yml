@@ -1,0 +1,8 @@
+app_lesson_list:
+    path: /lesson-list/{learningUserCourseId}
+    defaults: { _controller: AppBundle:Api/MethodAppData:lessonList }
+    methods: [GET]
+
+app_learning_user_lesson:
+    path: /lesson/{learningUserLessonId}
+    defaults: { _controller: AppBundle:Api/MethodAppData:findLearningUserLesson }

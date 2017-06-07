@@ -14,6 +14,11 @@ AdminBundle\Entity\Lesson:
             expose: true
             groups: [lesson_list]
             serialized_name: lessonUrl
+        lessonTexts:
+            expose: true
+            groups: [lesson_text]
+            type: AdminBundle\Entity\LessonText
+            serialized_name: lessonText
         games:
             expose: true
             type: AdminBundle\Entity\Game\WordGame

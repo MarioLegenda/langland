@@ -11,5 +11,5 @@ AppBundle\Entity\LearningUserLesson:
             serialized_name: hasPassed
         lesson:
             expose: true
-            groups: [lesson_list]
+            groups: ['lesson_list', 'lesson_text']
             type: AdminBundle\Entity\Lesson

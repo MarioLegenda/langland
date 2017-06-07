@@ -8,6 +8,7 @@ export class LessonDashboard extends React.Component {
     render() {
         return (
             <div>
+                Lesson dashboard
             </div>
         )
     }

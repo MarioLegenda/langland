@@ -10,6 +10,10 @@ AdminBundle\Entity\Lesson:
         description:
             expose: true
             groups: [lesson_list]
+        lessonUrl:
+            expose: true
+            groups: [lesson_list]
+            serialized_name: lessonUrl
         games:
             expose: true
             type: AdminBundle\Entity\Game\WordGame

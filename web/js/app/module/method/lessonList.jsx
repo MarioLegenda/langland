@@ -71,8 +71,10 @@ class LessonStart extends React.Component {
 
         const courseName = this.props.courseName;
         const learningUserCourseId = this.props.learningUserCourseId;
-        const learningUserLessonId = item.id;
-        const lessonName = item.lesson.name;
+        const learningUserLessonId = item.learningUserLessonId;
+        const lessonName = item.lesson.lessonUrl;
+
+        console.log(item);
 
         return (
             <div>

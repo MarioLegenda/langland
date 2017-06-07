@@ -12280,7 +12280,11 @@ var LessonDashboard = exports.LessonDashboard = function (_React$Component) {
     _createClass(LessonDashboard, [{
         key: 'render',
         value: function render() {
-            return _react2.default.createElement('div', null);
+            return _react2.default.createElement(
+                'div',
+                null,
+                'Lesson dashboard'
+            );
         }
     }]);
 
@@ -12414,8 +12418,10 @@ var LessonStart = function (_React$Component2) {
 
             var courseName = this.props.courseName;
             var learningUserCourseId = this.props.learningUserCourseId;
-            var learningUserLessonId = item.id;
-            var lessonName = item.lesson.name;
+            var learningUserLessonId = item.learningUserLessonId;
+            var lessonName = item.lesson.lessonUrl;
+
+            console.log(item);
 
             return _react2.default.createElement(
                 'div',

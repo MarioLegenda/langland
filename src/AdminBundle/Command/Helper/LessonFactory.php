@@ -42,6 +42,7 @@ class LessonFactory
 
             $lesson->setName($course->getLanguage()->getName(). ' ' .($i + 1));
             $lesson->setDescription($this->getFaker()->sentence(100));
+            $lesson->setLessonUrl(\URLify::filter($lesson->getName()));
             $lesson->setCourse($course);
 
             for ($v = 0; $v < 5; $v++) {

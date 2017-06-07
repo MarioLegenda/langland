@@ -22,6 +22,10 @@ class Lesson
      */
     private $description;
     /**
+     * @var string $lessonUrl
+     */
+    private $lessonUrl;
+    /**
      * @var bool $isInitialLesson
      */
     private $isInitialLesson;
@@ -103,6 +107,23 @@ class Lesson
     public function setDescription($description) : Lesson
     {
         $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getLessonUrl()
+    {
+        return $this->lessonUrl;
+    }
+    /**
+     * @param string $lessonUrl
+     * @return Lesson
+     */
+    public function setLessonUrl($lessonUrl) : Lesson
+    {
+        $this->lessonUrl = $lessonUrl;
 
         return $this;
     }

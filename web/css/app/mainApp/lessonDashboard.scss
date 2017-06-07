@@ -100,6 +100,22 @@
     }
   }
 
+  .passed-lesson {
+    @extend .lesson;
+
+    position:relative;
+
+    border: 1px solid green;
+
+    i {
+      position: absolute;
+      color: green;
+
+      left: 51px;
+      top: 80px;
+    }
+  }
+
   .unpassed-lesson {
     @extend .lesson;
 

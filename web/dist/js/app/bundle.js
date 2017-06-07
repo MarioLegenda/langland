@@ -12557,14 +12557,13 @@ var LessonList = function (_React$Component) {
             var that = this;
 
             var items = this.props.items.map(function (item, index) {
-                var lessonClass = item.lesson.isInitialLesson === true ? 'lesson' : 'unpassed-lesson';
-
+                var passedClass = item.hasPassed === true ? 'passed-lesson' : '';
                 return _react2.default.createElement(
                     'div',
                     { key: index },
-                    item.hasPassed === false && item.lesson.isInitialLesson === true && _react2.default.createElement(
+                    item.lesson.isInitialLesson === true && _react2.default.createElement(
                         'div',
-                        { onClick: that.chooseLesson, 'data-lesson-index': index, className: 'lesson' },
+                        { onClick: that.chooseLesson, 'data-lesson-index': index, className: "lesson " + passedClass },
                         _react2.default.createElement(
                             'div',
                             null,
@@ -12573,7 +12572,8 @@ var LessonList = function (_React$Component) {
                                 null,
                                 item.lesson.name.toUpperCase()
                             )
-                        )
+                        ),
+                        item.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' })
                     ),
                     item.hasPassed === false && item.lesson.isInitialLesson === false && _react2.default.createElement(
                         'div',
@@ -12618,11 +12618,14 @@ var LessonStart = function (_React$Component2) {
                 return null;
             }
 
+            console.log(this.props.item);
+
             var item = this.props.item,
                 courseName = this.props.courseName,
                 learningUserCourseId = this.props.learningUserCourseId,
                 learningUserLessonId = item.learningUserLessonId,
-                lessonName = item.lesson.lessonUrl;
+                lessonName = item.lesson.lessonUrl,
+                buttonText = item.hasPassed === true ? 'Do again' : 'Start';
 
             return _react2.default.createElement(
                 'div',
@@ -12646,7 +12649,7 @@ var LessonStart = function (_React$Component2) {
                         _react2.default.createElement(
                             _reactRouterDom.Link,
                             { to: _routes.RouteCreator.create('app_page_lesson_start', [courseName, learningUserCourseId, lessonName, learningUserLessonId]) },
-                            'Start'
+                            buttonText
                         )
                     )
                 )

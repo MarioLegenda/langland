@@ -26,15 +26,18 @@ class LessonList extends React.Component {
         const that = this;
 
         const items = this.props.items.map(function(item, index) {
-            const lessonClass = (item.lesson.isInitialLesson === true) ? 'lesson' : 'unpassed-lesson';
-
+            const passedClass = (item.hasPassed === true) ? 'passed-lesson' : '';
             return (
                 <div key={index}>
-                    {item.hasPassed === false && item.lesson.isInitialLesson === true &&
-                    <div onClick={that.chooseLesson} data-lesson-index={index} className="lesson">
+                    {item.lesson.isInitialLesson === true &&
+                    <div onClick={that.chooseLesson} data-lesson-index={index} className={"lesson " + passedClass}>
                         <div>
                             <h1>{item.lesson.name.toUpperCase()}</h1>
                         </div>
+
+                        {item.hasPassed === true &&
+                            <i className="fa fa-check"></i>
+                        }
                     </div>
                     }
 
@@ -67,12 +70,15 @@ class LessonStart extends React.Component {
             return null;
         }
 
+        console.log(this.props.item);
+
         const
             item = this.props.item,
             courseName = this.props.courseName,
             learningUserCourseId = this.props.learningUserCourseId,
             learningUserLessonId = item.learningUserLessonId,
-            lessonName = item.lesson.lessonUrl;
+            lessonName = item.lesson.lessonUrl,
+            buttonText = (item.hasPassed === true) ? 'Do again' : 'Start';
 
         return (
             <div>
@@ -83,7 +89,7 @@ class LessonStart extends React.Component {
                     <p className="margin-bottom-30">{item.lesson.description}</p>
 
                     <div className="start-link margin-bottom-30">
-                        <Link to={RouteCreator.create('app_page_lesson_start', [courseName, learningUserCourseId, lessonName, learningUserLessonId])}>Start</Link>
+                        <Link to={RouteCreator.create('app_page_lesson_start', [courseName, learningUserCourseId, lessonName, learningUserLessonId])}>{buttonText}</Link>
                     </div>
                 </div>
                 }

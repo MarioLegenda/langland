@@ -1,5 +1,5 @@
 import React from 'react';
-import {RouteCreator} from './../routes.js';
+import {RouteCreator, routes} from './../routes.js';
 
 class LessonText extends React.Component {
     constructor(props) {
@@ -55,7 +55,7 @@ class LessonDashboard extends React.Component {
     }
 
     _markLessonFinished() {
-        console.log('Lesson marked as finished');
+        this.props.markLessonFinished();
     }
 
     next() {
@@ -111,6 +111,8 @@ export class LessonDashboardContainer extends React.Component {
         };
 
         this.learningUserLessonId = this.props.match.params.learningUserLessonId;
+
+        this.markLessonFinished = this.markLessonFinished.bind(this);
     }
 
     _fetchLesson() {
@@ -126,6 +128,22 @@ export class LessonDashboardContainer extends React.Component {
         }, this));
     }
 
+    markLessonFinished() {
+        jQuery.ajax({
+            url: routes.app_learning_user_mark_lesson_passed,
+            method: 'POST',
+            data: {learningUserLessonId: this.learningUserLessonId}
+        }).done(function(data) {
+            if (data.status === 'success') {
+                console.log('success');
+            }
+
+            if (data.status === 'failure') {
+                console.log('failure');
+            }
+        })
+    }
+
     componentDidMount() {
         this._fetchLesson();
     }
@@ -138,7 +156,10 @@ export class LessonDashboardContainer extends React.Component {
         const item = this.state.item.lesson;
 
         return (
-            <LessonDashboard item={item}/>
+            <LessonDashboard
+                item={item}
+                markLessonFinished={this.markLessonFinished}
+            />
         )
     }
 }

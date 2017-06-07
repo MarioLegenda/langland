@@ -13,7 +13,9 @@ export const routes = {
     app_create_learning_user: envr + 'langland/api/user/create-learning-user',
 
     app_logout: envr + 'langland/logout',
-    app_dashboard: envr + 'langland'
+    app_dashboard: envr + 'langland',
+
+    app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed'
 };
 
 class AppRouter {
@@ -24,7 +26,8 @@ class AppRouter {
             app_lesson_list: envr + 'langland/api/data/lesson-list/:0',
             app_learning_user_lesson: envr + 'langland/api/data/lesson/:0',
             app_page_lesson_list_dashboard: envr + 'langland/dashboard/:0/:1/lessons',
-            app_page_lesson_start: envr + 'langland/dashboard/:0/:1/lesson/:2/:3'
+            app_page_lesson_start: envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
+            app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed'
         }
     }
 

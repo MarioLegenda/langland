@@ -438,7 +438,7 @@ module.exports = reactProdInvariant;
 "use strict";
 
 
-module.exports = __webpack_require__(25);
+module.exports = __webpack_require__(24);
 
 
 /***/ }),
@@ -557,7 +557,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMProperty = __webpack_require__(16);
+var DOMProperty = __webpack_require__(17);
 var ReactDOMComponentFlags = __webpack_require__(73);
 
 var invariant = __webpack_require__(1);
@@ -1296,7 +1296,7 @@ var _prodInvariant = __webpack_require__(3),
 var CallbackQueue = __webpack_require__(71);
 var PooledClass = __webpack_require__(18);
 var ReactFeatureFlags = __webpack_require__(76);
-var ReactReconciler = __webpack_require__(24);
+var ReactReconciler = __webpack_require__(23);
 var Transaction = __webpack_require__(37);
 
 var invariant = __webpack_require__(1);
@@ -1845,6 +1845,81 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.RouteCreator = exports.routes = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _env = __webpack_require__(25);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var routes = exports.routes = {
+    app_course_language_info_exists: _env.envr + 'langland/api/courses/is-info-looked',
+    app_course_language_infos: _env.envr + 'langland/api/courses/find-language-info',
+    app_course_mark_info_looked: _env.envr + 'langland/api/courses/mark-info-looked',
+    app_language_course_list: _env.envr + 'langland/api/courses/find-language-course-list',
+
+    app_find_learnable_languages: _env.envr + 'langland/api/language/find-learnable-languages',
+    app_find_learning_languages: _env.envr + 'langland/api/language/find-learning-languages',
+
+    app_logged_in_user: _env.envr + 'langland/api/user/find-logged-in-user',
+    app_create_learning_user: _env.envr + 'langland/api/user/create-learning-user',
+
+    app_logout: _env.envr + 'langland/logout',
+    app_dashboard: _env.envr + 'langland',
+
+    app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed'
+};
+
+var AppRouter = function () {
+    function AppRouter() {
+        _classCallCheck(this, AppRouter);
+
+        this.routes = {
+            app_page_course_dashboard: _env.envr + 'langland/course/:0/:1',
+            app_course_actual_app_dashboard: _env.envr + 'langland/dashboard/:0/:1',
+            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
+            app_learning_user_lesson: _env.envr + 'langland/api/data/lesson/:0',
+            app_page_lesson_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/lessons',
+            app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
+            app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed'
+        };
+    }
+
+    _createClass(AppRouter, [{
+        key: 'create',
+        value: function create(name, parameters) {
+            if (this.routes.hasOwnProperty(name)) {
+                var foundRoute = this.routes[name];
+
+                for (var i = 0; i < parameters.length; i++) {
+                    var r = new RegExp(':' + i);
+
+                    foundRoute = foundRoute.replace(r, parameters[i]);
+                }
+
+                return foundRoute;
+            }
+
+            throw new Error('AppRouter: Route ' + name + ' not found');
+        }
+    }]);
+
+    return AppRouter;
+}();
+
+var RouteCreator = exports.RouteCreator = new AppRouter();
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -2055,78 +2130,6 @@ var DOMProperty = {
 
 module.exports = DOMProperty;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RouteCreator = exports.routes = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _env = __webpack_require__(22);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var routes = exports.routes = {
-    app_course_language_info_exists: _env.envr + 'langland/api/courses/is-info-looked',
-    app_course_language_infos: _env.envr + 'langland/api/courses/find-language-info',
-    app_course_mark_info_looked: _env.envr + 'langland/api/courses/mark-info-looked',
-    app_language_course_list: _env.envr + 'langland/api/courses/find-language-course-list',
-
-    app_find_learnable_languages: _env.envr + 'langland/api/language/find-learnable-languages',
-    app_find_learning_languages: _env.envr + 'langland/api/language/find-learning-languages',
-
-    app_logged_in_user: _env.envr + 'langland/api/user/find-logged-in-user',
-    app_create_learning_user: _env.envr + 'langland/api/user/create-learning-user',
-
-    app_logout: _env.envr + 'langland/logout',
-    app_dashboard: _env.envr + 'langland'
-};
-
-var AppRouter = function () {
-    function AppRouter() {
-        _classCallCheck(this, AppRouter);
-
-        this.routes = {
-            app_page_course_dashboard: _env.envr + 'langland/course/:0/:1',
-            app_course_actual_app_dashboard: _env.envr + 'langland/dashboard/:0/:1',
-            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
-            app_learning_user_lesson: _env.envr + 'langland/api/data/lesson/:0',
-            app_page_lesson_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/lessons',
-            app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3'
-        };
-    }
-
-    _createClass(AppRouter, [{
-        key: 'create',
-        value: function create(name, parameters) {
-            if (this.routes.hasOwnProperty(name)) {
-                var foundRoute = this.routes[name];
-
-                for (var i = 0; i < parameters.length; i++) {
-                    var r = new RegExp(':' + i);
-
-                    foundRoute = foundRoute.replace(r, parameters[i]);
-                }
-
-                return foundRoute;
-            }
-
-            throw new Error('AppRouter: Route ' + name + ' not found');
-        }
-    }]);
-
-    return AppRouter;
-}();
-
-var RouteCreator = exports.RouteCreator = new AppRouter();
 
 /***/ }),
 /* 18 */
@@ -2710,31 +2713,6 @@ module.exports = warning;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-function env() {
-    var path = window.location.pathname;
-    var env = '';
-
-    if (/app_dev.php/.test(path)) {
-        env = '/app_dev.php/';
-    } else {
-        env = '/';
-    }
-
-    return env;
-}
-
-var envr = exports.envr = env();
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /**
  * Copyright 2015-present, Facebook, Inc.
  * All rights reserved.
@@ -2854,7 +2832,7 @@ DOMLazyTree.queueText = queueText;
 module.exports = DOMLazyTree;
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3028,7 +3006,7 @@ module.exports = ReactReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3136,6 +3114,31 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = React;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function env() {
+    var path = window.location.pathname;
+    var env = '';
+
+    if (/app_dev.php/.test(path)) {
+        env = '/app_dev.php/';
+    } else {
+        env = '/';
+    }
+
+    return env;
+}
+
+var envr = exports.envr = env();
 
 /***/ }),
 /* 26 */
@@ -5323,7 +5326,7 @@ module.exports = ReactPropTypesSecret;
 
 
 
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(22);
 var Danger = __webpack_require__(135);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInstrumentation = __webpack_require__(11);
@@ -5880,7 +5883,7 @@ var _prodInvariant = __webpack_require__(3);
 var ReactPropTypesSecret = __webpack_require__(81);
 var propTypesFactory = __webpack_require__(68);
 
-var React = __webpack_require__(25);
+var React = __webpack_require__(24);
 var PropTypes = propTypesFactory(React.isValidElement);
 
 var invariant = __webpack_require__(1);
@@ -8543,7 +8546,7 @@ module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 
 
-var DOMProperty = __webpack_require__(16);
+var DOMProperty = __webpack_require__(17);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInstrumentation = __webpack_require__(11);
 
@@ -9282,9 +9285,9 @@ module.exports = ReactInputSelection;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(23);
-var DOMProperty = __webpack_require__(16);
-var React = __webpack_require__(25);
+var DOMLazyTree = __webpack_require__(22);
+var DOMProperty = __webpack_require__(17);
+var React = __webpack_require__(24);
 var ReactBrowserEventEmitter = __webpack_require__(35);
 var ReactCurrentOwner = __webpack_require__(14);
 var ReactDOMComponentTree = __webpack_require__(6);
@@ -9294,7 +9297,7 @@ var ReactFeatureFlags = __webpack_require__(76);
 var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(11);
 var ReactMarkupChecksum = __webpack_require__(167);
-var ReactReconciler = __webpack_require__(24);
+var ReactReconciler = __webpack_require__(23);
 var ReactUpdateQueue = __webpack_require__(52);
 var ReactUpdates = __webpack_require__(13);
 
@@ -9827,7 +9830,7 @@ module.exports = ReactMount;
 
 var _prodInvariant = __webpack_require__(3);
 
-var React = __webpack_require__(25);
+var React = __webpack_require__(24);
 
 var invariant = __webpack_require__(1);
 
@@ -11140,7 +11143,7 @@ var _languageInfo = __webpack_require__(104);
 
 var _courseList = __webpack_require__(103);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11256,9 +11259,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(25);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11520,9 +11523,9 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(25);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11708,7 +11711,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(26);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(25);
 
 var _methodNavigation = __webpack_require__(107);
 
@@ -11829,7 +11832,7 @@ var _header = __webpack_require__(98);
 
 var _languages = __webpack_require__(99);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(25);
 
 var _methodApp = __webpack_require__(100);
 
@@ -11885,7 +11888,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 var _reactRouterDom = __webpack_require__(26);
 
@@ -12056,7 +12059,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12264,7 +12267,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12361,7 +12364,7 @@ var LessonDashboard = function (_React$Component2) {
     _createClass(LessonDashboard, [{
         key: '_markLessonFinished',
         value: function _markLessonFinished() {
-            console.log('Lesson marked as finished');
+            this.props.markLessonFinished();
         }
     }, {
         key: 'next',
@@ -12432,6 +12435,8 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
         };
 
         _this3.learningUserLessonId = _this3.props.match.params.learningUserLessonId;
+
+        _this3.markLessonFinished = _this3.markLessonFinished.bind(_this3);
         return _this3;
     }
 
@@ -12450,6 +12455,23 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
             }, this));
         }
     }, {
+        key: 'markLessonFinished',
+        value: function markLessonFinished() {
+            jQuery.ajax({
+                url: _routes.routes.app_learning_user_mark_lesson_passed,
+                method: 'POST',
+                data: { learningUserLessonId: this.learningUserLessonId }
+            }).done(function (data) {
+                if (data.status === 'success') {
+                    console.log('success');
+                }
+
+                if (data.status === 'failure') {
+                    console.log('failure');
+                }
+            });
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this._fetchLesson();
@@ -12463,7 +12485,10 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
 
             var item = this.state.item.lesson;
 
-            return _react2.default.createElement(LessonDashboard, { item: item });
+            return _react2.default.createElement(LessonDashboard, {
+                item: item,
+                markLessonFinished: this.markLessonFinished
+            });
         }
     }]);
 
@@ -12488,7 +12513,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 var _reactRouterDom = __webpack_require__(26);
 
@@ -12730,7 +12755,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(26);
 
-var _routes = __webpack_require__(17);
+var _routes = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16132,7 +16157,7 @@ module.exports = ChangeEventPlugin;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(22);
 var ExecutionEnvironment = __webpack_require__(7);
 
 var createNodesFromMarkup = __webpack_require__(112);
@@ -16420,7 +16445,7 @@ module.exports = FallbackCompositionState;
 
 
 
-var DOMProperty = __webpack_require__(16);
+var DOMProperty = __webpack_require__(17);
 
 var MUST_USE_PROPERTY = DOMProperty.injection.MUST_USE_PROPERTY;
 var HAS_BOOLEAN_VALUE = DOMProperty.injection.HAS_BOOLEAN_VALUE;
@@ -16661,7 +16686,7 @@ module.exports = HTMLDOMPropertyConfig;
 
 
 
-var ReactReconciler = __webpack_require__(24);
+var ReactReconciler = __webpack_require__(23);
 
 var instantiateReactComponent = __webpack_require__(87);
 var KeyEscapeUtils = __webpack_require__(48);
@@ -16859,14 +16884,14 @@ module.exports = ReactComponentBrowserEnvironment;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(5);
 
-var React = __webpack_require__(25);
+var React = __webpack_require__(24);
 var ReactComponentEnvironment = __webpack_require__(50);
 var ReactCurrentOwner = __webpack_require__(14);
 var ReactErrorUtils = __webpack_require__(51);
 var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(11);
 var ReactNodeTypes = __webpack_require__(80);
-var ReactReconciler = __webpack_require__(24);
+var ReactReconciler = __webpack_require__(23);
 
 if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(190);
@@ -17769,7 +17794,7 @@ module.exports = ReactCompositeComponent;
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDefaultInjection = __webpack_require__(160);
 var ReactMount = __webpack_require__(79);
-var ReactReconciler = __webpack_require__(24);
+var ReactReconciler = __webpack_require__(23);
 var ReactUpdates = __webpack_require__(13);
 var ReactVersion = __webpack_require__(175);
 
@@ -17888,9 +17913,9 @@ var _prodInvariant = __webpack_require__(3),
 
 var AutoFocusUtils = __webpack_require__(131);
 var CSSPropertyOperations = __webpack_require__(133);
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(22);
 var DOMNamespaces = __webpack_require__(46);
-var DOMProperty = __webpack_require__(16);
+var DOMProperty = __webpack_require__(17);
 var DOMPropertyOperations = __webpack_require__(72);
 var EventPluginHub = __webpack_require__(29);
 var EventPluginRegistry = __webpack_require__(34);
@@ -18929,7 +18954,7 @@ module.exports = ReactDOMContainerInfo;
 
 var _assign = __webpack_require__(5);
 
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(22);
 var ReactDOMComponentTree = __webpack_require__(6);
 
 var ReactDOMEmptyComponent = function (instantiate) {
@@ -19346,7 +19371,7 @@ module.exports = ReactDOMInput;
 
 
 
-var DOMProperty = __webpack_require__(16);
+var DOMProperty = __webpack_require__(17);
 var ReactComponentTreeHook = __webpack_require__(8);
 
 var warning = __webpack_require__(2);
@@ -19496,7 +19521,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 var _assign = __webpack_require__(5);
 
-var React = __webpack_require__(25);
+var React = __webpack_require__(24);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDOMSelect = __webpack_require__(74);
 
@@ -19844,7 +19869,7 @@ var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(5);
 
 var DOMChildrenOperations = __webpack_require__(45);
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(22);
 var ReactDOMComponentTree = __webpack_require__(6);
 
 var escapeTextContentForBrowser = __webpack_require__(38);
@@ -20318,7 +20343,7 @@ module.exports = {
 
 
 
-var DOMProperty = __webpack_require__(16);
+var DOMProperty = __webpack_require__(17);
 var EventPluginRegistry = __webpack_require__(34);
 var ReactComponentTreeHook = __webpack_require__(8);
 
@@ -21227,7 +21252,7 @@ module.exports = ReactHostOperationHistoryHook;
 
 
 
-var DOMProperty = __webpack_require__(16);
+var DOMProperty = __webpack_require__(17);
 var EventPluginHub = __webpack_require__(29);
 var EventPluginUtils = __webpack_require__(47);
 var ReactComponentEnvironment = __webpack_require__(50);
@@ -21371,7 +21396,7 @@ var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(11);
 
 var ReactCurrentOwner = __webpack_require__(14);
-var ReactReconciler = __webpack_require__(24);
+var ReactReconciler = __webpack_require__(23);
 var ReactChildReconciler = __webpack_require__(140);
 
 var emptyFunction = __webpack_require__(9);

@@ -2,29 +2,12 @@
 
 namespace Library;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ResponseController extends Controller
 {
-    /**
-     * @param string $repository
-     * @return EntityRepository
-     */
-    protected function getRepository(string $repository) : EntityRepository
-    {
-        return $this->get('doctrine')->getRepository($repository);
-    }
-    /**
-     * @return EntityManager
-     */
-    protected function getManager() : EntityManager
-    {
-        return $this->get('doctrine')->getManager();
-    }
     /**
      * @param array $data
      * @return JsonResponse

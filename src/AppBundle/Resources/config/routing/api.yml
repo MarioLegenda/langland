@@ -20,4 +20,4 @@ app_main_data:
   resource: "@AppBundle/Resources/config/routing/api/methodAppData.yml"
   prefix: /data
   host: '%host%'
-  methods: [GET]
+  methods: [GET, POST]

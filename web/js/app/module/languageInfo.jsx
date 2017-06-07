@@ -1,6 +1,5 @@
 import React from 'react';
 import {routes} from './routes.js';
-import {envr} from './env.js';
 
 class LanguageInfo extends React.Component {
     constructor(props) {

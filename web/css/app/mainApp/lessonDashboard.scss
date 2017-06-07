@@ -1,12 +1,77 @@
 .lesson-dashboard {
-
   width: 1020px;
   float:left;
 
-  .lesson-list {
-    width: 100%;
-    overflow:hidden;
+  background-color: white;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  .lesson-name {
+    width: 100px;
+    float:right;
+
+    color: $highlight-gray;
+
+    position:relative;
+
+    i {
+      position:absolute;
+
+      right: 0;
+    }
   }
+
+  h1 {
+    font-weight: bold;
+
+    font-size: 1.2em;
+
+    padding: 0 0 10px 0;
+
+    border-bottom: 1px solid $highlight-gray;
+  }
+
+  button {
+    display:block;
+    font-family: $mallanna;
+    border: none;
+    background-color: unset;
+  }
+
+  .directional-buttons {
+    .direction-button {
+      width: 150px;
+
+      border-bottom: 1px solid $highlight-gray;
+
+      padding: 5px;
+
+      font-size: 1.05em;
+
+      &:hover {
+        cursor: pointer;
+        border-bottom: 1px solid $appMainColor;
+      }
+    }
+
+    .next {
+      float: right;
+      text-align: right;
+    }
+
+    .prev {
+      float:left;
+      text-align: left;
+    }
+  }
+}
+
+
+.lesson-list {
+  width: 100%;
+  overflow:hidden;
 
   .lesson {
     width: 120px;

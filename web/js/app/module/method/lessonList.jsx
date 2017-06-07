@@ -146,7 +146,7 @@ export class LessonListContainer extends React.Component {
         }
 
         return (
-            <div className="animated fadeInDown lesson-dashboard">
+            <div className="animated fadeInDown lesson-list">
                 <LessonList items={items} showLesson={this.showLessonStart}/>
                 <LessonStart
                     item={currentItem}

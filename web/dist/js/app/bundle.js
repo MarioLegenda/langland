@@ -11753,6 +11753,11 @@ var MethodApp = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'animated fadeInDown big-component' },
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        courseName
+                    ),
                     _react2.default.createElement(_methodNavigation.MethodNavigation, {
                         courseName: courseName,
                         learningUserCourseId: learningUserCourseId }),
@@ -12053,8 +12058,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _routes = __webpack_require__(17);
 
-var _env = __webpack_require__(22);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12271,42 +12274,165 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var LessonDashboard = function (_React$Component) {
-    _inherits(LessonDashboard, _React$Component);
+var LessonText = function (_React$Component) {
+    _inherits(LessonText, _React$Component);
+
+    function LessonText(props) {
+        _classCallCheck(this, LessonText);
+
+        var _this = _possibleConstructorReturn(this, (LessonText.__proto__ || Object.getPrototypeOf(LessonText)).call(this, props));
+
+        _this.next = _this.next.bind(_this);
+        _this.prev = _this.prev.bind(_this);
+        return _this;
+    }
+
+    _createClass(LessonText, [{
+        key: '_createMarkup',
+        value: function _createMarkup(html) {
+            return { __html: html };
+        }
+    }, {
+        key: 'next',
+        value: function next() {
+            this.props.next();
+        }
+    }, {
+        key: 'prev',
+        value: function prev() {
+            this.props.prev();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var item = this.props.item;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'full-width align-left' },
+                    _react2.default.createElement(
+                        'h1',
+                        { className: 'full-width align-right margin-top-10 margin-bottom-10' },
+                        item.name
+                    ),
+                    _react2.default.createElement('div', { className: 'full-width align-right margin-bottom-30', dangerouslySetInnerHTML: this._createMarkup(item.text) })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'full-width align-left directional-buttons' },
+                    _react2.default.createElement(
+                        'button',
+                        { className: 'direction-button next', onClick: this.next },
+                        'Next'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { className: 'direction-button prev', onClick: this.prev },
+                        'Previous'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return LessonText;
+}(_react2.default.Component);
+
+var LessonDashboard = function (_React$Component2) {
+    _inherits(LessonDashboard, _React$Component2);
 
     function LessonDashboard(props) {
         _classCallCheck(this, LessonDashboard);
 
-        var _this = _possibleConstructorReturn(this, (LessonDashboard.__proto__ || Object.getPrototypeOf(LessonDashboard)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (LessonDashboard.__proto__ || Object.getPrototypeOf(LessonDashboard)).call(this, props));
 
-        console.log(_this.props.item);
-        return _this;
+        _this2.state = {
+            counter: 0
+        };
+
+        _this2.next = _this2.next.bind(_this2);
+        _this2.prev = _this2.prev.bind(_this2);
+        return _this2;
     }
 
     _createClass(LessonDashboard, [{
+        key: '_markLessonFinished',
+        value: function _markLessonFinished() {
+            console.log('Lesson marked as finished');
+        }
+    }, {
+        key: 'next',
+        value: function next() {
+            var counter = this.state.counter + 1;
+
+            if (counter >= this.props.item.lessonText.length) {
+                this._markLessonFinished();
+
+                return null;
+            }
+
+            this.setState({
+                counter: counter
+            });
+        }
+    }, {
+        key: 'prev',
+        value: function prev() {
+            var counter = this.state.counter - 1;
+
+            if (counter < 0) {
+                return null;
+            }
+
+            this.setState({
+                counter: counter
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement('div', null);
+            var item = this.props.item,
+                currentItem = item.lessonText[this.state.counter];
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'animated fadeInDown full-width align-left lesson-dashboard' },
+                _react2.default.createElement(
+                    'span',
+                    { className: 'lesson-name' },
+                    item.name,
+                    ' ',
+                    _react2.default.createElement('i', { className: 'fa fa-mortar-board' })
+                ),
+                _react2.default.createElement(LessonText, {
+                    item: currentItem,
+                    next: this.next,
+                    prev: this.prev
+                })
+            );
         }
     }]);
 
     return LessonDashboard;
 }(_react2.default.Component);
 
-var LessonDashboardContainer = exports.LessonDashboardContainer = function (_React$Component2) {
-    _inherits(LessonDashboardContainer, _React$Component2);
+var LessonDashboardContainer = exports.LessonDashboardContainer = function (_React$Component3) {
+    _inherits(LessonDashboardContainer, _React$Component3);
 
     function LessonDashboardContainer(props) {
         _classCallCheck(this, LessonDashboardContainer);
 
-        var _this2 = _possibleConstructorReturn(this, (LessonDashboardContainer.__proto__ || Object.getPrototypeOf(LessonDashboardContainer)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (LessonDashboardContainer.__proto__ || Object.getPrototypeOf(LessonDashboardContainer)).call(this, props));
 
-        _this2.state = {
+        _this3.state = {
             item: null
         };
 
-        _this2.learningUserLessonId = _this2.props.match.params.learningUserLessonId;
-        return _this2;
+        _this3.learningUserLessonId = _this3.props.match.params.learningUserLessonId;
+        return _this3;
     }
 
     _createClass(LessonDashboardContainer, [{
@@ -12335,7 +12461,7 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
                 return null;
             }
 
-            var item = this.state.item;
+            var item = this.state.item.lesson;
 
             return _react2.default.createElement(LessonDashboard, { item: item });
         }
@@ -12570,7 +12696,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
 
             return _react2.default.createElement(
                 'div',
-                { className: 'animated fadeInDown lesson-dashboard' },
+                { className: 'animated fadeInDown lesson-list' },
                 _react2.default.createElement(LessonList, { items: items, showLesson: this.showLessonStart }),
                 _react2.default.createElement(LessonStart, {
                     item: currentItem,

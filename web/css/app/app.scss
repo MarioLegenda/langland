@@ -17,6 +17,19 @@
 
     width: 1280px;
     max-width: 1280px;
+
+    .course-name {
+
+      border-bottom: 1px solid white;
+
+      padding: 0 0 10px 40px;
+
+      font-size: 1.2em;
+
+      color: $appMainColor;
+
+      font-weight: bold;
+    }
   }
 
   .start-link {

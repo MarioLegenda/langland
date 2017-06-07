@@ -11755,7 +11755,7 @@ var MethodApp = function (_React$Component) {
                     { className: 'animated fadeInDown big-component' },
                     _react2.default.createElement(
                         'h1',
-                        null,
+                        { className: 'full-width align-left margin-bottom-30 course-name' },
                         courseName
                     ),
                     _react2.default.createElement(_methodNavigation.MethodNavigation, {

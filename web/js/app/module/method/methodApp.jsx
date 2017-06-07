@@ -25,7 +25,8 @@ class MethodApp extends React.Component {
         return (
             <Router>
                 <div className="animated fadeInDown big-component">
-                    <h1>{courseName}</h1>
+                    <h1 className="full-width align-left margin-bottom-30 course-name">{courseName}</h1>
+
                     <MethodNavigation
                         courseName={courseName}
                         learningUserCourseId={learningUserCourseId}/>

@@ -18,6 +18,8 @@
     background-color: white;
 
     h1 {
+      position:relative;
+
       width: 100%;
       float:left;
 
@@ -30,6 +32,15 @@
       color: $appMainColor;
 
       border-bottom: 1px solid $highlight-gray;
+
+      i {
+        position:absolute;
+
+        right: 0;
+        top: 13px;
+
+        color: $appMainColor;
+      }
     }
   }
 

@@ -67,7 +67,7 @@ export class MethodNavigation extends React.Component {
                     </Link>
                 </div>
 
-                <div onClick={this.handleMenuHighlight} className="nav-item vocabulary-item">
+                <div onClick={this.handleMenuHighlight} className="nav-item trophy-item">
                     <Link to="">
                         <i className="fa fa-trophy fa-2x highlightable"></i>
                         <span className="highlightable">Trophies</span>

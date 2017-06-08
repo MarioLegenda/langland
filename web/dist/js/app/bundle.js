@@ -12905,7 +12905,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { onClick: this.handleMenuHighlight, className: 'nav-item vocabulary-item' },
+                    { onClick: this.handleMenuHighlight, className: 'nav-item trophy-item' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
                         { to: '' },
@@ -27257,7 +27257,8 @@ var ProgressContainer = function (_React$Component) {
                 _react2.default.createElement(
                     'h1',
                     null,
-                    'Your progress'
+                    'Your progress',
+                    _react2.default.createElement('i', { className: 'fa fa-arrows' })
                 )
             );
         }
@@ -27284,7 +27285,8 @@ var NotificationContainer = function (_React$Component2) {
                 _react2.default.createElement(
                     'h1',
                     null,
-                    'Notifications'
+                    'Notifications',
+                    _react2.default.createElement('i', { className: 'fa fa-bell-o' })
                 )
             );
         }

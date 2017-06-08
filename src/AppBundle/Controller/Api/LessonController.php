@@ -14,8 +14,14 @@ class LessonController extends CommonOperationController
         $learningUserLesson = $this->getRepository('AppBundle:LearningUserLesson')->find($learningUserLessonId);
 
         if ($learningUserLesson instanceof LearningUserLesson) {
-            $learningUserLesson->setHasPassed(true);
+            $nextLearningUserLesson = $this->getRepository('AppBundle:LearningUserLesson')->find($learningUserLessonId + 1);
 
+            if ($nextLearningUserLesson instanceof LearningUserLesson) {
+                $nextLearningUserLesson->setIsEligable(true);
+                $this->save($nextLearningUserLesson);
+            }
+
+            $learningUserLesson->setHasPassed(true);
             $this->save($learningUserLesson);
 
             return $this->createSuccessJsonResponse();

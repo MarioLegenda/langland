@@ -12395,6 +12395,11 @@ var LessonDashboard = function (_React$Component2) {
             });
         }
     }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            $("html, body").animate({ scrollTop: 0 }, 1000);
+        }
+    }, {
         key: 'render',
         value: function render() {
             var item = this.props.item,
@@ -12575,7 +12580,21 @@ var LessonList = function (_React$Component) {
                         ),
                         item.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' })
                     ),
-                    item.hasPassed === false && item.lesson.isInitialLesson === false && _react2.default.createElement(
+                    item.hasPassed === false && item.isEligable === true && _react2.default.createElement(
+                        'div',
+                        { onClick: that.chooseLesson, 'data-lesson-index': index, className: "lesson " + passedClass },
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            _react2.default.createElement(
+                                'h1',
+                                null,
+                                item.lesson.name.toUpperCase()
+                            )
+                        ),
+                        item.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' })
+                    ),
+                    item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false && _react2.default.createElement(
                         'div',
                         { className: 'unpassed-lesson' },
                         _react2.default.createElement(
@@ -12617,8 +12636,6 @@ var LessonStart = function (_React$Component2) {
             if (this.props.item === null) {
                 return null;
             }
-
-            console.log(this.props.item);
 
             var item = this.props.item,
                 courseName = this.props.courseName,

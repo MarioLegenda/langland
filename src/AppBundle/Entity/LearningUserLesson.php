@@ -17,6 +17,8 @@ class LearningUserLesson
      * @var bool $hasPassed
      */
     private $hasPassed;
+
+    private $isEligable;
     /**
      * @var LearningUserCourse $learningUserCourse
      */
@@ -38,6 +40,7 @@ class LearningUserLesson
     public function __construct()
     {
         $this->hasPassed = false;
+        $this->isEligable = false;
     }
     /**
      * Get id
@@ -69,6 +72,23 @@ class LearningUserLesson
     public function getHasPassed()
     {
         return $this->hasPassed;
+    }
+    /**
+     * @return mixed
+     */
+    public function getIsEligable()
+    {
+        return $this->isEligable;
+    }
+    /**
+     * @param mixed $isEligable
+     * @return LearningUserLesson
+     */
+    public function setIsEligable($isEligable) : LearningUserLesson
+    {
+        $this->isEligable = $isEligable;
+
+        return $this;
     }
     /**
      * @return mixed

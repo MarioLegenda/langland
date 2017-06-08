@@ -41,7 +41,19 @@ class LessonList extends React.Component {
                     </div>
                     }
 
-                    {item.hasPassed === false && item.lesson.isInitialLesson === false &&
+                    {item.hasPassed === false && item.isEligable === true &&
+                    <div onClick={that.chooseLesson} data-lesson-index={index} className={"lesson " + passedClass}>
+                        <div>
+                            <h1>{item.lesson.name.toUpperCase()}</h1>
+                        </div>
+
+                        {item.hasPassed === true &&
+                        <i className="fa fa-check"></i>
+                        }
+                    </div>
+                    }
+
+                    {item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false &&
                     <div className="unpassed-lesson">
                         <div>
                             <h1>{item.lesson.name.toUpperCase()}</h1>
@@ -69,8 +81,6 @@ class LessonStart extends React.Component {
         if (this.props.item === null) {
             return null;
         }
-
-        console.log(this.props.item);
 
         const
             item = this.props.item,

@@ -6,9 +6,10 @@
       <generator strategy="AUTO"/>
     </id>
 
+    <field name="hasPassed" type="boolean" column="has_passed"/>
+    <field name="isEligable" type="boolean" column="is_eligable" />
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
-    <field name="hasPassed" type="boolean" column="has_passed"/>
 
     <many-to-one target-entity="AppBundle\Entity\LearningUserCourse" field="learningUserCourse" inversed-by="learningUserLessons">
 

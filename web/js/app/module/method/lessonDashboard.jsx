@@ -84,6 +84,10 @@ class LessonDashboard extends React.Component {
         });
     }
 
+    componentDidMount() {
+        $("html, body").animate({ scrollTop: 0 }, 1000);
+    }
+
     render() {
         const
             item = this.props.item,

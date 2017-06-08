@@ -9,6 +9,10 @@ AppBundle\Entity\LearningUserLesson:
             expose: true
             groups: [lesson_list]
             serialized_name: hasPassed
+        isEligable:
+            expose: true
+            groups: [lesson_list]
+            serialized_name: isEligable
         lesson:
             expose: true
             groups: ['lesson_list', 'lesson_text']

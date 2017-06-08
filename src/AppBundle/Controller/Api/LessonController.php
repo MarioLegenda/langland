@@ -14,6 +14,26 @@ class LessonController extends CommonOperationController
         $learningUserLesson = $this->getRepository('AppBundle:LearningUserLesson')->find($learningUserLessonId);
 
         if ($learningUserLesson instanceof LearningUserLesson) {
+            if ($learningUserLesson->getHasPassed() === false) {
+                $learningUserLesson->setHasPassed(true);
+                $learningUserLesson->setIsEligable(false);
+
+                $this->save($learningUserLesson);
+            }
+
+            return $this->createSuccessJsonResponse();
+        }
+
+        return $this->createFailedJsonResponse();
+    }
+
+    public function markLessonEligableAction(Request $request)
+    {
+        $learningUserLessonId = $request->request->get('learningUserLessonId');
+
+        $learningUserLesson = $this->getRepository('AppBundle:LearningUserLesson')->find($learningUserLessonId);
+
+        if ($learningUserLesson instanceof LearningUserLesson) {
             $nextLearningUserLesson = $this->getRepository('AppBundle:LearningUserLesson')->find($learningUserLessonId + 1);
 
             if ($nextLearningUserLesson instanceof LearningUserLesson) {
@@ -21,12 +41,6 @@ class LessonController extends CommonOperationController
                     $nextLearningUserLesson->setIsEligable(true);
                     $this->save($nextLearningUserLesson);
                 }
-            }
-
-            if ($learningUserLesson->getHasPassed() === false) {
-                $learningUserLesson->setHasPassed(true);
-                $learningUserLesson->setIsEligable(false);
-                $this->save($learningUserLesson);
             }
 
             return $this->createSuccessJsonResponse();

@@ -17,13 +17,17 @@ class LessonController extends CommonOperationController
             $nextLearningUserLesson = $this->getRepository('AppBundle:LearningUserLesson')->find($learningUserLessonId + 1);
 
             if ($nextLearningUserLesson instanceof LearningUserLesson) {
-                $nextLearningUserLesson->setIsEligable(true);
-                $this->save($nextLearningUserLesson);
+                if ($nextLearningUserLesson->getIsEligable() === false) {
+                    $nextLearningUserLesson->setIsEligable(true);
+                    $this->save($nextLearningUserLesson);
+                }
             }
 
-            $learningUserLesson->setHasPassed(true);
-            $learningUserLesson->setIsEligable(false);
-            $this->save($learningUserLesson);
+            if ($learningUserLesson->getHasPassed() === false) {
+                $learningUserLesson->setHasPassed(true);
+                $learningUserLesson->setIsEligable(false);
+                $this->save($learningUserLesson);
+            }
 
             return $this->createSuccessJsonResponse();
         }

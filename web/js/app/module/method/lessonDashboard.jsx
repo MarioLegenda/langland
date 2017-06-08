@@ -29,7 +29,7 @@ class LessonText extends React.Component {
                 <div className="full-width align-left">
                     <h1 className="full-width align-right margin-top-10 margin-bottom-10">{item.name}</h1>
 
-                    <div className="full-width align-right margin-bottom-30" dangerouslySetInnerHTML={this._createMarkup(item.text)}>
+                    <div className="full-width align-right margin-bottom-30 lesson-text" dangerouslySetInnerHTML={this._createMarkup(item.text)}>
                     </div>
                 </div>
 

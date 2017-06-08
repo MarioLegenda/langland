@@ -48,7 +48,7 @@ class LessonFactory
             for ($v = 0; $v < 5; $v++) {
                 $lessonText = new LessonText();
                 $lessonText->setName($this->getFaker()->word);
-                $lessonText->setText($this->getFaker()->sentence(20));
+                $lessonText->setText($this->getFaker()->sentence(200));
                 $lessonText->setLesson($lesson);
 
                 $lesson->addLessonText($lessonText);

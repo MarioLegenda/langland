@@ -12321,7 +12321,7 @@ var LessonText = function (_React$Component) {
                         { className: 'full-width align-right margin-top-10 margin-bottom-10' },
                         item.name
                     ),
-                    _react2.default.createElement('div', { className: 'full-width align-right margin-bottom-30', dangerouslySetInnerHTML: this._createMarkup(item.text) })
+                    _react2.default.createElement('div', { className: 'full-width align-right margin-bottom-30 lesson-text', dangerouslySetInnerHTML: this._createMarkup(item.text) })
                 ),
                 _react2.default.createElement(
                     'div',

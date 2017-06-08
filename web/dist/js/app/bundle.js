@@ -11711,13 +11711,13 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(26);
 
-var _env = __webpack_require__(25);
-
 var _methodNavigation = __webpack_require__(107);
 
 var _lessonList = __webpack_require__(106);
 
 var _lessonDashboard = __webpack_require__(105);
+
+var _sidebarHelper = __webpack_require__(233);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11750,6 +11750,10 @@ var MethodApp = function (_React$Component) {
                 });
             };
 
+            var sidebarHelper = function sidebarHelper() {
+                return _react2.default.createElement(_sidebarHelper.SidebarHelperContainer, { learningUserCourseId: learningUserCourseId });
+            };
+
             return _react2.default.createElement(
                 _reactRouterDom.BrowserRouter,
                 null,
@@ -11768,11 +11772,26 @@ var MethodApp = function (_React$Component) {
                         'div',
                         { className: 'main-app-dashboard align-left' },
                         _react2.default.createElement(
-                            _reactRouterDom.Switch,
-                            null,
-                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: lessonList }),
-                            _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:learningUserLessonId", component: _lessonDashboard.LessonDashboardContainer })
-                        )
+                            'div',
+                            { className: 'animated fadeInDown lesson-list working-area' },
+                            _react2.default.createElement(
+                                _reactRouterDom.Switch,
+                                null,
+                                _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: lessonList }),
+                                _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:learningUserLessonId", component: _lessonDashboard.LessonDashboardContainer })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'animated fadeInDown sidebar-helper' },
+                            _react2.default.createElement(
+                                _reactRouterDom.Switch,
+                                null,
+                                _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: sidebarHelper }),
+                                _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:learningUserLessonId", render: sidebarHelper })
+                            )
+                        ),
+                        _react2.default.createElement(_reactRouterDom.Switch, null)
                     )
                 )
             );
@@ -27191,6 +27210,112 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.SidebarHelperContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _routes = __webpack_require__(16);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ProgressContainer = function (_React$Component) {
+    _inherits(ProgressContainer, _React$Component);
+
+    function ProgressContainer(props) {
+        _classCallCheck(this, ProgressContainer);
+
+        return _possibleConstructorReturn(this, (ProgressContainer.__proto__ || Object.getPrototypeOf(ProgressContainer)).call(this, props));
+    }
+
+    _createClass(ProgressContainer, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'progress-sidebar sidebar' },
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    'Your progress'
+                )
+            );
+        }
+    }]);
+
+    return ProgressContainer;
+}(_react2.default.Component);
+
+var NotificationContainer = function (_React$Component2) {
+    _inherits(NotificationContainer, _React$Component2);
+
+    function NotificationContainer(props) {
+        _classCallCheck(this, NotificationContainer);
+
+        return _possibleConstructorReturn(this, (NotificationContainer.__proto__ || Object.getPrototypeOf(NotificationContainer)).call(this, props));
+    }
+
+    _createClass(NotificationContainer, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'notification-sidebar sidebar' },
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    'Notifications'
+                )
+            );
+        }
+    }]);
+
+    return NotificationContainer;
+}(_react2.default.Component);
+
+var SidebarHelperContainer = exports.SidebarHelperContainer = function (_React$Component3) {
+    _inherits(SidebarHelperContainer, _React$Component3);
+
+    function SidebarHelperContainer(props) {
+        _classCallCheck(this, SidebarHelperContainer);
+
+        return _possibleConstructorReturn(this, (SidebarHelperContainer.__proto__ || Object.getPrototypeOf(SidebarHelperContainer)).call(this, props));
+    }
+
+    _createClass(SidebarHelperContainer, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(NotificationContainer, null),
+                _react2.default.createElement(ProgressContainer, null)
+            );
+        }
+    }]);
+
+    return SidebarHelperContainer;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

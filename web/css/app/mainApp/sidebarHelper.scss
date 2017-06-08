@@ -1,0 +1,43 @@
+.sidebar-helper {
+  width: 300px;
+  float:left;
+
+  margin-top: 30px;
+
+  .sidebar {
+    width: 280px;
+
+    overflow:hidden;
+
+    padding: 0 10px 10px 10px;
+
+    margin: 0 auto;
+
+    margin-bottom: 10px;
+
+    background-color: white;
+
+    h1 {
+      width: 100%;
+      float:left;
+
+      padding: 10px 10px 10px 0;
+
+      font-size: 1.2em;
+
+      font-weight: bold;
+
+      color: $appMainColor;
+
+      border-bottom: 1px solid $highlight-gray;
+    }
+  }
+
+  .notification-sidebar {
+
+  }
+
+  .progress-sidebar {
+
+  }
+}

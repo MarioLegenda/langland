@@ -33,26 +33,16 @@ class MethodApp extends React.Component {
                         learningUserCourseId={learningUserCourseId}/>
 
                     <div className="main-app-dashboard align-left">
-                        <div className="animated fadeInDown lesson-list working-area">
-
-                            <Switch>
-                                <Route path={mainPath + "/lessons"} render={lessonList} />
-                                <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} component={LessonDashboardContainer} />
-
-                            </Switch>
-
-                        </div>
-
-                        <div className="animated fadeInDown sidebar-helper">
-
-                            <Switch>
-                                <Route path={mainPath + "/lessons"} render={sidebarHelper} />
-                                <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={sidebarHelper} />
-                            </Switch>
-
-                        </div>
 
                         <Switch>
+                            <Route path={mainPath + "/lessons"} render={lessonList} />
+                            <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} component={LessonDashboardContainer} />
+                        </Switch>
+
+
+                        <Switch>
+                            <Route path={mainPath + "/lessons"} render={sidebarHelper} />
+                            <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={sidebarHelper} />
                         </Switch>
 
                     </div>

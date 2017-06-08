@@ -37,7 +37,7 @@ export class SidebarHelperContainer extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="animated fadeInDown sidebar-helper">
                 <NotificationContainer/>
                 <ProgressContainer/>
             </div>

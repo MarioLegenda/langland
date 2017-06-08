@@ -22,6 +22,7 @@ class LessonController extends CommonOperationController
             }
 
             $learningUserLesson->setHasPassed(true);
+            $learningUserLesson->setIsEligable(false);
             $this->save($learningUserLesson);
 
             return $this->createSuccessJsonResponse();

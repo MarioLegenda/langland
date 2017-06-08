@@ -12530,6 +12530,23 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var LessonItem = function LessonItem(props) {
+    return _react2.default.createElement(
+        'div',
+        { onClick: props.chooseLesson, 'data-lesson-index': props.index, className: "lesson " + props.className },
+        _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                'h1',
+                null,
+                props.lessonName
+            )
+        ),
+        props.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' })
+    );
+};
+
 var LessonList = function (_React$Component) {
     _inherits(LessonList, _React$Component);
 
@@ -12550,7 +12567,7 @@ var LessonList = function (_React$Component) {
             var itemIndex = e.currentTarget.getAttribute('data-lesson-index');
             var item = this.props.items[itemIndex];
 
-            if (item.hasPassed === false && item.lesson.isInitialLesson === false) {
+            if (item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false) {
                 return false;
             }
 
@@ -12559,54 +12576,41 @@ var LessonList = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var that = this;
+            var _this2 = this;
 
             var items = this.props.items.map(function (item, index) {
                 var passedClass = item.hasPassed === true ? 'passed-lesson' : '';
+
                 return _react2.default.createElement(
                     'div',
                     { key: index },
-                    item.lesson.isInitialLesson === true && _react2.default.createElement(
-                        'div',
-                        { onClick: that.chooseLesson, 'data-lesson-index': index, className: "lesson " + passedClass },
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement(
-                                'h1',
-                                null,
-                                item.lesson.name.toUpperCase()
-                            )
-                        ),
-                        item.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' })
-                    ),
-                    item.hasPassed === false && item.isEligable === true && _react2.default.createElement(
-                        'div',
-                        { onClick: that.chooseLesson, 'data-lesson-index': index, className: "lesson " + passedClass },
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement(
-                                'h1',
-                                null,
-                                item.lesson.name.toUpperCase()
-                            )
-                        ),
-                        item.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' })
-                    ),
-                    item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false && _react2.default.createElement(
-                        'div',
-                        { className: 'unpassed-lesson' },
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            _react2.default.createElement(
-                                'h1',
-                                null,
-                                item.lesson.name.toUpperCase()
-                            )
-                        )
-                    )
+                    item.lesson.isInitialLesson === true && _react2.default.createElement(LessonItem, {
+                        chooseLesson: _this2.chooseLesson,
+                        index: index,
+                        className: passedClass,
+                        lessonName: item.lesson.name.toUpperCase(),
+                        hasPassed: item.hasPassed
+                    }),
+                    item.hasPassed === true && item.lesson.isInitialLesson === false && _react2.default.createElement(LessonItem, {
+                        chooseLesson: _this2.chooseLesson,
+                        index: index,
+                        className: passedClass,
+                        lessonName: item.lesson.name.toUpperCase(),
+                        hasPassed: item.hasPassed
+                    }),
+                    item.hasPassed === false && item.isEligable === true && _react2.default.createElement(LessonItem, {
+                        chooseLesson: _this2.chooseLesson,
+                        index: index,
+                        className: passedClass,
+                        lessonName: item.lesson.name.toUpperCase(),
+                        hasPassed: item.hasPassed
+                    }),
+                    item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false && _react2.default.createElement(LessonItem, {
+                        index: index,
+                        className: 'unpassed-lesson',
+                        lessonName: item.lesson.name.toUpperCase(),
+                        hasPassed: item.hasPassed
+                    })
                 );
             });
 
@@ -12683,16 +12687,16 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
     function LessonListContainer(props) {
         _classCallCheck(this, LessonListContainer);
 
-        var _this3 = _possibleConstructorReturn(this, (LessonListContainer.__proto__ || Object.getPrototypeOf(LessonListContainer)).call(this, props));
+        var _this4 = _possibleConstructorReturn(this, (LessonListContainer.__proto__ || Object.getPrototypeOf(LessonListContainer)).call(this, props));
 
-        _this3.state = {
+        _this4.state = {
             items: null,
             itemsFetched: false,
             currentItem: null
         };
 
-        _this3.showLessonStart = _this3.showLessonStart.bind(_this3);
-        return _this3;
+        _this4.showLesson = _this4.showLesson.bind(_this4);
+        return _this4;
     }
 
     _createClass(LessonListContainer, [{
@@ -12709,8 +12713,8 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             }, this));
         }
     }, {
-        key: 'showLessonStart',
-        value: function showLessonStart(index) {
+        key: 'showLesson',
+        value: function showLesson(index) {
             this.setState({
                 currentItem: this.state.items[index]
             });
@@ -12742,7 +12746,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             return _react2.default.createElement(
                 'div',
                 { className: 'animated fadeInDown lesson-list' },
-                _react2.default.createElement(LessonList, { items: items, showLesson: this.showLessonStart }),
+                _react2.default.createElement(LessonList, { items: items, showLesson: this.showLesson }),
                 _react2.default.createElement(LessonStart, {
                     item: currentItem,
                     courseName: courseName,

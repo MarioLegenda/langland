@@ -2,6 +2,18 @@ import React from 'react';
 import {RouteCreator} from './../routes.js';
 import { Link } from 'react-router-dom';
 
+const LessonItem = (props) => (
+    <div onClick={props.chooseLesson} data-lesson-index={props.index} className={"lesson " + props.className}>
+        <div>
+            <h1>{props.lessonName}</h1>
+        </div>
+
+        {props.hasPassed === true &&
+        <i className="fa fa-check"></i>
+        }
+    </div>
+);
+
 class LessonList extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +27,7 @@ class LessonList extends React.Component {
         const itemIndex = e.currentTarget.getAttribute('data-lesson-index');
         const item = this.props.items[itemIndex];
 
-        if (item.hasPassed === false && item.lesson.isInitialLesson === false) {
+        if (item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false) {
             return false;
         }
 
@@ -23,45 +35,49 @@ class LessonList extends React.Component {
     }
 
     render() {
-        const that = this;
-
-        const items = this.props.items.map(function(item, index) {
+        const items = this.props.items.map((item, index) => {
             const passedClass = (item.hasPassed === true) ? 'passed-lesson' : '';
-            return (
-                <div key={index}>
-                    {item.lesson.isInitialLesson === true &&
-                    <div onClick={that.chooseLesson} data-lesson-index={index} className={"lesson " + passedClass}>
-                        <div>
-                            <h1>{item.lesson.name.toUpperCase()}</h1>
-                        </div>
 
-                        {item.hasPassed === true &&
-                            <i className="fa fa-check"></i>
-                        }
-                    </div>
-                    }
+            return <div key={index}>
+                {item.lesson.isInitialLesson === true &&
+                    <LessonItem
+                        chooseLesson={this.chooseLesson}
+                        index={index}
+                        className={passedClass}
+                        lessonName={item.lesson.name.toUpperCase()}
+                        hasPassed={item.hasPassed}
+                    />
+                }
 
-                    {item.hasPassed === false && item.isEligable === true &&
-                    <div onClick={that.chooseLesson} data-lesson-index={index} className={"lesson " + passedClass}>
-                        <div>
-                            <h1>{item.lesson.name.toUpperCase()}</h1>
-                        </div>
+                {item.hasPassed === true && item.lesson.isInitialLesson === false &&
+                <LessonItem
+                    chooseLesson={this.chooseLesson}
+                    index={index}
+                    className={passedClass}
+                    lessonName={item.lesson.name.toUpperCase()}
+                    hasPassed={item.hasPassed}
+                />
+                }
 
-                        {item.hasPassed === true &&
-                        <i className="fa fa-check"></i>
-                        }
-                    </div>
-                    }
+                {item.hasPassed === false && item.isEligable === true &&
+                <LessonItem
+                    chooseLesson={this.chooseLesson}
+                    index={index}
+                    className={passedClass}
+                    lessonName={item.lesson.name.toUpperCase()}
+                    hasPassed={item.hasPassed}
+                />
+                }
 
-                    {item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false &&
-                    <div className="unpassed-lesson">
-                        <div>
-                            <h1>{item.lesson.name.toUpperCase()}</h1>
-                        </div>
-                    </div>
-                    }
-                </div>
-            )
+                {item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false &&
+                <LessonItem
+                    index={index}
+                    className="unpassed-lesson"
+                    lessonName={item.lesson.name.toUpperCase()}
+                    hasPassed={item.hasPassed}
+                />
+                }
+            </div>
         });
 
         return (
@@ -118,7 +134,7 @@ export class LessonListContainer extends React.Component {
             currentItem: null
         };
 
-        this.showLessonStart = this.showLessonStart.bind(this);
+        this.showLesson = this.showLesson.bind(this);
     }
 
     _fetchLessons() {
@@ -133,7 +149,7 @@ export class LessonListContainer extends React.Component {
         }, this));
     }
 
-    showLessonStart(index) {
+    showLesson(index) {
         this.setState({
             currentItem: this.state.items[index]
         });
@@ -163,7 +179,7 @@ export class LessonListContainer extends React.Component {
 
         return (
             <div className="animated fadeInDown lesson-list">
-                <LessonList items={items} showLesson={this.showLessonStart}/>
+                <LessonList items={items} showLesson={this.showLesson}/>
                 <LessonStart
                     item={currentItem}
                     courseName={courseName}

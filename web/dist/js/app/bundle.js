@@ -11758,7 +11758,7 @@ var MethodApp = function (_React$Component) {
                     { className: 'animated fadeInDown big-component' },
                     _react2.default.createElement(
                         'h1',
-                        { className: 'full-width align-left margin-bottom-30 course-name' },
+                        { className: 'full-width align-left course-name' },
                         courseName
                     ),
                     _react2.default.createElement(_methodNavigation.MethodNavigation, {
@@ -11766,7 +11766,7 @@ var MethodApp = function (_React$Component) {
                         learningUserCourseId: learningUserCourseId }),
                     _react2.default.createElement(
                         'div',
-                        { className: 'main-app-dashboard' },
+                        { className: 'main-app-dashboard align-left' },
                         _react2.default.createElement(
                             _reactRouterDom.Switch,
                             null,
@@ -12407,7 +12407,7 @@ var LessonDashboard = function (_React$Component2) {
 
             return _react2.default.createElement(
                 'div',
-                { className: 'animated fadeInDown full-width align-left lesson-dashboard' },
+                { className: 'animated fadeInDown full-width align-left lesson-dashboard working-area' },
                 _react2.default.createElement(
                     'span',
                     { className: 'lesson-name' },
@@ -12543,7 +12543,8 @@ var LessonItem = function LessonItem(props) {
                 props.lessonName
             )
         ),
-        props.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' })
+        props.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' }),
+        props.hasPassed === false && props.isEligable === false && _react2.default.createElement('i', { className: 'fa fa-lock' })
     );
 };
 
@@ -12584,32 +12585,28 @@ var LessonList = function (_React$Component) {
                 return _react2.default.createElement(
                     'div',
                     { key: index },
-                    item.lesson.isInitialLesson === true && _react2.default.createElement(LessonItem, {
+                    item.isEligable === true && _react2.default.createElement(LessonItem, {
                         chooseLesson: _this2.chooseLesson,
                         index: index,
                         className: passedClass,
                         lessonName: item.lesson.name.toUpperCase(),
-                        hasPassed: item.hasPassed
+                        hasPassed: item.hasPassed,
+                        isEligable: item.isEligable
                     }),
-                    item.hasPassed === true && item.lesson.isInitialLesson === false && _react2.default.createElement(LessonItem, {
+                    item.hasPassed === true && _react2.default.createElement(LessonItem, {
                         chooseLesson: _this2.chooseLesson,
                         index: index,
                         className: passedClass,
                         lessonName: item.lesson.name.toUpperCase(),
-                        hasPassed: item.hasPassed
+                        hasPassed: item.hasPassed,
+                        isEligable: item.isEligable
                     }),
-                    item.hasPassed === false && item.isEligable === true && _react2.default.createElement(LessonItem, {
-                        chooseLesson: _this2.chooseLesson,
-                        index: index,
-                        className: passedClass,
-                        lessonName: item.lesson.name.toUpperCase(),
-                        hasPassed: item.hasPassed
-                    }),
-                    item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false && _react2.default.createElement(LessonItem, {
+                    item.hasPassed === false && item.isEligable === false && _react2.default.createElement(LessonItem, {
                         index: index,
                         className: 'unpassed-lesson',
                         lessonName: item.lesson.name.toUpperCase(),
-                        hasPassed: item.hasPassed
+                        hasPassed: item.hasPassed,
+                        isEligable: item.isEligable
                     })
                 );
             });
@@ -12745,7 +12742,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
 
             return _react2.default.createElement(
                 'div',
-                { className: 'animated fadeInDown lesson-list' },
+                { className: 'animated fadeInDown lesson-list working-area' },
                 _react2.default.createElement(LessonList, { items: items, showLesson: this.showLesson }),
                 _react2.default.createElement(LessonStart, {
                     item: currentItem,

@@ -9,7 +9,11 @@ const LessonItem = (props) => (
         </div>
 
         {props.hasPassed === true &&
-        <i className="fa fa-check"></i>
+            <i className="fa fa-check"></i>
+        }
+
+        {props.hasPassed === false && props.isEligable === false &&
+            <i className="fa fa-lock"></i>
         }
     </div>
 );
@@ -39,42 +43,35 @@ class LessonList extends React.Component {
             const passedClass = (item.hasPassed === true) ? 'passed-lesson' : '';
 
             return <div key={index}>
-                {item.lesson.isInitialLesson === true &&
+                {item.isEligable === true &&
                     <LessonItem
                         chooseLesson={this.chooseLesson}
                         index={index}
                         className={passedClass}
                         lessonName={item.lesson.name.toUpperCase()}
                         hasPassed={item.hasPassed}
+                        isEligable={item.isEligable}
                     />
                 }
 
-                {item.hasPassed === true && item.lesson.isInitialLesson === false &&
+                {item.hasPassed === true &&
                 <LessonItem
                     chooseLesson={this.chooseLesson}
                     index={index}
                     className={passedClass}
                     lessonName={item.lesson.name.toUpperCase()}
                     hasPassed={item.hasPassed}
+                    isEligable={item.isEligable}
                 />
                 }
 
-                {item.hasPassed === false && item.isEligable === true &&
-                <LessonItem
-                    chooseLesson={this.chooseLesson}
-                    index={index}
-                    className={passedClass}
-                    lessonName={item.lesson.name.toUpperCase()}
-                    hasPassed={item.hasPassed}
-                />
-                }
-
-                {item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false &&
+                {item.hasPassed === false && item.isEligable === false &&
                 <LessonItem
                     index={index}
                     className="unpassed-lesson"
                     lessonName={item.lesson.name.toUpperCase()}
                     hasPassed={item.hasPassed}
+                    isEligable={item.isEligable}
                 />
                 }
             </div>
@@ -178,7 +175,7 @@ export class LessonListContainer extends React.Component {
         }
 
         return (
-            <div className="animated fadeInDown lesson-list">
+            <div className="animated fadeInDown lesson-list working-area">
                 <LessonList items={items} showLesson={this.showLesson}/>
                 <LessonStart
                     item={currentItem}

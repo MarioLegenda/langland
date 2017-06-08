@@ -25,13 +25,13 @@ class MethodApp extends React.Component {
         return (
             <Router>
                 <div className="animated fadeInDown big-component">
-                    <h1 className="full-width align-left margin-bottom-30 course-name">{courseName}</h1>
+                    <h1 className="full-width align-left course-name">{courseName}</h1>
 
                     <MethodNavigation
                         courseName={courseName}
                         learningUserCourseId={learningUserCourseId}/>
 
-                    <div className="main-app-dashboard">
+                    <div className="main-app-dashboard align-left">
                         <Switch>
                             <Route path={mainPath + "/lessons"} render={lessonList} />
                             <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} component={LessonDashboardContainer} />

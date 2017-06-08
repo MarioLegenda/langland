@@ -66,6 +66,11 @@ class CreateLearningUserListener
 
             foreach ($lessons as $lesson) {
                 $learningUserLesson = new LearningUserLesson();
+
+                if ($lesson->getIsInitialLesson() === true) {
+                    $learningUserLesson->setIsEligable(true);
+                }
+
                 $learningUserLesson->setLesson($lesson);
 
                 $learningUserCourse->addLearningUserLesson($learningUserLesson);

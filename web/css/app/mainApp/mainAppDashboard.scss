@@ -1,9 +1,24 @@
 .main-app-dashboard {
-  width: 80%;
+  width: 1020px;
 
   overflow: hidden;
 
   margin: 0 auto;
+
+  margin-left: 20px;
+
+  .working-area {
+    width: 720px;
+    float:left;
+
+    background-color: white;
+
+    margin-top: 30px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+  }
 }
 
 @import "lessonDashboard.scss";

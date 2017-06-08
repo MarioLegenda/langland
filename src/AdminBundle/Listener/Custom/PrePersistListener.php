@@ -108,6 +108,7 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
     private function handleLessonJob(Lesson $lesson, Course $course)
     {
         $lesson->setCourse($course);
+
         $lesson->setLessonUrl(\URLify::filter($lesson->getName()));
 
         foreach ($lesson->getLessonTexts() as $lessonText) {

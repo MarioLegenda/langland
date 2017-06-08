@@ -94,7 +94,7 @@ class LessonDashboard extends React.Component {
             currentItem = item.lessonText[this.state.counter];
 
         return (
-            <div className="animated fadeInDown full-width align-left lesson-dashboard">
+            <div className="animated fadeInDown full-width align-left lesson-dashboard working-area">
                 <span className="lesson-name">{item.name} <i className="fa fa-mortar-board"></i></span>
                 <LessonText
                     item={currentItem}

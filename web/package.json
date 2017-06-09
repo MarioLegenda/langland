@@ -24,7 +24,7 @@
     "react-transition-group": "^1.1.2",
     "select2": "^4.0.3",
     "sequelize": "^3.30.4",
-    "socket.io": "^1.7.3",
+    "socket.io": "^2.0.2",
     "webpack": "^2.4.1"
   }
 }

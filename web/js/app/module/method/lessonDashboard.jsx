@@ -113,7 +113,8 @@ export class LessonDashboardContainer extends React.Component {
         super(props);
 
         this.state = {
-            item: null
+            item: null,
+            redirectUrl: null
         };
 
         this.learningUserLessonId = this.props.match.params.learningUserLessonId;
@@ -143,6 +144,12 @@ export class LessonDashboardContainer extends React.Component {
             if (data.status === 'success') {
                 const redirectUrl = envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
+                $('.lesson-dashboard').removeClass('fadeInDown');
+                $('.lesson-dashboard').addClass('fadeOutUp');
+
+                this.setState({
+                    redirectUrl: redirectUrl
+                });
 
             }
 
@@ -161,6 +168,10 @@ export class LessonDashboardContainer extends React.Component {
     }
 
     render() {
+        if (this.state.redirectUrl !== null) {
+            return <Redirect to={this.state.redirectUrl}/>
+        }
+
         if (this.state.item === null) {
             return null;
         }

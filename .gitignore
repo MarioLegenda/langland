@@ -16,6 +16,7 @@
 /web/bundles/
 .idea
 /lib/bluedot/
+/node/node_modules
 /web/uploads
 /web/node_modules
 /web/node_modules/.yarn-integrity

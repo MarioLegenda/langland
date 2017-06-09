@@ -44,29 +44,27 @@ class MethodApp extends React.Component {
             mainPath = this.props.match.url;
 
         return (
-            <Router>
-                <div className="animated fadeInDown big-component">
-                    <h1 className="full-width align-left course-name">{courseName}</h1>
+            <div className="animated fadeInDown big-component">
+                <h1 className="full-width align-left course-name">{courseName}</h1>
 
-                    <MethodNavigation
-                        courseName={courseName}
-                        learningUserCourseId={learningUserCourseId}/>
+                <MethodNavigation
+                    courseName={courseName}
+                    learningUserCourseId={learningUserCourseId}/>
 
-                    <div className="main-app-dashboard align-left">
+                <div className="main-app-dashboard align-left">
 
-                        <Switch>
-                            <Route path={mainPath + "/lessons"} render={components.lessonList} />
-                            <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.lessonDashboard} />
-                        </Switch>
+                    <Switch>
+                        <Route path={mainPath + "/lessons"} render={components.lessonList} />
+                        <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.lessonDashboard} />
+                    </Switch>
 
-                        <Switch>
-                            <Route path={mainPath + "/lessons"} render={components.sidebarHelper} />
-                            <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.sidebarHelper} />
-                        </Switch>
+                    <Switch>
+                        <Route path={mainPath + "/lessons"} render={components.sidebarHelper} />
+                        <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.sidebarHelper} />
+                    </Switch>
 
-                    </div>
                 </div>
-            </Router>
+            </div>
         )
     }
 }

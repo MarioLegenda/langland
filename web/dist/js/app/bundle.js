@@ -12506,8 +12506,6 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
                     var redirectUrl = _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
-
-                    _react2.default.createElement(_reactRouterDom.Redirect, { to: redirectUrl });
                 }
 
                 if (data.status === 'failure') {

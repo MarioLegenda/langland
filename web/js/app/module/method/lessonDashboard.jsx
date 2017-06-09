@@ -1,5 +1,7 @@
 import React from 'react';
 import {RouteCreator, routes} from './../routes.js';
+import {Redirect} from 'react-router-dom';
+import {envr} from './../env.js';
 
 class LessonText extends React.Component {
     constructor(props) {
@@ -132,20 +134,26 @@ export class LessonDashboardContainer extends React.Component {
         }, this));
     }
 
-    markLessonFinished() {
+    _markLessonFinished() {
         jQuery.ajax({
             url: routes.app_learning_user_mark_lesson_passed,
             method: 'POST',
             data: {learningUserLessonId: this.learningUserLessonId}
-        }).done(function(data) {
+        }).done(jQuery.proxy(function(data) {
             if (data.status === 'success') {
-                console.log('success');
+                const redirectUrl = envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
+
+                <Redirect to={redirectUrl}/>
             }
 
             if (data.status === 'failure') {
                 console.log('failure');
             }
-        })
+        }, this));
+    }
+
+    markLessonFinished() {
+        this._markLessonFinished();
     }
 
     componentDidMount() {

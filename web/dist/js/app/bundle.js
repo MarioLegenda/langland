@@ -1598,6 +1598,7 @@ var routes = exports.routes = {
 
     app_logout: _env.envr + 'langland/logout',
     app_dashboard: _env.envr + 'langland',
+    app_find_learning_user: _env.envr + 'langland/api/user/find-learning-user',
 
     app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed'
 };
@@ -11875,6 +11876,8 @@ var _methodApp = __webpack_require__(100);
 
 var _courseInit = __webpack_require__(97);
 
+var _user = __webpack_require__(235);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var NoMatch = function NoMatch() {
@@ -12361,6 +12364,8 @@ var _reactRouterDom = __webpack_require__(22);
 
 var _env = __webpack_require__(26);
 
+var _user = __webpack_require__(235);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12579,7 +12584,7 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
                 if (data.status === 'success') {
                     var redirectUrl = _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
-                    this.props.io.emit('update_progress', { 'progress': 'progress_updated' });
+                    this.props.io.emit('update_progress', { 'learningUserId': _user.learningUser.getLearningUser().learningUserId });
 
                     this.setState({
                         redirectUrl: redirectUrl
@@ -27396,6 +27401,59 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.learningUser = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _routes = __webpack_require__(15);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LearningUser = function () {
+    function LearningUser() {
+        _classCallCheck(this, LearningUser);
+
+        this.user = null;
+
+        this._fetchLearningUser();
+    }
+
+    _createClass(LearningUser, [{
+        key: '_fetchLearningUser',
+        value: function _fetchLearningUser() {
+            jQuery.ajax({
+                url: _routes.routes.app_find_learning_user,
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                this.user = data.data;
+            }, this));
+        }
+    }, {
+        key: 'getLearningUser',
+        value: function getLearningUser() {
+            if (this.user === null) {
+                throw new Error('User should have been fetched but did not');
+            }
+
+            return this.user;
+        }
+    }]);
+
+    return LearningUser;
+}();
+
+var learningUser = exports.learningUser = new LearningUser();
 
 /***/ })
 /******/ ]);

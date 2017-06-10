@@ -14,6 +14,13 @@ class UserController extends CommonOperationController
         );
     }
 
+    public function findLearningUserAction()
+    {
+        return $this->createSuccessJsonResponse(
+            $this->serialize($this->getLearningUser(), array('learning_user'))
+        );
+    }
+
     public function createLearningUserAction(Request $request)
     {
         $languageId = $request->request->get('languageId');

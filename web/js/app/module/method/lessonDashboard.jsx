@@ -2,6 +2,7 @@ import React from 'react';
 import {RouteCreator, routes} from './../routes.js';
 import {Redirect} from 'react-router-dom';
 import {envr} from './../env.js';
+import {learningUser as User} from './../user.js';
 
 class LessonText extends React.Component {
     constructor(props) {
@@ -161,7 +162,7 @@ export class LessonDashboardContainer extends React.Component {
             if (data.status === 'success') {
                 const redirectUrl = envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
-                this.props.io.emit('update_progress', {'progress': 'progress_updated'});
+                this.props.io.emit('update_progress', {'learningUserId': User.getLearningUser().learningUserId});
 
                 this.setState({
                     redirectUrl: redirectUrl

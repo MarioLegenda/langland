@@ -8,7 +8,7 @@ app_user:
   resource: "@AppBundle/Resources/config/routing/api/user.yml"
   prefix: /user
   host: '%host%'
-  methods: [POST]
+  methods: [POST, GET]
 
 app_language:
   resource: "@AppBundle/Resources/config/routing/api/language.yml"

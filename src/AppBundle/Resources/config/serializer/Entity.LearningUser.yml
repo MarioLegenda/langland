@@ -1,6 +1,14 @@
 AppBundle\Entity\LearningUser:
     exclusion_policy: ALL
     properties:
+        id:
+            expose: true
+            groups: [learning_user]
+            serialized_name: learningUserId
+        user:
+            expose: true
+            groups: [learning_user]
+            type: ArmorBundle\Entity\User
         languages:
             expose: true
             type: AdminBundle\Entity\Language

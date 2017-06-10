@@ -14,7 +14,7 @@ connection.connect();
 
 io.on('connection', function(socket){
     socket.on('update_progress', function(data) {
-        console.log(data);
+
     });
 });
 

@@ -14,6 +14,7 @@ export const routes = {
 
     app_logout: envr + 'langland/logout',
     app_dashboard: envr + 'langland',
+    app_find_learning_user: envr + 'langland/api/user/find-learning-user',
 
     app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed'
 };

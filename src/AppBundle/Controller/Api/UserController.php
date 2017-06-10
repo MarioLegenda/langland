@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\LearningUser;
 use AppBundle\Event\LearningUserCreateEvent;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,6 +17,12 @@ class UserController extends CommonOperationController
 
     public function findLearningUserAction()
     {
+        $learningUser = $this->getLearningUser();
+
+        if (!$learningUser instanceof LearningUser) {
+            return $this->createSuccessJsonResponse();
+        }
+
         return $this->createSuccessJsonResponse(
             $this->serialize($this->getLearningUser(), array('learning_user'))
         );

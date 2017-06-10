@@ -6,14 +6,14 @@
       <generator strategy="AUTO"/>
     </id>
 
-    <field name="urls" type="string" column="progress" />
+    <field name="urls" type="string" column="urls" />
     <field name="text" type="string" column="text" />
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
 
-    <many-to-many target-entity="AppBundle\Entity\LearningUser" field="learningUser">
-
-    </many-to-many>
+    <many-to-one target-entity="AppBundle\Entity\LearningUser" field="learningUser">
+      <join-column referenced-column-name="id" name="learning_user_id" />
+    </many-to-one>
 
     <lifecycle-callbacks>
       <lifecycle-callback type="prePersist" method="updateTimestamps" />

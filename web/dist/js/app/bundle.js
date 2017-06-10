@@ -11723,6 +11723,8 @@ var _sidebarHelper = __webpack_require__(109);
 
 var _gamesList = __webpack_require__(105);
 
+var _user = __webpack_require__(235);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11766,7 +11768,10 @@ var MethodApp = function (_React$Component) {
             };
 
             var sidebarHelper = function sidebarHelper() {
-                return _react2.default.createElement(_sidebarHelper.SidebarHelperContainer, { learningUserCourseId: learningUserCourseId });
+                return _react2.default.createElement(_sidebarHelper.SidebarHelperContainer, {
+                    learningUserCourseId: learningUserCourseId,
+                    io: _this2.props.io
+                });
             };
 
             return {
@@ -11875,8 +11880,6 @@ var _env = __webpack_require__(26);
 var _methodApp = __webpack_require__(100);
 
 var _courseInit = __webpack_require__(97);
-
-var _user = __webpack_require__(235);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12584,7 +12587,7 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
                 if (data.status === 'success') {
                     var redirectUrl = _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
-                    this.props.io.emit('update_progress', { 'learningUserId': _user.learningUser.getLearningUser().learningUserId });
+                    this.props.io.emit('client.update_progress', { 'learningUserId': _user.learningUser.getLearningUser().learningUserId });
 
                     this.setState({
                         redirectUrl: redirectUrl
@@ -13070,10 +13073,20 @@ var ProgressContainer = function (_React$Component) {
     function ProgressContainer(props) {
         _classCallCheck(this, ProgressContainer);
 
-        return _possibleConstructorReturn(this, (ProgressContainer.__proto__ || Object.getPrototypeOf(ProgressContainer)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ProgressContainer.__proto__ || Object.getPrototypeOf(ProgressContainer)).call(this, props));
+
+        _this.onSocketUpdate();
+        return _this;
     }
 
     _createClass(ProgressContainer, [{
+        key: 'onSocketUpdate',
+        value: function onSocketUpdate() {
+            this.props.io.on('server.update_progress', function (data) {
+                console.log(data);
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
@@ -13107,7 +13120,7 @@ var SidebarHelperContainer = exports.SidebarHelperContainer = function (_React$C
             return _react2.default.createElement(
                 'div',
                 { className: 'animated fadeInDown sidebar-helper' },
-                _react2.default.createElement(ProgressContainer, null)
+                _react2.default.createElement(ProgressContainer, { io: this.props.io })
             );
         }
     }]);

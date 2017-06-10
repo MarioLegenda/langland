@@ -8,7 +8,6 @@ import {envr} from './module/env.js';
 
 import {MethodAppRouteContainer} from './module/method/methodApp.jsx';
 import {CourseInitContainer} from './module/courseInit.jsx';
-import {learningUser as User} from './module/user.js';
 
 const NoMatch = () => <div>No match</div>
 

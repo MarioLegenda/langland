@@ -13,8 +13,24 @@ var connection = mysql.createConnection({
 connection.connect();
 
 io.on('connection', function(socket){
-    socket.on('update_progress', function(data) {
+    socket.on('client.update_progress', function(data) {
+        connection.query('SELECT urls, text FROM progress WHERE learning_user_id = ' +1, function (err, rows, fields) {
+            if (err) throw err;
 
+            let progress = [];
+
+            for (let i = 0; i < rows.length; i++) {
+                let row = rows[i];
+                let singleProgress = {};
+
+                singleProgress.text = row.text;
+                singleProgress.urls = JSON.parse(row.urls);
+
+                progress.push(singleProgress);
+            }
+
+            socket.emit('server.update_progress', progress);
+        });
     });
 });
 

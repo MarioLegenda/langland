@@ -5,6 +5,14 @@ import {routes, RouteHelper} from './../../routes.js';
 class ProgressContainer extends React.Component {
     constructor(props) {
         super(props);
+
+        this.onSocketUpdate();
+    }
+
+    onSocketUpdate() {
+        this.props.io.on('server.update_progress', function(data) {
+            console.log(data);
+        });
     }
 
     render() {
@@ -24,7 +32,7 @@ export class SidebarHelperContainer extends React.Component {
     render() {
         return (
             <div className="animated fadeInDown sidebar-helper">
-                <ProgressContainer/>
+                <ProgressContainer io={this.props.io}/>
             </div>
         )
     }

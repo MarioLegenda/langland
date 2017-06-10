@@ -6,6 +6,7 @@ import {LessonListContainer as LessonList} from './lessonList.jsx';
 import {LessonDashboardContainer} from './lessonDashboard.jsx';
 import {SidebarHelperContainer} from './sidebarHelper/sidebarHelper.jsx';
 import {GameListContainer} from './gamesList.jsx';
+import {learningUser as User} from './../user.js';
 
 class MethodApp extends React.Component {
     constructor(props) {
@@ -29,7 +30,10 @@ class MethodApp extends React.Component {
             io={this.props.io}
         />;
 
-        const sidebarHelper = () => <SidebarHelperContainer learningUserCourseId={learningUserCourseId}/>;
+        const sidebarHelper = () => <SidebarHelperContainer
+            learningUserCourseId={learningUserCourseId}
+            io={this.props.io}
+        />;
 
         return {
             lessonList: lessonList,

@@ -37,14 +37,25 @@ class CommonOperationController extends ResponseController
         return $this->get('doctrine')->getManager();
     }
     /**
-     * @param $entity
+     * @param $data
      * @return CommonOperationController
      */
-    protected function save($entity) : CommonOperationController
+    protected function save($data) : CommonOperationController
+    {
+        if (is_object($data)) {
+            $this->doSave($data);
+        } else if (is_array($data)) {
+            foreach ($data as $entity) {
+                $this->doSave($entity);
+            }
+        }
+
+        return $this;
+    }
+
+    private function doSave($entity)
     {
         $this->getManager()->persist($entity);
         $this->getManager()->flush();
-
-        return $this;
     }
 }

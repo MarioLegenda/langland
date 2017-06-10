@@ -17,6 +17,8 @@
 
     background-color: white;
 
+    border-radius: 10px;
+
     h1 {
       position:relative;
 
@@ -44,11 +46,9 @@
     }
   }
 
-  .notification-sidebar {
-    height: 300px;
-  }
-
   .progress-sidebar {
+    height: 300px;
+
 
   }
 }

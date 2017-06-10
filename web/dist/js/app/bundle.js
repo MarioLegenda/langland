@@ -1612,6 +1612,7 @@ var AppRouter = function () {
             app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
             app_learning_user_lesson: _env.envr + 'langland/api/data/lesson/:0',
             app_page_lesson_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/lessons',
+            app_page_games_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/games',
             app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
             app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed'
         };
@@ -11719,6 +11720,8 @@ var _lessonDashboard = __webpack_require__(105);
 
 var _sidebarHelper = __webpack_require__(108);
 
+var _gamesList = __webpack_require__(234);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11795,12 +11798,14 @@ var MethodApp = function (_React$Component) {
                         _reactRouterDom.Switch,
                         null,
                         _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: components.lessonList }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/games", component: _gamesList.GameListContainer }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:learningUserLessonId", render: components.lessonDashboard })
                     ),
                     _react2.default.createElement(
                         _reactRouterDom.Switch,
                         null,
                         _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: components.sidebarHelper }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/games", render: components.sidebarHelper }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:learningUserLessonId", render: components.sidebarHelper })
                     )
                 )
@@ -12473,6 +12478,12 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
             redirectUrl: null
         };
 
+        _this3.dashboardData = {
+            courseName: _this3.props.courseName,
+            learningUserCourseId: _this3.props.learningUserCourseId,
+            learningUserLessonId: _this3.props.match.params.learningUserLessonId
+        };
+
         _this3.learningUserLessonId = _this3.props.match.params.learningUserLessonId;
 
         _this3.markLessonFinished = _this3.markLessonFinished.bind(_this3);
@@ -12482,8 +12493,10 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
     _createClass(LessonDashboardContainer, [{
         key: '_fetchLesson',
         value: function _fetchLesson() {
+            var learningUserLessonId = this.dashboardData.learningUserLessonId;
+
             jQuery.ajax({
-                url: _routes.RouteCreator.create('app_learning_user_lesson', [this.learningUserLessonId]),
+                url: _routes.RouteCreator.create('app_learning_user_lesson', [learningUserLessonId]),
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
@@ -12496,16 +12509,21 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
     }, {
         key: '_markLessonFinished',
         value: function _markLessonFinished() {
+            var learningUserLessonId = this.dashboardData.learningUserLessonId,
+                courseName = this.dashboardData.courseName,
+                learningUserCourseId = this.dashboardData.learningUserCourseId;
+
             jQuery.ajax({
                 url: _routes.routes.app_learning_user_mark_lesson_passed,
                 method: 'POST',
-                data: { learningUserLessonId: this.learningUserLessonId }
+                data: {
+                    learningUserLessonId: learningUserLessonId,
+                    courseName: courseName,
+                    learningUserCourseId: learningUserCourseId
+                }
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
                     var redirectUrl = _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
-
-                    $('.lesson-dashboard').removeClass('fadeInDown');
-                    $('.lesson-dashboard').addClass('fadeOutUp');
 
                     this.setState({
                         redirectUrl: redirectUrl
@@ -12853,6 +12871,8 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
         value: function _highlightMenuBasedOnRoutes() {
             if (/lessons/.test(window.location.pathname)) {
                 this._highlightMenu(jQuery('.lesson-item'));
+            } else if (/games/.test(window.location.pathname)) {
+                this._highlightMenu(jQuery('.game-item'));
             } else {
                 this._unHighlightMenu();
             }
@@ -12911,7 +12931,7 @@ var MethodNavigation = exports.MethodNavigation = function (_React$Component) {
                     { onClick: this.handleMenuHighlight, className: 'nav-item game-item' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: '' },
+                        { to: _routes.RouteCreator.create('app_page_games_list_dashboard', [courseName, learningUserCourseId]) },
                         _react2.default.createElement('i', { className: 'fa fa-gamepad fa-2x highlightable' }),
                         _react2.default.createElement(
                             'span',
@@ -27320,6 +27340,51 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.GameListContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GameListContainer = exports.GameListContainer = function (_React$Component) {
+    _inherits(GameListContainer, _React$Component);
+
+    function GameListContainer(props) {
+        _classCallCheck(this, GameListContainer);
+
+        return _possibleConstructorReturn(this, (GameListContainer.__proto__ || Object.getPrototypeOf(GameListContainer)).call(this, props));
+    }
+
+    _createClass(GameListContainer, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement('div', null);
+        }
+    }]);
+
+    return GameListContainer;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

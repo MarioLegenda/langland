@@ -5,6 +5,7 @@ import {MethodNavigation} from './methodNavigation.jsx';
 import {LessonListContainer as LessonList} from './lessonList.jsx';
 import {LessonDashboardContainer} from './lessonDashboard.jsx';
 import {SidebarHelperContainer} from './sidebarHelper/sidebarHelper.jsx';
+import {GameListContainer} from './gamesList.jsx';
 
 class MethodApp extends React.Component {
     constructor(props) {
@@ -55,11 +56,13 @@ class MethodApp extends React.Component {
 
                     <Switch>
                         <Route path={mainPath + "/lessons"} render={components.lessonList} />
+                        <Route path={mainPath + "/games"} component={GameListContainer} />
                         <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.lessonDashboard} />
                     </Switch>
 
                     <Switch>
                         <Route path={mainPath + "/lessons"} render={components.sidebarHelper} />
+                        <Route path={mainPath + "/games"} render={components.sidebarHelper} />
                         <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.sidebarHelper} />
                     </Switch>
 

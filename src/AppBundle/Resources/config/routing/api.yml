@@ -21,3 +21,9 @@ app_main_data:
   prefix: /data
   host: '%host%'
   methods: [GET, POST]
+
+app_progress:
+  resource: "@AppBundle/Resources/config/routing/api/progress.yml"
+  prefix: /progress
+  host: '%host%'
+  methods: [GET, POST]

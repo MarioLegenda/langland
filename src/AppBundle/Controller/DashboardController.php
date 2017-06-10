@@ -70,4 +70,9 @@ class DashboardController extends CommonOperationController
 
         throw $this->createNotFoundException();
     }
+
+    public function gamesListDashboardAction($courseName, $learningUserCourseId)
+    {
+        return $this->render('::App/Dashboard/dashboard.html.twig');
+    }
 }

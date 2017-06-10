@@ -12,7 +12,11 @@ export class MethodNavigation extends React.Component {
     _highlightMenuBasedOnRoutes() {
         if (/lessons/.test(window.location.pathname)) {
             this._highlightMenu(jQuery('.lesson-item'));
-        } else {
+        }
+        else if (/games/.test(window.location.pathname)) {
+            this._highlightMenu(jQuery('.game-item'));
+        }
+        else {
             this._unHighlightMenu();
         }
     }
@@ -54,7 +58,7 @@ export class MethodNavigation extends React.Component {
                 </div>
 
                 <div onClick={this.handleMenuHighlight} className="nav-item game-item">
-                    <Link to="">
+                    <Link to={RouteCreator.create('app_page_games_list_dashboard', [courseName, learningUserCourseId])}>
                         <i className="fa fa-gamepad fa-2x highlightable"></i>
                         <span className="highlightable">Games</span>
                     </Link>

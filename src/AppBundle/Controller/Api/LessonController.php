@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\LearningUserLesson;
+use AppBundle\Entity\Progress;
 use Symfony\Component\HttpFoundation\Request;
 
 class LessonController extends CommonOperationController
@@ -18,7 +19,21 @@ class LessonController extends CommonOperationController
                 $learningUserLesson->setHasPassed(true);
                 $learningUserLesson->setIsEligable(false);
 
-                $this->save($learningUserLesson);
+                $courseName = $request->request->get('courseName');
+                $learningUserCourseId = $request->request->get('learningUserCourseId');
+
+                $progress = new Progress();
+
+                $progress->setText(
+                    sprintf('You have unlocked games for lesson %s. Go to :0 and pass these games to unlock next lesson', $learningUserLesson->getLesson()->getName())
+                );
+
+                $base = ($this->get('kernel')->getEnvironment() === 'dev') ? '/app_dev.php/' : '/';
+                $url = sprintf('%s/langland/dashboard/%s/%s/games', $base,$courseName, $learningUserCourseId);
+
+                $progress->setUrls(json_encode(array($url)));
+
+                $this->save(array($learningUserLesson, $progress));
             }
 
             return $this->createSuccessJsonResponse();

@@ -117,14 +117,22 @@ export class LessonDashboardContainer extends React.Component {
             redirectUrl: null
         };
 
+        this.dashboardData = {
+            courseName: this.props.courseName,
+            learningUserCourseId: this.props.learningUserCourseId,
+            learningUserLessonId: this.props.match.params.learningUserLessonId
+        };
+
         this.learningUserLessonId = this.props.match.params.learningUserLessonId;
 
         this.markLessonFinished = this.markLessonFinished.bind(this);
     }
 
     _fetchLesson() {
+        const learningUserLessonId = this.dashboardData.learningUserLessonId;
+
         jQuery.ajax({
-            url: RouteCreator.create('app_learning_user_lesson', [this.learningUserLessonId]),
+            url: RouteCreator.create('app_learning_user_lesson', [learningUserLessonId]),
             method: 'GET'
         }).done(jQuery.proxy(function(data) {
             if (data.status === 'success') {
@@ -136,21 +144,26 @@ export class LessonDashboardContainer extends React.Component {
     }
 
     _markLessonFinished() {
+        const
+            learningUserLessonId = this.dashboardData.learningUserLessonId,
+            courseName = this.dashboardData.courseName,
+            learningUserCourseId = this.dashboardData.learningUserCourseId;
+
         jQuery.ajax({
             url: routes.app_learning_user_mark_lesson_passed,
             method: 'POST',
-            data: {learningUserLessonId: this.learningUserLessonId}
+            data: {
+                learningUserLessonId: learningUserLessonId,
+                courseName: courseName,
+                learningUserCourseId: learningUserCourseId
+            }
         }).done(jQuery.proxy(function(data) {
             if (data.status === 'success') {
                 const redirectUrl = envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
-                $('.lesson-dashboard').removeClass('fadeInDown');
-                $('.lesson-dashboard').addClass('fadeOutUp');
-
                 this.setState({
                     redirectUrl: redirectUrl
                 });
-
             }
 
             if (data.status === 'failure') {

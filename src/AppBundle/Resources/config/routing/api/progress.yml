@@ -1,0 +1,4 @@
+app_add_progress:
+    path: /add-progress
+    defaults: { _controller: AppBundle:Progress:addProgress }
+    methods: [POST]

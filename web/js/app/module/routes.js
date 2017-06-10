@@ -26,6 +26,7 @@ class AppRouter {
             app_lesson_list: envr + 'langland/api/data/lesson-list/:0',
             app_learning_user_lesson: envr + 'langland/api/data/lesson/:0',
             app_page_lesson_list_dashboard: envr + 'langland/dashboard/:0/:1/lessons',
+            app_page_games_list_dashboard: envr + 'langland/dashboard/:0/:1/games',
             app_page_lesson_start: envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
             app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed'
         }

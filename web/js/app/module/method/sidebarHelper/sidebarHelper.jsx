@@ -16,20 +16,6 @@ class ProgressContainer extends React.Component {
     }
 }
 
-class NotificationContainer extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <div className="notification-sidebar sidebar">
-                <h1>Notifications<i className="fa fa-bell-o"></i></h1>
-            </div>
-        )
-    }
-}
-
 export class SidebarHelperContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -38,7 +24,6 @@ export class SidebarHelperContainer extends React.Component {
     render() {
         return (
             <div className="animated fadeInDown sidebar-helper">
-                <NotificationContainer/>
                 <ProgressContainer/>
             </div>
         )

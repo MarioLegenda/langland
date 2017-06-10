@@ -161,6 +161,8 @@ export class LessonDashboardContainer extends React.Component {
             if (data.status === 'success') {
                 const redirectUrl = envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
+                this.props.io.emit('update_progress', {'progress': 'progress_updated'});
+
                 this.setState({
                     redirectUrl: redirectUrl
                 });

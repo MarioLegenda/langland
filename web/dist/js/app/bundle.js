@@ -12579,6 +12579,8 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
                 if (data.status === 'success') {
                     var redirectUrl = _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
+                    this.props.io.emit('update_progress', { 'progress': 'progress_updated' });
+
                     this.setState({
                         redirectUrl: redirectUrl
                     });

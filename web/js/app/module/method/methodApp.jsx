@@ -26,6 +26,7 @@ class MethodApp extends React.Component {
             courseName={courseName}
             learningUserCourseId={learningUserCourseId}
             match={match.match}
+            io={this.props.io}
         />;
 
         const sidebarHelper = () => <SidebarHelperContainer learningUserCourseId={learningUserCourseId}/>;
@@ -79,7 +80,7 @@ export class MethodAppRouteContainer extends React.Component {
 
     render() {
         return (
-            <MethodApp match={this.props.match} />
+            <MethodApp match={this.props.match} io={this.props.io}/>
         )
     }
 }

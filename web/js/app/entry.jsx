@@ -12,6 +12,10 @@ import {CourseInitContainer} from './module/courseInit.jsx';
 const NoMatch = () => <div>No match</div>
 
 function App() {
+    const io = window.io('http://33.33.33.10:3000');
+
+    const methodAppContainer = (match) => <MethodAppRouteContainer io={io} match={match.match}/>
+
     return (
         <Router>
             <div className="app">
@@ -19,7 +23,7 @@ function App() {
 
                 <Switch>
                     <Route exact path={envr + "langland/course/:languageName/:languageId"} component={CourseInitContainer}/>
-                    <Route path={envr + "langland/dashboard/:courseName/:learningUserCourseId"} component={MethodAppRouteContainer} />
+                    <Route path={envr + "langland/dashboard/:courseName/:learningUserCourseId"} render={methodAppContainer} />
                     <Route exact path={envr + "langland"} component = {LanguageListContainer} />
 
                     <Route component={NoMatch}/>

@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var mysql = require('mysql');
+var io = require('socket.io')(http);
 
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -10,6 +11,10 @@ var connection = mysql.createConnection({
 });
 
 connection.connect();
+
+io.on('connection', function(socket){
+
+});
 
 app.get('/', function(req, res){
     res.send('<h1>Hello world</h1>');

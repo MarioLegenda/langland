@@ -202,14 +202,14 @@ class Lesson
     /**
      * @return mixed
      */
-    public function getGames()
+    public function getWordGames()
     {
         return $this->wordGames;
     }
     /**
      * @param mixed $games
      */
-    public function setGames($games)
+    public function setWordGames($games)
     {
         $this->wordGames = $games;
     }
@@ -302,6 +302,14 @@ class Lesson
     public function getQuestionGames()
     {
         return $this->questionGames;
+    }
+
+    public function getGames() : array
+    {
+        $wordGames = $this->getWordGames()->toArray();
+        $questionGames = $this->getQuestionGames()->toArray();
+
+        return array_merge($wordGames, $questionGames);
     }
     /**
      * Set createdAt

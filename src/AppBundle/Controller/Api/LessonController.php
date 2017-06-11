@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller\Api;
 
+use AdminBundle\Entity\Game\QuestionGame;
+use AdminBundle\Entity\Game\WordGame;
+use AppBundle\Entity\LearningUserGame;
 use AppBundle\Entity\LearningUserLesson;
-use AppBundle\Entity\Progress;
 use Symfony\Component\HttpFoundation\Request;
 
 class LessonController extends CommonOperationController
@@ -19,9 +21,27 @@ class LessonController extends CommonOperationController
                 $learningUserLesson->setHasPassed(true);
                 $learningUserLesson->setIsEligable(false);
 
-                $this->save($learningUserLesson);
+                $lesson = $learningUserLesson->getLesson();
 
-                
+                $games = $lesson->getGames();
+
+                foreach ($games as $game) {
+                    $learningUserGame = new LearningUserGame();
+
+                    if ($game instanceof WordGame) {
+                        $learningUserGame->setWordGame($game);
+                    } else if ($game instanceof QuestionGame) {
+                        $learningUserGame->setQuestionGame($game);
+                    }
+
+                    $learningUserGame->setLearningUserLesson($learningUserLesson);
+
+                    $this->getManager()->persist($learningUserGame);
+                }
+
+                $this->getManager()->flush();
+
+                $this->save($learningUserLesson);
             }
 
             return $this->createSuccessJsonResponse();

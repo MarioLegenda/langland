@@ -1322,7 +1322,8 @@ var AppRouter = function () {
             app_page_lesson_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/lessons',
             app_page_games_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/games',
             app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
-            app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed'
+            app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed',
+            app_games_list: _env.envr + 'langland/api/data/games/:0'
         };
     }
 
@@ -12387,6 +12388,12 @@ var GameListContainer = exports.GameListContainer = function (_React$Component) 
     }
 
     _createClass(GameListContainer, [{
+        key: '_fetchGamesList',
+        value: function _fetchGamesList() {}
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {}
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement('div', null);

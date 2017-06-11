@@ -16,7 +16,7 @@ app_learning_user_lesson:
         learningUserLessonId: \d+
 
 app_available_games_list:
-    path: /games-list/{learningUserLessonId}
+    path: /games-list/{learningUserCourseId}
     defaults: { _controller: AppBundle:Api/Games:findAvailableGames }
     methods: [GET]
     requirements:

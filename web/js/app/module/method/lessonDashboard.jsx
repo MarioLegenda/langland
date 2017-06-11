@@ -82,10 +82,6 @@ class LessonDashboard extends React.Component {
         this.goToGames = this.goToGames.bind(this);
     }
 
-    _markLessonFinished() {
-        this.props.markLessonFinished();
-    }
-
     next() {
         let counter = this.state.counter + 1;
 
@@ -164,7 +160,6 @@ export class LessonDashboardContainer extends React.Component {
 
         this.learningUserLessonId = this.props.match.params.learningUserLessonId;
 
-        this.markLessonFinished = this.markLessonFinished.bind(this);
         this.goToGames = this.goToGames.bind(this);
     }
 
@@ -199,12 +194,8 @@ export class LessonDashboardContainer extends React.Component {
             }
         }).done(jQuery.proxy(function(data) {
             if (data.status === 'success') {
-                const redirectUrl = envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
-
-                //this.props.io.emit('client.update_progress', {'learningUserId': User.getLearningUser().learningUserId});
-
                 this.setState({
-                    redirectUrl: redirectUrl
+                    redirectUrl: envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/games'
                 });
             }
 
@@ -215,12 +206,6 @@ export class LessonDashboardContainer extends React.Component {
     }
 
     goToGames() {
-        this.setState({
-            redirectUrl: envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/games'
-        });
-    }
-
-    markLessonFinished() {
         this._markLessonFinished();
     }
 
@@ -243,7 +228,6 @@ export class LessonDashboardContainer extends React.Component {
             <LessonDashboard
                 item={item}
                 goToGames={this.goToGames}
-                markLessonFinished={this.markLessonFinished}
             />
         )
     }

@@ -12556,11 +12556,6 @@ var LessonDashboard = function (_React$Component3) {
     }
 
     _createClass(LessonDashboard, [{
-        key: '_markLessonFinished',
-        value: function _markLessonFinished() {
-            this.props.markLessonFinished();
-        }
-    }, {
         key: 'next',
         value: function next() {
             var counter = this.state.counter + 1;
@@ -12651,7 +12646,6 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
 
         _this4.learningUserLessonId = _this4.props.match.params.learningUserLessonId;
 
-        _this4.markLessonFinished = _this4.markLessonFinished.bind(_this4);
         _this4.goToGames = _this4.goToGames.bind(_this4);
         return _this4;
     }
@@ -12689,12 +12683,8 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
                 }
             }).done(jQuery.proxy(function (data) {
                 if (data.status === 'success') {
-                    var redirectUrl = _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
-
-                    //this.props.io.emit('client.update_progress', {'learningUserId': User.getLearningUser().learningUserId});
-
                     this.setState({
-                        redirectUrl: redirectUrl
+                        redirectUrl: _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/games'
                     });
                 }
 
@@ -12706,13 +12696,6 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
     }, {
         key: 'goToGames',
         value: function goToGames() {
-            this.setState({
-                redirectUrl: _env.envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/games'
-            });
-        }
-    }, {
-        key: 'markLessonFinished',
-        value: function markLessonFinished() {
             this._markLessonFinished();
         }
     }, {
@@ -12735,8 +12718,7 @@ var LessonDashboardContainer = exports.LessonDashboardContainer = function (_Rea
 
             return _react2.default.createElement(LessonDashboard, {
                 item: item,
-                goToGames: this.goToGames,
-                markLessonFinished: this.markLessonFinished
+                goToGames: this.goToGames
             });
         }
     }]);

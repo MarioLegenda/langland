@@ -19,22 +19,7 @@ class LessonController extends CommonOperationController
                 $learningUserLesson->setHasPassed(true);
                 $learningUserLesson->setIsEligable(false);
 
-                $courseName = $request->request->get('courseName');
-                $learningUserCourseId = $request->request->get('learningUserCourseId');
-
-                $progress = new Progress();
-                $progress->setLearningUser($this->getLearningUser());
-
-                $progress->setText(
-                    sprintf('You have unlocked games for lesson %s. Go to :0 and pass these games to unlock next lesson', $learningUserLesson->getLesson()->getName())
-                );
-
-                $base = ($this->get('kernel')->getEnvironment() === 'dev') ? '/app_dev.php/' : '/';
-                $url = sprintf('%slangland/dashboard/%s/%s/games', $base,$courseName, $learningUserCourseId);
-
-                $progress->setUrls(json_encode(array($url)));
-
-                $this->save(array($learningUserLesson, $progress));
+                $this->save($learningUserLesson);
             }
 
             return $this->createSuccessJsonResponse();

@@ -4,6 +4,29 @@ import {Redirect} from 'react-router-dom';
 import {envr} from './../env.js';
 import {learningUser as User} from './../user.js';
 
+class FinishedText extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.goToGames = this.goToGames.bind(this);
+    }
+
+    goToGames() {
+        this.props.goToGames();
+    }
+
+    render() {
+        return (
+            <div className="full-width align-right">
+
+                <div className="full-width align-left directional-buttons">
+                    <button className="direction-button next" onClick={this.goToGames}>Go to games</button>
+                </div>
+            </div>
+        )
+    }
+}
+
 class LessonText extends React.Component {
     constructor(props) {
         super(props);
@@ -50,11 +73,13 @@ class LessonDashboard extends React.Component {
         super(props);
 
         this.state = {
-            counter: 0
+            counter: 0,
+            isFinished: false
         };
 
         this.next = this.next.bind(this);
         this.prev = this.prev.bind(this);
+        this.goToGames = this.goToGames.bind(this);
     }
 
     _markLessonFinished() {
@@ -65,7 +90,9 @@ class LessonDashboard extends React.Component {
         let counter = this.state.counter + 1;
 
         if (counter >= this.props.item.lessonText.length) {
-            this._markLessonFinished();
+            this.setState({
+                isFinished: true
+            });
 
             return null;
         }
@@ -87,6 +114,10 @@ class LessonDashboard extends React.Component {
         });
     }
 
+    goToGames() {
+        this.props.goToGames();
+    }
+
     componentDidMount() {
         $("html, body").animate({ scrollTop: 0 }, 1000);
     }
@@ -94,16 +125,23 @@ class LessonDashboard extends React.Component {
     render() {
         const
             item = this.props.item,
-            currentItem = item.lessonText[this.state.counter];
+            currentItem = item.lessonText[this.state.counter],
+            isFinished = this.state.isFinished;
 
         return (
             <div className="animated fadeInDown full-width align-left lesson-dashboard working-area">
                 <span className="lesson-name">{item.name} <i className="fa fa-mortar-board"></i></span>
-                <LessonText
-                    item={currentItem}
-                    next={this.next}
-                    prev={this.prev}
-                />
+                {isFinished === false &&
+                    <LessonText
+                        item={currentItem}
+                        next={this.next}
+                        prev={this.prev}
+                    />
+                }
+
+                {isFinished === true &&
+                    <FinishedText goToGames={this.goToGames}/>
+                }
             </div>
         )
     }
@@ -127,6 +165,7 @@ export class LessonDashboardContainer extends React.Component {
         this.learningUserLessonId = this.props.match.params.learningUserLessonId;
 
         this.markLessonFinished = this.markLessonFinished.bind(this);
+        this.goToGames = this.goToGames.bind(this);
     }
 
     _fetchLesson() {
@@ -162,7 +201,7 @@ export class LessonDashboardContainer extends React.Component {
             if (data.status === 'success') {
                 const redirectUrl = envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/lessons';
 
-                this.props.io.emit('client.update_progress', {'learningUserId': User.getLearningUser().learningUserId});
+                //this.props.io.emit('client.update_progress', {'learningUserId': User.getLearningUser().learningUserId});
 
                 this.setState({
                     redirectUrl: redirectUrl
@@ -173,6 +212,12 @@ export class LessonDashboardContainer extends React.Component {
                 console.log('failure');
             }
         }, this));
+    }
+
+    goToGames() {
+        this.setState({
+            redirectUrl: envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/games'
+        });
     }
 
     markLessonFinished() {
@@ -197,6 +242,7 @@ export class LessonDashboardContainer extends React.Component {
         return (
             <LessonDashboard
                 item={item}
+                goToGames={this.goToGames}
                 markLessonFinished={this.markLessonFinished}
             />
         )

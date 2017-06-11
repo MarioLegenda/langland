@@ -14,7 +14,7 @@ connection.connect();
 
 io.on('connection', function(socket){
     socket.on('client.update_progress', function(data) {
-        connection.query('SELECT urls, text FROM progress WHERE learning_user_id = ' +1, function (err, rows, fields) {
+        connection.query('SELECT urls, text FROM progress WHERE learning_user_id = ' + 1, function (err, rows, fields) {
             if (err) throw err;
 
             let progress = [];

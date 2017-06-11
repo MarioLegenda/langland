@@ -12,7 +12,7 @@ import {CourseInitContainer} from './module/courseInit.jsx';
 const NoMatch = () => <div>No match</div>
 
 function App() {
-    const io = window.io('http://33.33.33.10:3000');
+    //const io = window.io('http://33.33.33.10:3000');
 
     const methodAppContainer = (match) => <MethodAppRouteContainer io={io} match={match.match}/>
 

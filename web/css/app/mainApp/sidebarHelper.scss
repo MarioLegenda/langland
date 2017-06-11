@@ -19,6 +19,33 @@
 
     border-radius: 10px;
 
+    .sidebar-item {
+      width: 100%;
+      float:left;
+
+      position:relative;
+      color: $text-color-gray;
+
+      border-bottom: 1px solid $highlight-gray;
+
+      padding-bottom: 10px;
+
+      p {
+        width: 100%;
+        float: left;
+        padding-left: 20px;
+
+        word-wrap: break-word;
+        line-height: 1.2em;
+      }
+
+      i {
+        position:absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+
     h1 {
       position:relative;
 
@@ -34,6 +61,8 @@
       color: $appMainColor;
 
       border-bottom: 1px solid $highlight-gray;
+
+      margin-bottom: 20px;
 
       i {
         position:absolute;

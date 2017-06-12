@@ -8,23 +8,26 @@ import {envr} from './module/env.js';
 
 import {MethodAppRouteContainer} from './module/method/methodApp.jsx';
 import {CourseInitContainer} from './module/courseInit.jsx';
+import {DataSource} from './module/dataSource.js';
 
 const NoMatch = () => <div>No match</div>
 
 function App() {
     //const io = window.io('http://33.33.33.10:3000');
 
-    const methodAppContainer = (match) => <MethodAppRouteContainer io={io} match={match.match}/>
+    const methodAppContainer = (match) => <MethodAppRouteContainer io={io} match={match.match} DataSource={DataSource}/>;
+    const languageListContainer = () => <LanguageListContainer DataSource={DataSource}/>;
+    const courseInitContainer = (match) => <CourseInitContainer DataSource={DataSource} match={match.match}/>
 
     return (
         <Router>
             <div className="app">
-                <Header/>
+                <Header DataSource={DataSource}/>
 
                 <Switch>
-                    <Route exact path={envr + "langland/course/:languageName/:languageId"} component={CourseInitContainer}/>
+                    <Route exact path={envr + "langland/course/:languageName/:languageId"} render={courseInitContainer}/>
                     <Route path={envr + "langland/dashboard/:courseName/:learningUserCourseId"} render={methodAppContainer} />
-                    <Route exact path={envr + "langland"} component = {LanguageListContainer} />
+                    <Route exact path={envr + "langland"} render={languageListContainer} />
 
                     <Route component={NoMatch}/>
                 </Switch>

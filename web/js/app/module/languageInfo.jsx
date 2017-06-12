@@ -57,6 +57,15 @@ export class LanguageInfoContainer extends React.Component {
         this.prev = this.prev.bind(this);
     }
 
+    _fetchLanguageInfos() {
+        this.props.DataSource.fetchLanguaageInfos(this.props.languageData.id)
+            .done(jQuery.proxy(function(data) {
+                this.setState({
+                    texts: data.data.languageInfoTexts
+                });
+            }, this));
+    }
+
     _moveSlide(clickType) {
         if (this.state.counter === this.state.texts.length - 1) {
             this.props.markInfoLooked();
@@ -101,17 +110,7 @@ export class LanguageInfoContainer extends React.Component {
     }
 
     componentDidMount() {
-        jQuery.ajax({
-            url: routes.app_course_language_infos,
-            method: 'POST',
-            data: {
-                languageId: this.props.languageData.id
-            }
-        }).done(jQuery.proxy(function(data) {
-            this.setState({
-                texts: data.data.languageInfoTexts
-            });
-        }, this));
+        this._fetchLanguageInfos();
     }
 
     render() {

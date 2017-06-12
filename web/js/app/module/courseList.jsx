@@ -81,16 +81,14 @@ export class CourseListContainer extends React.Component {
     }
 
     _fetchCourseList() {
-        jQuery.ajax({
-            url: routes.app_language_course_list,
-            method: 'POST',
-        }).done(jQuery.proxy(function(data) {
-            if (data.status === 'success') {
-                this.setState({
-                    items: data.data
-                });
-            }
-        }, this));
+        this.props.DataSource.fetchCourseList()
+            .done(jQuery.proxy(function(data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        items: data.data
+                    });
+                }
+            }, this));
     }
 
     componentDidMount() {

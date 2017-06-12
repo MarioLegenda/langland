@@ -6,7 +6,6 @@ import {LessonListContainer as LessonList} from './lessonList.jsx';
 import {LessonDashboardContainer} from './lessonDashboard.jsx';
 import {SidebarHelperContainer} from './sidebarHelper/sidebarHelper.jsx';
 import {GameListContainer} from './gamesList.jsx';
-import {DataSource} from './../dataSource.js';
 
 class MethodApp extends React.Component {
     constructor(props) {
@@ -21,12 +20,13 @@ class MethodApp extends React.Component {
         const lessonList = () => <LessonList
             courseName={courseName}
             learningUserCourseId={learningUserCourseId}
-            DataSource={DataSource}
+            DataSource={this.props.DataSource}
         />;
 
         const gamesList = () => <GameListContainer
             courseName={courseName}
             learningUserCourseId={learningUserCourseId}
+            DataSource={this.props.DataSource}
         />
 
         const lessonDashboard = (match) => <LessonDashboardContainer
@@ -34,6 +34,7 @@ class MethodApp extends React.Component {
             learningUserCourseId={learningUserCourseId}
             match={match.match}
             io={this.props.io}
+            DataSource={this.props.DataSource}
         />;
 
         const sidebarHelper = () => <SidebarHelperContainer
@@ -91,7 +92,7 @@ export class MethodAppRouteContainer extends React.Component {
 
     render() {
         return (
-            <MethodApp match={this.props.match} io={this.props.io}/>
+            <MethodApp match={this.props.match} io={this.props.io} DataSource={this.props.DataSource}/>
         )
     }
 }

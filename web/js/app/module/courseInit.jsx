@@ -15,37 +15,33 @@ export class CourseInitContainer extends React.Component {
     }
 
     _fetchIsLookedInfo() {
-        jQuery.ajax({
-            url: routes.app_course_language_info_exists,
-            method: 'POST'
-        }).done(jQuery.proxy(function(data) {
-            if (data.status === 'success') {
-                this.setState({
-                    isInfoLooked: true
-                });
+        this.props.DataSource.fetchIsInfoLooked()
+            .done(jQuery.proxy(function(data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        isInfoLooked: true
+                    });
 
-                return null;
-            }
+                    return null;
+                }
 
-            if (data.status === 'failure') {
-                this.setState({
-                    isInfoLooked: false
-                });
-            }
-        }, this));
+                if (data.status === 'failure') {
+                    this.setState({
+                        isInfoLooked: false
+                    });
+                }
+            }, this));
     }
 
     _fetchMarkInfoLooked() {
-        jQuery.ajax({
-            url: routes.app_course_mark_info_looked,
-            method: 'POST'
-        }).done(jQuery.proxy(function(data) {
-            if (data.status === 'success') {
-                this.setState({
-                    isInfoLooked: true
-                });
-            }
-        }, this));
+        this.props.DataSource.fetchMarkInfoLooked()
+            .done(jQuery.proxy(function(data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        isInfoLooked: true
+                    });
+                }
+            }, this));
     }
 
     markInfoLooked() {
@@ -63,11 +59,13 @@ export class CourseInitContainer extends React.Component {
         if (isInfoLooked === true) {
             return <CourseListContainer
                 languageData = {languageData}
+                DataSource={this.props.DataSource}
             />
         } else if (isInfoLooked === false) {
             return  <LanguageInfoContainer
                         markInfoLooked={this.markInfoLooked}
                         languageData={this.props.match.params}
+                        DataSource={this.props.DataSource}
                     />;
         }
 

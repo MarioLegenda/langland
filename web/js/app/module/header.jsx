@@ -34,16 +34,14 @@ export class UserProfileBarContainer extends React.Component {
     }
 
     _fetchLoggedInUser() {
-        jQuery.ajax({
-            url: routes.app_logged_in_user,
-            method: 'POST'
-        }).done(jQuery.proxy(function(data) {
-            if (data.status === 'success') {
-                this.setState({
-                    user: data.data
-                });
-            }
-        }, this));
+        this.props.DataSource.fetchLoggedInUser()
+            .done(jQuery.proxy(function(data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        user: data.data
+                    });
+                }
+            }, this));
     }
 
     componentDidMount() {
@@ -104,16 +102,14 @@ class CourseBarContainer extends React.Component {
     }
 
     _fetchSignedCourses() {
-        jQuery.ajax({
-            url: routes.app_find_learning_languages,
-            method: 'POST'
-        }).done(jQuery.proxy(function(data) {
-            if (data.status === 'success') {
-                this.setState({
-                    item: data.data
-                })
-            }
-        }, this));
+        this.props.DataSource.fetchLearningLanguages()
+            .done(jQuery.proxy(function(data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        item: data.data
+                    })
+                }
+            }, this));
     }
 
     componentDidMount() {
@@ -139,7 +135,7 @@ class CourseBarContainer extends React.Component {
     }
 }
 
-function Header() {
+function Header(props) {
     return (
         <header className="full-width app-header" id="react-header">
             <div className="full-width">
@@ -149,13 +145,13 @@ function Header() {
             </div>
 
             <div className="align-right">
-                <CourseBarContainer/>
-                <UserProfileBarContainer/>
+                <CourseBarContainer DataSource={props.DataSource}/>
+                <UserProfileBarContainer DataSource={props.DataSource}/>
             </div>
         </header>
     )
 }
 
-export function HeaderContainer() {
-    return <Header/>
+export function HeaderContainer(props) {
+    return <Header DataSource={props.DataSource}/>
 }

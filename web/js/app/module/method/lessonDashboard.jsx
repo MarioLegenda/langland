@@ -166,16 +166,14 @@ export class LessonDashboardContainer extends React.Component {
     _fetchLesson() {
         const learningUserLessonId = this.dashboardData.learningUserLessonId;
 
-        jQuery.ajax({
-            url: RouteCreator.create('app_learning_user_lesson', [learningUserLessonId]),
-            method: 'GET'
-        }).done(jQuery.proxy(function(data) {
-            if (data.status === 'success') {
-                this.setState({
-                    item: data.data
-                });
-            }
-        }, this));
+        this.props.DataSource.fetchLesson(learningUserLessonId)
+            .done(jQuery.proxy(function(data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        item: data.data
+                    });
+                }
+            }, this));
     }
 
     _markLessonFinished() {
@@ -184,25 +182,18 @@ export class LessonDashboardContainer extends React.Component {
             courseName = this.dashboardData.courseName,
             learningUserCourseId = this.dashboardData.learningUserCourseId;
 
-        jQuery.ajax({
-            url: routes.app_learning_user_mark_lesson_passed,
-            method: 'POST',
-            data: {
-                learningUserLessonId: learningUserLessonId,
-                courseName: courseName,
-                learningUserCourseId: learningUserCourseId
-            }
-        }).done(jQuery.proxy(function(data) {
-            if (data.status === 'success') {
-                this.setState({
-                    redirectUrl: envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/games'
-                });
-            }
+        this.props.DataSource.fetchMarkLessonFinished(learningUserLessonId, courseName, learningUserCourseId)
+            .done(jQuery.proxy(function(data) {
+                if (data.status === 'success') {
+                    this.setState({
+                        redirectUrl: envr + 'langland/dashboard/' + this.props.courseName + '/' + this.props.learningUserCourseId + '/games'
+                    });
+                }
 
-            if (data.status === 'failure') {
-                console.log('failure');
-            }
-        }, this));
+                if (data.status === 'failure') {
+                    console.log('failure');
+                }
+            }, this));
     }
 
     goToGames() {

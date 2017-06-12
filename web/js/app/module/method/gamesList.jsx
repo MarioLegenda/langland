@@ -51,14 +51,12 @@ export class GameListContainer extends React.Component {
     }
 
     _fetchGamesList() {
-        jQuery.ajax({
-            url: RouteCreator.create('app_find_available_games', [this.props.learningUserCourseId]),
-            method: 'GET'
-        }).done(jQuery.proxy(function(data) {
-            this.setState({
-                items: data.data
-            });
-        }, this));
+        this.props.DataSource.fetchGamesList(this.props.learningUserCourseId)
+            .done(jQuery.proxy(function(data) {
+                this.setState({
+                    items: data.data
+                });
+            }, this));
     }
 
     componentDidMount() {

@@ -1323,7 +1323,7 @@ var AppRouter = function () {
             app_page_games_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/games',
             app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
             app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed',
-            app_games_list: _env.envr + 'langland/api/data/games/:0'
+            app_find_available_games: _env.envr + 'langland/api/data/games/find-available-games/:0'
         };
     }
 
@@ -11812,6 +11812,13 @@ var MethodApp = function (_React$Component) {
                 });
             };
 
+            var gamesList = function gamesList() {
+                return _react2.default.createElement(_gamesList.GameListContainer, {
+                    courseName: courseName,
+                    learningUserCourseId: learningUserCourseId
+                });
+            };
+
             var lessonDashboard = function lessonDashboard(match) {
                 return _react2.default.createElement(_lessonDashboard.LessonDashboardContainer, {
                     courseName: courseName,
@@ -11830,6 +11837,7 @@ var MethodApp = function (_React$Component) {
 
             return {
                 lessonList: lessonList,
+                gamesList: gamesList,
                 lessonDashboard: lessonDashboard,
                 sidebarHelper: sidebarHelper
             };
@@ -11861,7 +11869,7 @@ var MethodApp = function (_React$Component) {
                         _reactRouterDom.Switch,
                         null,
                         _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lessons", render: components.lessonList }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/games", component: _gamesList.GameListContainer }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/games", render: components.gamesList }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: mainPath + "/lesson/:lessonName/:learningUserLessonId", render: components.lessonDashboard })
                     ),
                     _react2.default.createElement(
@@ -12370,6 +12378,8 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _routes = __webpack_require__(13);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12389,10 +12399,19 @@ var GameListContainer = exports.GameListContainer = function (_React$Component) 
 
     _createClass(GameListContainer, [{
         key: '_fetchGamesList',
-        value: function _fetchGamesList() {}
+        value: function _fetchGamesList() {
+            jQuery.ajax({
+                url: _routes.RouteCreator.create('app_find_available_games', [this.props.learningUserCourseId]),
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                console.log(data);
+            }, this));
+        }
     }, {
         key: 'componentDidMount',
-        value: function componentDidMount() {}
+        value: function componentDidMount() {
+            this._fetchGamesList();
+        }
     }, {
         key: 'render',
         value: function render() {

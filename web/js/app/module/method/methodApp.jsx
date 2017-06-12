@@ -23,6 +23,11 @@ class MethodApp extends React.Component {
             learningUserCourseId={learningUserCourseId}
         />;
 
+        const gamesList = () => <GameListContainer
+            courseName={courseName}
+            learningUserCourseId={learningUserCourseId}
+        />
+
         const lessonDashboard = (match) => <LessonDashboardContainer
             courseName={courseName}
             learningUserCourseId={learningUserCourseId}
@@ -37,6 +42,7 @@ class MethodApp extends React.Component {
 
         return {
             lessonList: lessonList,
+            gamesList: gamesList,
             lessonDashboard: lessonDashboard,
             sidebarHelper: sidebarHelper
         }
@@ -61,7 +67,7 @@ class MethodApp extends React.Component {
 
                     <Switch>
                         <Route path={mainPath + "/lessons"} render={components.lessonList} />
-                        <Route path={mainPath + "/games"} component={GameListContainer} />
+                        <Route path={mainPath + "/games"} render={components.gamesList} />
                         <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.lessonDashboard} />
                     </Switch>
 

@@ -1,0 +1,12 @@
+AdminBundle\Entity\Game\QuestionGame:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            groups: [games_list]
+        name:
+            expose: true
+            groups: [games_list]
+        description:
+            expose: true
+            groups: [games_list]

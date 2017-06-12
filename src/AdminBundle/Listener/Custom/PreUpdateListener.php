@@ -5,7 +5,7 @@ namespace AdminBundle\Listener\Custom;
 use AdminBundle\Entity\LanguageInfo;
 use AdminBundle\Entity\Sentence;
 use AdminBundle\Entity\Word;
-use AdminBundle\Event\PreUpdateEvent;
+use Library\Event\PreUpdateEvent;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Game\QuestionGame;

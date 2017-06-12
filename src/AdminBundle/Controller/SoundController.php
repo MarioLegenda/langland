@@ -3,9 +3,8 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Sound;
-use AdminBundle\Event\FileUploadEvent;
+use Library\Event\FileUploadEvent;
 use AdminBundle\Form\Type\SoundType;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 
 class SoundController extends RepositoryController

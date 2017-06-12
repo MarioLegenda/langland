@@ -5,7 +5,7 @@ namespace AdminBundle\Controller;
 use AdminBundle\Entity\Course;
 use AdminBundle\Form\Type\CourseType;
 use Symfony\Component\HttpFoundation\Request;
-use AdminBundle\Event\PrePersistEvent;
+use Library\Event\PrePersistEvent;
 
 class CourseController extends RepositoryController
 {

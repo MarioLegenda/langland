@@ -3,7 +3,7 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Language;
-use AdminBundle\Event\FileUploadEvent;
+use Library\Event\FileUploadEvent;
 use AdminBundle\Form\Type\LanguageType;
 use Symfony\Component\HttpFoundation\Request;
 

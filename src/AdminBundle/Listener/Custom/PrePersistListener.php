@@ -8,7 +8,7 @@ use AdminBundle\Entity\LanguageInfo;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Sentence;
 use AdminBundle\Entity\Word;
-use AdminBundle\Event\MultipleEntityEvent;
+use Library\Event\MultipleEntityEvent;
 
 class PrePersistListener extends AbstractEntityManagerBaseListener
 {

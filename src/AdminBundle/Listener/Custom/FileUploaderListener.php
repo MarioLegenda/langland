@@ -6,7 +6,7 @@ use AdminBundle\Entity\Image;
 use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Sound;
 use AdminBundle\Entity\Word;
-use AdminBundle\Event\FileUploadEvent;
+use Library\Event\FileUploadEvent;
 use Doctrine\ORM\EntityManager;
 use Library\FileUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

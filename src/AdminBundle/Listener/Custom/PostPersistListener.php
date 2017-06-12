@@ -3,8 +3,7 @@
 namespace AdminBundle\Listener\Custom;
 
 use AdminBundle\Entity\Game\QuestionGame;
-use AdminBundle\Entity\Sentence;
-use AdminBundle\Event\PostPersistEvent;
+use Library\Event\PostPersistEvent;
 
 class PostPersistListener extends AbstractEntityManagerBaseListener
 {

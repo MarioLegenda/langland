@@ -3,11 +3,11 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Word;
-use AdminBundle\Event\PrePersistEvent;
-use AdminBundle\Event\PreUpdateEvent;
+use Library\Event\PrePersistEvent;
+use Library\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\WordType;
 use Symfony\Component\HttpFoundation\Request;
-use AdminBundle\Event\FileUploadEvent;
+use Library\Event\FileUploadEvent;
 
 class WordController extends RepositoryController
 {

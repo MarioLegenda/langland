@@ -3,11 +3,10 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Game\QuestionGame;
-use AdminBundle\Event\PreUpdateEvent;
+use Library\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\QuestionGameType;
 use Symfony\Component\HttpFoundation\Request;
-use AdminBundle\Event\PrePersistEvent;
-use AdminBundle\Event\PostPersistEvent;
+use Library\Event\PrePersistEvent;
 
 class QuestionGameController extends RepositoryController
 {

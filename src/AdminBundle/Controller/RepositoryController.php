@@ -4,7 +4,6 @@ namespace AdminBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use AdminBundle\Event\FileUploadEvent;
 
 class RepositoryController extends Controller
 {

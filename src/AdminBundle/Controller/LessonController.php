@@ -2,11 +2,9 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
-use AdminBundle\Event\MultipleEntityEvent;
-use AdminBundle\Event\PrePersistEvent;
-use AdminBundle\Event\PreUpdateEvent;
+use Library\Event\PrePersistEvent;
+use Library\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\LessonType;
 use Symfony\Component\HttpFoundation\Request;
 

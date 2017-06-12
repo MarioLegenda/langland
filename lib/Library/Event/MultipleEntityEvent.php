@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Event;
+namespace Library\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 

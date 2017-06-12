@@ -1,20 +1,19 @@
 <?php
 
-namespace AdminBundle\Event;
+namespace Library\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class SingleEntityEvent extends Event
+class FileUploadEvent extends Event
 {
+    const NAME = 'admin.upload_file_event';
+
     /**
      * @var object $entity
      */
-    protected $entity;
-    /**
-     * GenericEntityEvent constructor.
-     * @param object $entity
-     */
-    public function __construct($entity)
+    private $entity;
+
+    public function __construct($entity = null)
     {
         $this->entity = $entity;
     }

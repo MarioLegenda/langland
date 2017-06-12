@@ -11,9 +11,9 @@ AppBundle\Entity\LearningUserGame:
             expose: true
             groups: [games_list]
             type: AdminBundle\Entity\Game\QuestionGame
-            serialized_name: questionGame
+            serialized_name: game
         wordGame:
             expose: true
             groups: [games_list]
-            serialized_name: wordGame
+            serialized_name: game
             type: AdminBundle\Entity\Game\WordGame

@@ -12380,6 +12380,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _routes = __webpack_require__(13);
 
+var _listingItem = __webpack_require__(236);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12388,13 +12390,71 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var GameListContainer = exports.GameListContainer = function (_React$Component) {
-    _inherits(GameListContainer, _React$Component);
+var GamesList = function (_React$Component) {
+    _inherits(GamesList, _React$Component);
+
+    function GamesList(props) {
+        _classCallCheck(this, GamesList);
+
+        var _this = _possibleConstructorReturn(this, (GamesList.__proto__ || Object.getPrototypeOf(GamesList)).call(this, props));
+
+        _this.chooseGame = _this.chooseGame.bind(_this);
+        return _this;
+    }
+
+    _createClass(GamesList, [{
+        key: 'chooseGame',
+        value: function chooseGame(e) {
+            e.preventDefault();
+
+            var itemIndex = e.currentTarget.getAttribute('data-item-index');
+            var item = this.props.items[itemIndex];
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            console.log(this.props.items);
+            var items = this.props.items.map(function (item, index) {
+                var passedClass = item.hasPassed === true ? 'passed-item' : '';
+
+                return _react2.default.createElement(
+                    'div',
+                    { key: index },
+                    _react2.default.createElement(_listingItem.ListingItem, {
+                        chooseItem: _this2.chooseGame,
+                        index: index,
+                        className: passedClass,
+                        title: item.game.name.toUpperCase(),
+                        hasPassed: item.hasPassed
+                    })
+                );
+            });
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                items
+            );
+        }
+    }]);
+
+    return GamesList;
+}(_react2.default.Component);
+
+var GameListContainer = exports.GameListContainer = function (_React$Component2) {
+    _inherits(GameListContainer, _React$Component2);
 
     function GameListContainer(props) {
         _classCallCheck(this, GameListContainer);
 
-        return _possibleConstructorReturn(this, (GameListContainer.__proto__ || Object.getPrototypeOf(GameListContainer)).call(this, props));
+        var _this3 = _possibleConstructorReturn(this, (GameListContainer.__proto__ || Object.getPrototypeOf(GameListContainer)).call(this, props));
+
+        _this3.state = {
+            items: null
+        };
+        return _this3;
     }
 
     _createClass(GameListContainer, [{
@@ -12404,7 +12464,9 @@ var GameListContainer = exports.GameListContainer = function (_React$Component) 
                 url: _routes.RouteCreator.create('app_find_available_games', [this.props.learningUserCourseId]),
                 method: 'GET'
             }).done(jQuery.proxy(function (data) {
-                console.log(data);
+                this.setState({
+                    items: data.data
+                });
             }, this));
         }
     }, {
@@ -12415,7 +12477,17 @@ var GameListContainer = exports.GameListContainer = function (_React$Component) 
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement('div', null);
+            var items = this.state.items;
+
+            if (items === null) {
+                return null;
+            }
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'animated fadeInDown item-list working-area' },
+                _react2.default.createElement(GamesList, { items: items })
+            );
         }
     }]);
 
@@ -12774,6 +12846,8 @@ var _routes = __webpack_require__(13);
 
 var _reactRouterDom = __webpack_require__(22);
 
+var _listingItem = __webpack_require__(236);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -12781,24 +12855,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var LessonItem = function LessonItem(props) {
-    return _react2.default.createElement(
-        'div',
-        { onClick: props.chooseLesson, 'data-lesson-index': props.index, className: "lesson " + props.className },
-        _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(
-                'h1',
-                null,
-                props.lessonName
-            )
-        ),
-        props.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' }),
-        props.hasPassed === false && props.isEligable === false && _react2.default.createElement('i', { className: 'fa fa-lock' })
-    );
-};
 
 var LessonList = function (_React$Component) {
     _inherits(LessonList, _React$Component);
@@ -12808,23 +12864,23 @@ var LessonList = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (LessonList.__proto__ || Object.getPrototypeOf(LessonList)).call(this, props));
 
-        _this.chooseLesson = _this.chooseLesson.bind(_this);
+        _this.chooseItem = _this.chooseItem.bind(_this);
         return _this;
     }
 
     _createClass(LessonList, [{
-        key: 'chooseLesson',
-        value: function chooseLesson(e) {
+        key: 'chooseItem',
+        value: function chooseItem(e) {
             e.preventDefault();
 
-            var itemIndex = e.currentTarget.getAttribute('data-lesson-index');
+            var itemIndex = e.currentTarget.getAttribute('data-item-index');
             var item = this.props.items[itemIndex];
 
             if (item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false) {
                 return false;
             }
 
-            this.props.showLesson(itemIndex);
+            this.props.showItem(itemIndex);
         }
     }, {
         key: 'render',
@@ -12832,31 +12888,31 @@ var LessonList = function (_React$Component) {
             var _this2 = this;
 
             var items = this.props.items.map(function (item, index) {
-                var passedClass = item.hasPassed === true ? 'passed-lesson' : '';
+                var passedClass = item.hasPassed === true ? 'passed-item' : '';
 
                 return _react2.default.createElement(
                     'div',
                     { key: index },
-                    item.isEligable === true && _react2.default.createElement(LessonItem, {
-                        chooseLesson: _this2.chooseLesson,
+                    item.isEligable === true && _react2.default.createElement(_listingItem.ListingItem, {
+                        chooseItem: _this2.chooseItem,
                         index: index,
                         className: passedClass,
-                        lessonName: item.lesson.name.toUpperCase(),
+                        title: item.lesson.name.toUpperCase(),
                         hasPassed: item.hasPassed,
                         isEligable: item.isEligable
                     }),
-                    item.hasPassed === true && _react2.default.createElement(LessonItem, {
-                        chooseLesson: _this2.chooseLesson,
+                    item.hasPassed === true && _react2.default.createElement(_listingItem.ListingItem, {
+                        chooseItem: _this2.chooseItem,
                         index: index,
                         className: passedClass,
-                        lessonName: item.lesson.name.toUpperCase(),
+                        title: item.lesson.name.toUpperCase(),
                         hasPassed: item.hasPassed,
                         isEligable: item.isEligable
                     }),
-                    item.hasPassed === false && item.isEligable === false && _react2.default.createElement(LessonItem, {
+                    item.hasPassed === false && item.isEligable === false && _react2.default.createElement(_listingItem.ListingItem, {
                         index: index,
-                        className: 'unpassed-lesson',
-                        lessonName: item.lesson.name.toUpperCase(),
+                        className: 'unpassed-item',
+                        title: item.lesson.name.toUpperCase(),
                         hasPassed: item.hasPassed,
                         isEligable: item.isEligable
                     })
@@ -12865,7 +12921,7 @@ var LessonList = function (_React$Component) {
 
             return _react2.default.createElement(
                 'div',
-                { className: 'lesson-list' },
+                null,
                 items
             );
         }
@@ -12902,7 +12958,7 @@ var LessonStart = function (_React$Component2) {
                 null,
                 item !== null && _react2.default.createElement(
                     'div',
-                    { className: 'animated fadeInDown lesson-start-item margin-top-30' },
+                    { className: 'animated fadeInDown item-start-item margin-top-30' },
                     _react2.default.createElement(
                         'h1',
                         { className: 'full-width align-left margin-bottom-30' },
@@ -12944,7 +13000,7 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             currentItem: null
         };
 
-        _this4.showLesson = _this4.showLesson.bind(_this4);
+        _this4.showItem = _this4.showItem.bind(_this4);
         return _this4;
     }
 
@@ -12962,8 +13018,8 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
             }, this));
         }
     }, {
-        key: 'showLesson',
-        value: function showLesson(index) {
+        key: 'showItem',
+        value: function showItem(index) {
             this.setState({
                 currentItem: this.state.items[index]
             });
@@ -12994,8 +13050,8 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
 
             return _react2.default.createElement(
                 'div',
-                { className: 'animated fadeInDown lesson-list working-area' },
-                _react2.default.createElement(LessonList, { items: items, showLesson: this.showLesson }),
+                { className: 'animated fadeInDown item-list working-area' },
+                _react2.default.createElement(LessonList, { items: items, showItem: this.showItem }),
                 _react2.default.createElement(LessonStart, {
                     item: currentItem,
                     courseName: courseName,
@@ -27575,6 +27631,48 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ListingItem = undefined;
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ListingItem = exports.ListingItem = function ListingItem(props) {
+    var chooseItem = null;
+
+    if (props.hasOwnProperty('chooseItem')) {
+        var _chooseItem = props.chooseItem;
+    }
+
+    return _react2.default.createElement(
+        'div',
+        { onClick: props.chooseItem, 'data-item-index': props.index, className: "item " + props.className },
+        _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                'h1',
+                null,
+                props.title
+            )
+        ),
+        props.hasPassed === true && _react2.default.createElement('i', { className: 'fa fa-check' }),
+        props.hasPassed === false && props.hasOwnProperty('isEligable') && props.isEligable === false && _react2.default.createElement('i', { className: 'fa fa-lock' })
+    );
+};
 
 /***/ })
 /******/ ]);

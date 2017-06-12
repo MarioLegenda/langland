@@ -2,74 +2,60 @@ import React from 'react';
 import {RouteCreator} from './../routes.js';
 import { Link } from 'react-router-dom';
 
-const LessonItem = (props) => (
-    <div onClick={props.chooseLesson} data-lesson-index={props.index} className={"lesson " + props.className}>
-        <div>
-            <h1>{props.lessonName}</h1>
-        </div>
-
-        {props.hasPassed === true &&
-            <i className="fa fa-check"></i>
-        }
-
-        {props.hasPassed === false && props.isEligable === false &&
-            <i className="fa fa-lock"></i>
-        }
-    </div>
-);
+import {ListingItem} from './listingItem.jsx';
 
 class LessonList extends React.Component {
     constructor(props) {
         super(props);
 
-        this.chooseLesson = this.chooseLesson.bind(this);
+        this.chooseItem = this.chooseItem.bind(this);
     }
 
-    chooseLesson(e) {
+    chooseItem(e) {
         e.preventDefault();
 
-        const itemIndex = e.currentTarget.getAttribute('data-lesson-index');
+        const itemIndex = e.currentTarget.getAttribute('data-item-index');
         const item = this.props.items[itemIndex];
 
         if (item.hasPassed === false && item.lesson.isInitialLesson === false && item.isEligable === false) {
             return false;
         }
 
-        this.props.showLesson(itemIndex);
+        this.props.showItem(itemIndex);
     }
 
     render() {
         const items = this.props.items.map((item, index) => {
-            const passedClass = (item.hasPassed === true) ? 'passed-lesson' : '';
+            const passedClass = (item.hasPassed === true) ? 'passed-item' : '';
 
             return <div key={index}>
                 {item.isEligable === true &&
-                    <LessonItem
-                        chooseLesson={this.chooseLesson}
+                    <ListingItem
+                        chooseItem={this.chooseItem}
                         index={index}
                         className={passedClass}
-                        lessonName={item.lesson.name.toUpperCase()}
+                        title={item.lesson.name.toUpperCase()}
                         hasPassed={item.hasPassed}
                         isEligable={item.isEligable}
                     />
                 }
 
                 {item.hasPassed === true &&
-                <LessonItem
-                    chooseLesson={this.chooseLesson}
+                <ListingItem
+                    chooseItem={this.chooseItem}
                     index={index}
                     className={passedClass}
-                    lessonName={item.lesson.name.toUpperCase()}
+                    title={item.lesson.name.toUpperCase()}
                     hasPassed={item.hasPassed}
                     isEligable={item.isEligable}
                 />
                 }
 
                 {item.hasPassed === false && item.isEligable === false &&
-                <LessonItem
+                <ListingItem
                     index={index}
-                    className="unpassed-lesson"
-                    lessonName={item.lesson.name.toUpperCase()}
+                    className="unpassed-item"
+                    title={item.lesson.name.toUpperCase()}
                     hasPassed={item.hasPassed}
                     isEligable={item.isEligable}
                 />
@@ -78,7 +64,7 @@ class LessonList extends React.Component {
         });
 
         return (
-            <div className="lesson-list">
+            <div>
                 {items}
             </div>
         )
@@ -106,7 +92,7 @@ class LessonStart extends React.Component {
         return (
             <div>
                 {item !== null &&
-                <div className="animated fadeInDown lesson-start-item margin-top-30">
+                <div className="animated fadeInDown item-start-item margin-top-30">
                     <h1 className="full-width align-left margin-bottom-30">{item.lesson.name}</h1>
 
                     <p className="margin-bottom-30">{item.lesson.description}</p>
@@ -131,7 +117,7 @@ export class LessonListContainer extends React.Component {
             currentItem: null
         };
 
-        this.showLesson = this.showLesson.bind(this);
+        this.showItem = this.showItem.bind(this);
     }
 
     _fetchLessons() {
@@ -146,7 +132,7 @@ export class LessonListContainer extends React.Component {
         }, this));
     }
 
-    showLesson(index) {
+    showItem(index) {
         this.setState({
             currentItem: this.state.items[index]
         });
@@ -175,8 +161,8 @@ export class LessonListContainer extends React.Component {
         }
 
         return (
-            <div className="animated fadeInDown lesson-list working-area">
-                <LessonList items={items} showLesson={this.showLesson}/>
+            <div className="animated fadeInDown item-list working-area">
+                <LessonList items={items} showItem={this.showItem}/>
                 <LessonStart
                     item={currentItem}
                     courseName={courseName}

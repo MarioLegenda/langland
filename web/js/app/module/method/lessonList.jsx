@@ -120,18 +120,6 @@ export class LessonListContainer extends React.Component {
         this.showItem = this.showItem.bind(this);
     }
 
-    _fetchLessons() {
-        jQuery.ajax({
-            url: RouteCreator.create('app_lesson_list', [this.props.learningUserCourseId]),
-            method: 'GET'
-        }).done(jQuery.proxy(function (data) {
-            this.setState({
-                items: data.data,
-                itemsFetched: true
-            });
-        }, this));
-    }
-
     showItem(index) {
         this.setState({
             currentItem: this.state.items[index]
@@ -141,7 +129,13 @@ export class LessonListContainer extends React.Component {
     }
 
     componentDidMount() {
-        this._fetchLessons();
+        this.props.DataSource.fetchLessonList(this.props.learningUserCourseId)
+            .done(jQuery.proxy(function (data) {
+                this.setState({
+                    items: data.data,
+                    itemsFetched: true
+                });
+            }, this));
     }
 
     render() {

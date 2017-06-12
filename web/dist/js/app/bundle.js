@@ -11777,7 +11777,7 @@ var _sidebarHelper = __webpack_require__(110);
 
 var _gamesList = __webpack_require__(106);
 
-var _user = __webpack_require__(64);
+var _dataSource = __webpack_require__(237);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11808,7 +11808,8 @@ var MethodApp = function (_React$Component) {
             var lessonList = function lessonList() {
                 return _react2.default.createElement(_lessonList.LessonListContainer, {
                     courseName: courseName,
-                    learningUserCourseId: learningUserCourseId
+                    learningUserCourseId: learningUserCourseId,
+                    DataSource: _dataSource.DataSource
                 });
             };
 
@@ -13005,19 +13006,6 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
     }
 
     _createClass(LessonListContainer, [{
-        key: '_fetchLessons',
-        value: function _fetchLessons() {
-            jQuery.ajax({
-                url: _routes.RouteCreator.create('app_lesson_list', [this.props.learningUserCourseId]),
-                method: 'GET'
-            }).done(jQuery.proxy(function (data) {
-                this.setState({
-                    items: data.data,
-                    itemsFetched: true
-                });
-            }, this));
-        }
-    }, {
         key: 'showItem',
         value: function showItem(index) {
             this.setState({
@@ -13029,7 +13017,12 @@ var LessonListContainer = exports.LessonListContainer = function (_React$Compone
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this._fetchLessons();
+            this.props.DataSource.fetchLessonList(this.props.learningUserCourseId).done(jQuery.proxy(function (data) {
+                this.setState({
+                    items: data.data,
+                    itemsFetched: true
+                });
+            }, this));
         }
     }, {
         key: 'render',
@@ -27673,6 +27666,46 @@ var ListingItem = exports.ListingItem = function ListingItem(props) {
         props.hasPassed === false && props.hasOwnProperty('isEligable') && props.isEligable === false && _react2.default.createElement('i', { className: 'fa fa-lock' })
     );
 };
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.DataSource = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _routes = __webpack_require__(13);
+
+var _env = __webpack_require__(26);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Repository = function () {
+    function Repository() {
+        _classCallCheck(this, Repository);
+    }
+
+    _createClass(Repository, [{
+        key: 'fetchLessonList',
+        value: function fetchLessonList(learningUserCourseId) {
+            return jQuery.ajax({
+                url: _routes.RouteCreator.create('app_lesson_list', [learningUserCourseId]),
+                method: 'GET'
+            });
+        }
+    }]);
+
+    return Repository;
+}();
+
+var DataSource = exports.DataSource = new Repository();
 
 /***/ })
 /******/ ]);

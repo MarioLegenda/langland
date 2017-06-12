@@ -6,7 +6,7 @@ import {LessonListContainer as LessonList} from './lessonList.jsx';
 import {LessonDashboardContainer} from './lessonDashboard.jsx';
 import {SidebarHelperContainer} from './sidebarHelper/sidebarHelper.jsx';
 import {GameListContainer} from './gamesList.jsx';
-import {learningUser as User} from './../user.js';
+import {DataSource} from './../dataSource.js';
 
 class MethodApp extends React.Component {
     constructor(props) {
@@ -21,6 +21,7 @@ class MethodApp extends React.Component {
         const lessonList = () => <LessonList
             courseName={courseName}
             learningUserCourseId={learningUserCourseId}
+            DataSource={DataSource}
         />;
 
         const gamesList = () => <GameListContainer

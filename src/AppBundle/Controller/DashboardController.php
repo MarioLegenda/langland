@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Controller\Api\CommonOperationController;
 use AppBundle\Entity\LearningUser;
 use AppBundle\Entity\LearningUserCourse;
+use AppBundle\Entity\LearningUserGame;
 use AppBundle\Entity\LearningUserLesson;
 
 class DashboardController extends CommonOperationController
@@ -74,5 +75,16 @@ class DashboardController extends CommonOperationController
     public function gamesListDashboardAction($courseName, $learningUserCourseId)
     {
         return $this->render('::App/Dashboard/dashboard.html.twig');
+    }
+
+    public function gameInitializeDashboardAction($courseName, $learningUserCourseId, $gameName, $learningUserGameId)
+    {
+        $learningUserGame = $this->getRepository('AppBundle:LearningUserGame')->find($learningUserGameId);
+
+        if ($learningUserGame instanceof LearningUserGame) {
+            return $this->render('::App/Dashboard/dashboard.html.twig');
+        }
+
+        throw $this->createNotFoundException();
     }
 }

@@ -10,6 +10,9 @@ AdminBundle\Entity\Game\WordGame:
         description:
             expose: true
             groups: [games_list, game, word_games_list]
+        url:
+            expose: true
+            groups: [games_list]
         gameUnits:
             expose: true
             type: AdminBundle\Entity\Game\WordGameUnit

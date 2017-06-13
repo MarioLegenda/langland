@@ -20,6 +20,8 @@ class QuestionGame
      * @var string $description
      */
     private $description;
+
+    private $url;
     /**
      * @var Lesson $lesson
      */
@@ -79,6 +81,23 @@ class QuestionGame
     public function getDescription()
     {
         return $this->description;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    /**
+     * @param mixed $url
+     * @return QuestionGame
+     */
+    public function setUrl($url) : QuestionGame
+    {
+        $this->url = $url;
+
+        return $this;
     }
     /**
      * @return mixed

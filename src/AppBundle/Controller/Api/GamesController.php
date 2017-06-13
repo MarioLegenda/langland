@@ -19,4 +19,15 @@ class GamesController extends CommonOperationController
             $this->serialize($games, array('games_list'))
         );
     }
+
+    public function initializeSelectedGameAction($learningUserGameId)
+    {
+        $learningUserGame = $this->getRepository('AppBundle:LearningUserGame')->find($learningUserGameId);
+
+        if (empty($learningUserGame)) {
+            return $this->createFailedJsonResponse();
+        }
+
+        return $this->createSuccessJsonResponse();
+    }
 }

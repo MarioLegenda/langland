@@ -30,7 +30,8 @@ class AppRouter {
             app_page_games_list_dashboard: envr + 'langland/dashboard/:0/:1/games',
             app_page_lesson_start: envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
             app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed',
-            app_find_available_games: envr + 'langland/api/data/games/find-available-games/:0'
+            app_find_available_games: envr + 'langland/api/data/games/find-available-games/:0',
+            app_initialize_selected_game: envr + 'langland/dashboard/:0/:1/game/:2/:3'
         }
     }
 

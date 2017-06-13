@@ -23,6 +23,8 @@ class WordGame
      * @var string $description
      */
     private $description;
+
+    private $url;
     /**
      * @var Lesson $lesson
      */
@@ -110,6 +112,23 @@ class WordGame
     public function getDescription()
     {
         return $this->description;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    /**
+     * @param mixed $url
+     * @return WordGame
+     */
+    public function setUrl($url) : WordGame
+    {
+        $this->url = $url;
+
+        return $this;
     }
     /**
      * @param WordGameUnit $gameUnit

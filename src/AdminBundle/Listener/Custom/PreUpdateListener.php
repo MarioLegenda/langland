@@ -94,6 +94,8 @@ class PreUpdateListener extends AbstractEntityManagerBaseListener
             }
         }
 
+        $lesson->setLessonUrl(\URLify::filter($lesson->getName()));
+
         $dbLessonTexts = $this->em->getRepository('AdminBundle:LessonText')->findBy(array(
             'lesson' => $lesson,
         ));
@@ -124,6 +126,8 @@ class PreUpdateListener extends AbstractEntityManagerBaseListener
                 $game->removeAnswer($answer);
             }
         }
+
+        $game->setUrl(\URLify::filter($game->getName()));
 
         $dbAnswers = $this->em->getRepository('AdminBundle:Game\QuestionGameAnswer')->findBy(array(
             'question' => $game,

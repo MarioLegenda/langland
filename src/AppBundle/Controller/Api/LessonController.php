@@ -78,6 +78,10 @@ class LessonController extends CommonOperationController
 
         $lessons = $learningUserCourse->getLearningUserLessons();
 
+        if (empty($lessons)) {
+            return $this->createFailedJsonResponse();
+        }
+
         $serialized = $this->serialize($lessons, array('lesson_list'));
 
         return $this->createSuccessJsonResponse($serialized);

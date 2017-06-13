@@ -34,7 +34,8 @@ class QuestionGameFactory
         foreach ($lessons as $lesson) {
             $game = new QuestionGame();
             $game->setName($this->getFaker()->name);
-            $game->setDescription($this->getFaker()->sentence(10));
+            $game->setUrl(\URLify::filter($game->getName()));
+            $game->setDescription($this->getFaker()->sentence(150));
 
             $game->setLesson($lesson);
 

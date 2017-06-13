@@ -36,7 +36,8 @@ class WordGameFactory
             $game = new WordGame();
 
             $game->setName($this->getFaker()->name);
-            $game->setDescription($this->getFaker()->sentence(10));
+            $game->setUrl(\URLify::filter($game->getName()));
+            $game->setDescription($this->getFaker()->sentence(150));
             $game->setLesson($lesson);
 
             foreach ($words as $word) {

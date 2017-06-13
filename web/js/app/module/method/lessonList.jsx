@@ -113,7 +113,6 @@ export class LessonListContainer extends React.Component {
 
         this.state = {
             items: null,
-            itemsFetched: false,
             currentItem: null
         };
 
@@ -131,10 +130,11 @@ export class LessonListContainer extends React.Component {
     componentDidMount() {
         this.props.DataSource.fetchLessonList(this.props.learningUserCourseId)
             .done(jQuery.proxy(function (data) {
-                this.setState({
-                    items: data.data,
-                    itemsFetched: true
-                });
+                if (data.status === 'success') {
+                    this.setState({
+                        items: data.data
+                    });
+                }
             }, this));
     }
 
@@ -147,10 +147,6 @@ export class LessonListContainer extends React.Component {
             learningUserCourseId = this.props.learningUserCourseId;
 
         if (items === null) {
-            return null;
-        }
-
-        if (itemsFetched === false) {
             return null;
         }
 

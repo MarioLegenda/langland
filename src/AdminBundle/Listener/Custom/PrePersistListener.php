@@ -98,6 +98,8 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
 
     private function handleQuestionGameJob(QuestionGame $game)
     {
+        $game->setUrl(\URLify::filter($game->getName()));
+
         foreach ($game->getAnswers() as $answer) {
             if (empty($answer->getName())) {
                 $game->removeAnswer($answer);

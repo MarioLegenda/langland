@@ -9,6 +9,7 @@
 
     <field name="name" type="string" column="name" length="255"/>
     <field name="description" type="text" column="description"/>
+    <field name="url" type="string" length="255" column="url" />
     <field name="createdAt" type="datetime" column="createdAt"/>
     <field name="updatedAt" type="datetime" column="updatedAt"/>
 

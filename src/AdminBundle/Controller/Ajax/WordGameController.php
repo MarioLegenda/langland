@@ -54,6 +54,8 @@ class WordGameController extends ResponseController
             return $response;
         }
 
+        $game->setUrl(\URLify::filter($game->getName()));
+
         $this->getManager()->persist($game);
         $this->getManager()->flush($game);
 

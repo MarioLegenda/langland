@@ -18,7 +18,6 @@ class GamesList extends React.Component {
     }
 
     render() {
-        console.log(this.props.items);
         const items = this.props.items.map((item, index) => {
             const passedClass = (item.hasPassed === true) ? 'passed-item' : '';
 
@@ -53,9 +52,11 @@ export class GameListContainer extends React.Component {
     _fetchGamesList() {
         this.props.DataSource.fetchGamesList(this.props.learningUserCourseId)
             .done(jQuery.proxy(function(data) {
-                this.setState({
-                    items: data.data
-                });
+                if (data.status === 'success') {
+                    this.setState({
+                        items: data.data
+                    });
+                }
             }, this));
     }
 

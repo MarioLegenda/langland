@@ -11,6 +11,10 @@ class GamesController extends CommonOperationController
         $games = $this->getRepository('AppBundle\Entity\LearningUserGame')
             ->findAvailableGamesByCourse($learningUserCourse);
 
+        if (empty($games)) {
+            return $this->createFailedJsonResponse();
+        }
+
         return $this->createSuccessJsonResponse(
             $this->serialize($games, array('games_list'))
         );

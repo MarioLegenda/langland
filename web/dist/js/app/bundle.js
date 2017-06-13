@@ -438,7 +438,7 @@ module.exports = reactProdInvariant;
 "use strict";
 
 
-module.exports = __webpack_require__(26);
+module.exports = __webpack_require__(25);
 
 
 /***/ }),
@@ -1134,7 +1134,7 @@ exports.RouteCreator = exports.routes = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(26);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1374,7 +1374,7 @@ var _prodInvariant = __webpack_require__(3),
 var CallbackQueue = __webpack_require__(72);
 var PooledClass = __webpack_require__(18);
 var ReactFeatureFlags = __webpack_require__(77);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(24);
 var Transaction = __webpack_require__(37);
 
 var invariant = __webpack_require__(1);
@@ -2713,31 +2713,6 @@ module.exports = warning;
 
 /***/ }),
 /* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-function env() {
-    var path = window.location.pathname;
-    var env = '';
-
-    if (/app_dev.php/.test(path)) {
-        env = '/app_dev.php/';
-    } else {
-        env = '/';
-    }
-
-    return env;
-}
-
-var envr = exports.envr = env();
-
-/***/ }),
-/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2796,7 +2771,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2919,7 +2894,7 @@ DOMLazyTree.queueText = queueText;
 module.exports = DOMLazyTree;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3093,7 +3068,7 @@ module.exports = ReactReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3201,6 +3176,31 @@ if (process.env.NODE_ENV !== 'production') {
 
 module.exports = React;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function env() {
+    var path = window.location.pathname;
+    var env = '';
+
+    if (/app_dev.php/.test(path)) {
+        env = '/app_dev.php/';
+    } else {
+        env = '/';
+    }
+
+    return env;
+}
+
+var envr = exports.envr = env();
 
 /***/ }),
 /* 27 */
@@ -5329,7 +5329,7 @@ module.exports = ReactPropTypesSecret;
 
 
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(23);
 var Danger = __webpack_require__(140);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInstrumentation = __webpack_require__(12);
@@ -5886,7 +5886,7 @@ var _prodInvariant = __webpack_require__(3);
 var ReactPropTypesSecret = __webpack_require__(82);
 var propTypesFactory = __webpack_require__(69);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(25);
 var PropTypes = propTypesFactory(React.isValidElement);
 
 var invariant = __webpack_require__(1);
@@ -9330,9 +9330,9 @@ module.exports = ReactInputSelection;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(23);
 var DOMProperty = __webpack_require__(17);
-var React = __webpack_require__(26);
+var React = __webpack_require__(25);
 var ReactBrowserEventEmitter = __webpack_require__(35);
 var ReactCurrentOwner = __webpack_require__(15);
 var ReactDOMComponentTree = __webpack_require__(6);
@@ -9342,7 +9342,7 @@ var ReactFeatureFlags = __webpack_require__(77);
 var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(12);
 var ReactMarkupChecksum = __webpack_require__(172);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(24);
 var ReactUpdateQueue = __webpack_require__(52);
 var ReactUpdates = __webpack_require__(14);
 
@@ -9875,7 +9875,7 @@ module.exports = ReactMount;
 
 var _prodInvariant = __webpack_require__(3);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(25);
 
 var invariant = __webpack_require__(1);
 
@@ -11176,6 +11176,143 @@ module.exports = getIteratorFn;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.DataSource = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _routes = __webpack_require__(9);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Repository = function () {
+    function Repository() {
+        _classCallCheck(this, Repository);
+    }
+
+    _createClass(Repository, [{
+        key: 'fetchLessonList',
+        value: function fetchLessonList(learningUserCourseId) {
+            return jQuery.ajax({
+                url: _routes.RouteCreator.create('app_lesson_list', [learningUserCourseId]),
+                method: 'GET'
+            });
+        }
+    }, {
+        key: 'fetchLearnableLanguages',
+        value: function fetchLearnableLanguages() {
+            return jQuery.ajax({
+                url: _routes.routes.app_find_learnable_languages,
+                method: 'POST'
+            });
+        }
+    }, {
+        key: 'fetchLearningLanguages',
+        value: function fetchLearningLanguages() {
+            return jQuery.ajax({
+                url: _routes.routes.app_find_learning_languages,
+                method: 'POST'
+            });
+        }
+    }, {
+        key: 'fetchLoggedInUser',
+        value: function fetchLoggedInUser() {
+            return jQuery.ajax({
+                url: _routes.routes.app_logged_in_user,
+                method: 'POST'
+            });
+        }
+    }, {
+        key: 'fetchCourseList',
+        value: function fetchCourseList() {
+            return jQuery.ajax({
+                url: _routes.routes.app_language_course_list,
+                method: 'POST'
+            });
+        }
+    }, {
+        key: 'fetchIsInfoLooked',
+        value: function fetchIsInfoLooked() {
+            return jQuery.ajax({
+                url: _routes.routes.app_course_language_info_exists,
+                method: 'POST'
+            });
+        }
+    }, {
+        key: 'fetchMarkInfoLooked',
+        value: function fetchMarkInfoLooked() {
+            return jQuery.ajax({
+                url: _routes.routes.app_course_mark_info_looked,
+                method: 'POST'
+            });
+        }
+    }, {
+        key: 'fetchLanguaageInfos',
+        value: function fetchLanguaageInfos(languageId) {
+            return jQuery.ajax({
+                url: _routes.routes.app_course_language_infos,
+                method: 'POST',
+                data: {
+                    languageId: languageId
+                }
+            });
+        }
+    }, {
+        key: 'fetchLesson',
+        value: function fetchLesson(learningUserLessonId) {
+            return jQuery.ajax({
+                url: _routes.RouteCreator.create('app_learning_user_lesson', [learningUserLessonId]),
+                method: 'GET'
+            });
+        }
+    }, {
+        key: 'fetchMarkLessonFinished',
+        value: function fetchMarkLessonFinished() {
+            return jQuery.ajax({
+                url: _routes.routes.app_learning_user_mark_lesson_passed,
+                method: 'POST',
+                data: {
+                    learningUserLessonId: arguments.length <= 0 ? undefined : arguments[0],
+                    courseName: arguments.length <= 1 ? undefined : arguments[1],
+                    learningUserCourseId: arguments.length <= 2 ? undefined : arguments[2]
+                }
+            });
+        }
+    }, {
+        key: 'fetchGamesList',
+        value: function fetchGamesList(learningUserCourseId) {
+            return jQuery.ajax({
+                url: _routes.RouteCreator.create('app_find_available_games', [learningUserCourseId]),
+                method: 'GET'
+            });
+        }
+    }, {
+        key: 'createLearningUser',
+        value: function createLearningUser(languageId) {
+            return jQuery.ajax({
+                url: _routes.routes.app_create_learning_user,
+                method: 'POST',
+                data: {
+                    languageId: languageId
+                }
+            });
+        }
+    }]);
+
+    return Repository;
+}();
+
+var DataSource = exports.DataSource = new Repository();
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.CourseInitContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -11281,7 +11418,7 @@ var CourseInitContainer = exports.CourseInitContainer = function (_React$Compone
 }(_react2.default.Component);
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11300,7 +11437,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(26);
 
 var _routes = __webpack_require__(9);
 
@@ -11541,7 +11678,7 @@ function HeaderContainer(props) {
 }
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11558,7 +11695,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(26);
 
 var _routes = __webpack_require__(9);
 
@@ -11718,7 +11855,7 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
 }(_react2.default.Component);
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11735,7 +11872,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(23);
+var _reactRouterDom = __webpack_require__(22);
 
 var _methodNavigation = __webpack_require__(111);
 
@@ -11878,7 +12015,7 @@ var MethodAppRouteContainer = exports.MethodAppRouteContainer = function (_React
 }(_react2.default.Component);
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11886,143 +12023,6 @@ var MethodAppRouteContainer = exports.MethodAppRouteContainer = function (_React
 
 module.exports = __webpack_require__(148);
 
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.DataSource = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _routes = __webpack_require__(9);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Repository = function () {
-    function Repository() {
-        _classCallCheck(this, Repository);
-    }
-
-    _createClass(Repository, [{
-        key: 'fetchLessonList',
-        value: function fetchLessonList(learningUserCourseId) {
-            return jQuery.ajax({
-                url: _routes.RouteCreator.create('app_lesson_list', [learningUserCourseId]),
-                method: 'GET'
-            });
-        }
-    }, {
-        key: 'fetchLearnableLanguages',
-        value: function fetchLearnableLanguages() {
-            return jQuery.ajax({
-                url: _routes.routes.app_find_learnable_languages,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchLearningLanguages',
-        value: function fetchLearningLanguages() {
-            return jQuery.ajax({
-                url: _routes.routes.app_find_learning_languages,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchLoggedInUser',
-        value: function fetchLoggedInUser() {
-            return jQuery.ajax({
-                url: _routes.routes.app_logged_in_user,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchCourseList',
-        value: function fetchCourseList() {
-            return jQuery.ajax({
-                url: _routes.routes.app_language_course_list,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchIsInfoLooked',
-        value: function fetchIsInfoLooked() {
-            return jQuery.ajax({
-                url: _routes.routes.app_course_language_info_exists,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchMarkInfoLooked',
-        value: function fetchMarkInfoLooked() {
-            return jQuery.ajax({
-                url: _routes.routes.app_course_mark_info_looked,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchLanguaageInfos',
-        value: function fetchLanguaageInfos(languageId) {
-            return jQuery.ajax({
-                url: _routes.routes.app_course_language_infos,
-                method: 'POST',
-                data: {
-                    languageId: languageId
-                }
-            });
-        }
-    }, {
-        key: 'fetchLesson',
-        value: function fetchLesson(learningUserLessonId) {
-            return jQuery.ajax({
-                url: _routes.RouteCreator.create('app_learning_user_lesson', [learningUserLessonId]),
-                method: 'GET'
-            });
-        }
-    }, {
-        key: 'fetchMarkLessonFinished',
-        value: function fetchMarkLessonFinished() {
-            return jQuery.ajax({
-                url: _routes.routes.app_learning_user_mark_lesson_passed,
-                method: 'POST',
-                data: {
-                    learningUserLessonId: arguments.length <= 0 ? undefined : arguments[0],
-                    courseName: arguments.length <= 1 ? undefined : arguments[1],
-                    learningUserCourseId: arguments.length <= 2 ? undefined : arguments[2]
-                }
-            });
-        }
-    }, {
-        key: 'fetchGamesList',
-        value: function fetchGamesList(learningUserCourseId) {
-            return jQuery.ajax({
-                url: _routes.RouteCreator.create('app_find_available_games', [learningUserCourseId]),
-                method: 'GET'
-            });
-        }
-    }, {
-        key: 'createLearningUser',
-        value: function createLearningUser(languageId) {
-            return jQuery.ajax({
-                url: _routes.routes.app_create_learning_user,
-                method: 'POST',
-                data: {
-                    languageId: languageId
-                }
-            });
-        }
-    }]);
-
-    return Repository;
-}();
-
-var DataSource = exports.DataSource = new Repository();
 
 /***/ }),
 /* 104 */
@@ -12088,23 +12088,23 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(102);
+var _reactDom = __webpack_require__(103);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactRouterDom = __webpack_require__(23);
+var _reactRouterDom = __webpack_require__(22);
 
-var _header = __webpack_require__(99);
+var _header = __webpack_require__(100);
 
-var _languages = __webpack_require__(100);
+var _languages = __webpack_require__(101);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(26);
 
-var _methodApp = __webpack_require__(101);
+var _methodApp = __webpack_require__(102);
 
-var _courseInit = __webpack_require__(98);
+var _courseInit = __webpack_require__(99);
 
-var _dataSource = __webpack_require__(103);
+var _dataSource = __webpack_require__(98);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12170,7 +12170,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _routes = __webpack_require__(9);
 
-var _reactRouterDom = __webpack_require__(23);
+var _reactRouterDom = __webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -12580,7 +12580,6 @@ var GamesList = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            console.log(this.props.items);
             var items = this.props.items.map(function (item, index) {
                 var passedClass = item.hasPassed === true ? 'passed-item' : '';
 
@@ -12626,9 +12625,11 @@ var GameListContainer = exports.GameListContainer = function (_React$Component2)
         key: '_fetchGamesList',
         value: function _fetchGamesList() {
             this.props.DataSource.fetchGamesList(this.props.learningUserCourseId).done(jQuery.proxy(function (data) {
-                this.setState({
-                    items: data.data
-                });
+                if (data.status === 'success') {
+                    this.setState({
+                        items: data.data
+                    });
+                }
             }, this));
         }
     }, {
@@ -12676,9 +12677,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _routes = __webpack_require__(9);
 
-var _reactRouterDom = __webpack_require__(23);
+var _reactRouterDom = __webpack_require__(22);
 
-var _env = __webpack_require__(22);
+var _env = __webpack_require__(26);
 
 var _user = __webpack_require__(104);
 
@@ -12995,7 +12996,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _routes = __webpack_require__(9);
 
-var _reactRouterDom = __webpack_require__(23);
+var _reactRouterDom = __webpack_require__(22);
 
 var _listingItem = __webpack_require__(64);
 
@@ -13225,7 +13226,7 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactRouterDom = __webpack_require__(23);
+var _reactRouterDom = __webpack_require__(22);
 
 var _routes = __webpack_require__(9);
 
@@ -16761,7 +16762,7 @@ module.exports = ChangeEventPlugin;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(23);
 var ExecutionEnvironment = __webpack_require__(7);
 
 var createNodesFromMarkup = __webpack_require__(117);
@@ -17290,7 +17291,7 @@ module.exports = HTMLDOMPropertyConfig;
 
 
 
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(24);
 
 var instantiateReactComponent = __webpack_require__(88);
 var KeyEscapeUtils = __webpack_require__(48);
@@ -17488,14 +17489,14 @@ module.exports = ReactComponentBrowserEnvironment;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(5);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(25);
 var ReactComponentEnvironment = __webpack_require__(50);
 var ReactCurrentOwner = __webpack_require__(15);
 var ReactErrorUtils = __webpack_require__(51);
 var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(12);
 var ReactNodeTypes = __webpack_require__(81);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(24);
 
 if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(195);
@@ -18398,7 +18399,7 @@ module.exports = ReactCompositeComponent;
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDefaultInjection = __webpack_require__(165);
 var ReactMount = __webpack_require__(80);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(24);
 var ReactUpdates = __webpack_require__(14);
 var ReactVersion = __webpack_require__(180);
 
@@ -18517,7 +18518,7 @@ var _prodInvariant = __webpack_require__(3),
 
 var AutoFocusUtils = __webpack_require__(136);
 var CSSPropertyOperations = __webpack_require__(138);
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(23);
 var DOMNamespaces = __webpack_require__(46);
 var DOMProperty = __webpack_require__(17);
 var DOMPropertyOperations = __webpack_require__(73);
@@ -19558,7 +19559,7 @@ module.exports = ReactDOMContainerInfo;
 
 var _assign = __webpack_require__(5);
 
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(23);
 var ReactDOMComponentTree = __webpack_require__(6);
 
 var ReactDOMEmptyComponent = function (instantiate) {
@@ -20125,7 +20126,7 @@ module.exports = ReactDOMNullInputValuePropHook;
 
 var _assign = __webpack_require__(5);
 
-var React = __webpack_require__(26);
+var React = __webpack_require__(25);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDOMSelect = __webpack_require__(75);
 
@@ -20473,7 +20474,7 @@ var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(5);
 
 var DOMChildrenOperations = __webpack_require__(45);
-var DOMLazyTree = __webpack_require__(24);
+var DOMLazyTree = __webpack_require__(23);
 var ReactDOMComponentTree = __webpack_require__(6);
 
 var escapeTextContentForBrowser = __webpack_require__(38);
@@ -22000,7 +22001,7 @@ var ReactInstanceMap = __webpack_require__(31);
 var ReactInstrumentation = __webpack_require__(12);
 
 var ReactCurrentOwner = __webpack_require__(15);
-var ReactReconciler = __webpack_require__(25);
+var ReactReconciler = __webpack_require__(24);
 var ReactChildReconciler = __webpack_require__(145);
 
 var emptyFunction = __webpack_require__(10);

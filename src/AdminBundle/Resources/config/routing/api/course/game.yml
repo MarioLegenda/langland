@@ -12,3 +12,8 @@ admin_question_game:
   resource: "@AdminBundle/Resources/config/routing/api/course/game/questionGame.yml"
   prefix: /question-game
   host: '%host%'
+
+admin_game_type:
+  resource: "@AdminBundle/Resources/config/routing/api/course/game/gameType.yml"
+  prefix: /game-type
+  host: '%host%'

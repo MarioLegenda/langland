@@ -65,6 +65,35 @@
         </property>
     </class>
 
+    <class name="AdminBundle\Entity\GameType">
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+        </constraint>
+
+        <property name="name">
+            <constraint name="NotNull">
+                <option name="message">Game type name cannot be empty</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">Game type name can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
+
+        <property name="serviceName">
+            <constraint name="NotNull">
+                <option name="message">Game service name cannot be empty</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">50</option>
+                <option name="maxMessage">Game service name can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
+    </class>
+
     <class name="AdminBundle\Entity\LanguageInfo">
         <constraint name="Callback">validate</constraint>
 

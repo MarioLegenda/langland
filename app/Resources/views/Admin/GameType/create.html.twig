@@ -1,0 +1,32 @@
+{% extends '::Admin/Course/baseContent.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Lessons - create new lesson</h1>
+        </div>
+
+        <div class="full-width align-left margin-top-30 page-content form">
+
+            <form action="{{ path('admin_game_type_create', {'courseId' : course.id}) }}" method="POST" class="form" name="addLessonForm" novalidate>
+                <div class="margin-top-40 align-left full-width">
+                    <div class="form-error full-width align-right">
+                        {{ form_errors(form) }}
+                    </div>
+
+                    {% include '::Admin/Form/_include/flashNotice.html.twig' %}
+
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.name, 'description': 'add a new game type'} only %}
+
+                    {% include '::Admin/Form/_include/field.html.twig' with {'field' : form.serviceName, 'description': 'the name of the underlying service that will handle this game type'} only %}
+
+                </div>
+
+                    {% include '::Admin/Form/_include/simpleButton.html.twig' with {'value': 'Create'} %}
+                </div>
+
+                {{ form_widget(form._token) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -22,7 +22,9 @@ class Course
      * @var bool $initialCourse
      */
     private $initialCourse;
-
+    /**
+     * @var string $courseUrl
+     */
     private $courseUrl;
     /**
      * @var Language $language

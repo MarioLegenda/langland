@@ -1,0 +1,14 @@
+admin_game_type_index:
+    path: /
+    defaults: { _controller: AdminBundle:GameType:index }
+    methods: [GET]
+
+admin_game_type_create:
+    path: /create
+    defaults: { _controller: AdminBundle:GameType:create }
+    methods: [GET, POST]
+
+admin_game_type_edit:
+    path: /edit/{gameTypeId}
+    defaults: { _controller: AdminBundle:GameType:edit }
+    methods: [GET, POST]

@@ -13,6 +13,7 @@ use AdminBundle\Command\Helper\WordFactory;
 use AdminBundle\Command\Helper\WordGameFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
 use AdminBundle\Entity\Course;
+use AdminBundle\Entity\GameType;
 use AdminBundle\Entity\LanguageInfo;
 use AdminBundle\Entity\LanguageInfoText;
 use AdminBundle\Entity\Lesson;
@@ -78,10 +79,28 @@ class SeedCommand extends ContainerAwareCommand
 
         $courses = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Course')->findAll();
 
+        $gameTypes = array(
+            'time-trial' => 'Time trial',
+            'image-master' => 'Image master',
+            'freestyle' => 'Freestyle',
+        );
+
         foreach ($courses as $course) {
             $lessonFactory->create($course, 10);
 
             $sentenceFactory->create($course);
+
+            foreach ($gameTypes as $serviceName => $name) {
+                $type = new GameType();
+
+                $type
+                    ->setName($name)
+                    ->setServiceName($serviceName)
+                    ->setCourse($course);
+
+                $em->persist($type);
+                $em->flush();
+            }
         }
 
         foreach ($courses as $course) {

@@ -1,0 +1,25 @@
+{% extends '::Admin/Course/baseContent.html.twig' %}
+
+{% block content %}
+    <div class="fluid-container page language">
+        <div class="full-width align-left">
+            <h1 class="full-width page-title margin-top-30 align-left">Game types</h1>
+            <a href="{{ path('admin_game_type_create', {'courseId' : course.id}) }}" class="main-action-link align-right margin-top-30">Create</a>
+        </div>
+
+        {% if gameTypes is empty %}
+            <p class="no-data-message">No game types have been added</p>
+        {% endif %}
+
+        {% if gameTypes is not empty %}
+            <div class="full-width align-left margin-top-30 page-content">
+                {% for gameType in gameTypes %}
+                    <div class="card full-width align-left margin-bottom-10">
+                        <a class="base-action-link align-left" href="#">{{ gameType.name }}</a>
+                        <a class="sub-base-action-link align-right" href="{{ path('admin_game_type_edit', {'courseId': gameType.course.id, 'gameTypeId': gameType.id}) }}"><i class="fa fa-edit"></i></a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

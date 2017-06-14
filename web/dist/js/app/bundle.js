@@ -7490,7 +7490,7 @@ module.exports = ReactNoopUpdateQueue;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.ListingItem = undefined;
+exports.Item = undefined;
 
 var _react = __webpack_require__(4);
 
@@ -7498,7 +7498,7 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ListingItem = exports.ListingItem = function ListingItem(props) {
+var Item = exports.Item = function Item(props) {
     var chooseItem = null;
 
     if (props.hasOwnProperty('chooseItem')) {
@@ -11280,9 +11280,9 @@ var Repository = function () {
         }
     }, {
         key: 'fetchGamesList',
-        value: function fetchGamesList(learningUserCourseId) {
+        value: function fetchGamesList() {
             return jQuery.ajax({
-                url: _routes.RouteCreator.create('app_find_available_games', [learningUserCourseId]),
+                url: _routes.RouteCreator.create('app_find_available_games', arguments.length <= 0 ? undefined : arguments[0]),
                 method: 'GET'
             });
         }
@@ -12595,7 +12595,7 @@ var GamesList = function (_React$Component) {
                 return _react2.default.createElement(
                     'div',
                     { key: index },
-                    _react2.default.createElement(_listingItem.ListingItem, {
+                    _react2.default.createElement(_listingItem.Item, {
                         chooseItem: _this2.showItem,
                         index: index,
                         className: passedClass,
@@ -12655,6 +12655,45 @@ var GameStart = function (_React$Component2) {
                         'p',
                         { className: 'margin-bottom-30' },
                         item.game.description
+                    ),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'full-width align-left game-choice-menu' },
+                        _react2.default.createElement(
+                            'div',
+                            { className: '' },
+                            _react2.default.createElement(
+                                'ul',
+                                null,
+                                _react2.default.createElement(
+                                    'li',
+                                    null,
+                                    _react2.default.createElement(
+                                        'a',
+                                        { className: 'game-choice' },
+                                        'Time trial'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'li',
+                                    null,
+                                    _react2.default.createElement(
+                                        'a',
+                                        { className: 'game-choice' },
+                                        'Image master'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'li',
+                                    null,
+                                    _react2.default.createElement(
+                                        'a',
+                                        { className: 'game-choice' },
+                                        'Freestyle'
+                                    )
+                                )
+                            )
+                        )
                     ),
                     _react2.default.createElement(
                         'div',
@@ -13131,7 +13170,7 @@ var LessonList = function (_React$Component) {
                 return _react2.default.createElement(
                     'div',
                     { key: index },
-                    item.isEligable === true && _react2.default.createElement(_listingItem.ListingItem, {
+                    item.isEligable === true && _react2.default.createElement(_listingItem.Item, {
                         chooseItem: _this2.chooseItem,
                         index: index,
                         className: passedClass,
@@ -13139,7 +13178,7 @@ var LessonList = function (_React$Component) {
                         hasPassed: item.hasPassed,
                         isEligable: item.isEligable
                     }),
-                    item.hasPassed === true && _react2.default.createElement(_listingItem.ListingItem, {
+                    item.hasPassed === true && _react2.default.createElement(_listingItem.Item, {
                         chooseItem: _this2.chooseItem,
                         index: index,
                         className: passedClass,
@@ -13147,7 +13186,7 @@ var LessonList = function (_React$Component) {
                         hasPassed: item.hasPassed,
                         isEligable: item.isEligable
                     }),
-                    item.hasPassed === false && item.isEligable === false && _react2.default.createElement(_listingItem.ListingItem, {
+                    item.hasPassed === false && item.isEligable === false && _react2.default.createElement(_listingItem.Item, {
                         index: index,
                         className: 'unpassed-item',
                         title: item.lesson.name.toUpperCase(),

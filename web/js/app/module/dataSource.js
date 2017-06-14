@@ -79,9 +79,9 @@ class Repository {
         });
     }
 
-    fetchGamesList(learningUserCourseId) {
+    fetchGamesList(...args) {
         return jQuery.ajax({
-            url: RouteCreator.create('app_find_available_games', [learningUserCourseId]),
+            url: RouteCreator.create('app_find_available_games', args[0]),
             method: 'GET'
         });
     }

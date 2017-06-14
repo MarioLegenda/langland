@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const ListingItem = (props) => {
+export const Item = (props) => {
     const chooseItem = null;
 
     if (props.hasOwnProperty('chooseItem')) {

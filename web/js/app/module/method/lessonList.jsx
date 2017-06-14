@@ -2,7 +2,7 @@ import React from 'react';
 import {RouteCreator} from './../routes.js';
 import { Link } from 'react-router-dom';
 
-import {ListingItem} from './listingItem.jsx';
+import {Item} from './listingItem.jsx';
 
 class LessonList extends React.Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class LessonList extends React.Component {
 
             return <div key={index}>
                 {item.isEligable === true &&
-                    <ListingItem
+                    <Item
                         chooseItem={this.chooseItem}
                         index={index}
                         className={passedClass}
@@ -41,7 +41,7 @@ class LessonList extends React.Component {
                 }
 
                 {item.hasPassed === true &&
-                <ListingItem
+                <Item
                     chooseItem={this.chooseItem}
                     index={index}
                     className={passedClass}
@@ -52,7 +52,7 @@ class LessonList extends React.Component {
                 }
 
                 {item.hasPassed === false && item.isEligable === false &&
-                <ListingItem
+                <Item
                     index={index}
                     className="unpassed-item"
                     title={item.lesson.name.toUpperCase()}

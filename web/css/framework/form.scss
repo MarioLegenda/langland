@@ -75,7 +75,6 @@
 
   input[type="text"] {
     width: 480px;
-    //padding: 5px 5px 5px 0;
     font-size: 1.1em;
 
     border: 1px solid $highlight-gray;
@@ -94,6 +93,29 @@
   .form-error {
     color: $main-color;
     padding: 10px 10px 10px 0;
+  }
+
+  .horizontal-checkbox {
+    width: 200px;
+    float:left;
+
+    border-bottom: 1px solid $main-color;
+
+    margin-right: 30px;
+
+    p {
+      width: 100px;
+      float:left;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+
+      border: 1px solid black;
+
+      float:right;
+    }
   }
 
 

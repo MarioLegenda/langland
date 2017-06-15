@@ -190,10 +190,33 @@ export class Form extends React.Component {
                         options={lessonOptions}
                     />
 
+                    <div className="full-width align-left form-field field-break relative">
+                        <label>Game type</label>
+                        <div className="horizontal-checkbox">
+                            <p>Time trial</p>
+
+                            <input type="checkbox" value="time-trial"/>
+                        </div>
+
+                        <div className="horizontal-checkbox">
+                            <p>Image master</p>
+
+                            <input type="checkbox" value="image-master"/>
+                        </div>
+
+                        <div className="horizontal-checkbox">
+                            <p>Freestyle</p>
+
+                            <input type="checkbox" value="freestyle"/>
+                        </div>
+                    </div>
+
                     <UnitContainer
                         setField={this.setField}
                         items={items}
                     />
+
+
 
                     <SubmitButton
                         onClick={this.onSubmit}

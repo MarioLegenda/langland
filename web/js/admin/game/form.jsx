@@ -154,6 +154,7 @@ export class SelectField extends Field {
                 description={this.props.description}
                 value={defaultValue}
                 options={options}
+                multiple="multiple"
             />
         )
     }

@@ -12605,7 +12605,8 @@ var SelectField = exports.SelectField = function (_Field4) {
                 handleChange: this.handleChange,
                 description: this.props.description,
                 value: defaultValue,
-                options: options
+                options: options,
+                multiple: 'multiple'
             });
         }
     }]);
@@ -12897,6 +12898,45 @@ var Form = exports.Form = function (_React$Component) {
                         value: this.state.formValues.lesson,
                         options: lessonOptions
                     }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'full-width align-left form-field field-break relative' },
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Game type'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'horizontal-checkbox' },
+                            _react2.default.createElement(
+                                'p',
+                                null,
+                                'Time trial'
+                            ),
+                            _react2.default.createElement('input', { type: 'checkbox', value: 'time-trial' })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'horizontal-checkbox' },
+                            _react2.default.createElement(
+                                'p',
+                                null,
+                                'Image master'
+                            ),
+                            _react2.default.createElement('input', { type: 'checkbox', value: 'image-master' })
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'horizontal-checkbox' },
+                            _react2.default.createElement(
+                                'p',
+                                null,
+                                'Freestyle'
+                            ),
+                            _react2.default.createElement('input', { type: 'checkbox', value: 'freestyle' })
+                        )
+                    ),
                     _react2.default.createElement(_unitContainer.UnitContainer, {
                         setField: this.setField,
                         items: items

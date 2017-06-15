@@ -1,5 +1,4 @@
 import React from 'react';
-//import {Form} from './gameForm.jsx';
 import { Form, TextField, TextareaField, SubmitField, SelectField, CheckboxField } from 'react-components-form';
 import Schema from 'form-schema-validation';
 import {UnitContainer} from './unitContainer.jsx';
@@ -12,7 +11,8 @@ export class GameInit extends React.Component {
         super(props);
 
         this.state = {
-            errors: []
+            errors: [],
+            lessonsLoaded: false
         };
 
         this.serverData = {
@@ -40,12 +40,7 @@ export class GameInit extends React.Component {
             errorStyles: {
                 className: 'form-error'
             },
-            lessons: [
-                {label: 'Select lesson', value:'default'},
-                {label: 'Lesson 1', value: 1},
-                {label: 'Lesson 2', value: 2},
-                {label: 'Lesson 3', value: 3}
-            ],
+            lessons: [{label: 'Select lesson', value: 'default'}],
             words: []
         };
 
@@ -76,6 +71,34 @@ export class GameInit extends React.Component {
 
         this.setField = this.setField.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onError = this.onError.bind(this);
+    }
+
+    _fetchLessons() {
+        jQuery.ajax({
+            url: envr + 'admin/course/manage/' + url.getParsed()[3] + '/game/word-game/find-lessons-by-course',
+            method: 'GET'
+        }).done(jQuery.proxy(function(data) {
+            let options = [];
+            const lessons = data.data;
+
+            for (let index in lessons) {
+                let lesson = lessons[index];
+
+                this.data.lessons.push({
+                    label: lesson.name,
+                    value: lesson.id
+                });
+
+                this.setState({
+                    lessonsLoaded: true
+                });
+            }
+
+            this.setState({
+                lessonOptions: options
+            });
+        }, this));
     }
 
     _saveGame() {
@@ -105,8 +128,20 @@ export class GameInit extends React.Component {
         }, this));
     }
 
+    componentDidMount() {
+        this._fetchLessons();
+    }
+
     setField(name, value) {
         this.serverData.words = value;
+    }
+
+    onError() {
+        this.setState({
+            errors: ['There where errors in the form. Please, correct them']
+        });
+
+        $("html, body").animate({ scrollTop: "0px" });
     }
 
     onSubmit(data) {
@@ -121,6 +156,10 @@ export class GameInit extends React.Component {
     }
 
     render() {
+        if (this.state.lessonsLoaded === false) {
+            return null;
+        }
+
         const errors = this.state.errors.map((item, index) =>
             <p key={index} className="error">* {item}</p>
         );
@@ -136,6 +175,7 @@ export class GameInit extends React.Component {
                     <Form
                         schema={this.data.schema}
                         onSubmit={this.onSubmit}
+                        onError={this.onError}
                     >
 
                         <div className="full-width align-left form-field field-break relative">

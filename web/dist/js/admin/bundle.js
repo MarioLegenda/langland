@@ -11884,8 +11884,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import {Form} from './gameForm.jsx';
-
 
 var GameInit = exports.GameInit = function (_React$Component) {
     _inherits(GameInit, _React$Component);
@@ -11896,7 +11894,8 @@ var GameInit = exports.GameInit = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (GameInit.__proto__ || Object.getPrototypeOf(GameInit)).call(this, props));
 
         _this.state = {
-            errors: []
+            errors: [],
+            lessonsLoaded: false
         };
 
         _this.serverData = {
@@ -11930,7 +11929,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
             errorStyles: {
                 className: 'form-error'
             },
-            lessons: [{ label: 'Select lesson', value: 'default' }, { label: 'Lesson 1', value: 1 }, { label: 'Lesson 2', value: 2 }, { label: 'Lesson 3', value: 3 }],
+            lessons: [{ label: 'Select lesson', value: 'default' }],
             words: []
         };
 
@@ -11961,10 +11960,39 @@ var GameInit = exports.GameInit = function (_React$Component) {
 
         _this.setField = _this.setField.bind(_this);
         _this.onSubmit = _this.onSubmit.bind(_this);
+        _this.onError = _this.onError.bind(_this);
         return _this;
     }
 
     _createClass(GameInit, [{
+        key: '_fetchLessons',
+        value: function _fetchLessons() {
+            jQuery.ajax({
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/word-game/find-lessons-by-course',
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                var options = [];
+                var lessons = data.data;
+
+                for (var index in lessons) {
+                    var lesson = lessons[index];
+
+                    this.data.lessons.push({
+                        label: lesson.name,
+                        value: lesson.id
+                    });
+
+                    this.setState({
+                        lessonsLoaded: true
+                    });
+                }
+
+                this.setState({
+                    lessonOptions: options
+                });
+            }, this));
+        }
+    }, {
         key: '_saveGame',
         value: function _saveGame() {
             this.gameSaving = true;
@@ -11993,9 +12021,23 @@ var GameInit = exports.GameInit = function (_React$Component) {
             }, this));
         }
     }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchLessons();
+        }
+    }, {
         key: 'setField',
         value: function setField(name, value) {
             this.serverData.words = value;
+        }
+    }, {
+        key: 'onError',
+        value: function onError() {
+            this.setState({
+                errors: ['There where errors in the form. Please, correct them']
+            });
+
+            $("html, body").animate({ scrollTop: "0px" });
         }
     }, {
         key: 'onSubmit',
@@ -12012,6 +12054,10 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            if (this.state.lessonsLoaded === false) {
+                return null;
+            }
+
             var errors = this.state.errors.map(function (item, index) {
                 return _react2.default.createElement(
                     'p',
@@ -12036,7 +12082,8 @@ var GameInit = exports.GameInit = function (_React$Component) {
                         _reactComponentsForm.Form,
                         {
                             schema: this.data.schema,
-                            onSubmit: this.onSubmit
+                            onSubmit: this.onSubmit,
+                            onError: this.onError
                         },
                         _react2.default.createElement(
                             'div',

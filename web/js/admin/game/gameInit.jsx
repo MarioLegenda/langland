@@ -20,7 +20,8 @@ export class GameInit extends React.Component {
             name: '',
             description: '',
             lesson: '',
-            words: []
+            words: [],
+            gameTypes: []
         };
 
         this.gameTypesView = [];
@@ -92,6 +93,12 @@ export class GameInit extends React.Component {
                     label: gameType.name,
                     serviceName: gameType.serviceName
                 });
+
+                let gameTypeServerData = {};
+
+                gameTypeServerData[gameType.serviceName] = false;
+
+                this.serverData.gameTypes.push(gameTypeServerData);
             }
 
             this._createSchema();
@@ -175,10 +182,20 @@ export class GameInit extends React.Component {
     }
 
     onSubmit(data) {
-
         this.serverData.name = data.name;
         this.serverData.description = data.description;
         this.serverData.lesson = data.lesson;
+
+        for (let i = 0; i < this.serverData.gameTypes.length; i++) {
+            let gameType = this.serverData.gameTypes[i];
+            let gameTypeName = Object.keys(gameType)[0];
+
+            if (data.hasOwnProperty(gameTypeName)) {
+                if (data[gameTypeName] === true) {
+                    this.serverData.gameTypes[i][gameTypeName] = true;
+                }
+            }
+        }
 
         if (this.gameSaving === false) {
             this._saveGame();
@@ -192,7 +209,7 @@ export class GameInit extends React.Component {
 
         const gameTypes = this.gameTypesView.map((gameType, index) =>
             <div key={index} className="horizontal-checkbox">
-                <p>{gameType.name}</p>
+                <p>{gameType.label}</p>
                 <CheckboxField name={gameType.serviceName}/>
             </div>
         );

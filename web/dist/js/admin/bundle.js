@@ -11903,7 +11903,8 @@ var GameInit = exports.GameInit = function (_React$Component) {
             name: '',
             description: '',
             lesson: '',
-            words: []
+            words: [],
+            gameTypes: []
         };
 
         _this.gameTypesView = [];
@@ -11985,6 +11986,12 @@ var GameInit = exports.GameInit = function (_React$Component) {
                         label: gameType.name,
                         serviceName: gameType.serviceName
                     });
+
+                    var gameTypeServerData = {};
+
+                    gameTypeServerData[gameType.serviceName] = false;
+
+                    this.serverData.gameTypes.push(gameTypeServerData);
                 }
 
                 this._createSchema();
@@ -12073,10 +12080,20 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }, {
         key: 'onSubmit',
         value: function onSubmit(data) {
-
             this.serverData.name = data.name;
             this.serverData.description = data.description;
             this.serverData.lesson = data.lesson;
+
+            for (var i = 0; i < this.serverData.gameTypes.length; i++) {
+                var gameType = this.serverData.gameTypes[i];
+                var gameTypeName = Object.keys(gameType)[0];
+
+                if (data.hasOwnProperty(gameTypeName)) {
+                    if (data[gameTypeName] === true) {
+                        this.serverData.gameTypes[i][gameTypeName] = true;
+                    }
+                }
+            }
 
             if (this.gameSaving === false) {
                 this._saveGame();
@@ -12096,7 +12113,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
                     _react2.default.createElement(
                         'p',
                         null,
-                        gameType.name
+                        gameType.label
                     ),
                     _react2.default.createElement(_reactComponentsForm.CheckboxField, { name: gameType.serviceName })
                 );

@@ -4,11 +4,25 @@ import { Form, TextField, TextareaField, SubmitField, SelectField, CheckboxField
 import Schema from 'form-schema-validation';
 import {UnitContainer} from './unitContainer.jsx';
 
+import {envr} from './../env.js';
+import {url} from './../url.js';
+
 export class GameInit extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state.errors = {};
+        this.state = {
+            errors: []
+        };
+
+        this.serverData = {
+            name: '',
+            description: '',
+            lesson: '',
+            words: []
+        };
+
+        this.gameSaving = false;
 
         this.data = {
             errorMessages: {
@@ -64,16 +78,61 @@ export class GameInit extends React.Component {
         this.onSubmit = this.onSubmit.bind(this);
     }
 
+    _saveGame() {
+        this.gameSaving = true;
+        const serverData = this.serverData;
+
+        jQuery.ajax({
+            url: envr + 'admin/course/manage/' + url.getParsed()[3] + '/game/word-game/create-game',
+            method: 'POST',
+            data: {
+                game: serverData
+            }
+        }).done(jQuery.proxy(function(data) {
+            if (data.status === 'success') {
+                window.location.href = envr + 'admin/course/manage/' + url.getParsed()[3] + '/game';
+            }
+
+            if (data.status === 'error') {
+                this.setState({
+                    errors: data.data
+                });
+
+                this.gameSaving = false;
+
+                $("html, body").animate({ scrollTop: "0px" });
+            }
+        }, this));
+    }
+
     setField(name, value) {
+        this.serverData.words = value;
     }
 
     onSubmit(data) {
+
+        this.serverData.name = data.name;
+        this.serverData.description = data.description;
+        this.serverData.lesson = data.lesson;
+
+        if (this.gameSaving === false) {
+            this._saveGame();
+        }
     }
 
     render() {
+        const errors = this.state.errors.map((item, index) =>
+            <p key={index} className="error">* {item}</p>
+        );
+
         return (
             <div className="full-width align-left margin-top-30 page-content form">
                 <div className="margin-top-40 align-left full-width">
+
+                    <div className="full-width align-left">
+                        {errors}
+                    </div>
+
                     <Form
                         schema={this.data.schema}
                         onSubmit={this.onSubmit}

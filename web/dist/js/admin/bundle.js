@@ -11873,6 +11873,10 @@ var _formSchemaValidation2 = _interopRequireDefault(_formSchemaValidation);
 
 var _unitContainer = __webpack_require__(207);
 
+var _env = __webpack_require__(94);
+
+var _url = __webpack_require__(206);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11891,7 +11895,18 @@ var GameInit = exports.GameInit = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (GameInit.__proto__ || Object.getPrototypeOf(GameInit)).call(this, props));
 
-        _this.state.errors = {};
+        _this.state = {
+            errors: []
+        };
+
+        _this.serverData = {
+            name: '',
+            description: '',
+            lesson: '',
+            words: []
+        };
+
+        _this.gameSaving = false;
 
         _this.data = {
             errorMessages: {
@@ -11950,20 +11965,73 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }
 
     _createClass(GameInit, [{
+        key: '_saveGame',
+        value: function _saveGame() {
+            this.gameSaving = true;
+            var serverData = this.serverData;
+
+            jQuery.ajax({
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/word-game/create-game',
+                method: 'POST',
+                data: {
+                    game: serverData
+                }
+            }).done(jQuery.proxy(function (data) {
+                if (data.status === 'success') {
+                    window.location.href = _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game';
+                }
+
+                if (data.status === 'error') {
+                    this.setState({
+                        errors: data.data
+                    });
+
+                    this.gameSaving = false;
+
+                    $("html, body").animate({ scrollTop: "0px" });
+                }
+            }, this));
+        }
+    }, {
         key: 'setField',
-        value: function setField(name, value) {}
+        value: function setField(name, value) {
+            this.serverData.words = value;
+        }
     }, {
         key: 'onSubmit',
-        value: function onSubmit(data) {}
+        value: function onSubmit(data) {
+
+            this.serverData.name = data.name;
+            this.serverData.description = data.description;
+            this.serverData.lesson = data.lesson;
+
+            if (this.gameSaving === false) {
+                this._saveGame();
+            }
+        }
     }, {
         key: 'render',
         value: function render() {
+            var errors = this.state.errors.map(function (item, index) {
+                return _react2.default.createElement(
+                    'p',
+                    { key: index, className: 'error' },
+                    '* ',
+                    item
+                );
+            });
+
             return _react2.default.createElement(
                 'div',
                 { className: 'full-width align-left margin-top-30 page-content form' },
                 _react2.default.createElement(
                     'div',
                     { className: 'margin-top-40 align-left full-width' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'full-width align-left' },
+                        errors
+                    ),
                     _react2.default.createElement(
                         _reactComponentsForm.Form,
                         {

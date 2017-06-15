@@ -1,0 +1,13 @@
+AdminBundle\Entity\GameType:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            groups: [game_types]
+        name:
+            expose: true
+            groups: [game_types]
+        serviceName:
+            expose: true
+            groups: [game_types]
+            serialized_name: serviceName

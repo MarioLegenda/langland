@@ -12,7 +12,8 @@ export class GameInit extends React.Component {
 
         this.state = {
             errors: [],
-            lessonsLoaded: false
+            lessonsLoaded: false,
+            gameTypesLoaded: false,
         };
 
         this.serverData = {
@@ -21,6 +22,8 @@ export class GameInit extends React.Component {
             lesson: '',
             words: []
         };
+
+        this.gameTypesView = [];
 
         this.gameSaving = false;
 
@@ -44,7 +47,7 @@ export class GameInit extends React.Component {
             words: []
         };
 
-        this.data.schema = new Schema({
+        this.schema = {
             name: {
                 type: String,
                 required: true
@@ -57,21 +60,47 @@ export class GameInit extends React.Component {
                 type: String,
                 required: true,
                 validators: [this.data.validators.isValidLesson()]
-            },
-            imageMaster: {
-                type: Boolean,
-            },
-            timeTrial: {
-                type: Boolean,
-            },
-            freestyle: {
-                type: Boolean,
             }
-        }, this.data.errorMessages);
+        };
 
         this.setField = this.setField.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onError = this.onError.bind(this);
+    }
+
+    _createSchema() {
+        this.data.schema = new Schema(this.schema, this.data.errorMessages);
+    }
+
+    _fetchGameTypes() {
+        jQuery.ajax({
+            url: envr + 'admin/course/manage/' + url.getParsed()[3] + '/game/game-type/find-game-types',
+            method: 'GET'
+        }).done(jQuery.proxy(function(data) {
+            const gameTypes = data.data;
+            let schemaGameTypes = [];
+
+            for (let i = 0; i < gameTypes.length; i++) {
+                let gameType = gameTypes[i];
+                let newGameType = {};
+
+                this.schema[gameType.serviceName] = {
+                    type: Boolean
+                };
+
+                this.gameTypesView.push({
+                    label: gameType.name,
+                    serviceName: gameType.serviceName
+                });
+            }
+
+            this._createSchema();
+
+            this.setState({
+                gameTypesLoaded: true
+            });
+
+        }, this));
     }
 
     _fetchLessons() {
@@ -129,6 +158,7 @@ export class GameInit extends React.Component {
     }
 
     componentDidMount() {
+        this._fetchGameTypes();
         this._fetchLessons();
     }
 
@@ -156,9 +186,16 @@ export class GameInit extends React.Component {
     }
 
     render() {
-        if (this.state.lessonsLoaded === false) {
+        if (this.state.lessonsLoaded === false || this.state.gameTypesLoaded === false) {
             return null;
         }
+
+        const gameTypes = this.gameTypesView.map((gameType, index) =>
+            <div key={index} className="horizontal-checkbox">
+                <p>{gameType.name}</p>
+                <CheckboxField name={gameType.serviceName}/>
+            </div>
+        );
 
         const errors = this.state.errors.map((item, index) =>
             <p key={index} className="error">* {item}</p>
@@ -205,20 +242,7 @@ export class GameInit extends React.Component {
                         <div className="full-width align-left form-field field-break relative">
                             <label>Game type</label>
 
-                            <div className="horizontal-checkbox">
-                                <p>Image master</p>
-                                <CheckboxField name="imageMaster"/>
-                            </div>
-
-                            <div className="horizontal-checkbox">
-                                <p>Time trial</p>
-                                <CheckboxField name="timeTrial"/>
-                            </div>
-
-                            <div className="horizontal-checkbox">
-                                <p>Freestyle</p>
-                                <CheckboxField name="freestyle"/>
-                            </div>
+                            {gameTypes}
 
                             <i className="description margin-top-10">
                                 <span className="highlight">*</span> game description. Describe what benefits this game will have for the user. This description will show on frontned

@@ -6,7 +6,7 @@ use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ResponseController extends CommonController
+class ResponseController extends Controller
 {
     /**
      * @param array $data

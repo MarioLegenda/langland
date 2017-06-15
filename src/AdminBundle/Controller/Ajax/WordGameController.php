@@ -2,11 +2,12 @@
 
 namespace AdminBundle\Controller\Ajax;
 
+use Library\CommonController;
 use Library\ResponseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class WordGameController extends ResponseController
+class WordGameController extends CommonController
 {
     public function findGameWordsAction($courseId)
     {

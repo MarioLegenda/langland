@@ -79,28 +79,27 @@ class SeedCommand extends ContainerAwareCommand
 
         $courses = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Course')->findAll();
 
-        $gameTypes = array(
-            'time-trial' => 'Time trial',
-            'image-master' => 'Image master',
-            'freestyle' => 'Freestyle',
-        );
-
         foreach ($courses as $course) {
             $lessonFactory->create($course, 10);
 
             $sentenceFactory->create($course);
+        }
 
-            foreach ($gameTypes as $serviceName => $name) {
-                $type = new GameType();
+        $gameTypes = array(
+            'timeTrail' => 'Time trial',
+            'imageMaster' => 'Image master',
+            'freestyle' => 'Freestyle',
+        );
 
-                $type
-                    ->setName($name)
-                    ->setServiceName($serviceName)
-                    ->setCourse($course);
+        foreach ($gameTypes as $serviceName => $name) {
+            $type = new GameType();
 
-                $em->persist($type);
-                $em->flush();
-            }
+            $type
+                ->setName($name)
+                ->setServiceName($serviceName);
+
+            $em->persist($type);
+            $em->flush();
         }
 
         foreach ($courses as $course) {

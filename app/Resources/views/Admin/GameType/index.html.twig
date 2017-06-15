@@ -16,7 +16,7 @@
                 {% for gameType in gameTypes %}
                     <div class="card full-width align-left margin-bottom-10">
                         <a class="base-action-link align-left" href="#">{{ gameType.name }}</a>
-                        <a class="sub-base-action-link align-right" href="{{ path('admin_game_type_edit', {'courseId': gameType.course.id, 'gameTypeId': gameType.id}) }}"><i class="fa fa-edit"></i></a>
+                        <a class="sub-base-action-link align-right" href="{{ path('admin_game_type_edit', {'courseId': course.id, 'gameTypeId': gameType.id}) }}"><i class="fa fa-edit"></i></a>
                     </div>
                 {% endfor %}
             </div>

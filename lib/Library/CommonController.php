@@ -4,9 +4,8 @@ namespace Library;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class CommonController extends Controller
+class CommonController extends ResponseController
 {
     /**
      * @param string $repository

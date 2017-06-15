@@ -11,10 +11,6 @@
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
 
-    <many-to-one target-entity="AdminBundle\Entity\Course" field="course">
-      <join-column referenced-column-name="id" name="course_id" />
-    </many-to-one>
-
     <lifecycle-callbacks>
       <lifecycle-callback type="prePersist" method="updateTimestamps" />
       <lifecycle-callback type="preUpdate" method="updateTimestamps" />

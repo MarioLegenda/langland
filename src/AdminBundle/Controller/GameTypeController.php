@@ -4,17 +4,16 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\GameType;
 use AdminBundle\Form\Type\GameTypeType;
+use Library\CommonController;
 use Symfony\Component\HttpFoundation\Request;
 
-class GameTypeController extends RepositoryController
+class GameTypeController extends CommonController
 {
     public function indexAction($courseId)
     {
         $course = $this->getRepository('AdminBundle:Course')->find($courseId);
 
-        $gameTypes = $this->getRepository('AdminBundle:GameType')->findBy(array(
-            'course' => $course,
-        ));
+        $gameTypes = $this->getRepository('AdminBundle:GameType')->findAll();
 
         return $this->render('::Admin/GameType/index.html.twig', array(
             'gameTypes' => $gameTypes,
@@ -33,8 +32,6 @@ class GameTypeController extends RepositoryController
 
         if ($form->isSubmitted() and $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-
-            $gameType->setCourse($course);
 
             $em->persist($gameType);
             $em->flush();

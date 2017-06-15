@@ -20,10 +20,6 @@ class GameType
      */
     private $serviceName;
     /**
-     * @var Course $course
-     */
-    private $course;
-    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -76,23 +72,6 @@ class GameType
     public function setServiceName($serviceName) : GameType
     {
         $this->serviceName = $serviceName;
-
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getCourse()
-    {
-        return $this->course;
-    }
-    /**
-     * @param mixed $course
-     * @return GameType
-     */
-    public function setCourse($course) : GameType
-    {
-        $this->course = $course;
 
         return $this;
     }

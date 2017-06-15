@@ -11895,7 +11895,8 @@ var GameInit = exports.GameInit = function (_React$Component) {
 
         _this.state = {
             errors: [],
-            lessonsLoaded: false
+            lessonsLoaded: false,
+            gameTypesLoaded: false
         };
 
         _this.serverData = {
@@ -11904,6 +11905,8 @@ var GameInit = exports.GameInit = function (_React$Component) {
             lesson: '',
             words: []
         };
+
+        _this.gameTypesView = [];
 
         _this.gameSaving = false;
 
@@ -11933,7 +11936,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
             words: []
         };
 
-        _this.data.schema = new _formSchemaValidation2.default({
+        _this.schema = {
             name: {
                 type: String,
                 required: true
@@ -11946,17 +11949,8 @@ var GameInit = exports.GameInit = function (_React$Component) {
                 type: String,
                 required: true,
                 validators: [_this.data.validators.isValidLesson()]
-            },
-            imageMaster: {
-                type: Boolean
-            },
-            timeTrial: {
-                type: Boolean
-            },
-            freestyle: {
-                type: Boolean
             }
-        }, _this.data.errorMessages);
+        };
 
         _this.setField = _this.setField.bind(_this);
         _this.onSubmit = _this.onSubmit.bind(_this);
@@ -11965,6 +11959,42 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }
 
     _createClass(GameInit, [{
+        key: '_createSchema',
+        value: function _createSchema() {
+            this.data.schema = new _formSchemaValidation2.default(this.schema, this.data.errorMessages);
+        }
+    }, {
+        key: '_fetchGameTypes',
+        value: function _fetchGameTypes() {
+            jQuery.ajax({
+                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/game-type/find-game-types',
+                method: 'GET'
+            }).done(jQuery.proxy(function (data) {
+                var gameTypes = data.data;
+                var schemaGameTypes = [];
+
+                for (var i = 0; i < gameTypes.length; i++) {
+                    var gameType = gameTypes[i];
+                    var newGameType = {};
+
+                    this.schema[gameType.serviceName] = {
+                        type: Boolean
+                    };
+
+                    this.gameTypesView.push({
+                        label: gameType.name,
+                        serviceName: gameType.serviceName
+                    });
+                }
+
+                this._createSchema();
+
+                this.setState({
+                    gameTypesLoaded: true
+                });
+            }, this));
+        }
+    }, {
         key: '_fetchLessons',
         value: function _fetchLessons() {
             jQuery.ajax({
@@ -12023,6 +12053,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
+            this._fetchGameTypes();
             this._fetchLessons();
         }
     }, {
@@ -12054,9 +12085,22 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.lessonsLoaded === false) {
+            if (this.state.lessonsLoaded === false || this.state.gameTypesLoaded === false) {
                 return null;
             }
+
+            var gameTypes = this.gameTypesView.map(function (gameType, index) {
+                return _react2.default.createElement(
+                    'div',
+                    { key: index, className: 'horizontal-checkbox' },
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        gameType.name
+                    ),
+                    _react2.default.createElement(_reactComponentsForm.CheckboxField, { name: gameType.serviceName })
+                );
+            });
 
             var errors = this.state.errors.map(function (item, index) {
                 return _react2.default.createElement(
@@ -12138,36 +12182,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
                                 null,
                                 'Game type'
                             ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'horizontal-checkbox' },
-                                _react2.default.createElement(
-                                    'p',
-                                    null,
-                                    'Image master'
-                                ),
-                                _react2.default.createElement(_reactComponentsForm.CheckboxField, { name: 'imageMaster' })
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'horizontal-checkbox' },
-                                _react2.default.createElement(
-                                    'p',
-                                    null,
-                                    'Time trial'
-                                ),
-                                _react2.default.createElement(_reactComponentsForm.CheckboxField, { name: 'timeTrial' })
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'horizontal-checkbox' },
-                                _react2.default.createElement(
-                                    'p',
-                                    null,
-                                    'Freestyle'
-                                ),
-                                _react2.default.createElement(_reactComponentsForm.CheckboxField, { name: 'freestyle' })
-                            ),
+                            gameTypes,
                             _react2.default.createElement(
                                 'i',
                                 { className: 'description margin-top-10' },

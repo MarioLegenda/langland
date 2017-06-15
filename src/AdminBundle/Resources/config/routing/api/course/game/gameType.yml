@@ -12,3 +12,7 @@ admin_game_type_edit:
     path: /edit/{gameTypeId}
     defaults: { _controller: AdminBundle:GameType:edit }
     methods: [GET, POST]
+
+find_game_types:
+    path: /find-game-types
+    defaults: { _controller: AdminBundle:Ajax/GameType:findGameTypes}

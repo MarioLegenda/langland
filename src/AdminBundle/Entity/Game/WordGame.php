@@ -23,8 +23,14 @@ class WordGame
      * @var string $description
      */
     private $description;
-
+    /**
+     * @var string $url
+     */
     private $url;
+    /**
+     * @var string $gameTypes
+     */
+    private $gameTypes;
     /**
      * @var Lesson $lesson
      */
@@ -127,6 +133,23 @@ class WordGame
     public function setUrl($url) : WordGame
     {
         $this->url = $url;
+
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getGameTypes(): string
+    {
+        return $this->gameTypes;
+    }
+    /**
+     * @param string $gameTypes
+     * @return WordGame
+     */
+    public function setGameTypes(string $gameTypes) : WordGame
+    {
+        $this->gameTypes = $gameTypes;
 
         return $this;
     }

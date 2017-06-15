@@ -86,7 +86,7 @@ class SeedCommand extends ContainerAwareCommand
         }
 
         $gameTypes = array(
-            'timeTrail' => 'Time trial',
+            'timeTrial' => 'Time trial',
             'imageMaster' => 'Image master',
             'freestyle' => 'Freestyle',
         );

@@ -50,6 +50,18 @@ class GameEntityCreator
             $game->setLesson($lesson);
         }
 
+        if (array_key_exists('gameTypes', $data)) {
+            $resolvedGameTypes = array();
+
+            foreach ($data['gameTypes'] as $gameType) {
+                $gameTypeKey = array_keys($gameType)[0];
+
+                $resolvedGameTypes[$gameTypeKey] = ($gameType[$gameTypeKey] === 'true') ? true : false;
+            }
+
+            $game->setGameTypes(json_encode($resolvedGameTypes));
+        }
+
         if (array_key_exists('words', $data)) {
             $ids = array();
             foreach ($data['words'] as $word) {

@@ -8,6 +8,7 @@
 
 namespace AdminBundle\Form\Type\Generic\TraitType;
 
+use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityManager;
@@ -26,13 +27,15 @@ trait LessonChoiceTrait
     public function addLessonChoice(
         FormBuilderInterface $builder,
         EntityManager $em,
-        $entity)
+        $entity,
+        Course $course
+        )
     {
         $builder
             ->add('lesson', ChoiceType::class, array(
                 'label' => 'Lesson: ',
                 'placeholder' => 'Choose lesson',
-                'choices' => $this->createLessonChoices($em),
+                'choices' => $this->createLessonChoices($em, $course),
                 'choice_label' => function($choice, $key, $value) {
                     return ucfirst($key);
                 }
@@ -46,9 +49,11 @@ trait LessonChoiceTrait
         return $this;
     }
 
-    private function createLessonChoices(EntityManager $em)
+    private function createLessonChoices(EntityManager $em, Course $course)
     {
-        $lessons = $em->getRepository('AdminBundle:Lesson')->findAll();
+        $lessons = $em->getRepository('AdminBundle:Lesson')->findBy(array(
+            'course' => $course,
+        ));
 
         $choices = array();
 

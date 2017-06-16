@@ -39,6 +39,9 @@ class WordGameFactory
             $game->setUrl(\URLify::filter($game->getName()));
             $game->setDescription($this->getFaker()->sentence(150));
             $game->setLesson($lesson);
+            $game->setGameTypes(json_encode(array(
+                'timeTrial' => true
+            )));
 
             foreach ($words as $word) {
                 $gameUnit = new WordGameUnit();

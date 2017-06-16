@@ -257,6 +257,17 @@
             </constraint>
         </property>
 
+        <property name="gameTypes">
+            <constraint name="NotBlank">
+                <option name="message">You have to choose a game type</option>
+
+                <option name="groups">
+                    <value>Create</value>
+                    <value>Edit</value>
+                </option>
+            </constraint>
+        </property>
+
         <property name="lesson">
             <constraint name="NotBlank">
                 <option name="message">There is no lesson associated with this game</option>

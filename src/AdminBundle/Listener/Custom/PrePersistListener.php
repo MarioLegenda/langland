@@ -105,6 +105,13 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
                 $game->removeAnswer($answer);
             }
         }
+
+        $resolvedGameTypes = array();
+        foreach ($game->getGameTypes() as $gameType) {
+            $resolvedGameTypes[$gameType] = true;
+        }
+
+        $game->setGameTypes(json_encode($resolvedGameTypes));
     }
 
     private function handleLessonJob(Lesson $lesson, Course $course)

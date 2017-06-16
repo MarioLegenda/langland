@@ -3,6 +3,7 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Game\QuestionGame;
+use AdminBundle\Form\Type\Generic\TraitType\GameTypeChoiceTrait;
 use AdminBundle\Form\Type\Generic\TraitType\LessonChoiceTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
@@ -15,7 +16,7 @@ use AdminBundle\Form\Type\QuestionGameAnswerType;
 
 class QuestionGameType extends AbstractType
 {
-    use TextTypeTrait, TextareaTypeTrait, LessonChoiceTrait;
+    use TextTypeTrait, TextareaTypeTrait, LessonChoiceTrait, GameTypeChoiceTrait;
     /**
      * @var EntityManager $em
      */
@@ -35,9 +36,11 @@ class QuestionGameType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $question = $options['question'];
+        $course = $options['course'];
 
         $this
-            ->addLessonChoice($builder, $this->em, $question)
+            ->addLessonChoice($builder, $this->em, $question, $course)
+            ->addGameTypeChoice($builder, $this->em)
             ->addTextType('Question: ', 'name', $builder)
             ->addTextareaType('Description', 'description', $builder);
 
@@ -67,5 +70,6 @@ class QuestionGameType extends AbstractType
         ));
 
         $resolver->setRequired('question');
+        $resolver->setRequired('course');
     }
 }

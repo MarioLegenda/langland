@@ -138,5 +138,12 @@ class PreUpdateListener extends AbstractEntityManagerBaseListener
                 $this->em->remove($answer);
             }
         }
+
+        $resolvedGameTypes = array();
+        foreach ($game->getGameTypes() as $serviceName => $value) {
+            $resolvedGameTypes[$serviceName] = true;
+        }
+
+        $game->setGameTypes(json_encode($resolvedGameTypes));
     }
 }

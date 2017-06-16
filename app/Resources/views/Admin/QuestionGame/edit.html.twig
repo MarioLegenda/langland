@@ -27,6 +27,8 @@
 
                         {% include '::Admin/Form/_include/field.html.twig' with {'field': form.description, 'description': 'description of the game. This description will be shown on the frontend' } only %}
 
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.gameTypes, 'description': 'supported game types of this game' } only %}
+
                         <div class="full-width align-left form-field field-break">
                             {{ form_label(form.answers) }}
                             <div class="translations" data-prototype="{{ form_widget(form.answers.vars.prototype)|e('html_attr') }}">

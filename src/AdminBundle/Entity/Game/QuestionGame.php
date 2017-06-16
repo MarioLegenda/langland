@@ -20,8 +20,14 @@ class QuestionGame
      * @var string $description
      */
     private $description;
-
+    /**
+     * @var string $url
+     */
     private $url;
+    /**
+     * @var string $gameTypes
+     */
+    private $gameTypes;
     /**
      * @var Lesson $lesson
      */
@@ -96,6 +102,27 @@ class QuestionGame
     public function setUrl($url) : QuestionGame
     {
         $this->url = $url;
+
+        return $this;
+    }
+    /**
+     * @return array
+     */
+    public function getGameTypes()
+    {
+        if (is_string($this->gameTypes)) {
+            return json_decode($this->gameTypes, true);
+        }
+
+        return $this->gameTypes;
+    }
+    /**
+     * @param string $gameTypes
+     * @return QuestionGame
+     */
+    public function setGameTypes($gameTypes) : QuestionGame
+    {
+        $this->gameTypes = $gameTypes;
 
         return $this;
     }

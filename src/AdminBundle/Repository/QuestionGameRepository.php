@@ -20,6 +20,7 @@ class QuestionGameRepository extends EntityRepository
             ->innerJoin('l.course', 'c')
             ->where('l.id = g.lesson')
             ->andWhere('l.course = :course_id')
+            ->orderBy('g.id', 'DESC')
             ->setParameter(':course_id', $course->getId())
             ->getQuery()
             ->getResult();

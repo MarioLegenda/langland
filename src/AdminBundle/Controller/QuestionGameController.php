@@ -15,6 +15,7 @@ class QuestionGameController extends RepositoryController
         $question = new QuestionGame();
         $form = $this->createForm(QuestionGameType::class, $question, array(
             'question' => $question,
+            'course' => $this->getRepository('AdminBundle:Course')->find($courseId),
             'validation_groups' => array('Default', 'Create'),
         ));
 
@@ -51,6 +52,7 @@ class QuestionGameController extends RepositoryController
         $question = $this->getRepository('AdminBundle:Game\QuestionGame')->find($gameId);
         $form = $this->createForm(QuestionGameType::class, $question, array(
             'question' => $question,
+            'course' => $this->getRepository('AdminBundle:Course')->find($courseId),
             'validation_groups' => array('Default', 'Edit'),
         ));
 

@@ -240,6 +240,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -1122,82 +1126,70 @@ module.exports = ReactComponentTreeHook;
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__env_js__ = __webpack_require__(26);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.RouteCreator = exports.routes = undefined;
+const routes = {
+    app_course_language_info_exists: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/courses/is-info-looked',
+    app_course_language_infos: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/courses/find-language-info',
+    app_course_mark_info_looked: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/courses/mark-info-looked',
+    app_language_course_list: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/courses/find-language-course-list',
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+    app_find_learnable_languages: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/language/find-learnable-languages',
+    app_find_learning_languages: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/language/find-learning-languages',
 
-var _env = __webpack_require__(26);
+    app_logged_in_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/find-logged-in-user',
+    app_create_learning_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/create-learning-user',
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+    app_logout: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/logout',
+    app_dashboard: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland',
+    app_find_learning_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/find-learning-user',
 
-var routes = exports.routes = {
-    app_course_language_info_exists: _env.envr + 'langland/api/courses/is-info-looked',
-    app_course_language_infos: _env.envr + 'langland/api/courses/find-language-info',
-    app_course_mark_info_looked: _env.envr + 'langland/api/courses/mark-info-looked',
-    app_language_course_list: _env.envr + 'langland/api/courses/find-language-course-list',
-
-    app_find_learnable_languages: _env.envr + 'langland/api/language/find-learnable-languages',
-    app_find_learning_languages: _env.envr + 'langland/api/language/find-learning-languages',
-
-    app_logged_in_user: _env.envr + 'langland/api/user/find-logged-in-user',
-    app_create_learning_user: _env.envr + 'langland/api/user/create-learning-user',
-
-    app_logout: _env.envr + 'langland/logout',
-    app_dashboard: _env.envr + 'langland',
-    app_find_learning_user: _env.envr + 'langland/api/user/find-learning-user',
-
-    app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed'
+    app_learning_user_mark_lesson_passed: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/data/lesson/mark-lesson-passed'
 };
+/* harmony export (immutable) */ __webpack_exports__["routes"] = routes;
 
-var AppRouter = function () {
-    function AppRouter() {
-        _classCallCheck(this, AppRouter);
 
+class AppRouter {
+    constructor() {
         this.routes = {
-            app_page_course_dashboard: _env.envr + 'langland/course/:0/:1',
-            app_course_actual_app_dashboard: _env.envr + 'langland/dashboard/:0/:1',
-            app_lesson_list: _env.envr + 'langland/api/data/lesson-list/:0',
-            app_learning_user_lesson: _env.envr + 'langland/api/data/lesson/:0',
-            app_page_lesson_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/lessons',
-            app_page_games_list_dashboard: _env.envr + 'langland/dashboard/:0/:1/games',
-            app_page_lesson_start: _env.envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
-            app_learning_user_mark_lesson_passed: _env.envr + 'langland/api/data/lesson/mark-lesson-passed',
-            app_find_available_games: _env.envr + 'langland/api/data/games/find-available-games/:0',
-            app_initialize_selected_game: _env.envr + 'langland/dashboard/:0/:1/game/:2/:3'
+            app_page_course_dashboard: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/course/:0/:1',
+            app_course_actual_app_dashboard: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/dashboard/:0/:1',
+            app_lesson_list: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/data/lesson-list/:0',
+            app_learning_user_lesson: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/data/lesson/:0',
+            app_page_lesson_list_dashboard: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/dashboard/:0/:1/lessons',
+            app_page_games_list_dashboard: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/dashboard/:0/:1/games',
+            app_page_lesson_start: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/dashboard/:0/:1/lesson/:2/:3',
+            app_learning_user_mark_lesson_passed: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/data/lesson/mark-lesson-passed',
+            app_find_available_games: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/data/games/find-available-games/:0',
+            app_initialize_selected_game: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/dashboard/:0/:1/game/:2/:3'
         };
     }
 
-    _createClass(AppRouter, [{
-        key: 'create',
-        value: function create(name, parameters) {
-            if (this.routes.hasOwnProperty(name)) {
-                var foundRoute = this.routes[name];
+    create(name, parameters) {
+        if (this.routes.hasOwnProperty(name)) {
+            let foundRoute = this.routes[name];
 
-                for (var i = 0; i < parameters.length; i++) {
-                    var r = new RegExp(':' + i);
+            for (let i = 0; i < parameters.length; i++) {
+                let r = new RegExp(':' + i);
 
-                    foundRoute = foundRoute.replace(r, parameters[i]);
-                }
-
-                return foundRoute;
+                foundRoute = foundRoute.replace(r, parameters[i]);
             }
 
-            throw new Error('AppRouter: Route ' + name + ' not found');
+            return foundRoute;
         }
-    }]);
 
-    return AppRouter;
-}();
+        throw new Error('AppRouter: Route ' + name + ' not found');
+    }
+}
 
-var RouteCreator = exports.RouteCreator = new AppRouter();
+const RouteCreator = new AppRouter();
+/* harmony export (immutable) */ __webpack_exports__["RouteCreator"] = RouteCreator;
+
 
 /***/ }),
 /* 10 */
@@ -3180,17 +3172,13 @@ module.exports = React;
 
 /***/ }),
 /* 26 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function env() {
-    var path = window.location.pathname;
-    var env = '';
+    const path = window.location.pathname;
+    let env = '';
 
     if (/app_dev.php/.test(path)) {
         env = '/app_dev.php/';
@@ -3201,7 +3189,9 @@ function env() {
     return env;
 }
 
-var envr = exports.envr = env();
+const envr = env();
+/* harmony export (immutable) */ __webpack_exports__["envr"] = envr;
+
 
 /***/ }),
 /* 27 */
@@ -11169,140 +11159,113 @@ module.exports = getIteratorFn;
 
 /***/ }),
 /* 98 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__routes_js__ = __webpack_require__(9);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.DataSource = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _routes = __webpack_require__(9);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Repository = function () {
-    function Repository() {
-        _classCallCheck(this, Repository);
+class Repository {
+    fetchLessonList(learningUserCourseId) {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["RouteCreator"].create('app_lesson_list', [learningUserCourseId]),
+            method: 'GET'
+        });
     }
 
-    _createClass(Repository, [{
-        key: 'fetchLessonList',
-        value: function fetchLessonList(learningUserCourseId) {
-            return jQuery.ajax({
-                url: _routes.RouteCreator.create('app_lesson_list', [learningUserCourseId]),
-                method: 'GET'
-            });
-        }
-    }, {
-        key: 'fetchLearnableLanguages',
-        value: function fetchLearnableLanguages() {
-            return jQuery.ajax({
-                url: _routes.routes.app_find_learnable_languages,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchLearningLanguages',
-        value: function fetchLearningLanguages() {
-            return jQuery.ajax({
-                url: _routes.routes.app_find_learning_languages,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchLoggedInUser',
-        value: function fetchLoggedInUser() {
-            return jQuery.ajax({
-                url: _routes.routes.app_logged_in_user,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchCourseList',
-        value: function fetchCourseList() {
-            return jQuery.ajax({
-                url: _routes.routes.app_language_course_list,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchIsInfoLooked',
-        value: function fetchIsInfoLooked() {
-            return jQuery.ajax({
-                url: _routes.routes.app_course_language_info_exists,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchMarkInfoLooked',
-        value: function fetchMarkInfoLooked() {
-            return jQuery.ajax({
-                url: _routes.routes.app_course_mark_info_looked,
-                method: 'POST'
-            });
-        }
-    }, {
-        key: 'fetchLanguaageInfos',
-        value: function fetchLanguaageInfos(languageId) {
-            return jQuery.ajax({
-                url: _routes.routes.app_course_language_infos,
-                method: 'POST',
-                data: {
-                    languageId: languageId
-                }
-            });
-        }
-    }, {
-        key: 'fetchLesson',
-        value: function fetchLesson(learningUserLessonId) {
-            return jQuery.ajax({
-                url: _routes.RouteCreator.create('app_learning_user_lesson', [learningUserLessonId]),
-                method: 'GET'
-            });
-        }
-    }, {
-        key: 'fetchMarkLessonFinished',
-        value: function fetchMarkLessonFinished() {
-            return jQuery.ajax({
-                url: _routes.routes.app_learning_user_mark_lesson_passed,
-                method: 'POST',
-                data: {
-                    learningUserLessonId: arguments.length <= 0 ? undefined : arguments[0],
-                    courseName: arguments.length <= 1 ? undefined : arguments[1],
-                    learningUserCourseId: arguments.length <= 2 ? undefined : arguments[2]
-                }
-            });
-        }
-    }, {
-        key: 'fetchGamesList',
-        value: function fetchGamesList() {
-            return jQuery.ajax({
-                url: _routes.RouteCreator.create('app_find_available_games', arguments.length <= 0 ? undefined : arguments[0]),
-                method: 'GET'
-            });
-        }
-    }, {
-        key: 'createLearningUser',
-        value: function createLearningUser(languageId) {
-            return jQuery.ajax({
-                url: _routes.routes.app_create_learning_user,
-                method: 'POST',
-                data: {
-                    languageId: languageId
-                }
-            });
-        }
-    }]);
+    fetchLearnableLanguages() {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_find_learnable_languages,
+            method: 'POST'
+        });
+    }
 
-    return Repository;
-}();
+    fetchLearningLanguages() {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_find_learning_languages,
+            method: 'POST'
+        });
+    }
 
-var DataSource = exports.DataSource = new Repository();
+    fetchLoggedInUser() {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_logged_in_user,
+            method: 'POST'
+        });
+    }
+
+    fetchCourseList() {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_language_course_list,
+            method: 'POST'
+        });
+    }
+
+    fetchIsInfoLooked() {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_course_language_info_exists,
+            method: 'POST'
+        });
+    }
+
+    fetchMarkInfoLooked() {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_course_mark_info_looked,
+            method: 'POST'
+        });
+    }
+
+    fetchLanguaageInfos(languageId) {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_course_language_infos,
+            method: 'POST',
+            data: {
+                languageId: languageId
+            }
+        });
+    }
+
+    fetchLesson(learningUserLessonId) {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["RouteCreator"].create('app_learning_user_lesson', [learningUserLessonId]),
+            method: 'GET'
+        });
+    }
+
+    fetchMarkLessonFinished(...args) {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_learning_user_mark_lesson_passed,
+            method: 'POST',
+            data: {
+                learningUserLessonId: args[0],
+                courseName: args[1],
+                learningUserCourseId: args[2]
+            }
+        });
+    }
+
+    fetchGamesList(...args) {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["RouteCreator"].create('app_find_available_games', args[0]),
+            method: 'GET'
+        });
+    }
+
+    createLearningUser(languageId) {
+        return jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_create_learning_user,
+            method: 'POST',
+            data: {
+                languageId: languageId
+            }
+        });
+    }
+}
+
+const DataSource = new Repository();
+/* harmony export (immutable) */ __webpack_exports__["DataSource"] = DataSource;
+
 
 /***/ }),
 /* 99 */
@@ -12027,56 +11990,41 @@ module.exports = __webpack_require__(148);
 
 /***/ }),
 /* 104 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__routes_js__ = __webpack_require__(9);
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.learningUser = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _routes = __webpack_require__(9);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var LearningUser = function () {
-    function LearningUser() {
-        _classCallCheck(this, LearningUser);
-
+class LearningUser {
+    constructor() {
         this.user = null;
 
         this._fetchLearningUser();
     }
 
-    _createClass(LearningUser, [{
-        key: '_fetchLearningUser',
-        value: function _fetchLearningUser() {
-            jQuery.ajax({
-                url: _routes.routes.app_find_learning_user,
-                method: 'GET'
-            }).done(jQuery.proxy(function (data) {
-                this.user = data.data;
-            }, this));
+    _fetchLearningUser() {
+        jQuery.ajax({
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_find_learning_user,
+            method: 'GET'
+        }).done(jQuery.proxy(function (data) {
+            this.user = data.data;
+        }, this));
+    }
+
+    getLearningUser() {
+        if (this.user === null) {
+            throw new Error('User should have been fetched but did not');
         }
-    }, {
-        key: 'getLearningUser',
-        value: function getLearningUser() {
-            if (this.user === null) {
-                throw new Error('User should have been fetched but did not');
-            }
 
-            return this.user;
-        }
-    }]);
+        return this.user;
+    }
+}
 
-    return LearningUser;
-}();
+const learningUser = new LearningUser();
+/* harmony export (immutable) */ __webpack_exports__["learningUser"] = learningUser;
 
-var learningUser = exports.learningUser = new LearningUser();
 
 /***/ }),
 /* 105 */
@@ -12592,7 +12540,8 @@ var GamesList = function (_React$Component) {
             var items = this.props.items.map(function (item, index) {
                 var passedClass = item.hasPassed === true ? 'passed-item' : '';
 
-                return _react2.default.createElement(
+                return;
+                _react2.default.createElement(
                     'div',
                     { key: index },
                     _react2.default.createElement(_listingItem.Item, {
@@ -12655,45 +12604,6 @@ var GameStart = function (_React$Component2) {
                         'p',
                         { className: 'margin-bottom-30' },
                         item.game.description
-                    ),
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'full-width align-left game-choice-menu' },
-                        _react2.default.createElement(
-                            'div',
-                            { className: '' },
-                            _react2.default.createElement(
-                                'ul',
-                                null,
-                                _react2.default.createElement(
-                                    'li',
-                                    null,
-                                    _react2.default.createElement(
-                                        'a',
-                                        { className: 'game-choice' },
-                                        'Time trial'
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    'li',
-                                    null,
-                                    _react2.default.createElement(
-                                        'a',
-                                        { className: 'game-choice' },
-                                        'Image master'
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    'li',
-                                    null,
-                                    _react2.default.createElement(
-                                        'a',
-                                        { className: 'game-choice' },
-                                        'Freestyle'
-                                    )
-                                )
-                            )
-                        )
                     ),
                     _react2.default.createElement(
                         'div',

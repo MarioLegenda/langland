@@ -28,7 +28,8 @@ class GamesList extends React.Component {
         const items = this.props.items.map((item, index) => {
             const passedClass = (item.hasPassed === true) ? 'passed-item' : '';
 
-            return <div key={index}>
+            return
+            <div key={index}>
                 <Item
                     chooseItem={this.showItem}
                     index={index}
@@ -72,16 +73,6 @@ class GameStart extends React.Component {
                     <h1 className="full-width align-left margin-bottom-30">{item.game.name}</h1>
 
                     <p className="margin-bottom-30">{item.game.description}</p>
-
-                    <div className="full-width align-left game-choice-menu">
-                        <div className="">
-                            <ul>
-                                <li><a className="game-choice">Time trial</a></li>
-                                <li><a className="game-choice">Image master</a></li>
-                                <li><a className="game-choice">Freestyle</a></li>
-                            </ul>
-                        </div>
-                    </div>
 
                     <div className="start-link margin-bottom-30">
                         <Link to={RouteCreator.create('app_initialize_selected_game', [courseName, learningUserCourseId, gameUrl, gameId])}>{buttonText}</Link>

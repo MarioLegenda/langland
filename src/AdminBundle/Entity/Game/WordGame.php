@@ -139,15 +139,19 @@ class WordGame
     /**
      * @return string
      */
-    public function getGameTypes(): string
+    public function getGameTypes()
     {
-        return $this->gameTypes;
+      if (is_string($this->gameTypes)) {
+          return json_decode($this->gameTypes, true);
+      }
+
+      return $this->gameTypes;
     }
     /**
      * @param string $gameTypes
      * @return WordGame
      */
-    public function setGameTypes(string $gameTypes) : WordGame
+    public function setGameTypes($gameTypes) : WordGame
     {
         $this->gameTypes = $gameTypes;
 
@@ -286,4 +290,3 @@ class WordGame
         }
     }
 }
-

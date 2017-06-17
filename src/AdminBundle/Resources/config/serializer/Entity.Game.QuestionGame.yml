@@ -13,3 +13,10 @@ AdminBundle\Entity\Game\QuestionGame:
         url:
             expose: true
             groups: [games_list]
+        gameTypes:
+            expose: true
+            groups: [games_list]
+            type: array
+            accessor:
+                getter: getGameTypes
+            serialized_name: gameTypes

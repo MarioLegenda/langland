@@ -20,6 +20,11 @@ class GamesController extends CommonOperationController
         );
     }
 
+	public function decideGameTypeAction($learningUserGameId)
+	{
+		
+	}
+
     public function initializeSelectedGameAction($learningUserGameId)
     {
         $learningUserGame = $this->getRepository('AppBundle:LearningUserGame')->find($learningUserGameId);

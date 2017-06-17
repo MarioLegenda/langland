@@ -13,6 +13,13 @@ AdminBundle\Entity\Game\WordGame:
         url:
             expose: true
             groups: [games_list]
+        gameTypes:
+            expose: true
+            groups: [games_list]
+            type: array
+            accessor:
+                getter: getGameTypes
+            serialized_name: gameTypes
         gameUnits:
             expose: true
             type: AdminBundle\Entity\Game\WordGameUnit

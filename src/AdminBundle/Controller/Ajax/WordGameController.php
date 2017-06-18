@@ -57,6 +57,14 @@ class WordGameController extends CommonController
 
         $game->setUrl(\URLify::filter($game->getName()));
 
+        if (!is_null($game->getMaxTime())) {
+            $game->setHasTimeLimit(true);
+        }
+
+        if (is_null($game->getMaxTime())) {
+            $game->setHasTimeLimit(false);
+        }
+
         $this->getManager()->persist($game);
         $this->getManager()->flush($game);
 

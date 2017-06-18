@@ -3,7 +3,6 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Game\QuestionGame;
-use AdminBundle\Form\Type\Generic\TraitType\GameTypeChoiceTrait;
 use AdminBundle\Form\Type\Generic\TraitType\LessonChoiceTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
@@ -12,11 +11,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use AdminBundle\Form\Type\QuestionGameAnswerType;
 
 class QuestionGameType extends AbstractType
 {
-    use TextTypeTrait, TextareaTypeTrait, LessonChoiceTrait, GameTypeChoiceTrait;
+    use TextTypeTrait, TextareaTypeTrait, LessonChoiceTrait;
     /**
      * @var EntityManager $em
      */
@@ -40,9 +38,9 @@ class QuestionGameType extends AbstractType
 
         $this
             ->addLessonChoice($builder, $this->em, $question, $course)
-            ->addGameTypeChoice($builder, $this->em)
             ->addTextType('Question: ', 'name', $builder)
-            ->addTextareaType('Description', 'description', $builder);
+            ->addTextareaType('Description', 'description', $builder)
+            ->addTextType('Max time: ', 'maxTime', $builder);
 
         $builder
             ->add('answers', CollectionType::class, array(

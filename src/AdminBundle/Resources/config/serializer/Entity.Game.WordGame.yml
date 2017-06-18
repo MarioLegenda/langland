@@ -13,13 +13,18 @@ AdminBundle\Entity\Game\WordGame:
         url:
             expose: true
             groups: [games_list]
-        gameTypes:
+        minTime:
             expose: true
             groups: [games_list]
-            type: array
-            accessor:
-                getter: getGameTypes
-            serialized_name: gameTypes
+            serialized_name: minTime
+        maxTime:
+            expose: true
+            groups: [games_list]
+            serialized_name: maxTime
+        hasTimeLimit:
+            expose: true
+            groups: [games_list]
+            serialized_name: hasTimeLimit
         gameUnits:
             expose: true
             type: AdminBundle\Entity\Game\WordGameUnit

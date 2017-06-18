@@ -22,6 +22,13 @@ app_find_available_games:
     requirements:
         learningUserCourseId: \d+
 
+app_decide_game_type:
+    path: /game/decide-game-type/{learningUserGameId}
+    defaults: { _controller: AppBundle:Api/Games/decideGameType }
+    methods: [POST]
+    requirements:
+        learningUserGameId: \d+
+
 app_initialize_selected_game:
     path: /game/{learningUserGameId}
     defaults: { _controller: AppBundle:Api/Games/initializeSelectedGame }

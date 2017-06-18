@@ -24,13 +24,16 @@ class AppRouter {
         this.routes = {
             app_page_course_dashboard: envr + 'langland/course/:0/:1',
             app_course_actual_app_dashboard: envr + 'langland/dashboard/:0/:1',
+
             app_lesson_list: envr + 'langland/api/data/lesson-list/:0',
             app_learning_user_lesson: envr + 'langland/api/data/lesson/:0',
+			app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed',
+            app_find_available_games: envr + 'langland/api/data/games/find-available-games/:0',
+			app_decide_game_type: envr + 'langland/api/data/game/decide-game-type/:0',
+			
             app_page_lesson_list_dashboard: envr + 'langland/dashboard/:0/:1/lessons',
             app_page_games_list_dashboard: envr + 'langland/dashboard/:0/:1/games',
             app_page_lesson_start: envr + 'langland/dashboard/:0/:1/lesson/:2/:3',
-            app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed',
-            app_find_available_games: envr + 'langland/api/data/games/find-available-games/:0',
             app_initialize_selected_game: envr + 'langland/dashboard/:0/:1/game/:2/:3'
         }
     }

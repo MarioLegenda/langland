@@ -12,8 +12,7 @@ export class GameInit extends React.Component {
 
         this.state = {
             errors: [],
-            lessonsLoaded: false,
-            gameTypesLoaded: false,
+            lessonsLoaded: false
         };
 
         this.serverData = {
@@ -21,10 +20,9 @@ export class GameInit extends React.Component {
             description: '',
             lesson: '',
             words: [],
-            gameTypes: []
+            gameTypes: [],
+            maxTime: ''
         };
-
-        this.gameTypesView = [];
 
         this.gameSaving = false;
 
@@ -61,6 +59,9 @@ export class GameInit extends React.Component {
                 type: String,
                 required: true,
                 validators: [this.data.validators.isValidLesson()]
+            },
+            maxTime: {
+                type: String
             }
         };
 
@@ -71,43 +72,6 @@ export class GameInit extends React.Component {
 
     _createSchema() {
         this.data.schema = new Schema(this.schema, this.data.errorMessages);
-    }
-
-    _fetchGameTypes() {
-        jQuery.ajax({
-            url: envr + 'admin/course/manage/' + url.getParsed()[3] + '/game/game-type/find-game-types',
-            method: 'GET'
-        }).done(jQuery.proxy(function(data) {
-            const gameTypes = data.data;
-            let schemaGameTypes = [];
-
-            for (let i = 0; i < gameTypes.length; i++) {
-                let gameType = gameTypes[i];
-                let newGameType = {};
-
-                this.schema[gameType.serviceName] = {
-                    type: Boolean
-                };
-
-                this.gameTypesView.push({
-                    label: gameType.name,
-                    serviceName: gameType.serviceName
-                });
-
-                let gameTypeServerData = {};
-
-                gameTypeServerData[gameType.serviceName] = false;
-
-                this.serverData.gameTypes.push(gameTypeServerData);
-            }
-
-            this._createSchema();
-
-            this.setState({
-                gameTypesLoaded: true
-            });
-
-        }, this));
     }
 
     _fetchLessons() {
@@ -165,7 +129,6 @@ export class GameInit extends React.Component {
     }
 
     componentDidMount() {
-        this._fetchGameTypes();
         this._fetchLessons();
     }
 
@@ -185,17 +148,7 @@ export class GameInit extends React.Component {
         this.serverData.name = data.name;
         this.serverData.description = data.description;
         this.serverData.lesson = data.lesson;
-
-        for (let i = 0; i < this.serverData.gameTypes.length; i++) {
-            let gameType = this.serverData.gameTypes[i];
-            let gameTypeName = Object.keys(gameType)[0];
-
-            if (data.hasOwnProperty(gameTypeName)) {
-                if (data[gameTypeName] === true) {
-                    this.serverData.gameTypes[i][gameTypeName] = true;
-                }
-            }
-        }
+        this.serverData.maxTime = data.maxTime;
 
         if (this.gameSaving === false) {
             this._saveGame();
@@ -203,16 +156,9 @@ export class GameInit extends React.Component {
     }
 
     render() {
-        if (this.state.lessonsLoaded === false || this.state.gameTypesLoaded === false) {
+        if (this.state.lessonsLoaded === false) {
             return null;
         }
-
-        const gameTypes = this.gameTypesView.map((gameType, index) =>
-            <div key={index} className="horizontal-checkbox">
-                <p>{gameType.label}</p>
-                <CheckboxField name={gameType.serviceName}/>
-            </div>
-        );
 
         const errors = this.state.errors.map((item, index) =>
             <p key={index} className="error">* {item}</p>
@@ -257,12 +203,10 @@ export class GameInit extends React.Component {
                         </div>
 
                         <div className="full-width align-left form-field field-break relative">
-                            <label>Game type</label>
-
-                            {gameTypes}
+                            <TextField name="maxTime" label="Game max time:" type="text" errorStyles={this.data.errorStyles}/>
 
                             <i className="description margin-top-10">
-                                <span className="highlight">*</span> game description. Describe what benefits this game will have for the user. This description will show on frontned
+                                <span className="highlight">*</span> if this should be a time trial game, add max time. Remember, if max time is blank, this will not be a time trial game. If max time is added, this WILL be a time trial game
                             </i>
                         </div>
 

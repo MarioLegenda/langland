@@ -139,11 +139,12 @@ class PreUpdateListener extends AbstractEntityManagerBaseListener
             }
         }
 
-        $resolvedGameTypes = array();
-        foreach ($game->getGameTypes() as $serviceName => $value) {
-            $resolvedGameTypes[$serviceName] = true;
+        if (!is_null($game->getMaxTime())) {
+            $game->setHasTimeLimit(true);
         }
 
-        $game->setGameTypes(json_encode($resolvedGameTypes));
+        if (is_null($game->getMaxTime())) {
+            $game->setHasTimeLimit(false);
+        }
     }
 }

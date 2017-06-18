@@ -127,6 +127,13 @@ class LearningUserGame
         return $this;
     }
     /**
+     * @return object
+     */
+    public function getGame()
+    {
+        return ($this->wordGame instanceof WordGame) ? $this->wordGame : $this->questionGame;
+    }
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt

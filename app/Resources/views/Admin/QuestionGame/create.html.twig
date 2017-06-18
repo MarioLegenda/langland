@@ -23,7 +23,7 @@
 
                         {% include '::Admin/Form/_include/field.html.twig' with {'field': form.description, 'description': 'description of the game. This description will be shown on the frontend' } only %}
 
-                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.gameTypes, 'description': 'supported game types of this game' } only %}
+                        {% include '::Admin/Form/_include/field.html.twig' with {'field': form.maxTime, 'description': 'if this should be a time trial game, add max time. Remember, if max time is blank, this will not be a time trial game. If max time is added, this WILL be a time trial game' } only %}
 
                         <div class="full-width align-left form-field field-break">
                             {{ form_label(form.answers) }}

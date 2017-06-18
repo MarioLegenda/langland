@@ -6,6 +6,7 @@ import {LessonListContainer as LessonList} from './lessonList.jsx';
 import {LessonDashboardContainer} from './lessonDashboard.jsx';
 import {SidebarHelperContainer} from './sidebarHelper/sidebarHelper.jsx';
 import {GameListContainer} from './gamesList.jsx';
+import {Game} from './game/gameInit.jsx';
 
 class MethodApp extends React.Component {
     constructor(props) {
@@ -23,11 +24,18 @@ class MethodApp extends React.Component {
             DataSource={this.props.DataSource}
         />;
 
+		const gameInit = (match) => <Game
+		    match={match.match}
+            courseName={courseName}
+			learningUserCourseId={learningUserCourseId}
+            DataSource={this.props.DataSource}
+		/>;
+
         const gamesList = () => <GameListContainer
             courseName={courseName}
             learningUserCourseId={learningUserCourseId}
             DataSource={this.props.DataSource}
-        />
+        />;
 
         const lessonDashboard = (match) => <LessonDashboardContainer
             courseName={courseName}
@@ -45,6 +53,7 @@ class MethodApp extends React.Component {
         return {
             lessonList: lessonList,
             gamesList: gamesList,
+			game: gameInit,
             lessonDashboard: lessonDashboard,
             sidebarHelper: sidebarHelper
         }
@@ -70,7 +79,8 @@ class MethodApp extends React.Component {
                     <Switch>
                         <Route path={mainPath + "/lessons"} render={components.lessonList} />
                         <Route path={mainPath + "/games"} render={components.gamesList} />
-                        <Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.lessonDashboard} />
+						<Route path={mainPath + "/lesson/:lessonName/:learningUserLessonId"} render={components.lessonDashboard} />
+                        <Route path={mainPath + "/game/:gameName/:learningUserGameId"} render={components.game} />
                     </Switch>
 
                     <Switch>

@@ -36,9 +36,8 @@ class QuestionGameFactory
             $game->setName($this->getFaker()->name);
             $game->setUrl(\URLify::filter($game->getName()));
             $game->setDescription($this->getFaker()->sentence(150));
-            $game->setGameTypes(json_encode(array(
-                'timeTrial' => true,
-            )));
+            $game->setMaxTime(10);
+            $game->setHasTimeLimit(true);
 
             $game->setLesson($lesson);
 

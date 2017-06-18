@@ -240,6 +240,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -6003,17 +6007,13 @@ module.exports = __webpack_require__(131);
 
 /***/ }),
 /* 38 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 function env() {
-    var path = window.location.pathname;
-    var env = '';
+    const path = window.location.pathname;
+    let env = '';
 
     if (/app_dev.php/.test(path)) {
         env = '/app_dev.php/';
@@ -6024,7 +6024,9 @@ function env() {
     return env;
 }
 
-var envr = exports.envr = env();
+const envr = env();
+/* harmony export (immutable) */ __webpack_exports__["envr"] = envr;
+
 
 /***/ }),
 /* 39 */
@@ -8095,49 +8097,35 @@ module.exports = ReactNoopUpdateQueue;
 
 /***/ }),
 /* 58 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Url = function () {
-    function Url() {
-        _classCallCheck(this, Url);
-
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+class Url {
+    constructor() {
         this.pathname = window.location.pathname;
     }
 
-    _createClass(Url, [{
-        key: 'getParsed',
-        value: function getParsed() {
-            var path = this.pathname.split('/');
+    getParsed() {
+        let path = this.pathname.split('/');
 
-            for (var i = 0; i < path.length; i++) {
-                if (path[i] === "") {
-                    path.splice(i, 1);
-                }
-
-                if (path[i] === 'app_dev.php') {
-                    path.splice(i, 1);
-                }
+        for (let i = 0; i < path.length; i++) {
+            if (path[i] === "") {
+                path.splice(i, 1);
             }
 
-            return path;
+            if (path[i] === 'app_dev.php') {
+                path.splice(i, 1);
+            }
         }
-    }]);
 
-    return Url;
-}();
+        return path;
+    }
+}
 
-var url = exports.url = new Url();
+const url = new Url();
+/* harmony export (immutable) */ __webpack_exports__["url"] = url;
+
 
 /***/ }),
 /* 59 */
@@ -11966,8 +11954,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
 
         _this.state = {
             errors: [],
-            lessonsLoaded: false,
-            gameTypesLoaded: false
+            lessonsLoaded: false
         };
 
         _this.serverData = {
@@ -11975,10 +11962,9 @@ var GameInit = exports.GameInit = function (_React$Component) {
             description: '',
             lesson: '',
             words: [],
-            gameTypes: []
+            gameTypes: [],
+            maxTime: ''
         };
-
-        _this.gameTypesView = [];
 
         _this.gameSaving = false;
 
@@ -12021,6 +12007,9 @@ var GameInit = exports.GameInit = function (_React$Component) {
                 type: String,
                 required: true,
                 validators: [_this.data.validators.isValidLesson()]
+            },
+            maxTime: {
+                type: String
             }
         };
 
@@ -12034,43 +12023,6 @@ var GameInit = exports.GameInit = function (_React$Component) {
         key: '_createSchema',
         value: function _createSchema() {
             this.data.schema = new _formSchemaValidation2.default(this.schema, this.data.errorMessages);
-        }
-    }, {
-        key: '_fetchGameTypes',
-        value: function _fetchGameTypes() {
-            jQuery.ajax({
-                url: _env.envr + 'admin/course/manage/' + _url.url.getParsed()[3] + '/game/game-type/find-game-types',
-                method: 'GET'
-            }).done(jQuery.proxy(function (data) {
-                var gameTypes = data.data;
-                var schemaGameTypes = [];
-
-                for (var i = 0; i < gameTypes.length; i++) {
-                    var gameType = gameTypes[i];
-                    var newGameType = {};
-
-                    this.schema[gameType.serviceName] = {
-                        type: Boolean
-                    };
-
-                    this.gameTypesView.push({
-                        label: gameType.name,
-                        serviceName: gameType.serviceName
-                    });
-
-                    var gameTypeServerData = {};
-
-                    gameTypeServerData[gameType.serviceName] = false;
-
-                    this.serverData.gameTypes.push(gameTypeServerData);
-                }
-
-                this._createSchema();
-
-                this.setState({
-                    gameTypesLoaded: true
-                });
-            }, this));
         }
     }, {
         key: '_fetchLessons',
@@ -12131,7 +12083,6 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this._fetchGameTypes();
             this._fetchLessons();
         }
     }, {
@@ -12154,17 +12105,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
             this.serverData.name = data.name;
             this.serverData.description = data.description;
             this.serverData.lesson = data.lesson;
-
-            for (var i = 0; i < this.serverData.gameTypes.length; i++) {
-                var gameType = this.serverData.gameTypes[i];
-                var gameTypeName = Object.keys(gameType)[0];
-
-                if (data.hasOwnProperty(gameTypeName)) {
-                    if (data[gameTypeName] === true) {
-                        this.serverData.gameTypes[i][gameTypeName] = true;
-                    }
-                }
-            }
+            this.serverData.maxTime = data.maxTime;
 
             if (this.gameSaving === false) {
                 this._saveGame();
@@ -12173,22 +12114,9 @@ var GameInit = exports.GameInit = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            if (this.state.lessonsLoaded === false || this.state.gameTypesLoaded === false) {
+            if (this.state.lessonsLoaded === false) {
                 return null;
             }
-
-            var gameTypes = this.gameTypesView.map(function (gameType, index) {
-                return _react2.default.createElement(
-                    'div',
-                    { key: index, className: 'horizontal-checkbox' },
-                    _react2.default.createElement(
-                        'p',
-                        null,
-                        gameType.label
-                    ),
-                    _react2.default.createElement(_reactComponentsForm.CheckboxField, { name: gameType.serviceName })
-                );
-            });
 
             var errors = this.state.errors.map(function (item, index) {
                 return _react2.default.createElement(
@@ -12265,12 +12193,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
                         _react2.default.createElement(
                             'div',
                             { className: 'full-width align-left form-field field-break relative' },
-                            _react2.default.createElement(
-                                'label',
-                                null,
-                                'Game type'
-                            ),
-                            gameTypes,
+                            _react2.default.createElement(_reactComponentsForm.TextField, { name: 'maxTime', label: 'Game max time:', type: 'text', errorStyles: this.data.errorStyles }),
                             _react2.default.createElement(
                                 'i',
                                 { className: 'description margin-top-10' },
@@ -12279,7 +12202,7 @@ var GameInit = exports.GameInit = function (_React$Component) {
                                     { className: 'highlight' },
                                     '*'
                                 ),
-                                ' game description. Describe what benefits this game will have for the user. This description will show on frontned'
+                                ' if this should be a time trial game, add max time. Remember, if max time is blank, this will not be a time trial game. If max time is added, this WILL be a time trial game'
                             )
                         ),
                         _react2.default.createElement(_unitContainer.UnitContainer, {

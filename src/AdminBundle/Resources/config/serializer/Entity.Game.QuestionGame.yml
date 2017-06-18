@@ -13,10 +13,15 @@ AdminBundle\Entity\Game\QuestionGame:
         url:
             expose: true
             groups: [games_list]
-        gameTypes:
+        minTime:
             expose: true
             groups: [games_list]
-            type: array
-            accessor:
-                getter: getGameTypes
-            serialized_name: gameTypes
+            serialized_name: minTime
+        maxTime:
+            expose: true
+            groups: [games_list]
+            serialized_name: maxTime
+        hasTimeLimit:
+            expose: true
+            groups: [games_list]
+            serialized_name: hasTimeLimit

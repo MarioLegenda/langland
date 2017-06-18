@@ -28,9 +28,17 @@ class WordGame
      */
     private $url;
     /**
-     * @var string $gameTypes
+     * @var $minTime
      */
-    private $gameTypes;
+    private $minTime;
+    /**
+     * @var $maxTime
+     */
+    private $maxTime;
+    /**
+     * @var bool $hasTimeLimit
+     */
+    private $hasTimeLimit;
     /**
      * @var Lesson $lesson
      */
@@ -51,6 +59,9 @@ class WordGame
     public function __construct()
     {
         $this->gameUnits = new ArrayCollection();
+        $this->hasTimeLimit = false;
+        $this->minTime = 5;
+        $this->maxTime = null;
     }
     /**
      * Get id
@@ -137,23 +148,53 @@ class WordGame
         return $this;
     }
     /**
-     * @return string
+     * @return mixed
      */
-    public function getGameTypes()
+    public function getMinTime()
     {
-      if (is_string($this->gameTypes)) {
-          return json_decode($this->gameTypes, true);
-      }
-
-      return $this->gameTypes;
+        return $this->minTime;
     }
     /**
-     * @param string $gameTypes
+     * @param mixed $minTime
      * @return WordGame
      */
-    public function setGameTypes($gameTypes) : WordGame
+    public function setMinTime($minTime) : WordGame
     {
-        $this->gameTypes = $gameTypes;
+        $this->minTime = $minTime;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getMaxTime()
+    {
+        return $this->maxTime;
+    }
+    /**
+     * @param mixed $maxTime
+     * @return WordGame
+     */
+    public function setMaxTime($maxTime) : WordGame
+    {
+        $this->maxTime = $maxTime;
+
+        return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function isHasTimeLimit(): bool
+    {
+        return $this->hasTimeLimit;
+    }
+    /**
+     * @param bool $hasTimeLimit
+     * @return WordGame
+     */
+    public function setHasTimeLimit(bool $hasTimeLimit) : WordGame
+    {
+        $this->hasTimeLimit = $hasTimeLimit;
 
         return $this;
     }

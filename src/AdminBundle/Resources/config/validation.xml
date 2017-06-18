@@ -65,35 +65,6 @@
         </property>
     </class>
 
-    <class name="AdminBundle\Entity\GameType">
-
-        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
-            <option name="fields">name</option>
-        </constraint>
-
-        <property name="name">
-            <constraint name="NotNull">
-                <option name="message">Game type name cannot be empty</option>
-            </constraint>
-
-            <constraint name="Length">
-                <option name="max">50</option>
-                <option name="maxMessage">Game type name can have up to {{ limit }} characters</option>
-            </constraint>
-        </property>
-
-        <property name="serviceName">
-            <constraint name="NotNull">
-                <option name="message">Game service name cannot be empty</option>
-            </constraint>
-
-            <constraint name="Length">
-                <option name="max">50</option>
-                <option name="maxMessage">Game service name can have up to {{ limit }} characters</option>
-            </constraint>
-        </property>
-    </class>
-
     <class name="AdminBundle\Entity\LanguageInfo">
         <constraint name="Callback">validate</constraint>
 
@@ -212,6 +183,13 @@
                 <option name="message">There is no lesson associated with this game</option>
             </constraint>
         </property>
+
+        <property name="maxTime">
+            <constraint name="Type">
+                <option name="type">numeric</option>
+                <option name="message">If you provide a value for max time, that value has to be an integer</option>
+            </constraint>
+        </property>
     </class>
 
     <class name="AdminBundle\Entity\Game\QuestionGame">
@@ -246,20 +224,16 @@
             </constraint>
         </property>
 
-        <property name="description">
-            <constraint name="NotBlank">
-                <option name="message">Description cannot be blank</option>
-
-                <option name="groups">
-                    <value>Create</value>
-                    <value>Edit</value>
-                </option>
+        <property name="maxTime">
+            <constraint name="Type">
+                <option name="type">numeric</option>
+                <option name="message">If you provide a value for max time, that value has to be an integer</option>
             </constraint>
         </property>
 
-        <property name="gameTypes">
+        <property name="description">
             <constraint name="NotBlank">
-                <option name="message">You have to choose a game type</option>
+                <option name="message">Description cannot be blank</option>
 
                 <option name="groups">
                     <value>Create</value>

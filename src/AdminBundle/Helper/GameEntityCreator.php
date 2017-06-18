@@ -50,16 +50,10 @@ class GameEntityCreator
             $game->setLesson($lesson);
         }
 
-        if (array_key_exists('gameTypes', $data)) {
-            $resolvedGameTypes = array();
-
-            foreach ($data['gameTypes'] as $gameType) {
-                $gameTypeKey = array_keys($gameType)[0];
-
-                $resolvedGameTypes[$gameTypeKey] = ($gameType[$gameTypeKey] === 'true') ? true : false;
+        if (array_key_exists('maxTime', $data)) {
+            if (!empty($data['maxTime'])) {
+                $game->setMaxTime($data['maxTime']);
             }
-
-            $game->setGameTypes(json_encode($resolvedGameTypes));
         }
 
         if (array_key_exists('words', $data)) {

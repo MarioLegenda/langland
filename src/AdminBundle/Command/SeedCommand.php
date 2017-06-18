@@ -12,17 +12,6 @@ use AdminBundle\Command\Helper\SentenceFactory;
 use AdminBundle\Command\Helper\WordFactory;
 use AdminBundle\Command\Helper\WordGameFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
-use AdminBundle\Entity\Course;
-use AdminBundle\Entity\GameType;
-use AdminBundle\Entity\LanguageInfo;
-use AdminBundle\Entity\LanguageInfoText;
-use AdminBundle\Entity\Lesson;
-use AdminBundle\Entity\LessonText;
-use AdminBundle\Entity\Sentence;
-use AdminBundle\Entity\SentenceTranslation;
-use AdminBundle\Entity\SentenceWordPool;
-use AdminBundle\Entity\Word;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -83,23 +72,6 @@ class SeedCommand extends ContainerAwareCommand
             $lessonFactory->create($course, 10);
 
             $sentenceFactory->create($course);
-        }
-
-        $gameTypes = array(
-            'timeTrial' => 'Time trial',
-            'imageMaster' => 'Image master',
-            'freestyle' => 'Freestyle',
-        );
-
-        foreach ($gameTypes as $serviceName => $name) {
-            $type = new GameType();
-
-            $type
-                ->setName($name)
-                ->setServiceName($serviceName);
-
-            $em->persist($type);
-            $em->flush();
         }
 
         foreach ($courses as $course) {

@@ -28,16 +28,17 @@ class GamesList extends React.Component {
         const items = this.props.items.map((item, index) => {
             const passedClass = (item.hasPassed === true) ? 'passed-item' : '';
 
-            return
-            <div key={index}>
-                <Item
-                    chooseItem={this.showItem}
-                    index={index}
-                    className={passedClass}
-                    title={item.game.name.toUpperCase()}
-                    hasPassed={item.hasPassed}
-                />
-            </div>
+            return (
+				<div key={index}>
+                	<Item
+                    	chooseItem={this.showItem}
+                    	index={index}
+                    	className={passedClass}
+                    	title={item.game.name.toUpperCase()}
+                    	hasPassed={item.hasPassed}
+                	/>
+            	</div>
+			);
         });
 
         return (

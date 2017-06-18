@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\GameScenario\DecisionFactory;
+
 class GamesController extends CommonOperationController
 {
     public function findAvailableGamesAction($learningUserCourseId)
@@ -22,7 +24,13 @@ class GamesController extends CommonOperationController
 
 	public function decideGameTypeAction($learningUserGameId)
 	{
-		
+		$learningUserGame = $this->getRepository('AdminBundle:learningUserGame')->find($learningUserGameId);
+
+		$decisionFactory = new DecisionFactory($learningUserGame);
+
+		$decision = $decisionFactory->makeDecision();
+
+
 	}
 
     public function initializeSelectedGameAction($learningUserGameId)

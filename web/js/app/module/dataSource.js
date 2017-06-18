@@ -86,6 +86,13 @@ class Repository {
         });
     }
 
+    fetchDecideGameTypes(...args) {
+        return jQuery.ajax({
+            url: RouteCreator.create('app_decide_game_type', args[0]),
+            method: 'POST'
+        });
+    }
+
     createLearningUser(languageId) {
         return jQuery.ajax({
             url: routes.app_create_learning_user,

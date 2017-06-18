@@ -9,7 +9,9 @@
         <field name="name" type="string" column="name" length="255"/>
         <field name="description" type="text" column="description"/>
         <field name="url" type="string" length="255" column="url" />
-        <field name="gameTypes" type="text" column="game_types" />
+        <field name="maxTime" type="smallint" column="max_time" nullable="true"/>
+        <field name="minTime" type="smallint" column="min_time"/>
+        <field name="hasTimeLimit" type="boolean" column="has_time_limit"/>
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 

@@ -2,6 +2,8 @@
 
 namespace AppBundle\GameScenario;
 
+use AppBundle\Entity\LearningUserGame;
+
 class TypeFactory
 {
 	private $game;

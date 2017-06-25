@@ -36,7 +36,7 @@ class QuestionGameFactory
             $game->setName($this->getFaker()->name);
             $game->setUrl(\URLify::filter($game->getName()));
             $game->setDescription($this->getFaker()->sentence(150));
-            $game->setMaxTime(10);
+            $game->setMaxTime(20);
             $game->setHasTimeLimit(true);
 
             $game->setLesson($lesson);

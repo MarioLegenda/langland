@@ -30,7 +30,7 @@ class GamesController extends CommonOperationController
 
 		$decision = $decisionFactory->makeDecision();
 
-
+		
 	}
 
     public function initializeSelectedGameAction($learningUserGameId)

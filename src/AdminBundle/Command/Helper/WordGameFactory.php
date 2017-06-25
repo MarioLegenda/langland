@@ -38,6 +38,8 @@ class WordGameFactory
             $game->setName($this->getFaker()->name);
             $game->setUrl(\URLify::filter($game->getName()));
             $game->setDescription($this->getFaker()->sentence(150));
+			$game->setHasTimeLimit(true);
+			$game->setMaxTime(20);
             $game->setLesson($lesson);
 
             foreach ($words as $word) {

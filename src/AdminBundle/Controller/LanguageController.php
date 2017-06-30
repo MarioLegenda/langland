@@ -25,22 +25,28 @@ class LanguageController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $this->dispatchEvent(FileUploadEvent::class, $language);
+            $this->dispatchEvent(FileUploadEvent::class, $language);
 
-                $em->persist($language);
-                $em->flush();
+            $em->persist($language);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Language created successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Language created successfully')
+            );
 
-                return $this->redirectToRoute('admin_language_create');
-            }
+            return $this->redirectToRoute('admin_language_create');
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Language/create.html.twig', array(
+                'form' => $form->createView(),
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Language/create.html.twig', array(
@@ -68,25 +74,32 @@ class LanguageController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $this->dispatchEvent(FileUploadEvent::class, $language);
+            $this->dispatchEvent(FileUploadEvent::class, $language);
 
-                $em->persist($language);
-                $em->flush();
+            $em->persist($language);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Language edited successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Language edited successfully')
+            );
 
-                return $this->redirectToRoute('admin_language_edit', array(
-                    'id' => $id,
-                ));
-            }
+            return $this->redirectToRoute('admin_language_edit', array(
+                'id' => $id,
+            ));
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Language/create.html.twig', array(
+                'form' => $form->createView(),
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
+
 
         return $this->render('::Admin/Language/edit.html.twig', array(
             'form' => $form->createView(),

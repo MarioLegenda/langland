@@ -1,0 +1,3 @@
+admin_game_manage:
+  path: /{courseId}/games
+  defaults: { _controller: AdminBundle:Game:index }

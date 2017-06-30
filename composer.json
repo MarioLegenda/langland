@@ -7,7 +7,7 @@
             "Library": "lib/",
             "API": "lib/",
             "BlueDot": "lib/bluedot/src",
-            "Test": "tests/"
+            "TestLibrary": "tests/"
         },
         "psr-4": {
             "": "src/"
@@ -42,10 +42,11 @@
         "twig/twig": "^2.0"
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0",
+        "fabpot/goutte": "^3.2",
         "fzaninotto/faker": "^1.6",
-        "fabpot/goutte": "^3.2"
+        "phpunit/phpunit": "^5.7",
+        "sensio/generator-bundle": "^3.0",
+        "symfony/phpunit-bridge": "^3.0"
     },
     "scripts": {
         "symfony-scripts": [

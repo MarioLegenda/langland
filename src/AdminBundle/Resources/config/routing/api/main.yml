@@ -30,3 +30,8 @@ admin_course:
 admin_lesson_manage:
   resource: "@AdminBundle/Resources/config/routing/api/lesson_manage.yml"
   prefix: /lesson
+
+admin_games:
+  resource: "@AdminBundle/Resources/config/routing/api/game.yml"
+  prefix: /course/manage
+  host: '%host%'

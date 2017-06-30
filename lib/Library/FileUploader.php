@@ -46,7 +46,6 @@ class FileUploader
      */
     public function __construct(array $uploadDirs, ImageResize $imageResize, FileNamer $fileNamer)
     {
-        $this->relativePath = $uploadDirs['relative_path'];
         $this->imageDir = realpath($uploadDirs['image_upload_dir']);
         $this->soundDir = realpath($uploadDirs['sound_upload_dir']);
         $this->imageResize = $imageResize;
@@ -74,7 +73,7 @@ class FileUploader
             'fileName' => $fileName,
             'targetDir' => $this->imageDir,
             'originalName' => $originalName,
-            'fullPath' => $this->relativePath.'/'.$fileName,
+            'fullPath' => $this->imageDir.'/'.$fileName,
         );
     }
 

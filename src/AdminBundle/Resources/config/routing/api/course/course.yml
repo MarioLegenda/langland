@@ -19,6 +19,4 @@ word_pool:
     prefix: /{courseId}/word-pool
     host: '%host%'
 
-admin_game_manage:
-  resource: "@AdminBundle/Resources/config/routing/api/course/game.yml"
-  prefix: /{courseId}/game
+

@@ -1,0 +1,21 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: langland
+    database_user: root
+    database_password: root
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: cf16d1d0e5788fb5f30d32b3e36268b44241e3da
+    host: 33.33.33.10
+    upload_dirs:
+        image_upload_dir: '%kernel.root_dir%/../tests/uploads/images'
+        sound_upload_dir: '%kernel.root_dir%/../tests/uploads/sounds'
+    security_admin_redirect: armor_admin_login
+    security_app_redirect: app_login
+    email_config: '%kernel.root_dir%/config/email.yml'
+    blue_dot_dir: '%kernel.root_dir%/config/blueDot'
+    api_base_route: /langland/api/v1

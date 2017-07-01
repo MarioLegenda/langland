@@ -2,27 +2,19 @@
 
 namespace AdminBundle;
 
-use TestLibrary\DependencyHandler;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use TestLibrary\LanglandAdminTestCase;
 
-class LanguageControllerTest extends WebTestCase
+class LanguageControllerTest extends LanglandAdminTestCase
 {
-    private static $handler;
-
-    public static function setUpBeforeClass()
+    public function testIndex()
     {
-        exec('/usr/bin/php /var/www/langland/bin/console langland:reset');
+        $client = self::$handler->getClient();
+        $baseUri = self::$handler->getBaseUri();
 
-        $handler = new DependencyHandler($_ENV['baseUri']);
+        $client->request('GET', $baseUri.'/admin/language');
 
-        $handler
-            ->useClient()
-            ->useFaker();
-
-        self::$handler = $handler;
-
-        self::login();
+        $this->assertEquals(200, $client->getResponse()->getStatus());
     }
 
     public function testCreate()
@@ -42,13 +34,41 @@ class LanguageControllerTest extends WebTestCase
             ),
         );
 
-        $crawler = $client->request('GET', $baseUri.'/langland/web/app_test.php/admin/language');
+        $crawler = $client->request('GET', $baseUri.'/admin/language');
+
+        $this->assertEquals(200, $client->getResponse()->getStatus());
 
         $link = $crawler->selectLink('Create')->link();
 
         $crawler = $client->click($link);
 
-        $this->assertEquals(200, $client->getResponse()->getStatus());
+        $nameSizeLanguage = array(
+            'name' => $faker->sentence(20),
+            'description' => 'description',
+        );
+
+        $form = $crawler->selectButton('Create')->form(array(
+            'form[name]' => $nameSizeLanguage['name'],
+            'form[listDescription]' => $nameSizeLanguage['description'],
+        ));
+
+        $client->submit($form);
+
+        $this->assertEquals(400, $client->getResponse()->getStatus());
+
+        $descriptionSizeLanguage = array(
+            'name' => 'mile',
+            'description' => $faker->sentence(50),
+        );
+
+        $form = $crawler->selectButton('Create')->form(array(
+            'form[name]' => $descriptionSizeLanguage['name'],
+            'form[listDescription]' => $descriptionSizeLanguage['description'],
+        ));
+
+        $client->submit($form);
+
+        $this->assertEquals(400, $client->getResponse()->getStatus());
 
         foreach ($languages as $singleLanguage) {
             $form = $crawler->selectButton('Create')->form(array(
@@ -59,7 +79,7 @@ class LanguageControllerTest extends WebTestCase
 
             $this->assertEquals(400, $client->getResponse()->getStatus());
 
-            $crawler = $client->request('GET', $baseUri.'/langland/web/app_test.php/admin/language/create');
+            $crawler = $client->request('GET', $baseUri.'/admin/language/create');
 
             $form = $crawler->selectButton('Create')->form();
 
@@ -91,8 +111,9 @@ class LanguageControllerTest extends WebTestCase
     {
         $client = self::$handler->getClient();
         $baseUri = self::$handler->getBaseUri();
+        $host = self::$handler->getHost();
 
-        $crawler = $client->request('GET', $baseUri.'/langland/web/app_test.php/admin/language');
+        $crawler = $client->request('GET', $baseUri.'/admin/language');
 
         $languageList = $crawler->filter('.page-content')->filter('.card');
 
@@ -108,13 +129,13 @@ class LanguageControllerTest extends WebTestCase
         );
 
         $index = 0;
-        $languageList->each(function(Crawler $node) use ($client, $languages, &$index, $baseUri) {
+        $languageList->each(function(Crawler $node) use ($client, $languages, &$index, $host) {
             $href = $node->filter('.sub-base-action-link')->attr('href');
 
             $editName = $languages[$index]['name'];
             $editDescription = $languages[$index]['description'];
 
-            $crawler = $client->request('GET', $baseUri.$href);
+            $crawler = $client->request('GET', $host.$href);
 
             $this->assertEquals(200, $client->getResponse()->getStatus());
 
@@ -142,7 +163,7 @@ class LanguageControllerTest extends WebTestCase
             ++$index;
         });
 
-        $crawler = $client->request('GET', $baseUri.'/langland/web/app_test.php/admin/language');
+        $crawler = $client->request('GET', $baseUri.'/admin/language');
 
         $languageList = $crawler->filter('.page-content')->filter('.base-action-link');
 
@@ -159,7 +180,7 @@ class LanguageControllerTest extends WebTestCase
         $client = self::$handler->getClient();
         $baseUri = self::$handler->getBaseUri();
 
-        $crawler = $client->request('GET', $baseUri.'/langland/web/app_test.php/admin/language');
+        $crawler = $client->request('GET', $baseUri.'/admin/language');
 
         $this->assertEquals(200, $client->getResponse()->getStatus());
 
@@ -172,7 +193,7 @@ class LanguageControllerTest extends WebTestCase
 
         $languages = array('english', 'bulgarian');
 
-        $crawler = $client->request('GET', $baseUri.'/langland/web/app_test.php/admin/language');
+        $crawler = $client->request('GET', $baseUri.'/admin/language');
 
         $languageList = $crawler->filter('.page-content')->filter('.base-action-link');
 
@@ -181,40 +202,5 @@ class LanguageControllerTest extends WebTestCase
 
             $this->assertContains($text, $languages);
         });
-    }
-
-    public static function tearDownAfterClass()
-    {
-        exec('/usr/bin/php /var/www/langland/bin/console langland:reset');
-
-        $dirs = array(
-            realpath(__DIR__.'/../../uploads/images'),
-            realpath(__DIR__.'/../../uploads/sounds'),
-        );
-
-        foreach ($dirs as $dir) {
-            foreach (new \DirectoryIterator($dir) as $fileInfo) {
-                if(!$fileInfo->isDot()) {
-                    unlink($fileInfo->getPathname());
-                }
-            }
-        }
-    }
-
-    private static function login()
-    {
-        $client = self::$handler->getClient();
-        $baseUri = self::$handler->getBaseUri();
-
-        $crawler = $client->request('GET', $baseUri.'/langland/web/app_test.php/admin/login');
-
-        $button = $crawler->selectButton('SIGN IN');
-
-        $form = $button->form(array(
-            '_username' => 'root',
-            '_password' => 'root',
-        ));
-
-        $client->submit($form);
     }
 }

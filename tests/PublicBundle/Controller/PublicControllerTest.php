@@ -25,7 +25,7 @@ class PublicControllerTest extends WebTestCase
         $client = self::$handler->getClient();
         $baseUri = self::$handler->getBaseUri();
 
-        $client->request('GET', $baseUri.'/langland/web/app_test.php');
+        $client->request('GET', $baseUri);
 
         $this->assertEquals(200, $client->getResponse()->getStatus());
     }

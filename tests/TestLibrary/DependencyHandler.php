@@ -12,6 +12,10 @@ class DependencyHandler
      */
     private $baseUri;
     /**
+     * @var string $host
+     */
+    private $host;
+    /**
      * @var Factory $faker
      */
     private $faker;
@@ -22,9 +26,11 @@ class DependencyHandler
     /**
      * DependencyHandler constructor.
      * @param string|null $baseUri
+     * @param string|null $host
      */
-    public function __construct(string $baseUri = null)
+    public function __construct(string $baseUri = null, string $host = null)
     {
+        $this->host = $host;
         $this->baseUri = $baseUri;
     }
     /**
@@ -66,5 +72,12 @@ class DependencyHandler
     public function getBaseUri()
     {
         return $this->baseUri;
+    }
+    /**
+     * @return null|string
+     */
+    public function getHost()
+    {
+        return $this->host;
     }
 }

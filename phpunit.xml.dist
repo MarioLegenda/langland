@@ -19,7 +19,8 @@
     </testsuites>
 
     <php>
-        <env name="baseUri" value="http://33.33.33.10"/>
+        <env name="baseUri" value="http://33.33.33.10/langland/web/app_test.php"/>
+        <env name="host" value="http://33.33.33.10"/>
     </php>
 
     <filter>

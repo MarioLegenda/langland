@@ -24,20 +24,26 @@ class CategoryController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $em->persist($category);
-                $em->flush();
+            $em->persist($category);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Category created successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Category created successfully')
+            );
 
-                return $this->redirectToRoute('category_create');
-            }
+            return $this->redirectToRoute('admin_category_create');
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Category/create.html.twig', array(
+                'form' => $form->createView(),
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Category/create.html.twig', array(
@@ -57,22 +63,29 @@ class CategoryController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $em->persist($category);
-                $em->flush();
+            $em->persist($category);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Category edited successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Category edited successfully')
+            );
 
-                return $this->redirectToRoute('category_edit', array(
-                    'id' => $id,
-                ));
-            }
+            return $this->redirectToRoute('admin_category_edit', array(
+                'id' => $id,
+            ));
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Category/edit.html.twig', array(
+                'form' => $form->createView(),
+                'category' => $category,
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Category/edit.html.twig', array(

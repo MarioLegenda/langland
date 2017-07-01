@@ -92,24 +92,19 @@
     </class>
 
     <class name="AdminBundle\Entity\Category">
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+            <option name="message">Category already exists</option>
+        </constraint>
+
         <property name="name">
             <constraint name="NotNull">
                 <option name="message">Language name cannot be empty</option>
             </constraint>
 
-            <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
-                <option name="fields">name</option>
-                <option name="message">Category already exists</option>
-            </constraint>
-
             <constraint name="Length">
                 <option name="max">50</option>
                 <option name="maxMessage">Category name can have up to {{ limit }} characters</option>
-            </constraint>
-
-            <constraint name="AdminBundle\Validator\Constraint\UniqueConstraint">
-                <option name="repository">AdminBundle:Category</option>
-                <option name="field">name</option>
             </constraint>
         </property>
     </class>

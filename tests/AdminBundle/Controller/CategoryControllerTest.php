@@ -2,137 +2,95 @@
 
 namespace AdminBundle\Controller;
 
+use Faker\Factory;
+use function Symfony\Component\Validator\Tests\Constraints\choice_callback;
 use TestLibrary\LanglandAdminTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
 class CategoryControllerTest extends LanglandAdminTestCase
 {
-    public function testIndex()
-    {
-        $client = self::$handler->getClient();
-        $baseUri = self::$handler->getBaseUri();
-
-        $client->request('GET', $baseUri.'/admin/category');
-
-        $this->assertEquals(200, $client->getResponse()->getStatus());
-    }
+    private $navText = 'Categories';
+    private $dashboardRoute = '/admin/dashboard';
+    private $createUri = 'http://33.33.33.10/admin/category/create';
+    private $editUri = 'http://33.33.33.10/admin/category/edit';
 
     public function testCreate()
     {
-        $client = self::$handler->getClient();
-        $faker = self::$handler->getFaker();
-        $baseUri = self::$handler->getBaseUri();
+        $faker = Factory::create();
 
-        $crawler = $client->request('GET', $baseUri.'/admin/category');
+        $createCrawler = $this->client->click($this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link());
 
-        $this->assertEquals(200, $client->getResponse()->getStatus());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals($this->createUri, $this->client->getRequest()->getUri());
 
-        $link = $crawler->selectLink('Create')->link();
-
-        $crawler = $client->click($link);
-
-        $this->assertEquals(200, $client->getResponse()->getStatus());
-
-        $categorySize = array(
-            'name' => $faker->sentence(20),
-        );
-
-        $form = $crawler->selectButton('Create')->form(array(
-            'form[name]' => $categorySize['name'],
+        $this->doTestFailedValidation($createCrawler, array(
+            array(
+                'name' => 'form[name]',
+                'value' => '',
+            )
         ));
 
-        $client->submit($form);
+        $this->doTestFailedValidation($createCrawler, array(
+            array(
+                'name' => 'form[name]',
+                'value' => $faker->text(256),
+            )
+        ));
 
-        $this->assertEquals(400, $client->getResponse()->getStatus());
-
-        $categories = array('Nature', 'Soul');
+        $categories = array('Nature', 'Love');
 
         foreach ($categories as $category) {
-            $form = $crawler->selectButton('Create')->form(array(
-                'form[name]' => $category,
+            $this->doTestSuccessValidation($createCrawler, array(
+                array(
+                    'name' => 'form[name]',
+                    'value' => $category,
+                ),
             ));
-
-            $client->submit($form);
-
-            $this->assertEquals(200, $client->getResponse()->getStatus());
         }
     }
 
     public function testEdit()
     {
-        $client = self::$handler->getClient();
-        $faker = self::$handler->getFaker();
-        $baseUri = self::$handler->getBaseUri();
-        $host = self::$handler->getHost();
+        $faker = Factory::create();
 
-        $crawler = $client->request('GET', $baseUri.'/admin/category');
+        $this->client->request('GET', $this->editUri.'/25');
 
-        $this->assertEquals(200, $client->getResponse()->getStatus());
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 
-        $categoryList = $crawler->filter('.page-content')->filter('.card');
+        $this->client->click($this->clientGet($this->dashboardRoute)->selectLink($this->navText)->link());
 
-        $categories = array('Body', 'Love');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $index = 0;
-        $categoryList->each(function(Crawler $node) use ($client, $categories, &$index, $host, $faker) {
-            $href = $node->filter('.sub-base-action-link')->attr('href');
+        $categoryList = $this->doTestList($this->dashboardRoute, $this->navText);
 
-            $editName = $categories[$index];
+        $oldCategories = array('Nature', 'Love');
+        $newCategories = array('Soul', 'Body');
 
-            $crawler = $client->request('GET', $host.$href);
+        $count = 0;
+        $categoryList->each(function(Crawler $languageCard) use (&$count, $faker, $oldCategories, $newCategories) {
+            $editLink = $languageCard->filter('.sub-base-action-link')->link();
 
-            $this->assertEquals(200, $client->getResponse()->getStatus(), 'Something went wrong with uri '.$href);
+            $editCrawler = $this->client->click($editLink);
 
-            $categorySize = array(
-                'name' => $faker->sentence(20),
-            );
+            $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-            $form = $crawler->selectButton('Edit')->form(array(
-                'form[name]' => $categorySize['name'],
-            ));
+            $this->doTestSuccessValidation($editCrawler, array(
+                array(
+                    'name' => 'form[name]',
+                    'value' => $newCategories[$count],
+                ),
+            ), 'Edit');
 
-            $client->submit($form);
-
-            $this->assertEquals(400, $client->getResponse()->getStatus());
-
-            $form = $crawler->selectButton('Edit')->form(array(
-                'form[name]' => $editName,
-            ));
-
-            $crawler = $client->submit($form);
-
-            $this->assertEquals(200, $client->getResponse()->getStatus());
-
-            $name = $crawler->filter('#form_name')->attr('value');
-
-            $this->assertEquals($name, $editName);
-
-            ++$index;
+            ++$count;
         });
     }
 
-    public function testListing()
+    public function testIndex()
     {
-        $client = self::$handler->getClient();
-        $baseUri = self::$handler->getBaseUri();
-
-        $crawler = $client->request('GET', $baseUri.'/admin/category');
-
-        $this->assertEquals(200, $client->getResponse()->getStatus());
-
-        $categoryList = $crawler->filter('.page-content')->filter('.base-action-link');
-
-        $this->assertEquals(
-            2,
-            $categoryList->count()
+        $this->doTestIndex(
+            $this->dashboardRoute,
+            $this->navText,
+            array('Soul', 'Body')
         );
-
-        $categories = array('Love', 'Body');
-
-        $categoryList->each(function(Crawler $node) use ($categories) {
-            $text = $node->text();
-
-            $this->assertContains($text, $categories);
-        });
     }
 }

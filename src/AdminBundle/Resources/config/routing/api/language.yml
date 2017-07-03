@@ -1,6 +1,7 @@
 admin_language_index:
     path: /
     defaults: { _controller: AdminBundle:Language:index }
+    methods: [GET]
 
 admin_language_create:
     path: /create

@@ -1,0 +1,37 @@
+security:
+    providers:
+        in_memory:
+            memory:
+                users:
+                    root:
+                        password: root
+                        roles: 'ROLE_DEVELOPER'
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        admin:
+            pattern: ^/admin
+            anonymous: ~
+            http_basic: ~
+
+        app:
+            pattern: ^/
+            anonymous: true
+
+    access_control:
+        - { path: ^/*$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/*, role: ROLE_DEVELOPER }
+
+        - { path: ^/langland/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/user/confirm/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/langland/*, role: ROLE_USER }

@@ -39,26 +39,32 @@ class WordController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $this->dispatchEvent(FileUploadEvent::class, $word);
+            $this->dispatchEvent(FileUploadEvent::class, $word);
 
-                $this->dispatchEvent(PrePersistEvent::class, array(
-                    'word' => $word,
-                ));
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'word' => $word,
+            ));
 
-                $em->persist($word);
-                $em->flush();
+            $em->persist($word);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Word created successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Word created successfully')
+            );
 
-                return $this->redirectToRoute('admin_word_create');
-            }
+            return $this->redirectToRoute('admin_word_create');
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Word/create.html.twig', array(
+                'form' => $form->createView(),
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Word/create.html.twig', array(

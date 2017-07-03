@@ -1,206 +1,151 @@
 <?php
 
-namespace AdminBundle;
+namespace AdminBundle\Controller;
 
+use Faker\Factory;
 use Symfony\Component\DomCrawler\Crawler;
 use TestLibrary\LanglandAdminTestCase;
+use FilesystemIterator;
 
 class LanguageControllerTest extends LanglandAdminTestCase
 {
-    public function testIndex()
-    {
-        $client = self::$handler->getClient();
-        $baseUri = self::$handler->getBaseUri();
-
-        $client->request('GET', $baseUri.'/admin/language');
-
-        $this->assertEquals(200, $client->getResponse()->getStatus());
-    }
+    private $navText = 'Languages';
+    private $dashboardRoute = '/admin/dashboard';
+    private $createUri = 'http://33.33.33.10/admin/language/create';
+    private $editUri = 'http://33.33.33.10/admin/language/edit';
 
     public function testCreate()
     {
-        $client = self::$handler->getClient();
-        $faker = self::$handler->getFaker();
-        $baseUri = self::$handler->getBaseUri();
+        $faker = Factory::create();
 
-        $languages = array(
+        $createCrawler = $this->client->click($this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link());
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals($this->createUri, $this->client->getRequest()->getUri());
+
+
+        $this->doTestFailedValidation($createCrawler, array(
             array(
-                'name' => 'french',
-                'description' => $faker->sentence(20),
-            ),
-            array(
-                'name' => 'spanish',
-                'description' => $faker->sentence(20),
-            ),
-        );
-
-        $crawler = $client->request('GET', $baseUri.'/admin/language');
-
-        $this->assertEquals(200, $client->getResponse()->getStatus());
-
-        $link = $crawler->selectLink('Create')->link();
-
-        $crawler = $client->click($link);
-
-        $nameSizeLanguage = array(
-            'name' => $faker->sentence(20),
-            'description' => 'description',
-        );
-
-        $form = $crawler->selectButton('Create')->form(array(
-            'form[name]' => $nameSizeLanguage['name'],
-            'form[listDescription]' => $nameSizeLanguage['description'],
+                'name' => 'form[name]',
+                'value' => 'French'
+            )
         ));
 
-        $client->submit($form);
-
-        $this->assertEquals(400, $client->getResponse()->getStatus());
-
-        $descriptionSizeLanguage = array(
-            'name' => 'mile',
-            'description' => $faker->sentence(50),
-        );
-
-        $form = $crawler->selectButton('Create')->form(array(
-            'form[name]' => $descriptionSizeLanguage['name'],
-            'form[listDescription]' => $descriptionSizeLanguage['description'],
+        $this->doTestFailedValidation($createCrawler, array(
+            array(
+                'name' => 'form[listDescription]',
+                'value' => 'French'
+            ),
         ));
 
-        $client->submit($form);
+        $this->doTestFailedValidation($createCrawler, array(
+            array(
+                'name' => 'form[name]',
+                'value' => 'French',
+            ),
+            array(
+                'name' => 'form[listDescription]',
+                'value' => $faker->sentence(256),
+            ),
+        ));
 
-        $this->assertEquals(400, $client->getResponse()->getStatus());
+        $this->doTestFailedValidation($createCrawler, array(
+            array(
+                'name' => 'form[name]',
+                'value' => $faker->sentence(51),
+            ),
+            array(
+                'name' => 'form[listDescription]',
+                'value' => $faker->sentence(50),
+            ),
+        ));
 
-        foreach ($languages as $singleLanguage) {
-            $form = $crawler->selectButton('Create')->form(array(
-                'form[name]' => $singleLanguage['name'],
+        $languages = array('French', 'Spanish');
+
+        $count = 0;
+        foreach ($languages as $language) {
+            $this->doTestSuccessValidation($createCrawler, array(
+                array(
+                    'name' => 'form[name]',
+                    'value' => $language,
+                ),
+                array(
+                    'name' => 'form[listDescription]',
+                    'value' => $faker->text(255),
+                ),
+                array(
+                    'name' => 'form[image][imageFile]',
+                    'value' => __DIR__.'/testImages/fr.png',
+                ),
+                array(
+                    'name' => 'form[showOnPage]',
+                    'value' => true,
+                ),
             ));
 
-            $client->submit($form);
+            $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
-            $this->assertEquals(400, $client->getResponse()->getStatus());
+            ++$count;
 
-            $crawler = $client->request('GET', $baseUri.'/admin/language/create');
-
-            $form = $crawler->selectButton('Create')->form();
-
-            $form['form[name]'] = $singleLanguage['name'];
-            $form['form[listDescription]'] = $singleLanguage['description'];
-            $form['form[showOnPage]'] = true;
-            $form['form[image][imageFile]']->upload( __DIR__.'/testImages/us.png');
-
-            $crawler = $client->submit($form);
-
-            $this->assertEquals(200, $client->getResponse()->getStatus());
+            $this->assertEquals($count, iterator_count($fi));
         }
-
-        $frenchLanguage = array(
-            'name' => 'spanish',
-            'description' => $faker->sentence(20),
-        );
-
-        $form = $crawler->selectButton('Create')->form(array(
-            'form[name]' => $frenchLanguage['name'],
-        ));
-
-        $client->submit($form);
-
-        $this->assertEquals(400, $client->getResponse()->getStatus());
     }
 
     public function testEdit()
     {
-        $client = self::$handler->getClient();
-        $baseUri = self::$handler->getBaseUri();
-        $host = self::$handler->getHost();
+        $faker = Factory::create();
 
-        $crawler = $client->request('GET', $baseUri.'/admin/language');
+        $this->client->request('GET', $this->editUri.'/25');
 
-        $languageList = $crawler->filter('.page-content')->filter('.card');
+        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 
-        $languages = array(
-            array(
-                'name' => 'bulgarian',
-                'description' => 'bulgarian description',
-            ),
-            array(
-                'name' => 'english',
-                'description' => 'english description',
-            ),
-        );
+        $languageList = $this->doTestList($this->dashboardRoute, $this->navText);
 
-        $index = 0;
-        $languageList->each(function(Crawler $node) use ($client, $languages, &$index, $host) {
-            $href = $node->filter('.sub-base-action-link')->attr('href');
+        $oldLanguages = array('French', 'Spanish');
+        $newLanguages = array('German', 'English');
 
-            $editName = $languages[$index]['name'];
-            $editDescription = $languages[$index]['description'];
+        $count = 0;
+        $languageList->each(function(Crawler $languageCard) use (&$count, $faker, $oldLanguages, $newLanguages) {
+            $editLink = $languageCard->filter('.sub-base-action-link')->link();
 
-            $crawler = $client->request('GET', $host.$href);
+            $editCrawler = $this->client->click($editLink);
 
-            $this->assertEquals(200, $client->getResponse()->getStatus());
+            $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+            $this->assertEquals($this->editUri.'/'.($count+1), $this->client->getRequest()->getUri());
 
-            $currentImgSrc = $crawler->filter('img')->attr('src');
+            $this->doTestSuccessValidation($editCrawler, array(
+                array(
+                    'name' => 'form[name]',
+                    'value' => $newLanguages[$count],
+                ),
+                array(
+                    'name' => 'form[listDescription]',
+                    'value' => $faker->text(255),
+                ),
+                array(
+                    'name' => 'form[image][imageFile]',
+                    'value' => __DIR__.'/testImages/fr.png',
+                ),
+                array(
+                    'name' => 'form[showOnPage]',
+                    'value' => true,
+                ),
+            ), 'Edit');
 
-            $form = $crawler->selectButton('Edit')->form(array(
-                'form[name]' => $editName,
-                'form[listDescription]' => $editDescription,
-            ));
-
-            $form['form[image][imageFile]']->upload(__DIR__.'/testImages/fr.png');
-
-            $crawler = $client->submit($form);
-
-            $this->assertEquals(200, $client->getResponse()->getStatus());
-
-            $name = $crawler->filter('#form_name')->attr('value');
-            $description = $crawler->filter('#form_listDescription')->text();
-            $editedImgSrc = $crawler->filter('img')->attr('src');
-
-            $this->assertEquals($name, $editName);
-            $this->assertEquals($description, $editDescription);
-            $this->assertNotEquals($editedImgSrc, $currentImgSrc);
-
-            ++$index;
+            ++$count;
         });
 
-        $crawler = $client->request('GET', $baseUri.'/admin/language');
+        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
-        $languageList = $crawler->filter('.page-content')->filter('.base-action-link');
-
-        $languages = array('bulgarian', 'english');
-        $languageList->each(function(Crawler $node) use ($languages) {
-            $text = $node->text();
-
-            $this->assertContains($text, $languages);
-        });
+        $this->assertEquals($count, iterator_count($editedFi));
     }
 
-    public function testListing()
+    public function testIndex()
     {
-        $client = self::$handler->getClient();
-        $baseUri = self::$handler->getBaseUri();
-
-        $crawler = $client->request('GET', $baseUri.'/admin/language');
-
-        $this->assertEquals(200, $client->getResponse()->getStatus());
-
-        $languageList = $crawler->filter('.page-content')->filter('.base-action-link');
-
-        $this->assertEquals(
-            2,
-            $languageList->count()
+        $this->doTestIndex(
+            $this->dashboardRoute,
+            $this->navText,
+            array('German', 'English')
         );
-
-        $languages = array('english', 'bulgarian');
-
-        $crawler = $client->request('GET', $baseUri.'/admin/language');
-
-        $languageList = $crawler->filter('.page-content')->filter('.base-action-link');
-
-        $languageList->each(function(Crawler $node) use ($languages) {
-            $text = $node->text();
-
-            $this->assertContains($text, $languages);
-        });
     }
 }

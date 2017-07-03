@@ -25,19 +25,23 @@ class SoundController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $this->dispatchEvent(FileUploadEvent::class, $sound);
 
-                $this->dispatchEvent(FileUploadEvent::class, $sound);
+            $this->addFlash(
+                'notice',
+                sprintf('Sound(s) created successfully')
+            );
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Sound(s) created successfully')
-                );
+            return $this->redirectToRoute('admin_sound_create');
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Sound/create.html.twig', array(
+                'form' => $form->createView(),
+            ));
 
-                return $this->redirectToRoute('admin_sound_create');
-            }
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Sound/create.html.twig', array(

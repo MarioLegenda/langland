@@ -37,24 +37,30 @@ class CourseController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $this->dispatchEvent(PrePersistEvent::class, array(
-                    'course' => $course,
-                ));
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'course' => $course,
+            ));
 
-                $em->persist($course);
-                $em->flush();
+            $em->persist($course);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Course created successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Course created successfully')
+            );
 
-                return $this->redirectToRoute('admin_course_create');
-            }
+            return $this->redirectToRoute('admin_course_create');
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Course/CRUD/create.html.twig', array(
+                'form' => $form->createView(),
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Course/CRUD/create.html.twig', array(

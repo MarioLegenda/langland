@@ -95,6 +95,7 @@ class LanguageInfoController extends RepositoryController
             return $this->redirectToRoute('admin_language_info_edit', array(
                 'languageInfoId' => $languageInfo->getId(),
             ));
+
         } else if ($form->isSubmitted() and !$form->isValid()) {
             $response = $this->render('::Admin/LanguageInfo/edit.html.twig', array(
                 'languageInfo' => $languageInfo,

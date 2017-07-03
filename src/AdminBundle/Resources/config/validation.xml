@@ -37,7 +37,6 @@
     </class>
 
     <class name="AdminBundle\Entity\Language">
-
         <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
             <option name="fields">name</option>
         </constraint>
@@ -131,6 +130,17 @@
                 <option name="maxMessage">Course name can have up to {{ limit }} characters</option>
             </constraint>
         </property>
+
+        <property name="whatToLearn">
+            <constraint name="NotBlank">
+                <option name="message">Course description cannot be empty</option>
+            </constraint>
+
+            <constraint name="Length">
+                <option name="max">255</option>
+                <option name="maxMessage">Course description can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
     </class>
 
     <class name="AdminBundle\Entity\Lesson">
@@ -152,7 +162,8 @@
         <constraint name="Callback">validate</constraint>
 
         <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
-            <option name="fields">name</option>
+            <option name="fields">na
+                me</option>
             <option name="message">Word game with this name already exists</option>
         </constraint>
 

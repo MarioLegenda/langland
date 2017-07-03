@@ -54,7 +54,7 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
 
     private function handleCourseJob(Course $course)
     {
-        \URLify::filter($course->setCourseUrl($course->getName()));
+        $course->setCourseUrl(\URLify::filter($course->getName()));
 
         $initialCourses = $this->em->getRepository('AdminBundle:Course')->findBy(array(
             'initialCourse' => true,

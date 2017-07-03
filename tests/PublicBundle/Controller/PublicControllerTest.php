@@ -2,31 +2,32 @@
 
 namespace PublicBundle\Controller;
 
-use TestLibrary\DependencyHandler;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DomCrawler\Crawler;
+use TestLibrary\LanglandAdminTestCase;
 
-class PublicControllerTest extends WebTestCase
+class PublicControllerTest extends LanglandAdminTestCase
 {
-    private static $handler;
+    private $route = '/';
 
-    public static function setUpBeforeClass()
+    public function testIndex()
     {
-        $handler = new DependencyHandler($_ENV['baseUri']);
+        $index = $this->clientGet($this->route);
 
-        $handler
-            ->useClient();
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        self::$handler = $handler;
-    }
+        $signIn = $this->client->click($index->selectLink('SIGN IN')->link());
 
-    public function testHomePage()
-    {
-        $client = self::$handler->getClient();
-        $baseUri = self::$handler->getBaseUri();
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $client->request('GET', $baseUri);
+        $this->client->click($signIn->filter('.app a:first-child')->link());
 
-        $this->assertEquals(200, $client->getResponse()->getStatus());
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $signUp = $this->client->click($index->selectLink('SIGN UP')->link());
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $this->client->click($signUp->filter('.app a:first-child')->link());
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 }

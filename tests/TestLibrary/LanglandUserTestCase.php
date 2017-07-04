@@ -3,6 +3,7 @@
 namespace TestLibrary;
 
 use AdminBundle\Command\Helper\LanguageFactory;
+use ArmorBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -43,9 +44,19 @@ class LanglandUserTestCase extends WebTestCase
         // the firewall context defaults to the firewall name
         $firewallContext = 'langland';
 
-        $token = new UsernamePasswordToken('marioskrlec@outlook.com', 'root', $firewallContext, array('ROLE_USER'));
+        $user = new User();
+        $user->setUsername('marioskrlec@outlook.com');
+        $user->setPassword('root');
+        $user->setName('Mile');
+        $user->setLastname('Mile');
+        $user->setRoles(array('ROLE_USER'));
+        $user->setEnabled(1);
+        $user->setGender('male');
+
+        $token = new UsernamePasswordToken($user, $user->getPassword(), $firewallContext, $user->getRoles());
         $session->set('_security_'.$firewallContext, serialize($token));
         $session->save();
+        static::$inst->client->getContainer()->get("security.token_storage")->setToken($token);
 
         $cookie = new Cookie($session->getName(), $session->getId());
         static::$inst->client->getCookieJar()->set($cookie);

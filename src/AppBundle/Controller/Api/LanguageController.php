@@ -21,7 +21,7 @@ class LanguageController extends CommonOperationController
             return $responseCreator->createNoContentResponse();
         }
 
-        return $responseCreator->determineResponse($this->createLanguages($languages, $this->getLearningUser()));
+        return $responseCreator->createSerializedResponse($this->createLanguages($languages, $this->getLearningUser()));
     }
 
     public function getStructuredAction(Request $request)
@@ -41,12 +41,12 @@ class LanguageController extends CommonOperationController
         $signedUpLanguages = $learningUser->getLanguages();
 
         if (empty($signedUpLanguages)) {
-            return $this->createSuccessJsonResponse();
+            return $responseCreator->createNoContentResponse();
         }
 
         $currentLanguage = $learningUser->getCurrentLanguage();
 
-        return $this->createSuccessJsonResponse(array(
+        return $responseCreator->createSerializedResponse(array(
             'signedLanguages' => $this->serialize($signedUpLanguages, array('signed_courses')),
             'currentLanguage' => $this->serialize($currentLanguage, array('signed_courses')),
         ));

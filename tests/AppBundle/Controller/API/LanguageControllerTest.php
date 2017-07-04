@@ -63,6 +63,8 @@ class LanguageControllerTest extends LanglandUserTestCase
         $this->client->followRedirects();
         $host = $_ENV['host'];
         Seed::inst()->reset();
+        $em = $this->client->getContainer()->get('doctrine')->getManager();
+        $assertingLanguages = array('english', 'spanish', 'italian');
 
         $this->client->request('GET', $host.'/langland/api/languages/structured');
 
@@ -83,5 +85,27 @@ class LanguageControllerTest extends LanglandUserTestCase
         $this->client->request('DELETE', $host.'/langland/api/languages/structured');
 
         $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+
+        $this->createLanguages($assertingLanguages, $em);
+
+        $this->client->request('POST', $host.'/langland/api/user', array(
+            'languageId' => 1,
+        ));
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $this->client->request('GET', $host.'/langland/api/languages/structured');
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        $content = $this->client->getResponse()->getContent();
+
+        $this->assertNotEmpty($content);
+        $this->assertInternalType('string', $content);
+
+        $data = json_decode($content, true);
+
+        $this->assertNotEmpty($data);
+        $this->assertInternalType('array', $data);
     }
 }

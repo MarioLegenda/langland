@@ -43,11 +43,18 @@ class ResponseCreator
         return new JsonResponse($content, 200);
     }
     /**
+     * @return JsonResponse
+     */
+    public function createBadRequestResponse() : JsonResponse
+    {
+        return new JsonResponse(null, 400);
+    }
+    /**
      * @param array $content
      * @param array|null $serializationGroups
      * @return JsonResponse
      */
-    public function determineResponse($content = null, array $serializationGroups = null) : JsonResponse
+    public function createSerializedResponse($content = null, array $serializationGroups = null) : JsonResponse
     {
         if (empty($content)) {
             return $this->createNoContentResponse();

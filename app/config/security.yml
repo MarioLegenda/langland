@@ -16,7 +16,6 @@ security:
         admin:
             pattern: ^/admin
             provider: armor_user_provider
-            http_basic: ~
             form_login:
                 default_target_path: admin_dashboard
                 login_path: armor_admin_login

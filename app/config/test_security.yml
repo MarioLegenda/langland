@@ -7,8 +7,15 @@ security:
                         password: root
                         roles: 'ROLE_DEVELOPER'
 
+        armor_user_provider:
+            id: armor.user_provider
+
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
+
+        ArmorBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12
 
     firewalls:
         dev:
@@ -22,8 +29,9 @@ security:
 
         langland:
             pattern: ^/langland
-            anonymous: ~
             http_basic: ~
+            provider: armor_user_provider
+            user_checker: armor.user.user_checker
 
         app:
             pattern: ^/

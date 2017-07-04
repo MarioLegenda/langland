@@ -18,19 +18,23 @@ class ResponseCreatorTest extends WebTestCase
 
         $this->assertEquals(204, $response->getStatusCode());
 
+        $response = $responseCreator->createBadRequestResponse();
+
+        $this->assertEquals(400, $response->getStatusCode());
+
         $response = $responseCreator->createContentAvailableResponse(array());
 
         $this->assertEquals(200, $response->getStatusCode());
 
-        $response = $responseCreator->determineResponse(array());
+        $response = $responseCreator->createSerializedResponse(array());
 
         $this->assertEquals(204, $response->getStatusCode());
 
-        $response = $responseCreator->determineResponse(null);
+        $response = $responseCreator->createSerializedResponse(null);
 
         $this->assertEquals(204, $response->getStatusCode());
 
-        $response = $responseCreator->determineResponse(array('some-content' => 'value'));
+        $response = $responseCreator->createSerializedResponse(array('some-content' => 'value'));
 
         $this->assertEquals(200, $response->getStatusCode());
     }

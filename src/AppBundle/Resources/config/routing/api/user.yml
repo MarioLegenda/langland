@@ -1,12 +1,14 @@
 app_logged_in_user:
-    path: /find-logged-in-user
+    path: /logged-in
     defaults: { _controller: AppBundle:Api/User:findLoggedInUser }
+    methods: [GET]
 
 app_create_learning_user:
-    path: /create-learning-user
+    path: /
     defaults: { _controller: AppBundle:Api/User:createLearningUser }
+    methods: [POST]
 
 app_find_learning_user:
-    path: /find-learning-user
+    path: /
     defaults: { _controller: AppBundle:Api/User:findLearningUser }
     methods: [GET]

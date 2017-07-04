@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AdminBundle\Entity\Language;
 use AppBundle\Entity\LearningUser;
 use AppBundle\Event\LearningUserCreateEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,24 +16,42 @@ class UserController extends CommonOperationController
         );
     }
 
-    public function findLearningUserAction()
+    public function findLearningUserAction(Request $request)
     {
+        $responseCreator = $this->get('app_response_creator');
+
+        if ($request->getMethod() !== 'GET') {
+            $responseCreator->createMethodNotAllowedResponse();
+        }
+
         $learningUser = $this->getLearningUser();
 
         if (!$learningUser instanceof LearningUser) {
-            return $this->createSuccessJsonResponse();
+            return $responseCreator->createNoContentResponse();
         }
 
-        return $this->createSuccessJsonResponse(
-            $this->serialize($this->getLearningUser(), array('learning_user'))
-        );
+        return $responseCreator->createSerializedResponse($learningUser, array('learning_user'));
     }
 
     public function createLearningUserAction(Request $request)
     {
+        $responseCreator = $this->get('app_response_creator');
+
+        if ($request->getMethod() !== 'POST') {
+            return $responseCreator->createMethodNotAllowedResponse();
+        }
+
+        if (!$request->request->has('languageId')) {
+            return $responseCreator->createBadRequestResponse();
+        }
+
         $languageId = $request->request->get('languageId');
 
         $language = $this->getRepository('AdminBundle:Language')->find($languageId);
+
+        if (!$language instanceof Language) {
+            return $responseCreator->createNoContentResponse();
+        }
 
         $eventDispatcher = $this->get('event_dispatcher');
         $event = new LearningUserCreateEvent(
@@ -43,6 +62,6 @@ class UserController extends CommonOperationController
 
         $eventDispatcher->dispatch(LearningUserCreateEvent::NAME, $event);
 
-        return $this->createSuccessJsonResponse();
+        return $responseCreator->createContentAvailableResponse(null);
     }
 }

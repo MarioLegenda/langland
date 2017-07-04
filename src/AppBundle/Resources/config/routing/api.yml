@@ -12,9 +12,9 @@ app_user:
 
 app_language:
   resource: "@AppBundle/Resources/config/routing/api/language.yml"
-  prefix: /language
+  prefix: /languages
   host: '%host%'
-  methods: [POST]
+  methods: [GET]
 
 app_main_data:
   resource: "@AppBundle/Resources/config/routing/api/methodAppData.yml"

@@ -36,12 +36,12 @@ class LanglandAdminTestCase extends WebTestCase
 
     public static function setUpBeforeClass()
     {
-        exec('/usr/bin/php /var/www/langland/bin/console langland:reset');
+        exec('/usr/bin/php /var/www/bin/console langland:reset');
     }
 
     public static function tearDownAfterClass()
     {
-        exec('/usr/bin/php /var/www/langland/bin/console langland:reset');
+        exec('/usr/bin/php /var/www/bin/console langland:reset');
 
         $dirs = array(
             realpath(__DIR__.'/../uploads/images'),

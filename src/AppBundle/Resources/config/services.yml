@@ -8,3 +8,7 @@ services:
         class: AppBundle\Listener\CreateLearningUserListener
         tags:
             - { name: 'kernel.event_listener', event: 'app.create_learning_user', method: 'onLearningUserCreate'}
+
+    app_response_creator:
+        class: AppBundle\Rest\ResponseCreator
+        arguments: ['@jms_serializer']

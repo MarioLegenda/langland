@@ -3,28 +3,39 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\LearningUser;
+use Symfony\Component\HttpFoundation\Request;
 
 class LanguageController extends CommonOperationController
 {
-    public function findLearnableLanguagesAction()
+    public function getViewableAction(Request $request)
     {
-        $languages = $this->getRepository('AdminBundle:Language')->findLearnableLanguages();
+        $responseCreator = $this->get('app_response_creator');
 
-        if (empty($languages)) {
-            return $this->createFailedJsonResponse();
+        if ($request->getMethod() !== 'GET') {
+            return $responseCreator->createMethodNotAllowedResponse();
         }
 
-        return $this->createSuccessJsonResponse(
-            $this->createLanguages($languages, $this->getLearningUser())
-        );
+        $languages = $this->getRepository('AdminBundle:Language')->findViewableLanguages();
+
+        if (empty($languages)) {
+            return $responseCreator->createNoContentResponse();
+        }
+
+        return $responseCreator->determineResponse($this->createLanguages($languages, $this->getLearningUser()));
     }
 
-    public function findLearningLanguagesAction()
+    public function getStructuredAction(Request $request)
     {
+        $responseCreator = $this->get('app_response_creator');
+
+        if ($request->getMethod() !== 'GET') {
+            return $responseCreator->createMethodNotAllowedResponse();
+        }
+
         $learningUser = $this->getLearningUser();
 
         if (!$learningUser instanceof LearningUser) {
-            return $this->createFailedJsonResponse();
+            return $responseCreator->createNoContentResponse();
         }
 
         $signedUpLanguages = $learningUser->getLanguages();
@@ -41,12 +52,16 @@ class LanguageController extends CommonOperationController
         ));
     }
 
-    private function createLanguages(array $languages, LearningUser $learningUser = null) : array
+    private function createLanguages(array $languages = array(), LearningUser $learningUser = null) : array
     {
+        if (empty($languages)) {
+            return array();
+        }
+
         $data = array();
 
         foreach ($languages as $language) {
-            $langArray = $this->serialize($language, array('learnable_language'));
+            $langArray = $this->serialize($language, array('viewable'));
 
             $image = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
                 'language' => $language,
@@ -59,7 +74,7 @@ class LanguageController extends CommonOperationController
             if (!empty($image)) {
                 $image = $image[0];
 
-                $imgArray = $this->serialize($image, array('learnable_language'));
+                $imgArray = $this->serialize($image, array('viewable'));
 
                 $langArray['image'] = $imgArray;
             }

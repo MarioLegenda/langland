@@ -20,6 +20,11 @@ security:
             anonymous: ~
             http_basic: ~
 
+        langland:
+            pattern: ^/langland
+            anonymous: ~
+            http_basic: ~
+
         app:
             pattern: ^/
             anonymous: true

@@ -8,24 +8,24 @@ class Repository {
         });
     }
 
-    fetchLearnableLanguages() {
+    fetchViewableLanguages() {
         return jQuery.ajax({
-            url: routes.app_find_learnable_languages,
-            method: 'POST'
+            url: routes.app_get_viewable_languages,
+            method: 'GET'
         });
     }
 
-    fetchLearningLanguages() {
+    fetchStructuredLanguages() {
         return jQuery.ajax({
-            url: routes.app_find_learning_languages,
-            method: 'POST'
+            url: routes.app_get_structured_languages,
+            method: 'GET'
         });
     }
 
     fetchLoggedInUser() {
         return jQuery.ajax({
             url: routes.app_logged_in_user,
-            method: 'POST'
+            method: 'GET'
         });
     }
 

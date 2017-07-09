@@ -11,8 +11,10 @@ class LearningUser {
         jQuery.ajax({
             url: routes.app_find_learning_user,
             method: 'GET'
-        }).done(jQuery.proxy(function(data) {
-            this.user = data.data;
+        }).done(jQuery.proxy(function(data, content, response) {
+            if (response.status === 200) {
+                this.user = data;
+            }
         }, this));
     }
 

@@ -5,41 +5,48 @@ namespace AppBundle\Controller\Api;
 use AdminBundle\Entity\Language;
 use AppBundle\Entity\LearningUser;
 use AppBundle\Event\LearningUserCreateEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends CommonOperationController
 {
-    public function findLoggedInUserAction()
-    {
-        return $this->createSuccessJsonResponse(
-            $this->serialize($this->getUser(), array('exposed_user'))
-        );
-    }
-
-    public function findLearningUserAction(Request $request)
+    public function findLoggedInUserAction(Request $request)
     {
         $responseCreator = $this->get('app_response_creator');
 
         if ($request->getMethod() !== 'GET') {
-            $responseCreator->createMethodNotAllowedResponse();
+            return $responseCreator->createMethodNotAllowedResponse();
         }
+
+        return $responseCreator->createSerializedResponse($this->getUser(), array('exposed_user'));
+    }
+
+    public function createLearningUserAction(Request $request)
+    {
+        return $this->doCreateLearningUser($request);
+    }
+
+    public function getLearningUserAction()
+    {
+        return $this->doGetLearningUser();
+    }
+
+    public function doGetLearningUser()
+    {
+        $responseCreator = $this->get('app_response_creator');
 
         $learningUser = $this->getLearningUser();
 
         if (!$learningUser instanceof LearningUser) {
-            return $responseCreator->createNoContentResponse();
+            return $responseCreator->createNoResourceResponse();
         }
 
         return $responseCreator->createSerializedResponse($learningUser, array('learning_user'));
     }
 
-    public function createLearningUserAction(Request $request)
+    private function doCreateLearningUser(Request $request)
     {
         $responseCreator = $this->get('app_response_creator');
-
-        if ($request->getMethod() !== 'POST') {
-            return $responseCreator->createMethodNotAllowedResponse();
-        }
 
         if (!$request->request->has('languageId')) {
             return $responseCreator->createBadRequestResponse();
@@ -50,7 +57,7 @@ class UserController extends CommonOperationController
         $language = $this->getRepository('AdminBundle:Language')->find($languageId);
 
         if (!$language instanceof Language) {
-            return $responseCreator->createNoContentResponse();
+            return $responseCreator->createNoResourceResponse();
         }
 
         $eventDispatcher = $this->get('event_dispatcher');
@@ -62,6 +69,15 @@ class UserController extends CommonOperationController
 
         $eventDispatcher->dispatch(LearningUserCreateEvent::NAME, $event);
 
-        return $responseCreator->createContentAvailableResponse(null);
+        $location = $this->get('router')->generate('app_page_course_dashboard', array(
+            'languageName' => $language->getName(),
+            'languageId' => $language->getId(),
+        ));
+
+        $response = $responseCreator->createResourceCreatedResponse();
+
+        $response->headers->set('Location', $location);
+
+        return $response;
     }
 }

@@ -1,4 +1,4 @@
-app_find_learnable_languages:
+app_get_structured_languages:
     path: /structured
     defaults: { _controller: AppBundle:Api/Language:getStructured }
     methods: [GET]

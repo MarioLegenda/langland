@@ -23,14 +23,14 @@ class ResponseCreator
     /**
      * @return JsonResponse
      */
-    public function createMethodNotAllowedResponse() : JsonResponse
+    public function createMethodNotAllowedResponse($content = null) : JsonResponse
     {
-        return new JsonResponse(null, 405);
+        return new JsonResponse($content, 405);
     }
     /**
      * @return JsonResponse
      */
-    public function createNoContentResponse() : JsonResponse
+    public function createNoResourceResponse() : JsonResponse
     {
         return new JsonResponse(null, 204);
     }
@@ -38,9 +38,31 @@ class ResponseCreator
      * @param $content
      * @return JsonResponse
      */
-    public function createContentAvailableResponse($content) : JsonResponse
+    public function createResourceAvailableResponse($content) : JsonResponse
     {
         return new JsonResponse($content, 200);
+    }
+    /**
+     * @param null $content
+     * @return JsonResponse
+     */
+    public function createResourceCreatedResponse($content = null) : JsonResponse
+    {
+        return new JsonResponse($content, 201);
+    }
+    /**
+     * @return JsonResponse
+     */
+    public function createResourceNotFoundResponse() : JsonResponse
+    {
+        return new JsonResponse(null, 404);
+    }
+    /**
+     * @return JsonResponse
+     */
+    public function createSeeOtherResponse() : JsonResponse
+    {
+        return new JsonResponse(null, 303);
     }
     /**
      * @return JsonResponse
@@ -57,14 +79,14 @@ class ResponseCreator
     public function createSerializedResponse($content = null, array $serializationGroups = null) : JsonResponse
     {
         if (empty($content)) {
-            return $this->createNoContentResponse();
+            return $this->createNoResourceResponse();
         }
 
         if (!is_null($serializationGroups)) {
             $content = $this->serialize($content, $serializationGroups);
         }
 
-        return $this->createContentAvailableResponse($content);
+        return $this->createResourceAvailableResponse($content);
     }
 
     private function serialize($data, array $groups = null) : array

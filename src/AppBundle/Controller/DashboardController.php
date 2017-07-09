@@ -2,30 +2,40 @@
 
 namespace AppBundle\Controller;
 
+use AdminBundle\Entity\Language;
 use AppBundle\Controller\Api\CommonOperationController;
 use AppBundle\Entity\LearningUser;
 use AppBundle\Entity\LearningUserCourse;
 use AppBundle\Entity\LearningUserGame;
 use AppBundle\Entity\LearningUserLesson;
+use Symfony\Component\HttpFoundation\Request;
 
 class DashboardController extends CommonOperationController
 {
-    public function dashboardAction()
+    public function dashboardAction(Request $request)
     {
+        if ($request->getMethod() !== 'GET') {
+            return $this->get('app_response_creator')->createMethodNotAllowedResponse();
+        }
+
         return $this->render('::App/Dashboard/dashboard.html.twig');
     }
 
-    public function coursePageDashboardAction($languageName, $id)
+    public function coursePageDashboardAction($languageName, $languageId)
     {
         $em = $this->get('doctrine')->getManager();
-
         $learningUser = $this->getLearningUser();
+        $responseCreator = $this->get('app_response_creator');
 
         if (!$learningUser instanceof LearningUser) {
-            throw $this->createNotFoundException();
+            return $responseCreator->createResourceNotFoundResponse();
         }
 
-        $language = $em->getRepository('AdminBundle:Language')->find($id);
+        $language = $em->getRepository('AdminBundle:Language')->find($languageId);
+
+        if (!$language instanceof Language) {
+            return $responseCreator->createResourceNotFoundResponse();
+        }
 
         $learningUser->setCurrentLanguage($language);
 

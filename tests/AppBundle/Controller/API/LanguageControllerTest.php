@@ -40,12 +40,12 @@ class LanguageControllerTest extends LanglandUserTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $content = $this->client->getResponse()->getContent();
+        $resource = $this->client->getResponse()->getContent();
 
-        $this->assertNotEmpty($content);
-        $this->assertInternalType('string', $content);
+        $this->assertNotEmpty($resource);
+        $this->assertInternalType('string', $resource);
 
-        $data = json_decode($content, true);
+        $data = json_decode($resource, true);
 
         $this->assertNotEmpty($data);
         $this->assertInternalType('array', $data);
@@ -88,22 +88,22 @@ class LanguageControllerTest extends LanglandUserTestCase
 
         $this->createLanguages($assertingLanguages, $em);
 
-        $this->client->request('POST', $host.'/langland/api/user', array(
+        $this->client->request('POST', $host.'/langland/api/user/create', array(
             'languageId' => 1,
         ));
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(201, $this->client->getResponse()->getStatusCode());
 
         $this->client->request('GET', $host.'/langland/api/languages/structured');
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $content = $this->client->getResponse()->getContent();
+        $resource = $this->client->getResponse()->getContent();
 
-        $this->assertNotEmpty($content);
-        $this->assertInternalType('string', $content);
+        $this->assertNotEmpty($resource);
+        $this->assertInternalType('string', $resource);
 
-        $data = json_decode($content, true);
+        $data = json_decode($resource, true);
 
         $this->assertNotEmpty($data);
         $this->assertInternalType('array', $data);

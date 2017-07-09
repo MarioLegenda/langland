@@ -10,6 +10,10 @@ class PublicControllerTest extends LanglandAdminTestCase
 
     public function testIndex()
     {
+        $host = $_ENV['host'];
+
+        $this->client->request('GET', $host.'/langland/logout');
+
         $index = $this->clientGet($this->route);
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
@@ -22,12 +26,8 @@ class PublicControllerTest extends LanglandAdminTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $signUp = $this->client->click($index->selectLink('SIGN UP')->link());
+        $this->client->click($index->selectLink('SIGN UP')->link());
 
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
-
-        $this->client->click($signUp->filter('.app a:first-child')->link());
-
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
 }

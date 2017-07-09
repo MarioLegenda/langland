@@ -6,15 +6,15 @@ export const routes = {
     app_course_mark_info_looked: envr + 'langland/api/courses/mark-info-looked',
     app_language_course_list: envr + 'langland/api/courses/find-language-course-list',
 
-    app_find_learnable_languages: envr + 'langland/api/language/find-learnable-languages',
-    app_find_learning_languages: envr + 'langland/api/language/find-learning-languages',
+    app_get_viewable_languages: envr + 'langland/api/languages/viewable',
+    app_get_structured_languages: envr + 'langland/api/languages/structured',
 
-    app_logged_in_user: envr + 'langland/api/user/find-logged-in-user',
-    app_create_learning_user: envr + 'langland/api/user/create-learning-user',
+    app_logged_in_user: envr + 'langland/api/user/logged-in-user',
+    app_create_learning_user: envr + 'langland/api/user/create',
 
     app_logout: envr + 'langland/logout',
     app_dashboard: envr + 'langland',
-    app_find_learning_user: envr + 'langland/api/user/find-learning-user',
+    app_find_learning_user: envr + 'langland/api/user',
 
     app_learning_user_mark_lesson_passed: envr + 'langland/api/data/lesson/mark-lesson-passed'
 };

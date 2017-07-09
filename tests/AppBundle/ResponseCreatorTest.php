@@ -14,7 +14,7 @@ class ResponseCreatorTest extends WebTestCase
 
         $responseCreator = $container->get('app_response_creator');
 
-        $response = $responseCreator->createNoContentResponse();
+        $response = $responseCreator->createNoResourceResponse();
 
         $this->assertEquals(204, $response->getStatusCode());
 
@@ -22,9 +22,17 @@ class ResponseCreatorTest extends WebTestCase
 
         $this->assertEquals(400, $response->getStatusCode());
 
-        $response = $responseCreator->createContentAvailableResponse(array());
+        $response = $responseCreator->createResourceNotFoundResponse();
+
+        $this->assertEquals(404, $response->getStatusCode());
+
+        $response = $responseCreator->createResourceAvailableResponse(array());
 
         $this->assertEquals(200, $response->getStatusCode());
+
+        $response = $responseCreator->createResourceCreatedResponse(array());
+
+        $this->assertEquals(201, $response->getStatusCode());
 
         $response = $responseCreator->createSerializedResponse(array());
 

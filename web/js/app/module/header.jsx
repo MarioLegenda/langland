@@ -35,10 +35,10 @@ export class UserProfileBarContainer extends React.Component {
 
     _fetchLoggedInUser() {
         this.props.DataSource.fetchLoggedInUser()
-            .done(jQuery.proxy(function(data) {
-                if (data.status === 'success') {
+            .done(jQuery.proxy(function(data, content, response) {
+                if (response.status === 200) {
                     this.setState({
-                        user: data.data
+                        user: data
                     });
                 }
             }, this));
@@ -97,30 +97,30 @@ class CourseBarContainer extends React.Component {
         super(props);
 
         this.state = {
-            item: []
+            item: null
         }
     }
 
-    _fetchSignedCourses() {
-        this.props.DataSource.fetchLearningLanguages()
-            .done(jQuery.proxy(function(data) {
-                if (data.status === 'success') {
+    _fetchStructuredLanguages() {
+        this.props.DataSource.fetchStructuredLanguages()
+            .done(jQuery.proxy(function(data, message, response) {
+                if (response.status === 200) {
                     this.setState({
-                        item: data.data
+                        item: data
                     })
                 }
             }, this));
     }
 
     componentDidMount() {
-        this._fetchSignedCourses();
+        this._fetchStructuredLanguages();
     }
 
     render() {
         let items = [];
         let currentItem = null;
 
-        if (this.state.item.length  === 0) {
+        if (this.state.item  === null) {
             return null;
         }
 

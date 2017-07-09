@@ -1139,15 +1139,15 @@ const routes = {
     app_course_mark_info_looked: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/courses/mark-info-looked',
     app_language_course_list: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/courses/find-language-course-list',
 
-    app_find_learnable_languages: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/language/find-learnable-languages',
-    app_find_learning_languages: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/language/find-learning-languages',
+    app_get_viewable_languages: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/languages/viewable',
+    app_get_structured_languages: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/languages/structured',
 
-    app_logged_in_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/find-logged-in-user',
-    app_create_learning_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/create-learning-user',
+    app_logged_in_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/logged-in-user',
+    app_create_learning_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/create',
 
     app_logout: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/logout',
     app_dashboard: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland',
-    app_find_learning_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user/find-learning-user',
+    app_find_learning_user: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/user',
 
     app_learning_user_mark_lesson_passed: __WEBPACK_IMPORTED_MODULE_0__env_js__["envr"] + 'langland/api/data/lesson/mark-lesson-passed'
 };
@@ -11177,24 +11177,24 @@ class Repository {
         });
     }
 
-    fetchLearnableLanguages() {
+    fetchViewableLanguages() {
         return jQuery.ajax({
-            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_find_learnable_languages,
-            method: 'POST'
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_get_viewable_languages,
+            method: 'GET'
         });
     }
 
-    fetchLearningLanguages() {
+    fetchStructuredLanguages() {
         return jQuery.ajax({
-            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_find_learning_languages,
-            method: 'POST'
+            url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_get_structured_languages,
+            method: 'GET'
         });
     }
 
     fetchLoggedInUser() {
         return jQuery.ajax({
             url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_logged_in_user,
-            method: 'POST'
+            method: 'GET'
         });
     }
 
@@ -11485,10 +11485,10 @@ var UserProfileBarContainer = exports.UserProfileBarContainer = function (_React
     _createClass(UserProfileBarContainer, [{
         key: '_fetchLoggedInUser',
         value: function _fetchLoggedInUser() {
-            this.props.DataSource.fetchLoggedInUser().done(jQuery.proxy(function (data) {
-                if (data.status === 'success') {
+            this.props.DataSource.fetchLoggedInUser().done(jQuery.proxy(function (data, content, response) {
+                if (response.status === 200) {
                     this.setState({
-                        user: data.data
+                        user: data
                     });
                 }
             }, this));
@@ -11578,18 +11578,18 @@ var CourseBarContainer = function (_React$Component4) {
         var _this4 = _possibleConstructorReturn(this, (CourseBarContainer.__proto__ || Object.getPrototypeOf(CourseBarContainer)).call(this, props));
 
         _this4.state = {
-            item: []
+            item: null
         };
         return _this4;
     }
 
     _createClass(CourseBarContainer, [{
-        key: '_fetchSignedCourses',
-        value: function _fetchSignedCourses() {
-            this.props.DataSource.fetchLearningLanguages().done(jQuery.proxy(function (data) {
-                if (data.status === 'success') {
+        key: '_fetchStructuredLanguages',
+        value: function _fetchStructuredLanguages() {
+            this.props.DataSource.fetchStructuredLanguages().done(jQuery.proxy(function (data, message, response) {
+                if (response.status === 200) {
                     this.setState({
-                        item: data.data
+                        item: data
                     });
                 }
             }, this));
@@ -11597,7 +11597,7 @@ var CourseBarContainer = function (_React$Component4) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this._fetchSignedCourses();
+            this._fetchStructuredLanguages();
         }
     }, {
         key: 'render',
@@ -11605,7 +11605,7 @@ var CourseBarContainer = function (_React$Component4) {
             var items = [];
             var currentItem = null;
 
-            if (this.state.item.length === 0) {
+            if (this.state.item === null) {
                 return null;
             }
 
@@ -11720,9 +11720,17 @@ var LanguageList = function (_React$Component) {
                 itemId: target.getAttribute('data-item-id')
             });
 
-            this.props.DataSource.createLearningUser(target.getAttribute('data-item-id')).done(function (data) {
-                if (data.status === 'success') {
-                    window.location.href = target.getAttribute('href');
+            this.props.DataSource.createLearningUser(target.getAttribute('data-item-id')).done(function (data, content, response) {
+                if (response.status === 201) {
+                    window.location.href = response.getResponseHeader('Location');
+                }
+
+                if (response.status === 400) {
+                    console.log('app_create_learning_user: ' + response.status);
+                }
+
+                if (response.status === 204) {
+                    console.log('app_create_learning_user: ' + response.status);
                 }
             });
         }
@@ -11803,18 +11811,20 @@ var LanguageListContainer = exports.LanguageListContainer = function (_React$Com
     }
 
     _createClass(LanguageListContainer, [{
-        key: '_fetchLearnableLanguages',
-        value: function _fetchLearnableLanguages() {
-            this.props.DataSource.fetchLearnableLanguages().done(jQuery.proxy(function (data) {
-                this.setState({
-                    items: data.data
-                });
+        key: '_fetchViewableLanguages',
+        value: function _fetchViewableLanguages() {
+            this.props.DataSource.fetchViewableLanguages().done(jQuery.proxy(function (data, content, response) {
+                if (response.status === 200) {
+                    this.setState({
+                        items: data
+                    });
+                }
             }, this));
         }
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this._fetchLearnableLanguages();
+            this._fetchViewableLanguages();
         }
     }, {
         key: 'render',
@@ -12031,8 +12041,10 @@ class LearningUser {
         jQuery.ajax({
             url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_find_learning_user,
             method: 'GET'
-        }).done(jQuery.proxy(function (data) {
-            this.user = data.data;
+        }).done(jQuery.proxy(function (data, content, response) {
+            if (response.status === 200) {
+                this.user = data;
+            }
         }, this));
     }
 

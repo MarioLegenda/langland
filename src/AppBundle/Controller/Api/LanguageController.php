@@ -12,13 +12,15 @@ class LanguageController extends CommonOperationController
         $responseCreator = $this->get('app_response_creator');
 
         if ($request->getMethod() !== 'GET') {
-            return $responseCreator->createMethodNotAllowedResponse();
+            return $responseCreator->createMethodNotAllowedResponse(array(
+                'allowedMethods' => array('GET'),
+            ));
         }
 
         $languages = $this->getRepository('AdminBundle:Language')->findViewableLanguages();
 
         if (empty($languages)) {
-            return $responseCreator->createNoContentResponse();
+            return $responseCreator->createNoResourceResponse();
         }
 
         return $responseCreator->createSerializedResponse($this->createLanguages($languages, $this->getLearningUser()));
@@ -29,19 +31,21 @@ class LanguageController extends CommonOperationController
         $responseCreator = $this->get('app_response_creator');
 
         if ($request->getMethod() !== 'GET') {
-            return $responseCreator->createMethodNotAllowedResponse();
+            return $responseCreator->createMethodNotAllowedResponse(array(
+                'allowedMethods' => array('GET'),
+            ));
         }
 
         $learningUser = $this->getLearningUser();
 
         if (!$learningUser instanceof LearningUser) {
-            return $responseCreator->createNoContentResponse();
+            return $responseCreator->createNoResourceResponse();
         }
 
         $signedUpLanguages = $learningUser->getLanguages();
 
         if (empty($signedUpLanguages)) {
-            return $responseCreator->createNoContentResponse();
+            return $responseCreator->createNoResourceResponse();
         }
 
         $currentLanguage = $learningUser->getCurrentLanguage();

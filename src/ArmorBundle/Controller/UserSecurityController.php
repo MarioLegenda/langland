@@ -63,7 +63,7 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
         $securityContext = $this->get('security.authorization_checker');
 
         if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('app_dashboard');
+            return $this->redirectToRoute('app_page_main_dashboard');
         }
         
         $user = new User();

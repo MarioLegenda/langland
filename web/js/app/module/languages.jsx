@@ -35,9 +35,17 @@ class LanguageList extends React.Component {
         });
 
         this.props.DataSource.createLearningUser(target.getAttribute('data-item-id'))
-            .done(function(data) {
-                if (data.status === 'success') {
-                    window.location.href = target.getAttribute('href');
+            .done(function(data, content, response) {
+                if (response.status === 201) {
+                    window.location.href = response.getResponseHeader('Location');
+                }
+
+                if (response.status === 400) {
+                    console.log('app_create_learning_user: ' + response.status);
+                }
+
+                if (response.status === 204) {
+                    console.log('app_create_learning_user: ' + response.status);
                 }
             });
     }
@@ -102,17 +110,19 @@ export class LanguageListContainer extends React.Component {
         }
     }
 
-    _fetchLearnableLanguages() {
-        this.props.DataSource.fetchLearnableLanguages()
-            .done(jQuery.proxy(function(data) {
-                this.setState({
-                    items: data.data
-                });
+    _fetchViewableLanguages() {
+        this.props.DataSource.fetchViewableLanguages()
+            .done(jQuery.proxy(function(data, content, response) {
+                if (response.status === 200) {
+                    this.setState({
+                        items: data
+                    });
+                }
             }, this));
     }
 
     componentDidMount() {
-        this._fetchLearnableLanguages();
+        this._fetchViewableLanguages();
     }
 
     render() {

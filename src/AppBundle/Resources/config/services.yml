@@ -10,5 +10,5 @@ services:
             - { name: 'kernel.event_listener', event: 'app.create_learning_user', method: 'onLearningUserCreate'}
 
     app_response_creator:
-        class: AppBundle\Rest\ResponseCreator
+        class: Library\ResponseCreator
         arguments: ['@jms_serializer']

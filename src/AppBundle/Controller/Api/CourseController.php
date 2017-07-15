@@ -2,29 +2,51 @@
 
 namespace AppBundle\Controller\Api;
 
-use AppBundle\Entity\LearningUserCourse;
+use AppBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\Request;
 
 class CourseController extends CommonOperationController
 {
-    public function isInfoLookedAction()
+    public function isInfoLookedAction(Request $request)
     {
+        if ($request->getMethod() !== 'GET') {
+            return $this->get('app_response_creator')->createMethodNotAllowedResponse();
+        }
+
+        $responseCreator = $this->get('app_response_creator');
         $learningUser = $this->getLearningUser();
+
+        if (!$learningUser instanceof LearningUser) {
+            return $responseCreator->createResourceForbiddenResponse();
+        }
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
             ->findByLanguage($learningUser->getCurrentLanguage());
 
-        if ($languageInfo->getIsLooked() === false) {
-            return $this->createFailedJsonResponse();
+        if (empty($languageInfo)) {
+            return $responseCreator->createNoResourceResponse();
         }
 
-        return $this->createSuccessJsonResponse();
+        if ($languageInfo->getIsLooked() === false) {
+            return $responseCreator->createNoResourceResponse();
+        }
+
+        return $responseCreator->createResourceAvailableResponse();
     }
 
-    public function markInfoLookedAction()
+    public function markInfoLookedAction(Request $request)
     {
+        if ($request->getMethod() !== 'POST') {
+            return $this->get('app_response_creator')->createMethodNotAllowedResponse();
+        }
+
+        $responseCreator = $this->get('app_response_creator');
         $learningUser = $this->getLearningUser();
+
+        if (!$learningUser instanceof LearningUser) {
+            return $responseCreator->createResourceForbiddenResponse();
+        }
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
@@ -35,30 +57,43 @@ class CourseController extends CommonOperationController
         $this->getManager()->persist($languageInfo);
         $this->getManager()->flush();
 
-        return $this->createSuccessJsonResponse();
+        return $responseCreator->createResourceAvailableResponse();
     }
 
     public function findLanguageInfosAction(Request $request)
     {
+        if ($request->getMethod() !== 'GET') {
+            return $this->get('app_response_creator')->createMethodNotAllowedResponse();
+        }
+
+        $responseCreator = $this->get('app_response_creator');
         $learningUser = $this->getLearningUser();
+
+        if (!$learningUser instanceof LearningUser) {
+            return $responseCreator->createResourceForbiddenResponse();
+        }
 
         $languageInfo = $this
             ->getRepository('AdminBundle:LanguageInfo')
             ->findByLanguage($learningUser->getCurrentLanguage());
 
-        $serialized = $this->serialize($languageInfo, array('language_info'));
-
-        return $this->createSuccessJsonResponse($serialized);
+        return $responseCreator->createSerializedResponse($languageInfo, array('language_info'));
     }
 
     public function findLanguageCoursesAction(Request $request)
     {
+        if ($request->getMethod() !== 'GET') {
+            return $this->get('app_response_creator')->createMethodNotAllowedResponse();
+        }
+
+        $responseCreator = $this->get('app_response_creator');
         $learningUser = $this->getLearningUser();
+
+        if (!$learningUser instanceof LearningUser) {
+            return $responseCreator->createResourceForbiddenResponse();
+        }
 
         $courseHolder = $learningUser->getCourseHolderByCurrentLanguage();
 
-        $serialized = $this->serialize($courseHolder->getLearningUserCourses(), array('course_list'));
-
-        return $this->createSuccessJsonResponse($serialized);
-    }
+        return $responseCreator->createSerializedResponse($courseHolder->getLearningUserCourses(), array('course_list'));    }
 }

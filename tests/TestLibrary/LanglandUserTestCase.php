@@ -2,7 +2,9 @@
 
 namespace TestLibrary;
 
+use AdminBundle\Command\Helper\CourseFactory;
 use AdminBundle\Command\Helper\LanguageFactory;
+use AdminBundle\Command\Helper\LanguageInfoFactory;
 use ArmorBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
@@ -35,6 +37,29 @@ class LanglandUserTestCase extends WebTestCase
     {
         $languageFactory = new LanguageFactory($em);
         $languageFactory->create($languages);
+    }
+
+    protected function createLanguageInfos(array $languages, $em)
+    {
+        $languageFactory = new LanguageFactory($em);
+        $languageInfoFactory = new LanguageInfoFactory($em);
+
+        $languageObjects = $languageFactory->create($languages, true);
+
+        foreach ($languageObjects as $languageObject) {
+            $languageInfoFactory->create($languageObject);
+        }
+
+        return $languageObjects;
+    }
+
+    protected function createLanguageCourses(array $languages, $em)
+    {
+        $courseFactory = new CourseFactory($em);
+
+        foreach ($languages as $languageObject) {
+            $courseFactory->create($languageObject, 6);
+        }
     }
 
     protected static function login()

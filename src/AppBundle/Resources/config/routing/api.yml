@@ -2,7 +2,7 @@ app_course:
   resource: "@AppBundle/Resources/config/routing/api/course.yml"
   prefix: /courses
   host: '%host%'
-  methods: [POST]
+  methods: [GET, POST]
 
 app_user:
   resource: "@AppBundle/Resources/config/routing/api/user.yml"

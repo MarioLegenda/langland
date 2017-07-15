@@ -94,6 +94,10 @@ class LanguageControllerTest extends LanglandUserTestCase
 
         $this->assertEquals(201, $this->client->getResponse()->getStatusCode());
 
+        $location = $this->client->getResponse()->headers->get('Location');
+
+        $this->assertEquals('/langland/course/english/1', $location);
+
         $this->client->request('GET', $host.'/langland/api/languages/structured');
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());

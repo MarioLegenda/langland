@@ -26,6 +26,7 @@ class LanguageFactory
     }
     /**
      * @param array $languages
+     * @param bool $save
      * @return array
      */
     public function create(array $languages, bool $save = false) : array

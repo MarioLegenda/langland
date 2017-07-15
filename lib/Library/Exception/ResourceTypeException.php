@@ -1,8 +1,7 @@
 <?php
 
-namespace AppBundle\Rest\Exception;
+namespace Library\Exception;
 
 class ResourceTypeException extends \Exception
 {
-
 }

@@ -16,8 +16,8 @@ export class CourseInitContainer extends React.Component {
 
     _fetchIsLookedInfo() {
         this.props.DataSource.fetchIsInfoLooked()
-            .done(jQuery.proxy(function(data) {
-                if (data.status === 'success') {
+            .done(jQuery.proxy(function(data, content, response) {
+                if (response.status === 200) {
                     this.setState({
                         isInfoLooked: true
                     });

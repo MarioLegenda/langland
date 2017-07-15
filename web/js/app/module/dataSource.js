@@ -39,7 +39,7 @@ class Repository {
     fetchIsInfoLooked() {
         return jQuery.ajax({
             url: routes.app_course_language_info_exists,
-            method: 'POST'
+            method: 'GET'
         });
     }
 

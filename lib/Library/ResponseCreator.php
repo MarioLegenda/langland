@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Rest;
+namespace Library;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use JMS\Serializer\SerializationContext;
@@ -21,6 +21,7 @@ class ResponseCreator
         $this->serializer = $serializer;
     }
     /**
+     * @param mixed $content
      * @return JsonResponse
      */
     public function createMethodNotAllowedResponse($content = null) : JsonResponse
@@ -38,7 +39,7 @@ class ResponseCreator
      * @param $content
      * @return JsonResponse
      */
-    public function createResourceAvailableResponse($content) : JsonResponse
+    public function createResourceAvailableResponse($content = null) : JsonResponse
     {
         return new JsonResponse($content, 200);
     }
@@ -70,6 +71,13 @@ class ResponseCreator
     public function createBadRequestResponse() : JsonResponse
     {
         return new JsonResponse(null, 400);
+    }
+    /**
+     * @return JsonResponse
+     */
+    public function createResourceForbiddenResponse() : JsonResponse
+    {
+        return new JsonResponse(null, 403);
     }
     /**
      * @param array $content

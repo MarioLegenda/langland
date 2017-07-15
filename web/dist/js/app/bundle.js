@@ -11208,7 +11208,7 @@ class Repository {
     fetchIsInfoLooked() {
         return jQuery.ajax({
             url: __WEBPACK_IMPORTED_MODULE_0__routes_js__["routes"].app_course_language_info_exists,
-            method: 'POST'
+            method: 'GET'
         });
     }
 
@@ -11328,8 +11328,8 @@ var CourseInitContainer = exports.CourseInitContainer = function (_React$Compone
     _createClass(CourseInitContainer, [{
         key: '_fetchIsLookedInfo',
         value: function _fetchIsLookedInfo() {
-            this.props.DataSource.fetchIsInfoLooked().done(jQuery.proxy(function (data) {
-                if (data.status === 'success') {
+            this.props.DataSource.fetchIsInfoLooked().done(jQuery.proxy(function (data, content, response) {
+                if (response.status === 200) {
                     this.setState({
                         isInfoLooked: true
                     });

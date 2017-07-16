@@ -5,7 +5,7 @@ class Repository {
         jQuery.ajax({
             url: envr + 'admin/course/manage/' + url.getParsed()[3] + '/game/word-game/find-lessons-by-course',
             method: 'GET'
-        })
+        });
     }
 }
 

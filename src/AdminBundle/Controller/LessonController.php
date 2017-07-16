@@ -37,27 +37,34 @@ class LessonController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $this->dispatchEvent(PrePersistEvent::class, array(
-                    'lesson' => $lesson,
-                    'course' => $course,
-                ));
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'lesson' => $lesson,
+                'course' => $course,
+            ));
 
-                $em->persist($lesson);
-                $em->flush();
+            $em->persist($lesson);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Lesson created successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Lesson created successfully')
+            );
 
-                return $this->redirectToRoute('admin_lesson_create', array(
-                    'courseId' => $course->getId(),
-                ));
-            }
+            return $this->redirectToRoute('admin_lesson_create', array(
+                'courseId' => $course->getId(),
+            ));
+        } else if ($form->isSubmitted() and !$form->isValid()) {
+            $response = $this->render('::Admin/Lesson/create.html.twig', array(
+                'course' => $course,
+                'form' => $form->createView(),
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Lesson/create.html.twig', array(
@@ -84,33 +91,40 @@ class LessonController extends RepositoryController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
+        if ($form->isSubmitted() and $form->isValid()) {
+            $em = $this->get('doctrine')->getManager();
 
-                $this->dispatchEvent(PrePersistEvent::class, array(
-                    'lesson' => $lesson,
-                    'course' => $course,
-                ));
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'lesson' => $lesson,
+                'course' => $course,
+            ));
 
-                $this->dispatchEvent(PreUpdateEvent::class, array(
-                    'lesson' => $lesson,
-                    'course' => $course,
-                ));
+            $this->dispatchEvent(PreUpdateEvent::class, array(
+                'lesson' => $lesson,
+                'course' => $course,
+            ));
 
-                $em->persist($lesson);
-                $em->flush();
+            $em->persist($lesson);
+            $em->flush();
 
-                $this->addFlash(
-                    'notice',
-                    sprintf('Lesson edited successfully')
-                );
+            $this->addFlash(
+                'notice',
+                sprintf('Lesson edited successfully')
+            );
 
-                return $this->redirectToRoute('admin_lesson_edit', array(
-                    'courseId' => $course->getId(),
-                    'lessonId' => $lesson->getId(),
-                ));
-            }
+            return $this->redirectToRoute('admin_lesson_edit', array(
+                'courseId' => $course->getId(),
+                'lessonId' => $lesson->getId(),
+            ));
+        } else if ($form->isSubmitted() and $form->isValid()) {
+            $response = $this->render('::Admin/Lesson/edit.html.twig', array(
+                'course' => $course,
+                'form' => $form->createView(),
+            ));
+
+            $response->setStatusCode(400);
+
+            return $response;
         }
 
         return $this->render('::Admin/Lesson/edit.html.twig', array(
@@ -131,5 +145,40 @@ class LessonController extends RepositoryController
         return $this->render('::Admin/Course/Lesson/dashboard.html.twig', array(
             'lesson' => $lesson,
         ));
+    }
+
+    public function findLessonsByCourseAction(Request $request, $courseId)
+    {
+        $responseCreator = $this->get('app_response_creator');
+
+        if ($request->getMethod() !== 'GET') {
+            return $responseCreator->createMethodNotAllowedResponse();
+        }
+
+        $course = $this->getRepository('AdminBundle:Course')->find($courseId);
+
+        if (empty($course)) {
+            return $responseCreator->createNoResourceResponse();
+        }
+
+        $lessons = $this->getRepository('AdminBundle:Lesson')->findBy(array(
+            'course' => $course,
+        ));
+
+        if (empty($lessons)) {
+            return $responseCreator->createNoResourceResponse();
+        }
+
+        if ($request->query->has('type')) {
+            if ($request->query->get('type') === 'autocomplete') {
+                return $responseCreator->createSerializedResponse($lessons, array('lesson_autocomplete'));
+            } else if ($request->query->get('type') === 'withText') {
+                return $responseCreator->createSerializedResponse($lessons, array('lesson_list', 'lesson_text'));
+            }
+        } else {
+            return $responseCreator->createSerializedResponse($lessons, array('lesson_list'));
+        }
+
+        return $responseCreator->createBadRequestResponse();
     }
 }

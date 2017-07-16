@@ -66,11 +66,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {GameInit} from './game/gameInit.jsx';
+
+import {DataSource} from './dataSource.js';
+
+import {GameCreateInit} from './game/create.jsx';
 
 import {Autocomplete} from './autocomplete.jsx';
 import {LessonApp} from './lesson.jsx';
-import {GameListSelection} from './game/gameListSelection.jsx';
 
 const acWidget = document.getElementById('word-pool-widget');
 
@@ -101,21 +103,12 @@ if (lessonApp !== null) {
     );
 }
 
-const gameApp = document.getElementById('react-create-game-app');
+const gameApp = document.getElementById('react-new-game');
 
 if (gameApp !== null) {
     ReactDOM.render(
-        <GameInit/>,
+        <GameCreateInit dataSource={DataSource}/>,
         gameApp
-    );
-}
-
-const gameSelection = document.getElementById('react-game-list-selection');
-
-if (gameSelection !== null) {
-    ReactDOM.render(
-        <GameListSelection/>,
-        gameSelection
     );
 }
 

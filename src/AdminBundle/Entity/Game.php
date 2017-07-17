@@ -1,8 +1,11 @@
 <?php
 
-namespace AdminBundle\Entity\Game;
+namespace AdminBundle\Entity;
 
-class QuestionGameAnswer
+/**
+ * Game
+ */
+class Game
 {
     /**
      * @var int $id
@@ -13,22 +16,24 @@ class QuestionGameAnswer
      */
     private $name;
     /**
-     * @var QuestionGame $question
+     * @var string $description
      */
-    private $question;
+    private $description;
     /**
-     * @var bool $isCorrect
+     * @var Lesson $lesson
      */
-    private $isCorrect;
+    private $lesson;
     /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
     /**
-     * @var \DateTime $updatedAt
+     * @var \DateTime
      */
     private $updatedAt;
     /**
+     * Get id
+     *
      * @return int
      */
     public function getId()
@@ -36,16 +41,21 @@ class QuestionGameAnswer
         return $this->id;
     }
     /**
-     * @param $name
-     * @return QuestionGameAnswer
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Game
      */
-    public function setName($name) : QuestionGameAnswer
+    public function setName($name) : Game
     {
         $this->name = $name;
 
         return $this;
     }
     /**
+     * Get name
+     *
      * @return string
      */
     public function getName()
@@ -53,41 +63,52 @@ class QuestionGameAnswer
         return $this->name;
     }
     /**
-     * @return mixed
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Game
      */
-    public function getisCorrect()
+    public function setDescription($description) : Game
     {
-        return $this->isCorrect;
+        $this->description = $description;
+
+        return $this;
     }
     /**
-     * @param mixed $isCorrect
+     * Get description
+     *
+     * @return string
      */
-    public function setIsCorrect($isCorrect)
+    public function getDescription()
     {
-        $this->isCorrect = $isCorrect;
+        return $this->description;
     }
     /**
-     * @return mixed
+     * @return Lesson
      */
-    public function getQuestion()
+    public function getLesson(): Lesson
     {
-        return $this->question;
+        return $this->lesson;
     }
     /**
-     * @param mixed $question
+     * @param Lesson $lesson
+     * @return Game
      */
-    public function setQuestion($question)
+    public function setLesson(Lesson $lesson) : Game
     {
-        $this->question = $question;
+        $this->lesson = $lesson;
+
+        return $this;
     }
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
      *
-     * @return QuestionGameAnswer
+     * @return Game
      */
-    public function setCreatedAt($createdAt) : QuestionGameAnswer
+    public function setCreatedAt($createdAt) : Game
     {
         $this->createdAt = $createdAt;
 
@@ -102,14 +123,15 @@ class QuestionGameAnswer
     {
         return $this->createdAt;
     }
+
     /**
      * Set updatedAt
      *
      * @param \DateTime $updatedAt
      *
-     * @return QuestionGameAnswer
+     * @return Game
      */
-    public function setUpdatedAt($updatedAt) : QuestionGameAnswer
+    public function setUpdatedAt($updatedAt) : Game
     {
         $this->updatedAt = $updatedAt;
 
@@ -134,3 +156,4 @@ class QuestionGameAnswer
         }
     }
 }
+

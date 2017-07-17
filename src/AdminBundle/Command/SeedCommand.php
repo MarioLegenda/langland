@@ -44,9 +44,6 @@ class SeedCommand extends ContainerAwareCommand
         $languageInfoFactory = new LanguageInfoFactory($em);
         $courseFactory = new CourseFactory($em);
         $lessonFactory = new LessonFactory($em);
-        $sentenceFactory = new SentenceFactory($em);
-        $wordGameFactory = new WordGameFactory($em);
-        $questionGameFactory = new QuestionGameFactory($em);
 
         $categoryFactory->create($categories, true);
         $languageObjects = $languageFactory->create($languages, true);
@@ -70,21 +67,6 @@ class SeedCommand extends ContainerAwareCommand
 
         foreach ($courses as $course) {
             $lessonFactory->create($course, 10);
-
-            $sentenceFactory->create($course);
-        }
-
-        foreach ($courses as $course) {
-            $lessons = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Lesson')->findBy(array(
-                'course' => $course,
-            ));
-
-            $words = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Word')->findBy(array(
-                'language' => $course->getLanguage(),
-            ));
-
-            $wordGameFactory->create($lessons, $words);
-            $questionGameFactory->create($lessons);
         }
     }
 }

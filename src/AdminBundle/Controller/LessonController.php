@@ -171,7 +171,17 @@ class LessonController extends RepositoryController
 
         if ($request->query->has('type')) {
             if ($request->query->get('type') === 'autocomplete') {
-                return $responseCreator->createSerializedResponse($lessons, array('lesson_autocomplete'));
+                $autocomplete = array();
+                foreach ($lessons as $lesson) {
+                    $temp = array();
+
+                    $temp['label'] = $lesson->getName();
+                    $temp['value'] = $lesson->getId();
+
+                    $autocomplete[] = $temp;
+                }
+
+                return $responseCreator->createResourceAvailableResponse($autocomplete);
             } else if ($request->query->get('type') === 'withText') {
                 return $responseCreator->createSerializedResponse($lessons, array('lesson_list', 'lesson_text'));
             }

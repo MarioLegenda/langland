@@ -42,14 +42,6 @@ class Lesson
      */
     private $course;
     /**
-     * @var ArrayCollection $wordGames
-     */
-    private $wordGames;
-    /**
-     * @var ArrayCollection $questionGames
-     */
-    private $questionGames;
-    /**
      * @var ArrayCollection $lessonTexts
      */
     private $lessonTexts;
@@ -57,8 +49,6 @@ class Lesson
     public function __construct()
     {
         $this->lessonTexts = new ArrayCollection();
-        $this->wordGames = new ArrayCollection();
-        $this->questionGames = new ArrayCollection();
 
         $this->isInitialLesson = false;
     }
@@ -167,53 +157,6 @@ class Lesson
         return $this->course;
     }
     /**
-     * @param WordGame $game
-     * @return Lesson
-     */
-    public function hasWordGame(WordGame $game) : Lesson
-    {
-        return $this->wordGames->contains($game);
-    }
-    /**
-     * @param WordGame $game
-     * @return Lesson
-     */
-    public function addWordGame(WordGame $game) : Lesson
-    {
-        if (!$this->hasWordGame($game)) {
-            $game->setLesson($this);
-            $this->wordGames->add($game);
-        }
-
-        return $this;
-    }
-    /**
-     * @param WordGame $game
-     * @return Lesson
-     */
-    public function removeWordGame(WordGame $game) : Lesson
-    {
-        if ($this->hasWordGame($game)) {
-            $this->wordGames->removeElement($game);
-        }
-
-        return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getWordGames()
-    {
-        return $this->wordGames;
-    }
-    /**
-     * @param mixed $games
-     */
-    public function setWordGames($games)
-    {
-        $this->wordGames = $games;
-    }
-    /**
      * @param LessonText $lessonText
      * @return bool
      */
@@ -252,64 +195,6 @@ class Lesson
     public function getLessonTexts()
     {
         return $this->lessonTexts;
-    }
-    /**
-     * @param QuestionGame $game
-     * @return bool
-     */
-    public function hasQuestionGame(QuestionGame $game) : bool
-    {
-        return $this->questionGames->contains($game);
-    }
-    /**
-     * @param QuestionGame $game
-     * @return Lesson
-     */
-    public function addQuestionGame(QuestionGame $game) : Lesson
-    {
-        if (!$this->hasQuestionGame($game)) {
-            $game->setLesson($this);
-            $this->questionGames->add($game);
-        }
-
-        return $this;
-    }
-    /**
-     * @param QuestionGame $game
-     * @return Lesson
-     */
-    public function removeQuestionGame(QuestionGame $game) : Lesson
-    {
-        if ($this->hasQuestionGame($game)) {
-            $this->questionGames->removeElement($game);
-        }
-
-        return $this;
-    }
-    /**
-     * @param $games
-     * @return Lesson
-     */
-    public function setQuestionGames($games) : Lesson
-    {
-        $this->questionGames = $games;
-
-        return $this;
-    }
-    /**
-     * @return ArrayCollection
-     */
-    public function getQuestionGames()
-    {
-        return $this->questionGames;
-    }
-
-    public function getGames() : array
-    {
-        $wordGames = $this->getWordGames()->toArray();
-        $questionGames = $this->getQuestionGames()->toArray();
-
-        return array_merge($wordGames, $questionGames);
     }
     /**
      * Set createdAt

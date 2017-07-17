@@ -18,20 +18,6 @@
       <join-column name="course_id" referenced-column-name="id" />
     </many-to-one>
 
-    <one-to-many target-entity="AdminBundle\Entity\Game\WordGame" mapped-by="lesson" field="wordGames">
-      <cascade>
-        <cascade-persist/>
-        <cascade-remove/>
-      </cascade>
-    </one-to-many>
-
-    <one-to-many target-entity="AdminBundle\Entity\Game\QuestionGame" mapped-by="lesson" field="questionGames">
-      <cascade>
-        <cascade-persist/>
-        <cascade-remove/>
-      </cascade>
-    </one-to-many>
-
     <one-to-many target-entity="AdminBundle\Entity\LessonText" mapped-by="lesson" field="lessonTexts">
       <cascade>
         <cascade-persist/>

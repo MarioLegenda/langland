@@ -68,6 +68,23 @@ header {
     background: white;
   }
 
+  .button-wrapper {
+    margin: 50px 0 10px 0;
+
+    button {
+      width: 150px;
+      float:right;
+    }
+
+    .loading {
+      left: 20px;
+    }
+
+    .success {
+      left: 20px;
+    }
+  }
+
   .page-content {
     background-color: white;
 
@@ -86,6 +103,8 @@ header {
     }
   }
 }
+
+
 
 .modal-container {
   width: 100%;

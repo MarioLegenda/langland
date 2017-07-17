@@ -154,11 +154,11 @@ class LessonControllerTest extends LanglandAdminTestCase
         $this->assertEquals(10, count($content));
 
         foreach ($content as $data) {
-            $this->assertArrayHasKey('id', $data);
-            $this->assertInternalType('integer', $data['id']);
+            $this->assertArrayHasKey('value', $data);
+            $this->assertInternalType('integer', $data['value']);
 
-            $this->assertArrayHasKey('name', $data);
-            $this->assertInternalType('string', $data['name']);
+            $this->assertArrayHasKey('label', $data);
+            $this->assertInternalType('string', $data['label']);
         }
 
         $this->client->request('GET', $uri.'?type=withText');

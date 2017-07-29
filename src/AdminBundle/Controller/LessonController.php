@@ -134,19 +134,6 @@ class LessonController extends RepositoryController
         ));
     }
 
-    public function manageAction($lessonId)
-    {
-        $lesson = $this->getRepository('AdminBundle:Lesson')->find($lessonId);
-
-        if (empty($lesson)) {
-            throw $this->createNotFoundException();
-        }
-
-        return $this->render('::Admin/Course/Lesson/dashboard.html.twig', array(
-            'lesson' => $lesson,
-        ));
-    }
-
     public function findLessonsByCourseAction(Request $request, $courseId)
     {
         $responseCreator = $this->get('app_response_creator');

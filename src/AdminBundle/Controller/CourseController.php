@@ -15,7 +15,7 @@ class CourseController extends RepositoryController
             'id' => 'DESC',
         ));
 
-        return $this->render('::Admin/Course/CRUD/index.html.twig', array(
+        return $this->render('::Admin/Course/index.html.twig', array(
             'courses' => $courses,
         ));
     }
@@ -25,7 +25,7 @@ class CourseController extends RepositoryController
         $language = $this->getRepository('AdminBundle:Language')->find(1);
 
         if (empty($language)) {
-            return $this->render('::Admin/Course/CRUD/create.html.twig', array(
+            return $this->render('::Admin/Course/create.html.twig', array(
                 'no_language' => true,
             ));
         }
@@ -54,7 +54,7 @@ class CourseController extends RepositoryController
 
             return $this->redirectToRoute('admin_course_create');
         } else if ($form->isSubmitted() and !$form->isValid()) {
-            $response = $this->render('::Admin/Course/CRUD/create.html.twig', array(
+            $response = $this->render('::Admin/Course/create.html.twig', array(
                 'form' => $form->createView(),
             ));
 
@@ -63,7 +63,7 @@ class CourseController extends RepositoryController
             return $response;
         }
 
-        return $this->render('::Admin/Course/CRUD/create.html.twig', array(
+        return $this->render('::Admin/Course/create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -104,7 +104,7 @@ class CourseController extends RepositoryController
             }
         }
 
-        return $this->render('::Admin/Course/CRUD/edit.html.twig', array(
+        return $this->render('::Admin/Course/edit.html.twig', array(
             'form' => $form->createView(),
             'course' => $course,
         ));

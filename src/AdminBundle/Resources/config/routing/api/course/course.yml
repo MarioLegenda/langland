@@ -1,22 +1,7 @@
-admin_course_manage:
+admin_course_managment:
     path: /{courseId}
     defaults: { _controller: AdminBundle:Course:manage }
     methods: [GET]
-    host: '%host%'
-
-course_manager:
-    resource: "@AdminBundle/Resources/config/routing/api/lesson.yml"
-    prefix: /{courseId}/lesson
-    host: '%host%'
-
-sentence:
-    resource: "@AdminBundle/Resources/config/routing/api/course/sentence.yml"
-    prefix: /{courseId}/sentence
-    host: '%host%'
-
-word_pool:
-    resource: "@AdminBundle/Resources/config/routing/api/course/word_pool.yml"
-    prefix: /{courseId}/word-pool
     host: '%host%'
 
 

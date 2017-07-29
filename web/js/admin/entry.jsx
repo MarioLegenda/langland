@@ -69,7 +69,7 @@ import ReactDOM from 'react-dom';
 
 import {DataSource} from './dataSource.js';
 
-import {GameCreateInit} from './game/create.jsx';
+import {GameCreateInit} from './game/game.jsx';
 
 import {Autocomplete} from './autocomplete.jsx';
 import {LessonApp} from './lesson.jsx';

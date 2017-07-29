@@ -1,9 +1,14 @@
 admin_game_manage:
   path: /{courseId}/games
-  defaults: { _controller: AdminBundle:Game:index }
+  defaults: { _controller: AdminBundle:Game/Game:index }
   methods: [GET]
 
 admin_game_create:
   path: /{courseId}/games/create
-  defaults: { _controller: AdminBundle:Game:create }
+  defaults: { _controller: AdminBundle:Game/Game:create }
   methods: [GET]
+
+admin_real_game_create:
+  path: /{courseId}/games/new
+  defaults: { _controller: AdminBundle:Game/Game:new }
+  methods: PUT

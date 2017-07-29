@@ -12,7 +12,7 @@ app_user:
 
 app_language:
   resource: "@AppBundle/Resources/config/routing/api/language.yml"
-  prefix: /languages
+  prefix: /language
   host: '%host%'
   methods: [GET]
 

@@ -5,7 +5,7 @@ admin_course_manage:
     host: '%host%'
 
 course_manager:
-    resource: "@AdminBundle/Resources/config/routing/api/course/lesson.yml"
+    resource: "@AdminBundle/Resources/config/routing/api/lesson.yml"
     prefix: /{courseId}/lesson
     host: '%host%'
 

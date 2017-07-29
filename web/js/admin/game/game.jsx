@@ -4,6 +4,7 @@ import { Form, TextField, TextareaField, SubmitField, SelectField, CheckboxField
 import Schema from 'form-schema-validation';
 
 import {url} from './../url.js';
+import {GameDataContainer} from './gameData.jsx';
 
 function NameField (props) {
     return (
@@ -32,7 +33,7 @@ function DescriptionField(props) {
 function LessonSelect(props) {
     return (
         <div className="full-width align-left form-field field-break relative">
-            <SelectField name="lessons" options={props.options} label="Select a lesson: " errorStyles={props.errorStyles}/>
+            <SelectField name="lesson" options={props.options} label="Select a lesson: " errorStyles={props.errorStyles}/>
 
             <i className="description margin-top-10">
                 <span className="highlight">*</span> game lesson. Choose which lesson will be associated to this game
@@ -68,7 +69,8 @@ export class GameCreateInit extends React.Component {
 
         this.state = {
             lessonsLoaded: false,
-            lessons: [{label: 'Select lesson', value: 'default'}]
+            lessons: [{label: 'Select lesson', value: 'default'}],
+            isGameCreated: false
         };
 
         this.schema = {
@@ -80,14 +82,14 @@ export class GameCreateInit extends React.Component {
                 type: String,
                 required: true
             },
-            lessons: {
+            lesson: {
                 type: String,
                 required: true,
                 validators: [this.help.validators.isValidLesson()]
             }
         };
 
-        this.onSubmit = this.onSubmit.bind(this);
+        this.onGameCreate = this.onGameCreate.bind(this);
     }
 
     componentWillMount() {
@@ -96,8 +98,13 @@ export class GameCreateInit extends React.Component {
         this.help.schema = new Schema(this.schema, this.help.errorMessages);
     }
 
-    onSubmit() {
-
+    onGameCreate(data) {
+        this.props.dataSource.createGame(url, data)
+            .done(jQuery.proxy(function(data, content, response) {
+                if (response.status === 201) {
+                    console.log('success');
+                }
+            }, this));
     }
 
     _fetchLessons() {
@@ -123,6 +130,8 @@ export class GameCreateInit extends React.Component {
             return null;
         }
 
+        const isGameCreated = this.state.isGameCreated;
+
         return (
             <div className="full-width align-left margin-top-30 page-content form">
                 <div className="margin-top-40 align-left full-width">
@@ -132,7 +141,7 @@ export class GameCreateInit extends React.Component {
 
                     <Form
                         schema={this.help.schema}
-                        onSubmit={this.onSubmit}
+                        onSubmit={this.onGameCreate}
                     >
 
                         <NameField errorStyles={this.help.errorStyles}/>
@@ -140,9 +149,10 @@ export class GameCreateInit extends React.Component {
                         <LessonSelect errorStyles={this.help.errorStyles} options={this.state.lessons}/>
 
                         <div className="button-wrapper align-right relative">
-                            <SubmitField value="Submit" />
+                            <SubmitField value="Create game" />
                         </div>
 
+                        {isGameCreated === true && <GameDataContainer/>}
                     </Form>
                 </div>
             </div>

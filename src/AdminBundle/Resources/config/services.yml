@@ -5,6 +5,9 @@ services:
         tags:
             - { name: validator.constraint_validator }
 
+    library_entity_factory:
+        class: Library\EntityFactory
+
     admin.custom_file_uploader_listener:
         class: AdminBundle\Listener\Custom\FileUploaderListener
         arguments: ['@admin.file_uploader', '@doctrine.orm.entity_manager']

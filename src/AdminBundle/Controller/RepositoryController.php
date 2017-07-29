@@ -15,7 +15,6 @@ class RepositoryController extends Controller
     {
         return $this->get('doctrine')->getRepository($repository);
     }
-
     /**
      * @param string $eventClass
      * @param $entity

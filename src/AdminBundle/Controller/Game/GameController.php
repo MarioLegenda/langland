@@ -1,12 +1,22 @@
 <?php
 
-namespace AdminBundle\Controller;
+namespace AdminBundle\Controller\Game;
 
-use AdminBundle\Entity\Course;
+use AdminBundle\Controller\RepositoryController;
 use Symfony\Component\HttpFoundation\Request;
 
 class GameController extends RepositoryController
 {
+    public function newAction(Request $request, $courseId)
+    {
+        $responseCreator = $this->get('app_response_creator');
+        if ($this->getRepository('AdminBundle:Course')->find($courseId)) {
+            return $responseCreator->createResourceNotFoundResponse();
+        }
+
+
+    }
+
     public function indexAction(Request $request, $courseId)
     {
         if ($request->getMethod() !== 'GET') {

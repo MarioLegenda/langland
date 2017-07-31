@@ -1,0 +1,17 @@
+<div class="form-group">
+    <label class="checkbox-inline">
+        {{ form_widget(field) }}
+        {{ form_label(field) }}
+    </label>
+
+    <p class="description help-block">
+        <span class="highlight">*</span> {{ description }}
+    </p>
+
+    {% if field.vars.errors | length %}
+        <div class="alert alert-danger">
+            {{ form_errors(field) }}
+        </div>
+    {% endif %}
+
+</div>

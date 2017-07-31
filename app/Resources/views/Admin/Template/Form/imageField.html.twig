@@ -1,4 +1,4 @@
-<div class="full-width align-left form-field field-break relative">
+<div class="form-group">
 
     {% if entity is defined and entity.image is not empty %}
         <div class="full-width align-left">
@@ -8,11 +8,14 @@
 
     {{ form_label(field) }}
     {{ form_widget(field) }}
-    <div class="form-error full-width align-right">
-        {{ form_errors(field.imageFile) }}
-    </div>
 
-    <i class="description">
+    {% if field.vars.errors | length %}
+        <div class="alert alert-danger">
+            {{ form_errors(field) }}
+        </div>
+    {% endif %}
+
+    <i class="description help-block">
         <span class="highlight">*</span> {{ description }}
     </i>
 </div>

@@ -1,5 +1,5 @@
 {% for flash_message in app.session.flashBag.get('notice') %}
-    <p class="full-width align-left success margin-bottom-10">
+    <div class="alert alert-success">
         {{ flash_message }}
-    </p>
+    </div>
 {% endfor %}

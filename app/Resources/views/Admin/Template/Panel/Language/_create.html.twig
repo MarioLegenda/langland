@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-sm-10">
+        {{ form_errors(form) }}
+        <form role="form" action="{{ path('admin_language_create') }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
+
+            {% include '::Admin/Template/Form/flashNotice.html.twig' %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.name, 'description': 'add language' } only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.listDescription, 'description': 'This field will be shown in frontend language list' } only %}
+
+            {% include '::Admin/Template/Form/imageField.html.twig' with {'field': form.image, 'description': 'Upload an icon that will be shown in the language list' } only %}
+
+            {% include '::Admin/Template/Form/checkbox.html.twig' with {'field': form.showOnPage, 'description': 'Is this language ready for production?' } only %}
+
+            {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Create'} %}
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</div>

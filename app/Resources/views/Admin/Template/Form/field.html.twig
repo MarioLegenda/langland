@@ -1,0 +1,14 @@
+<div class="form-group">
+    {{ form_label(field) }}
+    {{ form_widget(field, {'attr' : {'class': 'form-control'}}) }}
+
+    <p class="description help-block">
+        <span class="highlight">*</span> {{ description }}
+    </p>
+
+    {% if field.vars.errors | length %}
+        <div class="alert alert-danger">
+            {{ form_errors(field) }}
+        </div>
+    {% endif %}
+</div>

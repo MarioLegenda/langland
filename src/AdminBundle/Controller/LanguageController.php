@@ -13,10 +13,10 @@ class LanguageController extends RepositoryController
     {
         $languages = $this->getRepository('AdminBundle:Language')->findAll();
 
-        return $this->render('::Admin/Template/Panel/Listing/_listing.html.twig', array(
+        return $this->render('::Admin/Template/Panel/_listing.html.twig', array(
             'languages' => $languages,
             'listing_title' => 'Languages',
-            'template' => '/Language/index.html.twig'
+            'template' => '/Language/_index.html.twig'
         ));
     }
 
@@ -42,8 +42,10 @@ class LanguageController extends RepositoryController
 
             return $this->redirectToRoute('admin_language_create');
         } else if ($form->isSubmitted() and !$form->isValid()) {
-            $response = $this->render('::Admin/Language/create.html.twig', array(
+            $response = $this->render('::Admin/Template/Panel/_action.html.twig', array(
                 'form' => $form->createView(),
+                'listing_title' => 'Create language',
+                'template' => '/Language/_create.html.twig'
             ));
 
             $response->setStatusCode(400);
@@ -51,8 +53,10 @@ class LanguageController extends RepositoryController
             return $response;
         }
 
-        return $this->render('::Admin/Language/create.html.twig', array(
+        return $this->render('::Admin/Template/Panel/_action.html.twig', array(
             'form' => $form->createView(),
+            'listing_title' => 'Create language',
+            'template' => '/Language/_create.html.twig'
         ));
     }
 
@@ -93,8 +97,10 @@ class LanguageController extends RepositoryController
                 'id' => $id,
             ));
         } else if ($form->isSubmitted() and !$form->isValid()) {
-            $response = $this->render('::Admin/Language/create.html.twig', array(
+            $response = $this->render('::Admin/Template/Panel/_action.html.twig', array(
                 'form' => $form->createView(),
+                'listing_title' => 'Create language',
+                'template' => '/Language/_edit.html.twig'
             ));
 
             $response->setStatusCode(400);
@@ -103,9 +109,11 @@ class LanguageController extends RepositoryController
         }
 
 
-        return $this->render('::Admin/Language/edit.html.twig', array(
+        return $this->render('::Admin/Template/Panel/_action.html.twig', array(
             'form' => $form->createView(),
             'language' => $language,
+            'listing_title' => 'Create language',
+            'template' => '/Language/_edit.html.twig'
         ));
     }
 }

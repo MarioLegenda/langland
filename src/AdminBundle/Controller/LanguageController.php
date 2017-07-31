@@ -13,8 +13,10 @@ class LanguageController extends RepositoryController
     {
         $languages = $this->getRepository('AdminBundle:Language')->findAll();
 
-        return $this->render('::Admin/Language/index.html.twig', array(
+        return $this->render('::Admin/Template/Panel/Listing/_listing.html.twig', array(
             'languages' => $languages,
+            'listing_title' => 'Languages',
+            'template' => '/Language/index.html.twig'
         ));
     }
 

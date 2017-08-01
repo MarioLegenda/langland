@@ -1,0 +1,7 @@
+sylius_resource:
+    resources:
+        admin.language:
+            classes:
+                controller: AdminBundle\Controller\LanguageController
+                model: AdminBundle\Entity\Language
+                form: AdminBundle\Form\Type\LanguageType

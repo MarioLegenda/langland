@@ -2,7 +2,9 @@
 
 namespace AdminBundle\Entity;
 
-class Category
+use Sylius\Component\Resource\Model\ResourceInterface;
+
+class Category implements ResourceInterface
 {
     private $id;
     /**

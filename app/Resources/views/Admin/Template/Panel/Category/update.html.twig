@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-sm-10">
+        {{ form_errors(form) }}
+        <form role="form" action="{{ path('admin_category_update', { 'id': category.id }) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
+
+            {% include '::Admin/Template/Form/flashNotice.html.twig' %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.name, 'description': 'add language' } only %}
+
+            {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Edit'} %}
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</div>

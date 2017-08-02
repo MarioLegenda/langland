@@ -39,6 +39,7 @@
     <class name="AdminBundle\Entity\Language">
         <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
             <option name="fields">name</option>
+            <option name="message">Language already exists</option>
         </constraint>
 
         <property name="name">
@@ -93,12 +94,13 @@
     <class name="AdminBundle\Entity\Category">
         <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
             <option name="fields">name</option>
-            <option name="message">Category already exists</option>
+            <option name="message">Category with this name already exists</option>
+
         </constraint>
 
         <property name="name">
             <constraint name="NotNull">
-                <option name="message">Language name cannot be empty</option>
+                <option name="message">Category name cannot be empty</option>
             </constraint>
 
             <constraint name="Length">

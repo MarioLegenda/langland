@@ -5,3 +5,9 @@ sylius_resource:
                 controller: AdminBundle\Controller\LanguageController
                 model: AdminBundle\Entity\Language
                 form: AdminBundle\Form\Type\LanguageType
+
+        admin.category:
+            classes:
+                controller: AdminBundle\Controller\CategoryController
+                model: AdminBundle\Entity\Category
+                form: AdminBundle\Form\Type\CategoryType

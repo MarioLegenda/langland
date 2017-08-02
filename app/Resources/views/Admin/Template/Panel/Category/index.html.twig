@@ -3,7 +3,7 @@
     <div class="row" style="margin-bottom: 15px;">
         <div class="col-sm-12">
             <div class="dataTables_length" id="dataTables-example_length">
-                <a class="btn btn-success" style="float: right" href="{{ path('admin_language_create') }}">Create</a>
+                <a class="btn btn-success" style="float: right" href="{{ path('admin_category_create') }}">Create</a>
             </div>
         </div>
     </div>
@@ -22,11 +22,11 @@
 
                         <tbody>
 
-                        {% for language in languages %}
+                        {% for category in categories %}
                             <tr class="gradeA odd" role="row">
-                                <td class="sorting_1">{{ language.name }}</td>
+                                <td class="sorting_1">{{ category.name }}</td>
                                 <td class="sorting_1">
-                                    <a class="btn btn-primary" style="float: right" href="{{ path('admin_language_update', {'id': language.id}) }}">Edit</a>
+                                    <a class="btn btn-primary" style="float: right" href="{{ path('admin_category_update', {'id': category.id}) }}">Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}

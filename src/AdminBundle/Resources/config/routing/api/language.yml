@@ -15,10 +15,11 @@ admin_language_create:
             template: Admin/Template/Panel/_action.html.twig
             redirect: admin_language_create
 
-admin_language_edit:
-    path: /language/edit/{id}
+admin_language_update:
+    path: /language/update/{id}
     methods: [POST, GET]
     defaults:
         _controller: admin.controller.language:updateAction
         _sylius:
             template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_language_update

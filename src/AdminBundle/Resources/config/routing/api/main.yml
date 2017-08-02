@@ -1,13 +1,12 @@
-admin_langauge:
-    resource: |
-        alias: admin.language
-        only: ['create', 'update', 'index']
-        form: AdminBundle/Form/Type/LanguageType
-    type: sylius.resource
-
 admin_language:
   resource: "@AdminBundle/Resources/config/routing/api/language.yml"
   prefix: /
+  host: '%host%'
+
+admin_category:
+  resource: "@AdminBundle/Resources/config/routing/api/category.yml"
+  prefix: /
+  host: '%host%'
 
 admin_language_info:
   resource: "@AdminBundle/Resources/config/routing/api/language_info.yml"
@@ -17,11 +16,6 @@ admin_language_info:
 admin_word:
   resource: "@AdminBundle/Resources/config/routing/api/word.yml"
   prefix: /word
-  host: '%host%'
-
-admin_category:
-  resource: "@AdminBundle/Resources/config/routing/api/category.yml"
-  prefix: /category
   host: '%host%'
 
 admin_sound:

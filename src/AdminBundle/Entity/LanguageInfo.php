@@ -3,12 +3,13 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Sylius\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * LanguageInfo
  */
-class LanguageInfo
+class LanguageInfo implements ResourceInterface, ContainsLanguageInterface
 {
     /**
      * @var int $id

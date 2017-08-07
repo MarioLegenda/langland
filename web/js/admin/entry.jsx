@@ -3,7 +3,7 @@
     var $collectionHolder;
 
 // setup an "add a tag" link
-    var $addTagLink = $('<a href="#" class="add_tag_link">Add new ... </a>');
+    var $addTagLink = $('<a href="#" class="add_tag_link btn btn-primary btn-xs">Add new ... </a>');
     var $newLinkLi = $('<div class="margin-top-30"></div>').append($addTagLink);
 
     $(document).ready(function() {
@@ -45,13 +45,13 @@
         $collectionHolder.data('index', index + 1);
 
         // Display the form in the page in an li, before the "Add a tag" link li
-        var $newFormLi = $('<div class="margin-bottom-10"></div>').append(newForm);
+        var $newFormLi = $('<div class="row" style="margin: 0 0 10px 15px"></div>').append($('<div class="row"></div>').append(newForm));
         $newLinkLi.before($newFormLi);
         addTagFormDeleteLink($newFormLi);
     }
 
     function addTagFormDeleteLink($tagFormLi) {
-        var $removeFormA = $('<div class="margin-top-10"><a class="margin-top-10 text-highlight" href="#">Remove ... </a></div>');
+        var $removeFormA = $('<div class="row"><a class="margin-top-10 text-highlight btn btn-danger btn-xs" href="#">Remove ... </a></div>');
         $tagFormLi.append($removeFormA);
 
         $removeFormA.on('click', function(e) {

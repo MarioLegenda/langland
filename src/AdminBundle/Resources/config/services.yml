@@ -1,4 +1,10 @@
 services:
+    # form sevices
+
+    admin.form.language_choice:
+        class: AdminBundle\Form\Type\Generic\LanguageChoiceFormService
+        arguments: ['@doctrine.orm.entity_manager', '@request_stack']
+
     admin.validator.unique_constraint_validator:
         class: AdminBundle\Validator\Constraint\UniqueConstraintValidator
         arguments: ['@doctrine.orm.entity_manager']
@@ -52,7 +58,7 @@ services:
 
     admin.form.language_info:
         class: AdminBundle\Form\Type\LanguageInfoType
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@admin.form.language_choice']
         tags:
             - { name: form.type }
 

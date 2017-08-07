@@ -3,10 +3,10 @@
 namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\LanguageInfo;
+use AdminBundle\Form\Type\Generic\LanguageChoiceFormService;
 use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -15,16 +15,16 @@ class LanguageInfoType extends AbstractType
 {
     use TextTypeTrait, LanguageChoiceTrait;
     /**
-     * @var EntityManager $em
+     * @var LanguageChoiceFormService $em
      */
-    private $em;
+    private $languageChoiceService;
     /**
      * WordType constructor.
-     * @param EntityManager $em
+     * @param LanguageChoiceFormService $languageChoiceFormService
      */
-    public function __construct(EntityManager $em)
+    public function __construct(LanguageChoiceFormService $languageChoiceFormService)
     {
-        $this->em = $em;
+        $this->languageChoiceService = $languageChoiceFormService;
     }
     /**
      * @param FormBuilderInterface $builder
@@ -32,11 +32,12 @@ class LanguageInfoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $languageInfo = $options['languageInfo'];
+        $this->addTextType('Name: ', 'name', $builder);
 
-        $this
-            ->addTextType('Name: ', 'name', $builder)
-            ->addLanguageChoice($builder, $this->em, $languageInfo);
+        $this->languageChoiceService->getLanguageChoice(
+            'LanguageInfo',
+            $builder
+        );
 
         $builder->add('languageInfoTexts', CollectionType::class, array(
             'label' => 'Add language text: ',
@@ -61,7 +62,5 @@ class LanguageInfoType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => LanguageInfo::class,
         ));
-
-        $resolver->setRequired('languageInfo');
     }
 }

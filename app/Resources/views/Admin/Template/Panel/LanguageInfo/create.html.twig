@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-sm-10">
+
+        {% if form.vars.errors | length %}
+            <div class="alert alert-danger">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        <form role="form" action="{{ path('admin_language_info_create') }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
+
+            {% include '::Admin/Template/Form/flashNotice.html.twig' %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.name, 'description': 'add this language infos name. It will be show as a title' } only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.language, 'description': 'choose a language for this language info' } only %}
+
+            <div class="row form-group">
+                <div class="col-xs-12">
+                    {{ form_label(form.languageInfoTexts) }}
+                </div>
+
+                <i class="description help-block" style="margin-left: 14px">
+                    <span class="highlight">*</span>These fields will be show as a carousel when the user first time picks a language to learn
+                </i>
+
+                <div class="translations" style="margin-left: 30px" data-prototype="<div id='form_languageInfoTexts___name__'><div><label for='form_languageInfoTexts___name___name' class='required'>Language info name: </label><input type='text' class='form-control' id='form_languageInfoTexts___name___name' name='form[languageInfoTexts][__name__][name]' required='required' /></div><div><label for='form_languageInfoTexts___name___text' class='required'>Language info text: </label><textarea id='form_languageInfoTexts___name___text' name='form[languageInfoTexts][__name__][text]' required='required' class='form-control'></textarea></div></div>">
+                    {% for text in form.languageInfoTexts %}
+                        <div class="translation">
+                            <div>
+                                {{ form_label(text.name) }}
+                                {{ form_widget(text.name, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div>
+                                {{ form_label(text.text) }}
+                                {{ form_widget(text.text, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+            {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Create'} %}
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</div>

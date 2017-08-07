@@ -1,11 +1,25 @@
 admin_language_info_index:
-    path: /
-    defaults: { _controller: AdminBundle:LanguageInfo:index }
+    path: /language-info
+    methods: [GET]
+    defaults:
+        _controller: admin.controller.languageInfo:indexAction
+        _sylius:
+            template: Admin/Template/Panel/_listing.html.twig
 
 admin_language_info_create:
-    path: /create
-    defaults: { _controller: AdminBundle:LanguageInfo:create }
+    path: /language-info/create
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.languageInfo:createAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_language_info_create
 
-admin_language_info_edit:
-    path: /edit/{languageInfoId}
-    defaults: { _controller: AdminBundle:LanguageInfo:edit }
+admin_language_info_update:
+    path: /language-info/update/{id}
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.languageInfo:updateAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_language_info_update

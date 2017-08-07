@@ -184,8 +184,8 @@ class LanguageController extends ResourceController
                 'resource' => $resource,
                 $this->metadata->getName() => $resource,
                 'form' => $form->createView(),
-                'listing_title' => 'Create language',
-                'template' => '/Language/update.html.twig'
+                'listing_title' => 'Edit language info',
+                'template' => '/LanguageInfo/update.html.twig'
             ])
             ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
         ;

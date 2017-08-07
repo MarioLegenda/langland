@@ -67,17 +67,4 @@ trait LanguageChoiceTrait
 
         return $languageType;
     }
-
-    private function createLanguageChoices(EntityManager $em)
-    {
-        $languages = $em->getRepository('AdminBundle:Language')->findAll();
-
-        $choices = array();
-
-        foreach ($languages as $language) {
-            $choices[$language->getName()] = $language->getId();
-        }
-
-        return $choices;
-    }
 }

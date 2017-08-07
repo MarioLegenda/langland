@@ -10,7 +10,7 @@ admin_category:
 
 admin_language_info:
   resource: "@AdminBundle/Resources/config/routing/api/language_info.yml"
-  prefix: /language-info
+  prefix: /
   host: '%host%'
 
 admin_word:

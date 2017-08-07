@@ -4,113 +4,192 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\LanguageInfo;
 use Library\Event\PrePersistEvent;
-use Library\Event\PreUpdateEvent;
-use AdminBundle\Form\Type\LanguageInfoType;
+use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
+use Sylius\Component\Resource\ResourceActions;
+use FOS\RestBundle\View\View;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Response;
+use Sylius\Component\Resource\Exception\UpdateHandlingException;
 
-class LanguageInfoController extends RepositoryController
+class LanguageInfoController extends ResourceController
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $languageInfos = $this->getRepository('AdminBundle:LanguageInfo')->findAll();
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        return $this->render('::Admin/LanguageInfo/index.html.twig', array(
-            'languageInfos' => $languageInfos,
-        ));
+        $this->isGrantedOr403($configuration, ResourceActions::INDEX);
+        $resources = $this->resourcesCollectionProvider->get($configuration, $this->repository);
+
+        $view = View::create($resources);
+
+        if ($configuration->isHtmlRequest()) {
+            $view
+                ->setTemplate($configuration->getTemplate(ResourceActions::INDEX . '.html'))
+                ->setTemplateVar($this->metadata->getPluralName())
+                ->setData([
+                    'configuration' => $configuration,
+                    'metadata' => $this->metadata,
+                    'resources' => $resources,
+                    $this->metadata->getPluralName() => $resources,
+                    'listing_title' => 'LanguageInfo',
+                    'template' => '/LanguageInfo/index.html.twig'
+                ])
+            ;
+        }
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 
     public function createAction(Request $request)
     {
-        $languageInfo = new LanguageInfo();
-        $form = $this->createForm(LanguageInfoType::class, $languageInfo, array(
-            'languageInfo' => $languageInfo,
-        ));
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        $form->handleRequest($request);
+        $this->isGrantedOr403($configuration, ResourceActions::CREATE);
+        $newResource = $this->newResourceFactory->create($configuration, $this->factory);
 
-        if ($form->isSubmitted() and $form->isValid()) {
-            $em = $this->get('doctrine')->getManager();
+        $form = $this->resourceFormFactory->create($configuration, $newResource);
 
-            $this->dispatchEvent(PrePersistEvent::class, array(
-                'languageInfo' => $languageInfo,
-            ));
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $newResource = $form->getData();
 
-            $em->persist($languageInfo);
-            $em->flush();
+            $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::CREATE, $configuration, $newResource);
+
+            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
+                throw new HttpException($event->getErrorCode(), $event->getMessage());
+            }
+            if ($event->isStopped()) {
+                $this->flashHelper->addFlashFromEvent($configuration, $event);
+
+                return $this->redirectHandler->redirectToIndex($configuration, $newResource);
+            }
+
+            if ($configuration->hasStateMachine()) {
+                $this->stateMachine->apply($configuration, $newResource);
+            }
+
+            $this->dispatchEvent(PrePersistEvent::class, $newResource);
+
+            $this->repository->add($newResource);
 
             $this->addFlash(
                 'notice',
                 sprintf('Language created successfully')
             );
 
-            return $this->redirectToRoute('admin_language_info_create');
-        } else if ($form->isSubmitted() and !$form->isValid()) {
-            $response = $this->render('::Admin/LanguageInfo/create.html.twig', array(
-                'form' => $form->createView(),
-            ));
+            if (!$configuration->isHtmlRequest()) {
+                return $this->viewHandler->handle($configuration, View::create($newResource, Response::HTTP_CREATED));
+            }
 
-            $response->setStatusCode(400);
-
-            return $response;
+            return $this->redirectHandler->redirectToResource($configuration, $newResource);
         }
 
-        return $this->render('::Admin/LanguageInfo/create.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        if (!$configuration->isHtmlRequest()) {
+            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
+        }
+
+        $this->eventDispatcher->dispatchInitializeEvent(ResourceActions::CREATE, $configuration, $newResource);
+
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $newResource,
+                $this->metadata->getName() => $newResource,
+                'form' => $form->createView(),
+                'listing_title' => 'Create language info',
+                'template' => '/LanguageInfo/create.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 
-    public function editAction(Request $request, $languageInfoId)
+    public function updateAction(Request $request)
     {
-        $languageInfo = $this->getRepository('AdminBundle:LanguageInfo')->find($languageInfoId);
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        if (empty($languageInfo)) {
-            throw $this->createNotFoundException();
-        }
+        $this->isGrantedOr403($configuration, ResourceActions::UPDATE);
+        $resource = $this->findOr404($configuration);
 
-        $form = $this->createForm(LanguageInfoType::class, $languageInfo, array(
-            'languageInfo' => $languageInfo,
-        ));
+        $form = $this->resourceFormFactory->create($configuration, $resource);
 
-        $form->handleRequest($request);
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $form->handleRequest($request)->isValid()) {
+            $resource = $form->getData();
 
-        if ($form->isSubmitted() and $form->isValid()) {
-            $em = $this->get('doctrine')->getManager();
+            /** @var ResourceControllerEvent $event */
+            $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::UPDATE, $configuration, $resource);
+
+            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
+                throw new HttpException($event->getErrorCode(), $event->getMessage());
+            }
+
+            if ($event->isStopped()) {
+                $this->flashHelper->addFlashFromEvent($configuration, $event);
+
+                if ($event->hasResponse()) {
+                    return $event->getResponse();
+                }
+
+                return $this->redirectHandler->redirectToResource($configuration, $resource);
+            }
 
             $this->dispatchEvent(PrePersistEvent::class, array(
-                'languageInfo' => $languageInfo,
+                'languageInfo' => $resource,
             ));
 
-            $this->dispatchEvent(PreUpdateEvent::class, array(
-                'languageInfo' => $languageInfo,
-            ));
+            $this->removeDeletetedTexts($resource);
 
-            $em->persist($languageInfo);
-            $em->flush();
+            try {
+                $this->resourceUpdateHandler->handle($resource, $configuration, $this->manager);
+            } catch (UpdateHandlingException $exception) {
+                if (!$configuration->isHtmlRequest()) {
+                    return $this->viewHandler->handle(
+                        $configuration,
+                        View::create($form, $exception->getApiResponseCode())
+                    );
+                }
+
+                $this->flashHelper->addErrorFlash($configuration, $exception->getFlash());
+
+                return $this->redirectHandler->redirectToReferer($configuration);
+            }
+
+            if (!$configuration->isHtmlRequest()) {
+                $view = $configuration->getParameters()->get('return_content', false) ? View::create($resource, Response::HTTP_OK) : View::create(null, Response::HTTP_NO_CONTENT);
+
+                return $this->viewHandler->handle($configuration, $view);
+            }
 
             $this->addFlash(
                 'notice',
-                sprintf('Language edited successfully')
+                sprintf('Language info updated successfully')
             );
 
-            return $this->redirectToRoute('admin_language_info_edit', array(
-                'languageInfoId' => $languageInfo->getId(),
-            ));
-
-        } else if ($form->isSubmitted() and !$form->isValid()) {
-            $response = $this->render('::Admin/LanguageInfo/edit.html.twig', array(
-                'languageInfo' => $languageInfo,
-                'form' => $form->createView(),
-            ));
-
-            $response->setStatusCode(400);
-
-            return $response;
+            return $this->redirectHandler->redirectToResource($configuration, $resource);
         }
 
-        return $this->render('::Admin/LanguageInfo/edit.html.twig', array(
-            'languageInfo' => $languageInfo,
-            'form' => $form->createView(),
-        ));
+        if (!$configuration->isHtmlRequest()) {
+            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
+        }
+
+        //$this->eventDispatcher->dispatchInitializeEvent(ResourceActions::UPDATE, $configuration, $resource);
+
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $resource,
+                $this->metadata->getName() => $resource,
+                'form' => $form->createView(),
+                'listing_title' => 'Edit language info',
+                'template' => '/LanguageInfo/update.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 
     private function removeDeletetedTexts(LanguageInfo $languageInfo)
@@ -126,5 +205,18 @@ class LanguageInfoController extends RepositoryController
                 $em->remove($text);
             }
         }
+    }
+    /**
+     * @param string $eventClass
+     * @param $entity
+     * @return void
+     */
+    protected function dispatchEvent(string $eventClass, $entity)
+    {
+        $eventDispatcher = $this->get('event_dispatcher');
+
+        $event = new $eventClass($entity);
+
+        $eventDispatcher->dispatch($event::NAME, $event);
     }
 }

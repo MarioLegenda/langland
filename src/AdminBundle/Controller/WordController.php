@@ -6,12 +6,41 @@ use AdminBundle\Entity\Word;
 use Library\Event\PrePersistEvent;
 use Library\Event\PreUpdateEvent;
 use AdminBundle\Form\Type\WordType;
+use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
 use Library\Event\FileUploadEvent;
+use Sylius\Component\Resource\ResourceActions;
+use FOS\RestBundle\View\View;
 
-class WordController extends RepositoryController
+class WordController extends ResourceController
 {
-    public function indexAction()
+    public function indexAction(Request $request)
+    {
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+
+        $this->isGrantedOr403($configuration, ResourceActions::INDEX);
+        $resources = $this->resourcesCollectionProvider->get($configuration, $this->repository);
+
+        $view = View::create($resources);
+
+        if ($configuration->isHtmlRequest()) {
+            $view
+                ->setTemplate($configuration->getTemplate(ResourceActions::INDEX . '.html'))
+                ->setTemplateVar($this->metadata->getPluralName())
+                ->setData([
+                    'configuration' => $configuration,
+                    'metadata' => $this->metadata,
+                    'resources' => $resources,
+                    $this->metadata->getPluralName() => $resources,
+                    'listing_title' => 'Words',
+                    'template' => '/Word/index.html.twig'
+                ])
+            ;
+        }
+
+        return $this->viewHandler->handle($configuration, $view);
+    }
+/*    public function indexAction()
     {
         $words = $this->getRepository('AdminBundle:Word')->findBy(array(), array(
             'id' => 'DESC',
@@ -20,7 +49,7 @@ class WordController extends RepositoryController
         return $this->render('::Admin/Word/index.html.twig', array(
             'words' => $words,
         ));
-    }
+    }*/
 
     public function createAction(Request $request)
     {

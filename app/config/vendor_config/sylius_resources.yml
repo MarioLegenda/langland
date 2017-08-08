@@ -17,3 +17,9 @@ sylius_resource:
                 controller: AdminBundle\Controller\LanguageInfoController
                 model: AdminBundle\Entity\LanguageInfo
                 form: AdminBundle\Form\Type\LanguageInfoType
+
+        admin.word:
+            classes:
+                controller: AdminBundle\Controller\WordController
+                model: AdminBundle\Entity\Word
+                form: AdminBundle\Form\Type\WordType

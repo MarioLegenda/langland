@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-sm-10">
         {{ form_errors(form) }}
-        <form role="form" action="{{ path('admin_language__update', { 'id': language.id }) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
+        <form role="form" action="{{ path('admin_language_update', { 'id': language.id }) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
 
             {% include '::Admin/Template/Form/flashNotice.html.twig' %}
 

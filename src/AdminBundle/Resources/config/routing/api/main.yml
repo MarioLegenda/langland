@@ -1,3 +1,8 @@
+admin_dashboard:
+  path: /dashboard
+  defaults: { _controller: AdminBundle:Main:dashboard}
+  methods: [GET]
+
 admin_language:
   resource: "@AdminBundle/Resources/config/routing/api/language.yml"
   prefix: /
@@ -15,7 +20,7 @@ admin_language_info:
 
 admin_word:
   resource: "@AdminBundle/Resources/config/routing/api/word.yml"
-  prefix: /word
+  prefix: /
   host: '%host%'
 
 admin_sound:

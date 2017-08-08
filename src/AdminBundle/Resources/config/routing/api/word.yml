@@ -1,17 +1,28 @@
-admin_word_create:
-    path: /create
-    defaults: { _controller: AdminBundle:Word:create }
-    methods: [GET, POST]
-
-admin_word_edit:
-    path: /edit/{id}
-    defaults: { _controller: AdminBundle:Word:edit }
-    methods: [GET, POST]
-
 admin_word_index:
-    path: /
-    defaults: { _controller: AdminBundle:Word:index }
+    path: /words
     methods: [GET]
+    defaults:
+        _controller: admin.controller.word:indexAction
+        _sylius:
+            template: Admin/Template/Panel/_listing.html.twig
+
+admin_word_create:
+    path: /word/create
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.word:createAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_word_create
+
+admin_word_update:
+    path: /word/update/{id}
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.word:updateAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_word_update
 
 admin_word_remove:
     path: /remove/{id}

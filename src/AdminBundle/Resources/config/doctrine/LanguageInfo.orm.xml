@@ -17,6 +17,7 @@
     <one-to-many target-entity="AdminBundle\Entity\LanguageInfoText" mapped-by="languageInfo" field="languageInfoTexts">
       <cascade>
         <cascade-persist/>
+        <cascade-remove/>
       </cascade>
     </one-to-many>
 

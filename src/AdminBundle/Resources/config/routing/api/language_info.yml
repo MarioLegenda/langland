@@ -23,3 +23,11 @@ admin_language_info_update:
         _sylius:
             template: Admin/Template/Panel/_action.html.twig
             redirect: admin_language_info_update
+
+admin_language_info_delete:
+    path: /language-info/delete/{id}
+    methods: [POST]
+    defaults:
+        _controller: admin.controller.languageInfo:removeAction
+        _sylius:
+            redirect: admin_language_info_index

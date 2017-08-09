@@ -157,8 +157,6 @@ class LanguageInfoController extends GenericResourceController implements Generi
             return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
         }
 
-        //$this->eventDispatcher->dispatchInitializeEvent(ResourceActions::UPDATE, $configuration, $resource);
-
         $view = View::create()
             ->setData([
                 'configuration' => $configuration,
@@ -175,6 +173,23 @@ class LanguageInfoController extends GenericResourceController implements Generi
         return $this->viewHandler->handle($configuration, $view);
     }
 
+    public function removeAction(Request $request, $id)
+    {
+        $languageInfo = $this->get('doctrine')->getRepository('AdminBundle:LanguageInfo')->find($id);
+
+        $em = $this->get('doctrine')->getManager();
+
+        $em->remove($languageInfo);
+        $em->flush();
+
+        $this->addFlash(
+            'notice',
+            sprintf('Language info deleted successfully')
+        );
+
+        return $this->redirectToRoute('admin_language_info_index');
+    }
+
     private function removeDeletetedTexts(LanguageInfo $languageInfo)
     {
         $em = $this->get('doctrine')->getManager();
@@ -188,18 +203,5 @@ class LanguageInfoController extends GenericResourceController implements Generi
                 $em->remove($text);
             }
         }
-    }
-    /**
-     * @param string $eventClass
-     * @param $entity
-     * @return void
-     */
-    protected function dispatchEvent(string $eventClass, $entity)
-    {
-        $eventDispatcher = $this->get('event_dispatcher');
-
-        $event = new $eventClass($entity);
-
-        $eventDispatcher->dispatch($event::NAME, $event);
     }
 }

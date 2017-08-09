@@ -17,6 +17,7 @@
                         <tr role="row">
                             <th class="sorting_asc" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending" style="width: 205px;">Language info</th>
                             <th tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" style="width: 50px;">Action</th>
+                            <th tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" style="width: 50px;">Action</th>
                         </tr>
                         </thead>
 
@@ -25,7 +26,12 @@
                             <tr class="gradeA odd" role="row">
                                 <td class="sorting_1">{{ languageInfo.name }}</td>
                                 <td class="sorting_1">
-                                    <a class="btn btn-primary" style="float: right" href="{{ path('admin_language_info_update', {'id': languageInfo.id}) }}">Edit</a>
+                                    <a class="btn btn-primary" style="margin-left: 35%" href="{{ path('admin_language_info_update', {'id': languageInfo.id}) }}">Edit</a>
+                                </td>
+                                <td class="sorting_1">
+                                    <form method="post" action="{{ path('admin_language_info_delete', {'id': languageInfo.id}) }}">
+                                        <button type="submit" class="btn btn-danger" style="margin-left: 35%">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         {% endfor %}

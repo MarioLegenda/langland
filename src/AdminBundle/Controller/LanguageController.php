@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Entity\Image;
+use AdminBundle\Entity\Language;
 use Library\Event\FileUploadEvent;
 use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,6 +81,8 @@ class LanguageController extends GenericResourceController implements GenericCon
         $this->isGrantedOr403($configuration, ResourceActions::UPDATE);
         $resource = $this->findOr404($configuration);
 
+        $this->setImageIfExists($resource);
+
         $form = $this->resourceFormFactory->create($configuration, $resource);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $form->handleRequest($request)->isValid()) {
@@ -121,5 +125,16 @@ class LanguageController extends GenericResourceController implements GenericCon
         ;
 
         return $this->viewHandler->handle($configuration, $view);
+    }
+
+    private function setImageIfExists(Language $language)
+    {
+        $image = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
+            'language' => $language,
+        ));
+
+        if (!empty($image)) {
+            $language->setImage($image[0]);
+        }
     }
 }

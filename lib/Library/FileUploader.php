@@ -48,6 +48,7 @@ class FileUploader
     {
         $this->imageDir = realpath($uploadDirs['image_upload_dir']);
         $this->soundDir = realpath($uploadDirs['sound_upload_dir']);
+        $this->relativePath = $uploadDirs['relative_image_path'];
         $this->imageResize = $imageResize;
         $this->fileNamer = $fileNamer;
     }
@@ -71,6 +72,7 @@ class FileUploader
 
         $this->data = array(
             'fileName' => $fileName,
+            'relativePath' => $this->relativePath,
             'targetDir' => $this->imageDir,
             'originalName' => $originalName,
             'fullPath' => $this->imageDir.'/'.$fileName,

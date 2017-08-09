@@ -23,6 +23,8 @@ class Image
      * @var string $fullPath
      */
     private $fullPath;
+
+    private $relativePath;
     /**
      * @var UploadedFile $imageFile
      */
@@ -129,6 +131,23 @@ class Image
     public function setFullPath($fullPath) : Image
     {
         $this->fullPath = $fullPath;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getRelativePath() : string
+    {
+        return $this->relativePath;
+    }
+    /**
+     * @param mixed $relativePath
+     * @return Image
+     */
+    public function setRelativePath(string $relativePath) : Image
+    {
+        $this->relativePath = $relativePath;
 
         return $this;
     }

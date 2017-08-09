@@ -12,6 +12,7 @@
 
         <field name="name" type="string" length="255" />
         <field name="originalName" type="string" length="255" column="original_name"/>
+        <field name="relativePath" type="string" length="255" column="relative_path"/>
         <field name="targetDir" type="string" length="255" column="target_dir"/>
         <field name="fullPath" type="string" length="255" column="full_path" />
         <field name="createdAt" type="datetime" column="created_at"/>

@@ -12,33 +12,16 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Response;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 
-class LanguageInfoController extends ResourceController
+class LanguageInfoController extends GenericResourceController implements GenericControllerInterface
 {
-    public function indexAction(Request $request)
+    public function getListingTitle(): string
     {
-        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+        return 'Language infos';
+    }
 
-        $this->isGrantedOr403($configuration, ResourceActions::INDEX);
-        $resources = $this->resourcesCollectionProvider->get($configuration, $this->repository);
-
-        $view = View::create($resources);
-
-        if ($configuration->isHtmlRequest()) {
-            $view
-                ->setTemplate($configuration->getTemplate(ResourceActions::INDEX . '.html'))
-                ->setTemplateVar($this->metadata->getPluralName())
-                ->setData([
-                    'configuration' => $configuration,
-                    'metadata' => $this->metadata,
-                    'resources' => $resources,
-                    $this->metadata->getPluralName() => $resources,
-                    'listing_title' => 'LanguageInfo',
-                    'template' => '/LanguageInfo/index.html.twig'
-                ])
-            ;
-        }
-
-        return $this->viewHandler->handle($configuration, $view);
+    public function getName(): string
+    {
+        return 'LanguageInfo';
     }
 
     public function createAction(Request $request)

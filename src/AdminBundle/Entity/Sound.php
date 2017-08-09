@@ -2,9 +2,10 @@
 
 namespace AdminBundle\Entity;
 
+use Sylius\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Sound
+class Sound implements ResourceInterface
 {
     /**
      * @var int $id

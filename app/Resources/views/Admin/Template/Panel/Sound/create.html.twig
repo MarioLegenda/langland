@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-sm-10">
+
+        {% if form.vars.errors | length %}
+            <div class="alert alert-danger">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
+        <form role="form" action="{{ path('admin_sound_create') }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
+
+            {% include '::Admin/Template/Form/flashNotice.html.twig' %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.soundFile, 'description': 'add a sound that will later be connected to lessons and courses' } only %}
+
+            {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Create'} %}
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</div>

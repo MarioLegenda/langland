@@ -67,9 +67,12 @@ class FileUploaderListener
                 ->setTargetDir($fileData['targetDir'])
                 ->setFullPath($fileData['fullPath']);
 
+            dump($newSound);
+
             $this->em->persist($newSound);
-            $this->em->flush();
         }
+
+        $this->em->flush();
     }
 
     private function uploadWordImage(Word $word)

@@ -1,14 +1,25 @@
-admin_sound_create:
-    path: /create
-    defaults: { _controller: AdminBundle:Sound:create }
-    methods: [POST, GET]
-
 admin_sound_index:
-    path: /
-    defaults: { _controller: AdminBundle:Sound:index }
+    path: /sounds
     methods: [GET]
+    defaults:
+        _controller: admin.controller.sound:indexAction
+        _sylius:
+            template: Admin/Template/Panel/_listing.html.twig
 
-admin_find_sounds:
-    path: /find-sounds
-    defaults: { _controller: AdminBundle:Ajax/Sound:findSounds }
-    methods: [GET]
+admin_sound_create:
+    path: /sound/create
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.sound:createAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_sound_create
+
+admin_sound_update:
+    path: /sound/update/{id}
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.sound:updateAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_sound_update

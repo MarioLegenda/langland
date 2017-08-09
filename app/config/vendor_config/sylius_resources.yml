@@ -23,3 +23,9 @@ sylius_resource:
                 controller: AdminBundle\Controller\WordController
                 model: AdminBundle\Entity\Word
                 form: AdminBundle\Form\Type\WordType
+
+        admin.sound:
+            classes:
+                controller: AdminBundle\Controller\SoundController
+                model: AdminBundle\Entity\Sound
+                form: AdminBundle\Form\Type\SoundType

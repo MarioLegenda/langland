@@ -6,46 +6,64 @@ use AdminBundle\Entity\Sound;
 use Library\Event\FileUploadEvent;
 use AdminBundle\Form\Type\SoundType;
 use Symfony\Component\HttpFoundation\Request;
+use Sylius\Component\Resource\ResourceActions;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Library\Event\PrePersistEvent;
+use FOS\RestBundle\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
-class SoundController extends RepositoryController
+class SoundController extends GenericResourceController implements GenericControllerInterface
 {
-    public function indexAction()
+    /**
+     * @return string
+     */
+    public function getListingTitle(): string
     {
-        $sounds = $this->getRepository('AdminBundle:Sound')->findAll();
-
-        return $this->render('::Admin/Sound/index.html.twig', array(
-            'sounds' => $sounds,
-        ));
+        return 'Sounds';
+    }
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'Sound';
     }
 
     public function createAction(Request $request)
     {
-        $sound = new Sound();
-        $form = $this->createForm(SoundType::class, $sound);
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        $form->handleRequest($request);
+        $this->isGrantedOr403($configuration, ResourceActions::CREATE);
+        $newResource = $this->newResourceFactory->create($configuration, $this->factory);
 
-        if ($form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(FileUploadEvent::class, $sound);
+        $form = $this->resourceFormFactory->create($configuration, $newResource);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $newResource = $form->getData();
+
+            $this->dispatchEvent(FileUploadEvent::class, $newResource);
 
             $this->addFlash(
                 'notice',
                 sprintf('Sound(s) created successfully')
             );
 
-            return $this->redirectToRoute('admin_sound_create');
-        } else if ($form->isSubmitted() and !$form->isValid()) {
-            $response = $this->render('::Admin/Sound/create.html.twig', array(
-                'form' => $form->createView(),
-            ));
-
-            $response->setStatusCode(400);
-
-            return $response;
+            return $this->redirectHandler->redirectToResource($configuration, $newResource);
         }
 
-        return $this->render('::Admin/Sound/create.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $newResource,
+                $this->metadata->getName() => $newResource,
+                'form' => $form->createView(),
+                'listing_title' => 'Sounds',
+                'template' => '/Sound/create.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 }

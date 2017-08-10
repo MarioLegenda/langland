@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-sm-10">
+        {{ form_errors(form) }}
+        <form role="form" action="{{ path('admin_course_update', { 'id': course.id }) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
+
+            {% include '::Admin/Template/Form/flashNotice.html.twig' %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.language, 'description': 'choose a language for this course'} only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.name, 'description': 'what is the course name?'} only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.whatToLearn, 'description': 'This field will be shown in course listing'} only %}
+
+            {% include '::Admin/Template/Form/checkbox.html.twig' with {'field' : form.initialCourse, 'description': 'Is this the first course the user should learn?'} only %}
+
+            {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Edit'} %}
+
+            {{ form_rest(form) }}
+        </form>
+    </div>
+</div>

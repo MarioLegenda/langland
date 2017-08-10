@@ -52,7 +52,7 @@ services:
 
     admin.form.course:
         class: AdminBundle\Form\Type\CourseType
-        arguments: ['@doctrine.orm.entity_manager', '@admin.validation_group_resolver']
+        arguments: ['@admin.form.language_choice']
         tags:
             - { name: form.type }
 

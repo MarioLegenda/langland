@@ -1,17 +1,28 @@
-admin_course_create:
-    path: /create
-    defaults: { _controller: AdminBundle:Course:create }
-    methods: [POST, GET]
-
 admin_course_index:
-    path: /
-    defaults: { _controller: AdminBundle:Course:index }
+    path: /course
     methods: [GET]
+    defaults:
+        _controller: admin.controller.course:indexAction
+        _sylius:
+            template: Admin/Template/Panel/_listing.html.twig
 
-admin_course_edit:
-    path: /edit/{id}
-    defaults: { _controller: AdminBundle:Course:edit }
-    methods: [GET, POST]
+admin_course_create:
+    path: /course/create
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.course:createAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_course_create
+
+admin_course_update:
+    path: /course/update/{id}
+    methods: [POST, GET]
+    defaults:
+        _controller: admin.controller.course:updateAction
+        _sylius:
+            template: Admin/Template/Panel/_action.html.twig
+            redirect: admin_course_update
 
 admin_course_managment:
   resource: "@AdminBundle/Resources/config/routing/api/course/course.yml"

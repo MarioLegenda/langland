@@ -13,7 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class LanguageInfoType extends AbstractType
 {
-    use TextTypeTrait, LanguageChoiceTrait;
+    use TextTypeTrait;
     /**
      * @var LanguageChoiceFormService $em
      */

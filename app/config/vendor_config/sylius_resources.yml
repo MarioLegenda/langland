@@ -29,3 +29,10 @@ sylius_resource:
                 controller: AdminBundle\Controller\SoundController
                 model: AdminBundle\Entity\Sound
                 form: AdminBundle\Form\Type\SoundType
+
+        admin.course:
+            classes:
+                controller: AdminBundle\Controller\CourseController
+                model: AdminBundle\Entity\Course
+                form: AdminBundle\Form\Type\CourseType
+

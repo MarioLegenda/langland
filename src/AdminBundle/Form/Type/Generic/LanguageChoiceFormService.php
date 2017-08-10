@@ -4,7 +4,6 @@ namespace AdminBundle\Form\Type\Generic;
 
 use AdminBundle\Entity\ContainsLanguageInterface;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,7 +15,9 @@ class LanguageChoiceFormService
      * @var EntityManager $em
      */
     private $em;
-
+    /**
+     * @var null|\Symfony\Component\HttpFoundation\Request
+     */
     private $request;
     /**
      * LanguageChoiceFormService constructor.
@@ -45,10 +46,10 @@ class LanguageChoiceFormService
             $entity = $this->em->getRepository(sprintf('AdminBundle:%s', $entityName))->find($entityId);
 
             if (!$entity instanceof ContainsLanguageInterface) {
-                throw new RuntimeException(
-                    'A form cannot use the %s if the working entity does not implement %s',
+                throw new \RuntimeException(
+                    sprintf('A form cannot use the %s if the working entity does not implement %s',
                     LanguageChoiceFormService::class,
-                    ContainsLanguageInterface::class
+                    ContainsLanguageInterface::class)
                 );
             }
 

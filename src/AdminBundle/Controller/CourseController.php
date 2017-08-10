@@ -2,70 +2,115 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Entity\Course;
 use AdminBundle\Form\Type\CourseType;
+use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Symfony\Component\HttpFoundation\Request;
 use Library\Event\PrePersistEvent;
+use Sylius\Component\Resource\ResourceActions;
+use FOS\RestBundle\View\View;
 
-class CourseController extends RepositoryController
+class CourseController extends GenericResourceController implements GenericControllerInterface
 {
-    public function indexAction()
+    public function getListingTitle(): string
     {
-        $courses = $this->getRepository('AdminBundle:Course')->findBy(array(), array(
-            'id' => 'DESC',
-        ));
+        return 'Courses';
+    }
 
-        return $this->render('::Admin/Course/index.html.twig', array(
-            'courses' => $courses,
-        ));
+    public function getName(): string
+    {
+        return 'Course';
     }
 
     public function createAction(Request $request)
     {
-        $language = $this->getRepository('AdminBundle:Language')->find(1);
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        if (empty($language)) {
-            return $this->render('::Admin/Course/create.html.twig', array(
-                'no_language' => true,
-            ));
-        }
+        $this->isGrantedOr403($configuration, ResourceActions::CREATE);
+        $newResource = $this->newResourceFactory->create($configuration, $this->factory);
 
-        $course = new Course();
-        $form = $this->createForm(CourseType::class, $course, array(
-            'course' => $course,
-        ));
+        $form = $this->resourceFormFactory->create($configuration, $newResource);
 
-        $form->handleRequest($request);
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $newResource = $form->getData();
 
-        if ($form->isSubmitted() and $form->isValid()) {
-            $em = $this->get('doctrine')->getManager();
+            if ($configuration->hasStateMachine()) {
+                $this->stateMachine->apply($configuration, $newResource);
+            }
 
             $this->dispatchEvent(PrePersistEvent::class, array(
-                'course' => $course,
+                'course' => $newResource,
             ));
 
-            $em->persist($course);
-            $em->flush();
+            $this->repository->add($newResource);
 
             $this->addFlash(
                 'notice',
                 sprintf('Course created successfully')
             );
 
-            return $this->redirectToRoute('admin_course_create');
-        } else if ($form->isSubmitted() and !$form->isValid()) {
-            $response = $this->render('::Admin/Course/create.html.twig', array(
-                'form' => $form->createView(),
-            ));
-
-            $response->setStatusCode(400);
-
-            return $response;
+            return $this->redirectHandler->redirectToResource($configuration, $newResource);
         }
 
-        return $this->render('::Admin/Course/create.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $newResource,
+                $this->metadata->getName() => $newResource,
+                'form' => $form->createView(),
+                'listing_title' => 'Course',
+                'template' => '/Course/create.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
+    }
+
+    public function updateAction(Request $request)
+    {
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+
+        $this->isGrantedOr403($configuration, ResourceActions::UPDATE);
+        $resource = $this->findOr404($configuration);
+
+        $form = $this->resourceFormFactory->create($configuration, $resource);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $form->handleRequest($request)->isValid()) {
+            $resource = $form->getData();
+
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'course' => $resource,
+            ));
+
+            try {
+                $this->resourceUpdateHandler->handle($resource, $configuration, $this->manager);
+            } catch (UpdateHandlingException $exception) {
+                return $this->redirectHandler->redirectToReferer($configuration);
+            }
+
+            $this->addFlash(
+                'notice',
+                sprintf('Course updated successfully')
+            );
+
+            return $this->redirectHandler->redirectToResource($configuration, $resource);
+        }
+
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $resource,
+                $this->metadata->getName() => $resource,
+                'form' => $form->createView(),
+                'listing_title' => 'Course',
+                'template' => '/Course/update.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 
     public function editAction(Request $request, $id)
@@ -121,18 +166,5 @@ class CourseController extends RepositoryController
         return $this->render('::Admin/Course/dashboard.html.twig', array(
             'course' => $course,
         ));
-    }
-
-    private function unmarkInitialCourse()
-    {
-        $initialCourses = $this->getRepository('AdminBundle:Course')->findBy(array(
-            'initialCourse' => true,
-        ));
-
-        foreach ($initialCourses as $course) {
-            $course->setInitialCourse(false);
-
-            $this->getDoctrine()->getManager()->persist($course);
-        }
     }
 }

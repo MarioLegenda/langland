@@ -4,28 +4,27 @@ namespace AdminBundle\Form\Type;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Form\Type\Generic\TraitType\CheckboxTypeTrait;
-use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AdminBundle\Form\Type\Generic\LanguageChoiceFormService;
 
 class CourseType extends AbstractType
 {
-    use TextTypeTrait, LanguageChoiceTrait, TextareaTypeTrait, CheckboxTypeTrait;
+    use TextTypeTrait, TextareaTypeTrait, CheckboxTypeTrait;
     /**
-     * @var EntityManager $em
+     * @var LanguageChoiceFormService $em
      */
-    private $em;
+    private $languageChoiceService;
     /**
-     * CourseType constructor.
-     * @param EntityManager $em
+     * WordType constructor.
+     * @param LanguageChoiceFormService $languageChoiceFormService
      */
-    public function __construct(EntityManager $em)
+    public function __construct(LanguageChoiceFormService $languageChoiceFormService)
     {
-        $this->em = $em;
+        $this->languageChoiceService = $languageChoiceFormService;
     }
     /**
      * @param FormBuilderInterface $builder
@@ -33,13 +32,12 @@ class CourseType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $course = $options['course'];
-
         $this
             ->addTextType('Course name: ', 'name', $builder)
             ->addTextareaType('Description: ', 'whatToLearn', $builder)
-            ->addCheckboxType('Is this the first course?', 'initialCourse', $builder)
-            ->addLanguageChoice($builder, $this->em, $course);
+            ->addCheckboxType('Is this the first course?', 'initialCourse', $builder);
+
+        $this->languageChoiceService->getLanguageChoice('Course', $builder);
     }
     /**
      * @return string
@@ -56,7 +54,5 @@ class CourseType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => Course::class,
         ));
-
-        $resolver->setRequired('course');
     }
 }

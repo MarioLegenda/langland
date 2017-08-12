@@ -113,51 +113,9 @@ class CourseController extends GenericResourceController implements GenericContr
         return $this->viewHandler->handle($configuration, $view);
     }
 
-    public function editAction(Request $request, $id)
-    {
-        $course = $this->getRepository('AdminBundle:Course')->find($id);
-
-        if (empty($course)) {
-            throw $this->createNotFoundException();
-        }
-
-        $form = $this->createForm(CourseType::class, $course, array(
-            'course' => $course,
-        ));
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $em = $this->get('doctrine')->getManager();
-
-                $this->dispatchEvent(PrePersistEvent::class, array(
-                    'course' => $course,
-                ));
-
-                $em->persist($course);
-                $em->flush();
-
-                $this->addFlash(
-                    'notice',
-                    sprintf('Course edited successfully')
-                );
-
-                return $this->redirectToRoute('admin_course_edit', array(
-                    'id' => $course->getId(),
-                ));
-            }
-        }
-
-        return $this->render('::Admin/Course/edit.html.twig', array(
-            'form' => $form->createView(),
-            'course' => $course,
-        ));
-    }
-
     public function manageAction($courseId)
     {
-        $course = $this->getRepository('AdminBundle:Course')->find($courseId);
+        $course = $this->get('doctrine')->getRepository('AdminBundle:Course')->find($courseId);
 
         if (empty($course)) {
             throw $this->createNotFoundException();

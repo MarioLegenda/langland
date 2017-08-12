@@ -1,7 +1,0 @@
-admin_course_managment:
-    path: /{courseId}
-    defaults: { _controller: AdminBundle:Course:manage }
-    methods: [GET]
-    host: '%host%'
-
-

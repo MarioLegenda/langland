@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-sm-10">
+        {{ form_errors(form) }}
+        <form role="form" action="{{ path('admin_word_update', {'id': word.id}) }}" method="POST" class="form" name="addLanguageForm" enctype="multipart/form-data"  novalidate>
+
+            {% include '::Admin/Template/Form/flashNotice.html.twig' %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.language, 'description': 'choose a language for this word' } only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.name, 'description': 'the word to be translated' } only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.pluralForm, 'description': 'plural form of the word' } only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.type, 'description': 'is it an adjective, a noun, a verb?' } only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.description, 'description': 'optional description of this word' } only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.categories, 'description': 'in what category in life would you place this word?' } only %}
+
+            {% include '::Admin/Template/Form/imageField.html.twig' with {'field': form.image, 'description': 'add a unique image describing this word' } only %}
+
+            {% if word.image is not empty %}
+                <div class="row" style="margin-bottom: 25px; margin-left: 1px">
+                    <img class="img-thumbnail" width="128px" height="128px" src="{{word.image.relativePath ~ word.image.name }}" />
+                </div>
+            {% endif %}
+
+            <div class="row form-group" style="margin-left: 30px">
+                <div class="translations" data-prototype='<div id="form_translations___name__"><div><label for="form_translations___name___name" class="required">Translation: </label><input type="text" class="form-control" id="form_translations___name___name" name="form[translations][__name__][name]" required="required" /></div></div>'>
+                    {% for translation in form.translations %}
+                        <div class="translation">
+                            {{ form_widget(translation.name, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Edit'} %}
+    </div>
+
+    {{ form_widget(form._token) }}
+    </form>
+</div>
+</div>

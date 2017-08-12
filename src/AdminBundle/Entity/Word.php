@@ -7,7 +7,7 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class Word implements ResourceInterface
+class Word implements ResourceInterface, ContainsCategoriesInterface, ContainsLanguageInterface
 {
     /**
      * @var int $id

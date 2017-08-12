@@ -5,6 +5,10 @@ services:
         class: AdminBundle\Form\Type\Generic\LanguageChoiceFormService
         arguments: ['@doctrine.orm.entity_manager', '@request_stack']
 
+    admin.form.category_choice:
+        class: AdminBundle\Form\Type\Generic\CategoryChoiceFormService
+        arguments: ['@doctrine.orm.entity_manager', '@request_stack']
+
     admin.validator.unique_constraint_validator:
         class: AdminBundle\Validator\Constraint\UniqueConstraintValidator
         arguments: ['@doctrine.orm.entity_manager']
@@ -40,7 +44,7 @@ services:
 
     admin.form.word:
         class: AdminBundle\Form\Type\WordType
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@admin.form.language_choice', '@admin.form.category_choice']
         tags:
             - { name: form.type }
 

@@ -4,54 +4,74 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Word;
 use Library\Event\PrePersistEvent;
-use Library\Event\PreUpdateEvent;
-use AdminBundle\Form\Type\WordType;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
 use Library\Event\FileUploadEvent;
 use Sylius\Component\Resource\ResourceActions;
 use FOS\RestBundle\View\View;
+use Sylius\Component\Resource\Exception\UpdateHandlingException;
+use Library\Event\PreUpdateEvent;
 
-class WordController extends ResourceController
+class WordController extends GenericResourceController implements GenericControllerInterface
 {
-    public function indexAction(Request $request)
+    public function getName() : string
+    {
+        return 'Word';
+    }
+
+    public function getListingTitle(): string
+    {
+        return 'Words';
+    }
+
+    public function createAction(Request $request)
     {
         $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
 
-        $this->isGrantedOr403($configuration, ResourceActions::INDEX);
-        $resources = $this->resourcesCollectionProvider->get($configuration, $this->repository);
+        $this->isGrantedOr403($configuration, ResourceActions::CREATE);
+        $newResource = $this->newResourceFactory->create($configuration, $this->factory);
 
-        $view = View::create($resources);
+        $form = $this->resourceFormFactory->create($configuration, $newResource);
 
-        if ($configuration->isHtmlRequest()) {
-            $view
-                ->setTemplate($configuration->getTemplate(ResourceActions::INDEX . '.html'))
-                ->setTemplateVar($this->metadata->getPluralName())
-                ->setData([
-                    'configuration' => $configuration,
-                    'metadata' => $this->metadata,
-                    'resources' => $resources,
-                    $this->metadata->getPluralName() => $resources,
-                    'listing_title' => 'Words',
-                    'template' => '/Word/index.html.twig'
-                ])
-            ;
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $newResource = $form->getData();
+
+            if ($configuration->hasStateMachine()) {
+                $this->stateMachine->apply($configuration, $newResource);
+            }
+
+            $this->dispatchEvent(FileUploadEvent::class, $newResource);
+
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'word' => $newResource,
+            ));
+
+            $this->repository->add($newResource);
+
+            $this->addFlash(
+                'notice',
+                sprintf('Word created successfully')
+            );
+
+            return $this->redirectHandler->redirectToResource($configuration, $newResource);
         }
+
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $newResource,
+                $this->metadata->getName() => $newResource,
+                'form' => $form->createView(),
+                'listing_title' => 'Word',
+                'template' => '/Word/create.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
+        ;
 
         return $this->viewHandler->handle($configuration, $view);
     }
-/*    public function indexAction()
-    {
-        $words = $this->getRepository('AdminBundle:Word')->findBy(array(), array(
-            'id' => 'DESC',
-        ));
 
-        return $this->render('::Admin/Word/index.html.twig', array(
-            'words' => $words,
-        ));
-    }*/
-
-    public function createAction(Request $request)
+/*    public function createAction(Request $request)
     {
         $language = $this->getRepository('AdminBundle:Language')->find(1);
 
@@ -99,9 +119,9 @@ class WordController extends ResourceController
         return $this->render('::Admin/Word/create.html.twig', array(
             'form' => $form->createView(),
         ));
-    }
+    }*/
 
-    public function editAction(Request $request, $id)
+/*    public function editAction(Request $request, $id)
     {
         $word = $this->getRepository('AdminBundle:Word')->find($id);
 
@@ -155,6 +175,64 @@ class WordController extends ResourceController
             'form' => $form->createView(),
             'word' => $word,
         ));
+    }*/
+
+    public function updateAction(Request $request)
+    {
+        $configuration = $this->requestConfigurationFactory->create($this->metadata, $request);
+
+        $this->isGrantedOr403($configuration, ResourceActions::UPDATE);
+        $resource = $this->findOr404($configuration);
+
+        $this->setImageIfExists($resource);
+
+        $form = $this->resourceFormFactory->create($configuration, $resource);
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $form->handleRequest($request)->isValid()) {
+            $resource = $form->getData();
+
+            $this->dispatchEvent(FileUploadEvent::class, $resource);
+
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'word' => $resource,
+            ));
+
+            $this->dispatchEvent(PreUpdateEvent::class, array(
+                'word' => $resource,
+            ));
+
+            try {
+                $this->resourceUpdateHandler->handle($resource, $configuration, $this->manager);
+            } catch (UpdateHandlingException $exception) {
+                return $this->redirectHandler->redirectToReferer($configuration);
+            }
+
+            $this->addFlash(
+                'notice',
+                sprintf('Word updated successfully')
+            );
+
+            return $this->redirectHandler->redirectToResource($configuration, $resource);
+        }
+
+        if (!$configuration->isHtmlRequest()) {
+            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
+        }
+
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $resource,
+                $this->metadata->getName() => $resource,
+                'form' => $form->createView(),
+                'listing_title' => 'Word',
+                'template' => '/Word/update.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
+        ;
+
+        return $this->viewHandler->handle($configuration, $view);
     }
 
     public function removeAction($id)
@@ -190,5 +268,16 @@ class WordController extends ResourceController
         $em->flush();
 
         return $this->redirectToRoute('admin_word_index');
+    }
+
+    private function setImageIfExists(Word $word)
+    {
+        $image = $this->get('doctrine')->getRepository('AdminBundle:Image')->findBy(array(
+            'word' => $word,
+        ));
+
+        if (!empty($image)) {
+            $word->setImage($image[0]);
+        }
     }
 }

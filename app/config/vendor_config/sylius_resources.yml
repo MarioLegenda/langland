@@ -36,3 +36,9 @@ sylius_resource:
                 model: AdminBundle\Entity\Course
                 form: AdminBundle\Form\Type\CourseType
 
+        admin.word:
+            classes:
+                controller: AdminBundle\Controller\WordController
+                model: AdminBundle\Entity\Word
+                form: AdminBundle\Form\Type\WordType
+

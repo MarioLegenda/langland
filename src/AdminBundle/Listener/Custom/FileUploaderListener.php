@@ -112,6 +112,7 @@ class FileUploaderListener
                 $existingImage
                     ->setName($data['fileName'])
                     ->setOriginalName($data['originalName'])
+                    ->setRelativePath($data['relativePath'])
                     ->setTargetDir($data['targetDir'])
                     ->setFullPath($data['fullPath']);
 
@@ -124,6 +125,7 @@ class FileUploaderListener
             $word->getImage()
                 ->setName($data['fileName'])
                 ->setOriginalName($data['originalName'])
+                ->setRelativePath($data['relativePath'])
                 ->setTargetDir($data['targetDir'])
                 ->setFullPath($data['fullPath']);
 

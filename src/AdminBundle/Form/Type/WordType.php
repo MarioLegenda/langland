@@ -2,32 +2,39 @@
 
 namespace AdminBundle\Form\Type;
 
-use AdminBundle\Form\Type\Generic\TraitType\CategoryChoiceTrait;
+use AdminBundle\Form\Type\Generic\CategoryChoiceFormService;
 use AdminBundle\Form\Type\Generic\TraitType\ImageTypeTrait;
-use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AdminBundle\Entity\Word;
+use AdminBundle\Form\Type\Generic\LanguageChoiceFormService;
 
 class WordType extends AbstractType
 {
-    use LanguageChoiceTrait, TextTypeTrait, TextareaTypeTrait, ImageTypeTrait, CategoryChoiceTrait;
+    use TextTypeTrait, TextareaTypeTrait, ImageTypeTrait;
     /**
-     * @var EntityManager $em
+     * @var CategoryChoiceFormService
      */
-    private $em;
+    private $categoryChoiceFormService;
+    /**
+     * @var LanguageChoiceFormService $em
+     */
+    private $languageChoiceService;
     /**
      * WordType constructor.
-     * @param EntityManager $em
+     * @param LanguageChoiceFormService $languageChoiceFormService
+     * @param CategoryChoiceFormService $categoryChoiceFormService
      */
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        LanguageChoiceFormService $languageChoiceFormService,
+        CategoryChoiceFormService $categoryChoiceFormService
+    ) {
+        $this->languageChoiceService = $languageChoiceFormService;
+        $this->categoryChoiceFormService = $categoryChoiceFormService;
     }
     /**
      * @param FormBuilderInterface $builder
@@ -35,16 +42,22 @@ class WordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $word = $options['word'];
-
         $this
             ->addTextType('Word name:', 'name', $builder)
             ->addTextType('Word type: ', 'type', $builder)
             ->addTextareaType('Word description', 'description', $builder)
             ->addTextType('Plural form: ', 'pluralForm', $builder)
-            ->addImageType('image', $builder)
-            ->addLanguageChoice($builder, $this->em, $word)
-            ->addCategoryChoice($builder, $this->em, $word);
+            ->addImageType('image', $builder);
+
+        $this->languageChoiceService->getLanguageChoice(
+            'Word',
+            $builder
+        );
+
+        $this->categoryChoiceFormService->addCategoryChoice(
+            'Word',
+            $builder
+        );
 
         $builder
             ->add('translations', CollectionType::class, array(
@@ -70,7 +83,5 @@ class WordType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => Word::class,
         ));
-
-        $resolver->setRequired('word');
     }
 }

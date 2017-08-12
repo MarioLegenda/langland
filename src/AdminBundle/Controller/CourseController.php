@@ -2,7 +2,6 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Form\Type\CourseType;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Symfony\Component\HttpFoundation\Request;
 use Library\Event\PrePersistEvent;

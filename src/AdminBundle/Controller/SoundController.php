@@ -2,15 +2,10 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Entity\Sound;
 use Library\Event\FileUploadEvent;
-use AdminBundle\Form\Type\SoundType;
 use Symfony\Component\HttpFoundation\Request;
 use Sylius\Component\Resource\ResourceActions;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Library\Event\PrePersistEvent;
 use FOS\RestBundle\View\View;
-use Symfony\Component\HttpFoundation\Response;
 
 class SoundController extends GenericResourceController implements GenericControllerInterface
 {

@@ -2,16 +2,12 @@
 
 namespace AdminBundle\Controller;
 
-use AdminBundle\Entity\Image;
 use AdminBundle\Entity\Language;
 use Library\Event\FileUploadEvent;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\View\View;
 use Sylius\Component\Resource\ResourceActions;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
-use Symfony\Component\HttpFoundation\Response;
 
 class LanguageController extends GenericResourceController implements GenericControllerInterface
 {

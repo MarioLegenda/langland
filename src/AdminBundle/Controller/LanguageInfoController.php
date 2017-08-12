@@ -4,7 +4,6 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\LanguageInfo;
 use Library\Event\PrePersistEvent;
-use Sylius\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
 use Sylius\Component\Resource\ResourceActions;
 use FOS\RestBundle\View\View;

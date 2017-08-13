@@ -68,6 +68,10 @@ class WordController extends GenericResourceController implements GenericControl
             ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
         ;
 
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
+
         return $this->viewHandler->handle($configuration, $view);
     }
 
@@ -109,10 +113,6 @@ class WordController extends GenericResourceController implements GenericControl
             return $this->redirectHandler->redirectToResource($configuration, $resource);
         }
 
-        if (!$configuration->isHtmlRequest()) {
-            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
-        }
-
         $view = View::create()
             ->setData([
                 'configuration' => $configuration,
@@ -125,6 +125,10 @@ class WordController extends GenericResourceController implements GenericControl
             ])
             ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
         ;
+
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
 
         return $this->viewHandler->handle($configuration, $view);
     }

@@ -59,4 +59,22 @@ class AppKernel extends Kernel
         
         $loader->load($load);
     }
+
+    protected function initializeContainer()
+    {
+        parent::initializeContainer();
+
+        include_once __DIR__.'/ProjectBootstrap.php';
+
+        $projectBootstrap = new ProjectBootstrap($this->getEnvironment());
+
+        if ($projectBootstrap->isBootstrapped() === true) {
+            return;
+        }
+
+        $projectBootstrap->bootstrapDirectories(
+            $this->container->getParameter('upload_dirs'),
+            array('relative_image_path')
+        );
+    }
 }

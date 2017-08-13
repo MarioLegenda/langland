@@ -1,0 +1,15 @@
+services:
+    lib.file_namer:
+        class: Library\FileNamer
+        arguments: ['@doctrine.orm.entity_manager']
+
+    lib.image_resizer:
+        class: Library\ImageResize
+
+    admin.file_uploader:
+        class: Library\FileUploader
+        arguments: ['%upload_dirs%', '@lib.image_resizer', '@lib.file_namer']
+
+    lib.manual_validator:
+        class: Library\ManualValidator
+        arguments: ['@validator']

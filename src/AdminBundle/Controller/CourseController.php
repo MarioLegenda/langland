@@ -128,7 +128,7 @@ class CourseController extends GenericResourceController implements GenericContr
             throw $this->createNotFoundException();
         }
 
-        return $this->render('::Admin/Course/dashboard.html.twig', array(
+        return $this->render('::Admin/Template/Panel/CourseManagment/dashboard.html.twig', array(
             'course' => $course,
         ));
     }

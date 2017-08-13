@@ -10,15 +10,14 @@ class MainControllerTest extends LanglandAdminTestCase
 {
     private $linkTexts = array(
         'Languages',
-        'Language info',
+        'Language infos',
         'Categories',
         'Words',
         'Sounds',
         'Courses',
-        'Logout',
     );
 
-    private $route = '/admin/dashboard';
+    private $route = 'http://33.33.33.10/admin/dashboard';
 
     public function testDashboard()
     {

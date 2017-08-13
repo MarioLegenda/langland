@@ -112,6 +112,13 @@ class LanglandAdminTestCase extends WebTestCase
         $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
     }
 
+    /**
+     * Test that dashboard resource exists and that listing page exists
+     *
+     * @param $dashboardRoute
+     * @param $navText
+     * @return Crawler
+     */
     protected function doTestDashboard($dashboardRoute, $navText) : Crawler
     {
         $languageIndexLink = $this->clientGet($dashboardRoute)->selectLink($navText)->link();
@@ -131,24 +138,30 @@ class LanglandAdminTestCase extends WebTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $list = $indexCrawler->filter('.page-content .card');
+        $list = $indexCrawler->filter('.gradeA');
 
         $this->assertEquals(count($testables), count($list));
 
         $list->each(function(Crawler $crawler) use ($testables) {
-            $text = $crawler->filter('.base-action-link')->text();
+            $text = $crawler->filter('.sorting_1')->text();
 
             $this->assertContains($text, $testables);
         });
     }
 
+    /**
+     * Test that a list of created resource exists and that there are two of them
+     * @param string $dashboardRoute
+     * @param string $navText
+     * @return Crawler
+     */
     protected function doTestList(string $dashboardRoute, string $navText) : Crawler
     {
         $index = $this->client->click($this->clientGet($dashboardRoute)->selectLink($navText)->link());
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-        $list = $index->filter('.page-content .card');
+        $list = $index->filter('.gradeA');
 
         $this->assertEquals(2, count($list));
 

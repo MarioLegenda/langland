@@ -9,10 +9,9 @@ use FilesystemIterator;
 
 class LanguageInfoControllerTest extends LanglandAdminTestCase
 {
-    private $navText = 'Language info';
-    private $dashboardRoute = '/admin/dashboard';
-    private $createUri = 'http://33.33.33.10/admin/language-info/create';
-    private $editUri = 'http://33.33.33.10/admin/language-info/edit';
+    private $navText = 'Language infos';
+    private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
+    private $editUri = 'http://33.33.33.10/admin/language-info/update';
 
     public function testCreate()
     {
@@ -68,7 +67,7 @@ class LanguageInfoControllerTest extends LanglandAdminTestCase
         }
     }
 
-    public function testEdit()
+    public function testUpdate()
     {
         $faker = Factory::create();
 
@@ -82,8 +81,8 @@ class LanguageInfoControllerTest extends LanglandAdminTestCase
         $newInfos = array('Language info 3', 'Language info 4');
 
         $count = 0;
-        $infoList->each(function(Crawler $languageCard) use (&$count, $faker, $oldInfos, $newInfos) {
-            $editLink = $languageCard->filter('.sub-base-action-link')->link();
+        $infoList->each(function(Crawler $card) use (&$count, $faker, $oldInfos, $newInfos) {
+            $editLink = $card->selectLink('Edit')->link();
 
             $editCrawler = $this->client->click($editLink);
 
@@ -120,7 +119,7 @@ class LanguageInfoControllerTest extends LanglandAdminTestCase
         $this->doTestIndex(
             $this->dashboardRoute,
             $this->navText,
-            array('Language info 3 | French', 'Language info 4 | Spanish')
+            array('Language info 3', 'Language info 4')
         );
     }
 

@@ -89,7 +89,7 @@ class FileUploader
         $src = $this->soundDir.'/temp/'.$fileName;
         $dest = $this->soundDir.'/'.$fileName;
 
-        exec(sprintf('/usr/bin/sox -t %s %s %s', 'mp3', $src, $dest), $output);
+        exec(sprintf('/usr/bin/sox -t %s %s %s 2> /dev/null', 'mp3', $src, $dest), $output);
 
         if (file_exists($src)) {
             unlink($src);

@@ -91,6 +91,7 @@ class WordController extends ResourceController
                 'form' => $form->createView(),
             ));
 
+<<<<<<< Updated upstream
             $response->setStatusCode(400);
 
             return $response;
@@ -99,6 +100,13 @@ class WordController extends ResourceController
         return $this->render('::Admin/Word/create.html.twig', array(
             'form' => $form->createView(),
         ));
+=======
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
+
+        return $this->viewHandler->handle($configuration, $view);
+>>>>>>> Stashed changes
     }
 
     public function editAction(Request $request, $id)
@@ -140,6 +148,7 @@ class WordController extends ResourceController
                 $em->persist($word);
                 $em->flush();
 
+<<<<<<< Updated upstream
                 $this->addFlash(
                     'notice',
                     sprintf('Word edited successfully')
@@ -155,6 +164,26 @@ class WordController extends ResourceController
             'form' => $form->createView(),
             'word' => $word,
         ));
+=======
+        $view = View::create()
+            ->setData([
+                'configuration' => $configuration,
+                'metadata' => $this->metadata,
+                'resource' => $resource,
+                $this->metadata->getName() => $resource,
+                'form' => $form->createView(),
+                'listing_title' => 'Word',
+                'template' => '/Word/update.html.twig'
+            ])
+            ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
+        ;
+
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
+
+        return $this->viewHandler->handle($configuration, $view);
+>>>>>>> Stashed changes
     }
 
     public function removeAction($id)

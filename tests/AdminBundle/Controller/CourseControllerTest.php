@@ -10,9 +10,9 @@ use FilesystemIterator;
 class CourseControllerTest extends LanglandAdminTestCase
 {
     private $navText = 'Courses';
-    private $dashboardRoute = '/admin/dashboard';
+    private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
     private $createUri = 'http://33.33.33.10/admin/course/create';
-    private $editUri = 'http://33.33.33.10/admin/course/edit';
+    private $editUri = 'http://33.33.33.10/admin/course/update';
 
     public function testCreate()
     {
@@ -23,10 +23,6 @@ class CourseControllerTest extends LanglandAdminTestCase
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals($this->createUri, $this->client->getRequest()->getUri());
 
-        $noData = $createCrawler->filter('.no-data-message');
-
-        $this->assertEquals(1, count($noData));
-
         $createCrawler = $this->client->click($this->doTestDashboard($this->dashboardRoute, 'Languages')->selectLink('Create')->link());
 
         $this->doTestCreateLanguage($createCrawler, 'English');
@@ -35,10 +31,6 @@ class CourseControllerTest extends LanglandAdminTestCase
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals($this->createUri, $this->client->getRequest()->getUri());
-
-        $noData = $createCrawler->filter('.no-data-message');
-
-        $this->assertEquals(0, count($noData));
 
         $this->doTestFailedValidation($createCrawler, array(
             array(
@@ -104,7 +96,7 @@ class CourseControllerTest extends LanglandAdminTestCase
         }
     }
 
-    public function testEdit()
+    public function testUpdate()
     {
         $faker = Factory::create();
 
@@ -118,8 +110,8 @@ class CourseControllerTest extends LanglandAdminTestCase
         $newCourses = array('Course 3', 'Course 4');
 
         $count = 0;
-        $courseList->each(function(Crawler $languageCard) use (&$count, $faker, $oldCourses, $newCourses) {
-            $editLink = $languageCard->filter('.sub-base-action-link')->link();
+        $courseList->each(function(Crawler $card) use (&$count, $faker, $oldCourses, $newCourses) {
+            $editLink = $card->selectLink('Edit')->link();
 
             $editCrawler = $this->client->click($editLink);
 
@@ -146,7 +138,7 @@ class CourseControllerTest extends LanglandAdminTestCase
         $this->doTestIndex(
             $this->dashboardRoute,
             $this->navText,
-            array('Course 3 | English', 'Course 4 | English')
+            array('Course 3', 'Course 4')
         );
     }
 

@@ -12,6 +12,7 @@ parameters:
     secret: cf16d1d0e5788fb5f30d32b3e36268b44241e3da
     host: 33.33.33.10
     upload_dirs:
+        relative_image_path: /uploads/images/
         image_upload_dir: '%kernel.root_dir%/../tests/uploads/images'
         sound_upload_dir: '%kernel.root_dir%/../tests/uploads/sounds'
     security_admin_redirect: armor_admin_login

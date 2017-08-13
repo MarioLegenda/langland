@@ -1,0 +1,11 @@
+{% extends '::Admin/baseContent.html.twig' %}
+
+{% block content %}
+    <div class="row">
+        {% include '::Admin/Template/Panel/Dashboard/_include/dashboardHeader.html.twig' %}
+    </div>
+
+    <div class="row">
+        {% include '::Admin/Template/Panel/Dashboard/_include/panels.html.twig' %}
+    </div>
+{% endblock %}

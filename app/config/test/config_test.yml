@@ -1,13 +1,13 @@
 imports:
     - { resource: test_parameters.yml }
     - { resource: test_security.yml }
-    - { resource: services.yml }
+    - { resource: ../prod/services.yml }
     - { resource: "@ArmorBundle/Resources/config/services.xml" }
     - { resource: "@AdminBundle/Resources/config/services.yml" }
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
-    - { resource: vendor_config/jms_serializer.yml }
-    - { resource: vendor_config/sylius_resources.yml }
+    - { resource: ../prod/vendor_config/jms_serializer.yml }
+    - { resource: ../prod/vendor_config/sylius_resources.yml }
 
 parameters:
     locale: en

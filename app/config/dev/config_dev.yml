@@ -1,5 +1,5 @@
 imports:
-    - { resource: config.yml }
+    - { resource: ../prod/config.yml }
 
 twig:
     cache: false

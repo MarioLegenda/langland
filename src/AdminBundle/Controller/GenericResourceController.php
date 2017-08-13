@@ -51,38 +51,18 @@ class GenericResourceController extends ResourceController
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newResource = $form->getData();
 
-            $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::CREATE, $configuration, $newResource);
-
-            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
-                throw new HttpException($event->getErrorCode(), $event->getMessage());
-            }
-            if ($event->isStopped()) {
-                $this->flashHelper->addFlashFromEvent($configuration, $event);
-
-                return $this->redirectHandler->redirectToIndex($configuration, $newResource);
-            }
-
             if ($configuration->hasStateMachine()) {
                 $this->stateMachine->apply($configuration, $newResource);
             }
 
             $this->repository->add($newResource);
-            $this->eventDispatcher->dispatchPostEvent(ResourceActions::CREATE, $configuration, $newResource);
 
             $this->addFlash(
                 'notice',
-                sprintf('Category created successfully')
+                sprintf('%s created successfully', $this->getName())
             );
 
-            if (!$configuration->isHtmlRequest()) {
-                return $this->viewHandler->handle($configuration, View::create($newResource, Response::HTTP_CREATED));
-            }
-
             return $this->redirectHandler->redirectToResource($configuration, $newResource);
-        }
-
-        if (!$configuration->isHtmlRequest()) {
-            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
         }
 
         $this->eventDispatcher->dispatchInitializeEvent(ResourceActions::CREATE, $configuration, $newResource);
@@ -99,6 +79,10 @@ class GenericResourceController extends ResourceController
             ])
             ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
         ;
+
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
 
         return $this->viewHandler->handle($configuration, $view);
     }

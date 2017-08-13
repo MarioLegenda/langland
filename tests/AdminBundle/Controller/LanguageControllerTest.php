@@ -10,20 +10,22 @@ use FilesystemIterator;
 class LanguageControllerTest extends LanglandAdminTestCase
 {
     private $navText = 'Languages';
-    private $dashboardRoute = '/admin/dashboard';
+    private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
     private $createUri = 'http://33.33.33.10/admin/language/create';
-    private $editUri = 'http://33.33.33.10/admin/language/edit';
+    private $editUri = 'http://33.33.33.10/admin/language/update';
 
     public function testCreate()
     {
         $faker = Factory::create();
 
-        $createCrawler = $this->client->click($this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link());
+        // Test the dashboard and navigation and select the language create button
+        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
+        $createCrawler = $this->client->click($createLanguage);
 
         $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
         $this->assertEquals($this->createUri, $this->client->getRequest()->getUri());
 
-
+        // test failed validation with only name field
         $this->doTestFailedValidation($createCrawler, array(
             array(
                 'name' => 'form[name]',
@@ -31,6 +33,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
             )
         ));
 
+        // test failed validation with only description field
         $this->doTestFailedValidation($createCrawler, array(
             array(
                 'name' => 'form[listDescription]',
@@ -38,6 +41,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
             ),
         ));
 
+        // test failed validation with description with too max chars
         $this->doTestFailedValidation($createCrawler, array(
             array(
                 'name' => 'form[name]',
@@ -49,6 +53,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
             ),
         ));
 
+        // test failed validation with too much name chars
         $this->doTestFailedValidation($createCrawler, array(
             array(
                 'name' => 'form[name]',
@@ -62,6 +67,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
 
         $languages = array('French', 'Spanish');
 
+        // test success validation
         $count = 0;
         foreach ($languages as $language) {
             $this->doTestSuccessValidation($createCrawler, array(
@@ -83,6 +89,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
                 ),
             ));
 
+            // test that there is only one image uploaded for each language
             $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
             ++$count;
@@ -91,12 +98,13 @@ class LanguageControllerTest extends LanglandAdminTestCase
         }
     }
 
-    public function testEdit()
+    public function testUpdate()
     {
         $faker = Factory::create();
 
         $this->client->request('GET', $this->editUri.'/25');
 
+        // test that there is no edit link
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 
         $languageList = $this->doTestList($this->dashboardRoute, $this->navText);
@@ -106,7 +114,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
 
         $count = 0;
         $languageList->each(function(Crawler $languageCard) use (&$count, $faker, $oldLanguages, $newLanguages) {
-            $editLink = $languageCard->filter('.sub-base-action-link')->link();
+            $editLink = $languageCard->selectLink('Edit')->link();
 
             $editCrawler = $this->client->click($editLink);
 

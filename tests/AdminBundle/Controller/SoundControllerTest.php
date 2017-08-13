@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class SoundControllerTest extends LanglandAdminTestCase
 {
     private $navText = 'Sounds';
-    private $dashboardRoute = '/admin/dashboard';
+    private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
     private $createUri = 'http://33.33.33.10/admin/sound/create';
 
     public function testCreate()

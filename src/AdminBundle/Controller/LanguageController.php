@@ -67,6 +67,10 @@ class LanguageController extends GenericResourceController implements GenericCon
             ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
         ;
 
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
+
         return $this->viewHandler->handle($configuration, $view);
     }
 
@@ -119,6 +123,10 @@ class LanguageController extends GenericResourceController implements GenericCon
             ])
             ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
         ;
+
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
 
         return $this->viewHandler->handle($configuration, $view);
     }

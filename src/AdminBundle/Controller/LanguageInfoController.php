@@ -7,8 +7,6 @@ use Library\Event\PrePersistEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Sylius\Component\Resource\ResourceActions;
 use FOS\RestBundle\View\View;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpFoundation\Response;
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 
 class LanguageInfoController extends GenericResourceController implements GenericControllerInterface
@@ -35,39 +33,22 @@ class LanguageInfoController extends GenericResourceController implements Generi
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $newResource = $form->getData();
 
-            $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::CREATE, $configuration, $newResource);
-
-            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
-                throw new HttpException($event->getErrorCode(), $event->getMessage());
-            }
-            if ($event->isStopped()) {
-                $this->flashHelper->addFlashFromEvent($configuration, $event);
-
-                return $this->redirectHandler->redirectToIndex($configuration, $newResource);
-            }
-
             if ($configuration->hasStateMachine()) {
                 $this->stateMachine->apply($configuration, $newResource);
             }
 
-            $this->dispatchEvent(PrePersistEvent::class, $newResource);
+            $this->dispatchEvent(PrePersistEvent::class, array(
+                'languageInfo' => $newResource,
+            ));
 
             $this->repository->add($newResource);
 
             $this->addFlash(
                 'notice',
-                sprintf('Language created successfully')
+                sprintf('Language info created successfully')
             );
 
-            if (!$configuration->isHtmlRequest()) {
-                return $this->viewHandler->handle($configuration, View::create($newResource, Response::HTTP_CREATED));
-            }
-
             return $this->redirectHandler->redirectToResource($configuration, $newResource);
-        }
-
-        if (!$configuration->isHtmlRequest()) {
-            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
         }
 
         $this->eventDispatcher->dispatchInitializeEvent(ResourceActions::CREATE, $configuration, $newResource);
@@ -85,6 +66,10 @@ class LanguageInfoController extends GenericResourceController implements Generi
             ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
         ;
 
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
+
         return $this->viewHandler->handle($configuration, $view);
     }
 
@@ -100,23 +85,6 @@ class LanguageInfoController extends GenericResourceController implements Generi
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $form->handleRequest($request)->isValid()) {
             $resource = $form->getData();
 
-            /** @var ResourceControllerEvent $event */
-            $event = $this->eventDispatcher->dispatchPreEvent(ResourceActions::UPDATE, $configuration, $resource);
-
-            if ($event->isStopped() && !$configuration->isHtmlRequest()) {
-                throw new HttpException($event->getErrorCode(), $event->getMessage());
-            }
-
-            if ($event->isStopped()) {
-                $this->flashHelper->addFlashFromEvent($configuration, $event);
-
-                if ($event->hasResponse()) {
-                    return $event->getResponse();
-                }
-
-                return $this->redirectHandler->redirectToResource($configuration, $resource);
-            }
-
             $this->dispatchEvent(PrePersistEvent::class, array(
                 'languageInfo' => $resource,
             ));
@@ -126,22 +94,9 @@ class LanguageInfoController extends GenericResourceController implements Generi
             try {
                 $this->resourceUpdateHandler->handle($resource, $configuration, $this->manager);
             } catch (UpdateHandlingException $exception) {
-                if (!$configuration->isHtmlRequest()) {
-                    return $this->viewHandler->handle(
-                        $configuration,
-                        View::create($form, $exception->getApiResponseCode())
-                    );
-                }
-
                 $this->flashHelper->addErrorFlash($configuration, $exception->getFlash());
 
                 return $this->redirectHandler->redirectToReferer($configuration);
-            }
-
-            if (!$configuration->isHtmlRequest()) {
-                $view = $configuration->getParameters()->get('return_content', false) ? View::create($resource, Response::HTTP_OK) : View::create(null, Response::HTTP_NO_CONTENT);
-
-                return $this->viewHandler->handle($configuration, $view);
             }
 
             $this->addFlash(
@@ -150,10 +105,6 @@ class LanguageInfoController extends GenericResourceController implements Generi
             );
 
             return $this->redirectHandler->redirectToResource($configuration, $resource);
-        }
-
-        if (!$configuration->isHtmlRequest()) {
-            return $this->viewHandler->handle($configuration, View::create($form, Response::HTTP_BAD_REQUEST));
         }
 
         $view = View::create()
@@ -168,6 +119,10 @@ class LanguageInfoController extends GenericResourceController implements Generi
             ])
             ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
         ;
+
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
 
         return $this->viewHandler->handle($configuration, $view);
     }

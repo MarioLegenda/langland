@@ -10,9 +10,9 @@ use Symfony\Component\DomCrawler\Crawler;
 class CategoryControllerTest extends LanglandAdminTestCase
 {
     private $navText = 'Categories';
-    private $dashboardRoute = '/admin/dashboard';
+    private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
     private $createUri = 'http://33.33.33.10/admin/category/create';
-    private $editUri = 'http://33.33.33.10/admin/category/edit';
+    private $editUri = 'http://33.33.33.10/admin/category/update';
 
     public function testCreate()
     {
@@ -49,7 +49,7 @@ class CategoryControllerTest extends LanglandAdminTestCase
         }
     }
 
-    public function testEdit()
+    public function testUpdate()
     {
         $faker = Factory::create();
 
@@ -67,8 +67,8 @@ class CategoryControllerTest extends LanglandAdminTestCase
         $newCategories = array('Soul', 'Body');
 
         $count = 0;
-        $categoryList->each(function(Crawler $languageCard) use (&$count, $faker, $oldCategories, $newCategories) {
-            $editLink = $languageCard->filter('.sub-base-action-link')->link();
+        $categoryList->each(function(Crawler $card) use (&$count, $faker, $oldCategories, $newCategories) {
+            $editLink = $card->selectLink('Edit')->link();
 
             $editCrawler = $this->client->click($editLink);
 

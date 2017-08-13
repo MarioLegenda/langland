@@ -63,6 +63,10 @@ class CourseController extends GenericResourceController implements GenericContr
             ->setTemplate($configuration->getTemplate(ResourceActions::CREATE . '.html'))
         ;
 
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
+
         return $this->viewHandler->handle($configuration, $view);
     }
 
@@ -108,6 +112,10 @@ class CourseController extends GenericResourceController implements GenericContr
             ])
             ->setTemplate($configuration->getTemplate(ResourceActions::UPDATE . '.html'))
         ;
+
+        if ($form->isSubmitted() and !$form->isValid()) {
+            $view->setStatusCode(400);
+        }
 
         return $this->viewHandler->handle($configuration, $view);
     }

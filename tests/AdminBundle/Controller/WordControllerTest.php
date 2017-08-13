@@ -10,9 +10,9 @@ use FilesystemIterator;
 class WordControllerTest extends LanglandAdminTestCase
 {
     private $navText = 'Words';
-    private $dashboardRoute = '/admin/dashboard';
+    private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
     private $createUri = 'http://33.33.33.10/admin/word/create';
-    private $editUri = 'http://33.33.33.10/admin/word/edit';
+    private $editUri = 'http://33.33.33.10/admin/word/update';
 
     public function testCreate()
     {
@@ -62,7 +62,7 @@ class WordControllerTest extends LanglandAdminTestCase
 
     }
 
-    public function testEdit()
+    public function testUpdate()
     {
         $faker = Factory::create();
 
@@ -76,8 +76,8 @@ class WordControllerTest extends LanglandAdminTestCase
         $newWords = array('Word 3', 'Word 4');
 
         $count = 0;
-        $wordList->each(function(Crawler $languageCard) use (&$count, $faker, $oldWords, $newWords) {
-            $editLink = $languageCard->filter('.sub-base-action-link')->link();
+        $wordList->each(function(Crawler $card) use (&$count, $faker, $oldWords, $newWords) {
+            $editLink = $card->selectLink('Edit')->link();
 
             $editCrawler = $this->client->click($editLink);
 

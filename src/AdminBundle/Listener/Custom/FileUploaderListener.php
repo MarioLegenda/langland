@@ -67,8 +67,6 @@ class FileUploaderListener
                 ->setTargetDir($fileData['targetDir'])
                 ->setFullPath($fileData['fullPath']);
 
-            dump($newSound);
-
             $this->em->persist($newSound);
         }
 

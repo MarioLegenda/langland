@@ -1,0 +1,17 @@
+{% extends '::Admin/base.html.twig' %}
+
+{% block base %}
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            {% include '::Admin/_header.html.twig' %}
+
+            {% include '::Admin/Template/_leftPaneNavigation.html.twig'%}
+        </nav>
+
+        <div id="page-wrapper">
+            <div id="react-admin-app">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

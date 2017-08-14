@@ -4,7 +4,7 @@ namespace AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class MainController extends Controller
+class DashboardController extends Controller
 {
     public function dashboardAction()
     {

@@ -1,6 +1,6 @@
 admin_dashboard:
   path: /dashboard
-  defaults: { _controller: AdminBundle:Main:dashboard}
+  defaults: { _controller: AdminBundle:Dashboard:dashboard}
   methods: [GET]
 
 admin_language:

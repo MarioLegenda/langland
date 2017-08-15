@@ -1,10 +1,11 @@
 <?php
 
-namespace Library;
+namespace Library\Infrastructure\FileUpload\Implementation;
 
 use Doctrine\ORM\EntityManager;
+use Library\Infrastructure\FileUpload\FileNamerInterface;
 
-class FileNamer
+class FileNamer implements FileNamerInterface
 {
     /**
      * @var EntityManager $em
@@ -22,7 +23,7 @@ class FileNamer
      * @param array $options
      * @return null|string
      */
-    public function createName(array $options)
+    public function createName(array $options) : string
     {
         $validOptions = array('field', 'repository');
 
@@ -30,7 +31,7 @@ class FileNamer
 
         if (!empty($diff)) {
             throw new \RuntimeException(
-                sprintf('FileNamer could not create name. Invalid options')
+                sprintf('FileNamer could not create a name. Invalid options. Valid options are %s', implode(', ', $validOptions))
             );
         }
 

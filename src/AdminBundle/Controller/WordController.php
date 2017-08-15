@@ -4,6 +4,7 @@ namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\Word;
 use Library\Event\PrePersistEvent;
+use Library\Infrastructure\FileUpload\Implementation\FileNamer;
 use Symfony\Component\HttpFoundation\Request;
 use Library\Event\FileUploadEvent;
 use Sylius\Component\Resource\ResourceActions;

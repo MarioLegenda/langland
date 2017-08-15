@@ -2,6 +2,7 @@
 
 namespace Library;
 
+use Library\Infrastructure\FileUpload\FileNamerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploader
@@ -19,7 +20,7 @@ class FileUploader
      */
     private $imageResize;
     /**
-     * @var FileNamer $fileNamer
+     * @var FileNamerInterface $fileNamer
      */
     private $fileNamer;
     /**
@@ -42,9 +43,9 @@ class FileUploader
      * FileUploader constructor.
      * @param array $uploadDirs
      * @param ImageResize $imageResize
-     * @param FileNamer $fileNamer
+     * @param FileNamerInterface $fileNamer
      */
-    public function __construct(array $uploadDirs, ImageResize $imageResize, FileNamer $fileNamer)
+    public function __construct(array $uploadDirs, ImageResize $imageResize, FileNamerInterface $fileNamer)
     {
         $this->imageDir = realpath($uploadDirs['image_upload_dir']);
         $this->soundDir = realpath($uploadDirs['sound_upload_dir']);

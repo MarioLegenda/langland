@@ -1,7 +1,7 @@
 services:
     admin.custom_file_uploader_listener:
         class: AdminBundle\Listener\Custom\FileUploaderListener
-        arguments: ['@admin.file_uploader', '@doctrine.orm.entity_manager']
+        arguments: ['@lib.file_uploader', '@doctrine.orm.entity_manager']
         tags:
             - { name: kernel.event_listener, event: admin.upload_file_event, method: onFileUpload }
 

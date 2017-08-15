@@ -2,9 +2,9 @@
 
 namespace Library;
 
-use Symfony\Component\HttpFoundation\File\File;
+use Library\Infrastructure\FileUpload\ImageResizeInterface;
 
-class ImageResize
+class ImageResize implements ImageResizeInterface
 {
     /**
      * @var int $width
@@ -15,14 +15,16 @@ class ImageResize
      */
     private $height;
     /**
-     * @param File $image
+     * @param \SplFileInfo $image
      * @param string $path
      * @return bool
      */
-    public function resizeAndSave(File $image, string $path)
+    public function resizeAndSave(\SplFileInfo $image, string $path)
     {
         if ($this->height === null or $this->width === null) {
-            return false;
+            throw new \RuntimeException(
+                sprintf('Width and height are not set. You have to set width and height before you call ImageResizeInterface::resizeAndSave')
+            );
         }
 
         $size = getimagesize($image->getPathname());
@@ -47,9 +49,9 @@ class ImageResize
     }
     /**
      * @param mixed $width
-     * @return ImageResize
+     * @return ImageResizeInterface
      */
-    public function setWidth($width) : ImageResize
+    public function setWidth(int $width) : ImageResizeInterface
     {
         $this->width = $width;
 
@@ -57,9 +59,9 @@ class ImageResize
     }
     /**
      * @param mixed $height
-     * @return ImageResize
+     * @return ImageResizeInterface
      */
-    public function setHeight($height) : ImageResize
+    public function setHeight(int $height) : ImageResizeInterface
     {
         $this->height = $height;
 

@@ -80,7 +80,5 @@
             "file": "app/config/parameters.yml"
         },
         "branch-alias": null
-    },
-    "minimum-stability": "alpha",
-    "prefer-stable": false
+    }
 }

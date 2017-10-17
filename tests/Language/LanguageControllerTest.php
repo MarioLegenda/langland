@@ -11,7 +11,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
 {
     private $navText = 'Languages';
     private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
-    private $newUri = 'http://33.33.33.10/admin/language/new';
     private $createUri = 'http://33.33.33.10/admin/language/create';
     private $editUri = 'http://33.33.33.10/admin/language/update';
 
@@ -33,9 +32,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
                 'value' => 'French'
             )
         ));
-
-        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
-        $createCrawler = $this->client->click($createLanguage);
 
         // test failed validation with only description field
         $this->doTestFailedValidation($createCrawler, array(
@@ -60,9 +56,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
             ),
         ));
 
-        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
-        $createCrawler = $this->client->click($createLanguage);
-
         // test failed validation with too much name chars
         $this->doTestFailedValidation($createCrawler, array(
             array(
@@ -74,9 +67,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
                 'value' => $faker->sentence(50),
             ),
         ));
-
-        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
-        $createCrawler = $this->client->click($createLanguage);
 
         $languages = array('French', 'Spanish');
 

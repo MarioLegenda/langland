@@ -1,9 +1,0 @@
-find_all_in_working_language: "SELECT c.* FROM categories AS c INNER JOIN user_working_languages AS uwl ON uwl.language_id = c.language_id AND uwl.working_language = 1"
-find_by_name_in_working_language: "SELECT c.* FROM categories AS c INNER JOIN user_working_languages AS uwl ON c.language_id = uwl.language_id AND uwl.working_language = 1 WHERE c.category = :category"
-find_category_by_id: "SELECT * FROM categories WHERE id = :category_id"
-update_category_name: "UPDATE categories SET category = :category WHERE id = :category_id"
-
-scenario:
-    create_category:
-        find_working_language: "SELECT language_id FROM user_working_languages WHERE working_language = 1"
-        create_category: "INSERT INTO categories (category, language_id) VALUES (:category, :language_id)"

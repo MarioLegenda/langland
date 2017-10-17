@@ -1,8 +1,0 @@
-find_course_by_name: "SELECT * FROM courses WHERE name = :name AND language_id = :language_id"
-find_course_by_id: "SELECT * FROM courses WHERE id = :course_id"
-find_all_courses_by_language: "SELECT id, name FROM courses WHERE language_id = :language_id"
-initial_course_info: "SELECT * FROM courses WHERE id = :id"
-
-scenario:
-    create_course: "INSERT INTO courses (language_id, name) VALUES (:language_id, :name)"
-    get_working_language_id: "SELECT id FROM languages WHERE working_language = 1"

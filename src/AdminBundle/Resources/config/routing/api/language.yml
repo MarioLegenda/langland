@@ -1,25 +1,19 @@
 admin_language_index:
     path: /langauge
     methods: [GET]
-    defaults:
-        _controller: admin.controller.language:indexAction
-        _sylius:
-            template: Admin/Template/Panel/_listing.html.twig
+    defaults: { _controller: langland.learning_metadata.controller.language_controller:indexAction }
 
 admin_language_create:
     path: /language/create
-    methods: [POST, GET]
-    defaults:
-        _controller: admin.controller.language:createAction
-        _sylius:
-            template: Admin/Template/Panel/_action.html.twig
-            redirect: admin_language_create
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.language_controller:createAction }
+
+admin_language_new:
+    path: /language/new
+    methods: [POST]
+    defaults: { _controller: langland.learning_metadata.controller.language_controller:newAction }
 
 admin_language_update:
     path: /language/update/{id}
     methods: [POST, GET]
-    defaults:
-        _controller: admin.controller.language:updateAction
-        _sylius:
-            template: Admin/Template/Panel/_action.html.twig
-            redirect: admin_language_update
+    defaults: { _controller: langland.learning_metadata.controller.language_controller:updateAction }

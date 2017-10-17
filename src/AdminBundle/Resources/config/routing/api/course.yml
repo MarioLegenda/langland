@@ -29,3 +29,8 @@ admin_course_managment:
   methods: [GET]
   defaults:
       _controller: admin.controller.course:manageAction
+
+admin_course_api:
+  resource: "@AdminBundle/Resources/config/routing/api/course_api/course.yml"
+  prefix: /course/api/v1
+  host: '%host%'

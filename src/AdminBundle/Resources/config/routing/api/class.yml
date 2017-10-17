@@ -1,14 +1,14 @@
-create_class:
-    path: /create
-    defaults: { _controller: AdminBundle:Class:create }
-    methods: [POST]
-
-update_class:
-    path: /update
-    defaults: { _controller: AdminBundle:Class:update }
-    methods: [POST]
-
-find_classes:
-    path: /find-classes-by-course
-    defaults: { _controller: AdminBundle:Class:findClassesByCourse }
-    methods: [POST]
+#create_class:
+#    path: /create
+#    defaults: { _controller: AdminBundle:Class:create }
+#    methods: [POST]
+#
+#update_class:
+#    path: /update
+#    defaults: { _controller: AdminBundle:Class:update }
+#    methods: [POST]
+#
+#find_classes:
+#    path: /find-classes-by-course
+#    defaults: { _controller: AdminBundle:Class:findClassesByCourse }
+#    methods: [POST]

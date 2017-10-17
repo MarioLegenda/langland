@@ -11,6 +11,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
 {
     private $navText = 'Languages';
     private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
+    private $newUri = 'http://33.33.33.10/admin/language/new';
     private $createUri = 'http://33.33.33.10/admin/language/create';
     private $editUri = 'http://33.33.33.10/admin/language/update';
 
@@ -33,6 +34,9 @@ class LanguageControllerTest extends LanglandAdminTestCase
             )
         ));
 
+        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
+        $createCrawler = $this->client->click($createLanguage);
+
         // test failed validation with only description field
         $this->doTestFailedValidation($createCrawler, array(
             array(
@@ -40,6 +44,9 @@ class LanguageControllerTest extends LanglandAdminTestCase
                 'value' => 'French'
             ),
         ));
+
+        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
+        $createCrawler = $this->client->click($createLanguage);
 
         // test failed validation with description with too max chars
         $this->doTestFailedValidation($createCrawler, array(
@@ -53,6 +60,9 @@ class LanguageControllerTest extends LanglandAdminTestCase
             ),
         ));
 
+        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
+        $createCrawler = $this->client->click($createLanguage);
+
         // test failed validation with too much name chars
         $this->doTestFailedValidation($createCrawler, array(
             array(
@@ -64,6 +74,9 @@ class LanguageControllerTest extends LanglandAdminTestCase
                 'value' => $faker->sentence(50),
             ),
         ));
+
+        $createLanguage = $this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link();
+        $createCrawler = $this->client->click($createLanguage);
 
         $languages = array('French', 'Spanish');
 
@@ -81,7 +94,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
                 ),
                 array(
                     'name' => 'form[image][imageFile]',
-                    'value' => __DIR__.'/testImages/fr.png',
+                    'value' => __DIR__.'/../testImages/fr.png',
                 ),
                 array(
                     'name' => 'form[showOnPage]',
@@ -90,7 +103,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
             ));
 
             // test that there is only one image uploaded for each language
-            $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
+            $fi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
 
             ++$count;
 
@@ -132,7 +145,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
                 ),
                 array(
                     'name' => 'form[image][imageFile]',
-                    'value' => __DIR__.'/testImages/fr.png',
+                    'value' => __DIR__.'/../testImages/fr.png',
                 ),
                 array(
                     'name' => 'form[showOnPage]',
@@ -143,7 +156,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
             ++$count;
         });
 
-        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
+        $editedFi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals($count, iterator_count($editedFi));
     }

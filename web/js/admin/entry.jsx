@@ -1,13 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {symfonyCollection} from "./components/symfonyCollection";
-import {TemplateSource} from './repositories.js';
-import {AdminComponent} from './components/AdminComponent.jsx';
+import {symfonyCollection} from "./lib/symfonyCollection";
 
 symfonyCollection();
-
-AdminComponent.createComponent('react-admin-app');
 
 /*
 if (acWidget !== null) {

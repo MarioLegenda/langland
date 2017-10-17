@@ -1,0 +1,9 @@
+admin_course_lesson:
+  resource: "@AdminBundle/Resources/config/routing/api/course_api/lesson.yml"
+  prefix: /
+  host: '%host%'
+
+admin_course_static:
+  resource: "@AdminBundle/Resources/config/routing/api/course_api/static.yml"
+  prefix: /static
+  host: '%host%'

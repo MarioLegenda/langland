@@ -3,9 +3,8 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sylius\Component\Resource\Model\ResourceInterface;
 
-class Course implements ResourceInterface, ContainsLanguageInterface
+class Course implements ContainsLanguageInterface
 {
     /**
      * @var int $id

@@ -6,7 +6,6 @@ imports:
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
     - { resource: ../prod/vendor_config/jms_serializer.yml }
-    - { resource: ../prod/vendor_config/sylius_resources.yml }
 
 parameters:
     locale: en

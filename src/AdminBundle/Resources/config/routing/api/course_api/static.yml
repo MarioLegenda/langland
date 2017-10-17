@@ -1,0 +1,3 @@
+admin_static_course_dashboard:
+    path: /dashboard-menu
+    defaults: { _controller: AdminBundle:Static:getDashboard }

@@ -3,11 +3,10 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sylius\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-class Word implements ResourceInterface, ContainsCategoriesInterface, ContainsLanguageInterface
+class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
 {
     /**
      * @var int $id

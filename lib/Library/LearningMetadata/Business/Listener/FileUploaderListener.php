@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Listener\Custom;
+namespace Library\LearningMetadata\Business\Listener;
 
 use AdminBundle\Entity\Image;
 use AdminBundle\Entity\Language;

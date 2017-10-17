@@ -1,10 +1,4 @@
 services:
-    admin.custom_file_uploader_listener:
-        class: AdminBundle\Listener\Custom\FileUploaderListener
-        arguments: ['@lib.file_uploader', '@doctrine.orm.entity_manager']
-        tags:
-            - { name: kernel.event_listener, event: admin.upload_file_event, method: onFileUpload }
-
     admin.custom_pre_persist_listener:
         class: AdminBundle\Listener\Custom\PrePersistListener
         arguments: ['@doctrine.orm.entity_manager']

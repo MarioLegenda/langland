@@ -1,33 +1,33 @@
-admin_language_info_index:
-    path: /language-info
-    methods: [GET]
-    defaults:
-        _controller: admin.controller.languageInfo:indexAction
-        _sylius:
-            template: Admin/Template/Panel/_listing.html.twig
-
-admin_language_info_create:
-    path: /language-info/create
-    methods: [POST, GET]
-    defaults:
-        _controller: admin.controller.languageInfo:createAction
-        _sylius:
-            template: Admin/Template/Panel/_action.html.twig
-            redirect: admin_language_info_create
-
-admin_language_info_update:
-    path: /language-info/update/{id}
-    methods: [POST, GET]
-    defaults:
-        _controller: admin.controller.languageInfo:updateAction
-        _sylius:
-            template: Admin/Template/Panel/_action.html.twig
-            redirect: admin_language_info_update
-
-admin_language_info_delete:
-    path: /language-info/delete/{id}
-    methods: [POST]
-    defaults:
-        _controller: admin.controller.languageInfo:removeAction
-        _sylius:
-            redirect: admin_language_info_index
+#admin_language_info_index:
+#    path: /language-info
+#    methods: [GET]
+#    defaults:
+#        _controller: admin.controller.languageInfo:indexAction
+#        _sylius:
+#            template: Admin/Template/Panel/_listing.html.twig
+#
+#admin_language_info_create:
+#    path: /language-info/create
+#    methods: [POST, GET]
+#    defaults:
+#        _controller: admin.controller.languageInfo:createAction
+#        _sylius:
+#            template: Admin/Template/Panel/_action.html.twig
+#            redirect: admin_language_info_create
+#
+#admin_language_info_update:
+#    path: /language-info/update/{id}
+#    methods: [POST, GET]
+#    defaults:
+#        _controller: admin.controller.languageInfo:updateAction
+#        _sylius:
+#            template: Admin/Template/Panel/_action.html.twig
+#            redirect: admin_language_info_update
+#
+#admin_language_info_delete:
+#    path: /language-info/delete/{id}
+#    methods: [POST]
+#    defaults:
+#        _controller: admin.controller.languageInfo:removeAction
+#        _sylius:
+#            redirect: admin_language_info_index

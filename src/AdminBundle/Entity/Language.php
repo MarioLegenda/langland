@@ -2,9 +2,7 @@
 
 namespace AdminBundle\Entity;
 
-use Sylius\Component\Resource\Model\ResourceInterface;
-
-class Language implements ResourceInterface
+class Language
 {
     /**
      * @var int $id

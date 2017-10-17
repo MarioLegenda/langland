@@ -2,10 +2,8 @@
 
 namespace AdminBundle\Entity;
 
-use AdminBundle\Entity\Game\QuestionGame;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use AdminBundle\Entity\Game\WordGame;
 
 class Lesson
 {

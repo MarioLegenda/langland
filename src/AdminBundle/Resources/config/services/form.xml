@@ -6,7 +6,7 @@
 
     <services>
         <service
-                id="langland.learning_metadata.form.language_form_builder"
+                id="langland.learning_metadata.form.form_builder"
                 class="Library\LearningMetadata\Infrastructure\Form\FormBuilder">
 
             <argument type="service" id="form.factory" />

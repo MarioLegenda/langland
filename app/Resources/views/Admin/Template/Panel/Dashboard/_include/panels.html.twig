@@ -4,6 +4,12 @@
             {title: 'Languages', route: 'admin_language_create', icon: 'fa-language', buttonText: 'Create new language'}
 %}
 
+{% include
+    '::Admin/Template/Panel/Dashboard/_include/panel.html.twig'
+        with
+            {title: 'Categories', route: 'admin_category_create', icon: 'fa-align-justify', buttonText: 'Create new category'}
+%}
+
 {#
 {% include
     '::Admin/Template/Panel/Dashboard/_include/panel.html.twig'

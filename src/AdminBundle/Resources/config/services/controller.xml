@@ -11,5 +11,12 @@
 
             <argument type="service" id="langland.learning_metadata.business.implementation.language_implementation" />
         </service>
+
+        <service
+                id="langland.learning_metadata.controller.category_controller"
+                class="Library\LearningMetadata\Business\Controller\CategoryController">
+
+            <argument type="service" id="langland.learning_metadata.business.implementation.category_implementation" />
+        </service>
     </services>
 </container>

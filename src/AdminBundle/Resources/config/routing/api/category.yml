@@ -1,25 +1,19 @@
-#admin_category_index:
-#    path: /category
-#    methods: [GET]
-#    defaults:
-#        _controller: admin.controller.category:indexAction
-#        _sylius:
-#            template: Admin/Template/Panel/_listing.html.twig
-#
-#admin_category_create:
-#    path: /category/create
-#    methods: [POST, GET]
-#    defaults:
-#        _controller: admin.controller.category:createAction
-#        _sylius:
-#            template: Admin/Template/Panel/_action.html.twig
-#            redirect: admin_category_create
-#
-#admin_category_update:
-#    path: /category/update/{id}
-#    methods: [POST, GET]
-#    defaults:
-#        _controller: admin.controller.category:updateAction
-#        _sylius:
-#            template: Admin/Template/Panel/_action.html.twig
-#            redirect: admin_category_update
+admin_category_index:
+    path: /category
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.category_controller:indexAction}
+
+admin_category_create:
+    path: /category/create
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.category_controller:createAction }
+
+admin_category_new:
+    path: /category/new
+    methods: [POST]
+    defaults: { _controller: langland.learning_metadata.controller.category_controller:newAction }
+
+admin_category_update:
+    path: /category/update/{id}
+    methods: [POST, GET]
+    defaults: { _controller: langland.learning_metadata.controller.category_controller:updateAction }

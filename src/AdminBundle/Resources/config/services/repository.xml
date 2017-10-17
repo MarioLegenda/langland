@@ -22,5 +22,14 @@
 
             <argument>AdminBundle\Entity\Image</argument>
         </service>
+
+        <service
+                id="langland.learning_metadata.repository.implementation.category_implementation"
+                class="Library\LearningMetadata\Repository\Implementation\CategoryRepository">
+
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+
+            <argument>AdminBundle\Entity\Category</argument>
+        </service>
     </services>
 </container>

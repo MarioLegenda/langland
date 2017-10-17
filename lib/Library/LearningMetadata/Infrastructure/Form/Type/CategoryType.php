@@ -1,12 +1,12 @@
 <?php
 
-namespace AdminBundle\Form\Type;
+namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
-use AdminBundle\Entity\Category;
 use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AdminBundle\Entity\Category;
 
 class CategoryType extends AbstractType
 {

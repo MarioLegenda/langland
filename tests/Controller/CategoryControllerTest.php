@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Controller;
+namespace TestLibrary\Language;
 
 use Faker\Factory;
 use function Symfony\Component\Validator\Tests\Constraints\choice_callback;

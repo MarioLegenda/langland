@@ -25,8 +25,8 @@ class FormBuilder implements FormBuilderInterface
     /**
      * @inheritdoc
      */
-    public function getForm($data = null, array $options = array()) : FormInterface
+    public function getForm(string $type, $data = null, array $options = array()) : FormInterface
     {
-        return $this->formFactory->create(LanguageType::class, $data, $options);
+        return $this->formFactory->create($type, $data, $options);
     }
 }

@@ -19,7 +19,6 @@ class AdminExtension extends Extension
 
         $loader->load('forms.yml');
         $loader->load('listeners.yml');
-        $loader->load('library.yml');
 
         $loader = new XmlFileLoader(
             $container,

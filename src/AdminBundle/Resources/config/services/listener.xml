@@ -8,7 +8,7 @@
         <service id="langland.common.file_upload_listener"
                  class="Library\LearningMetadata\Business\Listener\FileUploaderListener">
 
-            <argument type="service" id="lib.file_uploader"/>
+            <argument type="service" id="library.file_uploader"/>
             <argument type="service" id="doctrine.orm.entity_manager" />
 
             <tag name="kernel.event_listener" event="admin.upload_file_event" method="onFileUpload" />

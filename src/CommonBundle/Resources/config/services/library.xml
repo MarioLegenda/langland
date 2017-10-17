@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="library.file_namer"
+                class="Library\Infrastructure\FileUpload\Implementation\FileNamer">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+        </service>
+
+        <service
+                id="library.image_resizer"
+                class="Library\Infrastructure\FileUpload\Implementation\ImageResize">
+        </service>
+
+        <service
+                id="library.file_uploader"
+                class="Library\Infrastructure\FileUpload\Implementation\FileUploader">
+
+            <argument>%upload_dirs%</argument>
+            <argument type="service" id="library.image_resizer" />
+            <argument type="service" id="library.file_namer" />
+        </service>
+
+        <service
+                id="library.manual_validator"
+                class="Library\Infrastructure\ManualValidator">
+
+            <argument type="service" id="validator" />
+        </service>
+    </services>
+</container>

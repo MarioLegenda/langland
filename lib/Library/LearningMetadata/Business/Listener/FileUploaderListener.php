@@ -8,7 +8,7 @@ use AdminBundle\Entity\Sound;
 use AdminBundle\Entity\Word;
 use Library\Event\FileUploadEvent;
 use Doctrine\ORM\EntityManager;
-use Library\FileUploader;
+use Library\Infrastructure\FileUpload\Implementation\FileUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileUploaderListener

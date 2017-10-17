@@ -1,6 +1,6 @@
 <?php
 
-namespace Library;
+namespace Library\Infrastructure\FileUpload\Implementation;
 
 use Library\Infrastructure\FileUpload\FileNamerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

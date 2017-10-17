@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Controller;
+namespace TestLibrary\Language;
 
 use Faker\Factory;
 use Symfony\Component\DomCrawler\Crawler;
@@ -14,7 +14,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
     private $createUri = 'http://33.33.33.10/admin/language/create';
     private $editUri = 'http://33.33.33.10/admin/language/update';
 
-    public function testCreate()
+    public function test_create()
     {
         $faker = Factory::create();
 
@@ -101,7 +101,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
         }
     }
 
-    public function testUpdate()
+    public function test_update()
     {
         $faker = Factory::create();
 
@@ -151,7 +151,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
         $this->assertEquals($count, iterator_count($editedFi));
     }
 
-    public function testIndex()
+    public function test_index()
     {
         $this->doTestIndex(
             $this->dashboardRoute,

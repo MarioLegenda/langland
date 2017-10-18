@@ -10,6 +10,11 @@
             {title: 'Categories', route: 'admin_category_create', icon: 'fa-align-justify', buttonText: 'Create new category'}
 %}
 
+{% include
+    '::Admin/Template/Panel/Dashboard/_include/panel.html.twig'
+        with
+            {title: 'Words', route: 'admin_word_create', icon: 'fa-envelope', buttonText: 'Create new word'}
+%}
 {#
 {% include
     '::Admin/Template/Panel/Dashboard/_include/panel.html.twig'

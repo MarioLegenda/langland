@@ -1,30 +1,32 @@
 <?php
 
-namespace AdminBundle\Form\Type;
+namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
-use AdminBundle\Entity\Translation;
-use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use AdminBundle\Entity\Image;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TranslationType extends AbstractType
+class ImageType extends AbstractType
 {
-    use TextTypeTrait;
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->addTextType('Translation: ', 'name', $builder);
+        $builder
+            ->add('imageFile', FileType::class, array(
+                'label' => 'Upload an image ...'
+            ));
     }
     /**
-     * @return string
+     * @return null|string
      */
     public function getBlockPrefix()
     {
-        return 'translation';
+        return 'form';
     }
     /**
      * @param OptionsResolver $resolver
@@ -32,7 +34,7 @@ class TranslationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Translation::class
+            'data_class' => Image::class,
         ));
     }
 }

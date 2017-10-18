@@ -31,5 +31,14 @@
 
             <argument>AdminBundle\Entity\Category</argument>
         </service>
+
+        <service
+                id="langland.learning_metadata.repository.implementation.word_implementation"
+                class="Library\LearningMetadata\Repository\Implementation\WordRepository">
+
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+
+            <argument>AdminBundle\Entity\Word</argument>
+        </service>
     </services>
 </container>

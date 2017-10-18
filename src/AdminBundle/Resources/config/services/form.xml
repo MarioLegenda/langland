@@ -6,6 +6,39 @@
 
     <services>
         <service
+                id="langland.learning_metadata.form.language_choice"
+                class="Library\Infrastructure\Form\LanguageChoiceFormService">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="request_stack" />
+        </service>
+
+        <service
+                id="langland.learning_metadata.form.category_choice"
+                class="Library\Infrastructure\Form\CategoryChoiceFormService">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="request_stack" />
+        </service>
+
+        <service
+                id="langland.learning_metadata.form.word"
+                class="Library\LearningMetadata\Infrastructure\Form\Type\WordType">
+
+            <argument type="service" id="langland.learning_metadata.form.language_choice" />
+            <argument type="service" id="langland.learning_metadata.form.category_choice"/>
+
+            <tag name="form.type" />
+        </service>
+
+        <service
+                id="langland.learning_metadata.form.image"
+                class="Library\LearningMetadata\Infrastructure\Form\Type\ImageType">
+
+            <tag name="form.type" />
+        </service>
+
+        <service
                 id="langland.learning_metadata.form.form_builder"
                 class="Library\LearningMetadata\Infrastructure\Form\FormBuilder">
 

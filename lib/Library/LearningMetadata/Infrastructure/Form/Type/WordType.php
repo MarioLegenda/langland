@@ -1,17 +1,17 @@
 <?php
 
-namespace AdminBundle\Form\Type;
+namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
-use AdminBundle\Form\Type\Generic\CategoryChoiceFormService;
-use AdminBundle\Form\Type\Generic\TraitType\ImageTypeTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use Library\Infrastructure\Form\TraitType\ImageTypeTrait;
+use Library\Infrastructure\Form\CategoryChoiceFormService;
+use Library\Infrastructure\Form\TraitType\TextareaTypeTrait;
+use Library\Infrastructure\Form\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AdminBundle\Entity\Word;
-use AdminBundle\Form\Type\Generic\LanguageChoiceFormService;
+use Library\Infrastructure\Form\LanguageChoiceFormService;
 
 class WordType extends AbstractType
 {

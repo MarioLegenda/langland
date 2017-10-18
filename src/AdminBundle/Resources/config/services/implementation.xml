@@ -29,5 +29,18 @@
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
+
+        <service
+                id="langland.learning_metadata.business.implementation.word_implementation"
+                class="Library\LearningMetadata\Business\Implementation\WordImplementation">
+
+            <argument type="service" id="langland.learning_metadata.repository.implementation.word_implementation" />
+            <argument type="service" id="langland.learning_metadata.repository.implementation.image_implementation" />
+            <argument type="service" id="langland.learning_metadata.form.form_builder" />
+            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="router" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="session" />
+        </service>
     </services>
 </container>

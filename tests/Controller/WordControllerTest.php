@@ -47,7 +47,7 @@ class WordControllerTest extends LanglandAdminTestCase
         foreach ($words as $word) {
             $form = $createCrawler->selectButton('Create')->form();
 
-            $form['form[image][imageFile]']->upload(__DIR__.'/testImages/fr.png');
+            $form['form[image][imageFile]']->upload(__DIR__.'/../testImages/fr.png');
             $form['form[language]']->select('1');
             $form['form[name]'] = $word;
 
@@ -56,7 +56,7 @@ class WordControllerTest extends LanglandAdminTestCase
             $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         }
 
-        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
+        $editedFi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(3, iterator_count($editedFi));
 
@@ -85,7 +85,7 @@ class WordControllerTest extends LanglandAdminTestCase
 
             $form = $editCrawler->selectButton('Edit')->form();
 
-            $form['form[image][imageFile]']->upload(__DIR__.'/testImages/fr.png');
+            $form['form[image][imageFile]']->upload(__DIR__.'/../testImages/fr.png');
             $form['form[language]']->select('1');
             $form['form[name]'] = $newWords[$count];
 
@@ -96,7 +96,7 @@ class WordControllerTest extends LanglandAdminTestCase
             ++$count;
         });
 
-        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
+        $editedFi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(3, iterator_count($editedFi));
     }
@@ -123,7 +123,7 @@ class WordControllerTest extends LanglandAdminTestCase
             ),
             array(
                 'name' => 'form[image][imageFile]',
-                'value' => __DIR__.'/testImages/fr.png',
+                'value' => __DIR__.'/../testImages/fr.png',
             ),
             array(
                 'name' => 'form[showOnPage]',
@@ -131,7 +131,7 @@ class WordControllerTest extends LanglandAdminTestCase
             ),
         ));
 
-        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
+        $fi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(1, iterator_count($fi));
     }

@@ -1,29 +1,23 @@
-#admin_word_index:
-#    path: /words
-#    methods: [GET]
-#    defaults:
-#        _controller: admin.controller.word:indexAction
-#        _sylius:
-#            template: Admin/Template/Panel/_listing.html.twig
-#
-#admin_word_create:
-#    path: /word/create
-#    methods: [POST, GET]
-#    defaults:
-#        _controller: admin.controller.word:createAction
-#        _sylius:
-#            template: Admin/Template/Panel/_action.html.twig
-#            redirect: admin_word_create
-#
-#admin_word_update:
-#    path: /word/update/{id}
-#    methods: [POST, GET]
-#    defaults:
-#        _controller: admin.controller.word:updateAction
-#        _sylius:
-#            template: Admin/Template/Panel/_action.html.twig
-#            redirect: admin_word_update
-#
+admin_word_index:
+    path: /words
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.word_controller:indexAction }
+
+admin_word_create:
+    path: /word/create
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.word_controller:createAction }
+
+admin_word_new:
+    path: /word/new
+    methods: [POST]
+    defaults: { _controller: langland.learning_metadata.controller.word_controller:newAction }
+
+admin_word_update:
+    path: /word/update/{id}
+    methods: [POST, GET]
+    defaults: { _controller: langland.learning_metadata.controller.word_controller:updateAction }
+
 #admin_word_remove:
 #    path: /remove/{id}
 #    defaults: { _controller: AdminBundle:Word:remove }

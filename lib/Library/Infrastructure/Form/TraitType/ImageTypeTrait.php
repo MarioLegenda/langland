@@ -3,7 +3,7 @@
 namespace Library\Infrastructure\Form\TraitType;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use AdminBundle\Form\Type\ImageType;
+use Library\LearningMetadata\Infrastructure\Form\Type\ImageType;
 
 trait ImageTypeTrait
 {

@@ -20,10 +20,10 @@ class TemplateWrapper
     }
     /**
      * @param string $template
-     * @param $data
+     * @param array $data
      * @return string
      */
-    public function getTemplate(string $template, $data) : string
+    public function getTemplate(string $template, array $data = array()) : string
     {
         return $this->templating->render($template, $data);
     }

@@ -6,6 +6,13 @@
 
     <services>
         <service
+                id="langland.learning_metadata.controller.dashboard_controller"
+                class="Library\LearningMetadata\Business\Controller\DashboardController">
+
+            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+        </service>
+
+        <service
                 id="langland.learning_metadata.controller.language_controller"
                 class="Library\LearningMetadata\Business\Controller\LanguageController">
 

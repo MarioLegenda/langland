@@ -1,6 +1,6 @@
 admin_dashboard:
   path: /dashboard
-  defaults: { _controller: AdminBundle:Dashboard:dashboard}
+  defaults: { _controller: langland.learning_metadata.controller.dashboard_controller:dashboardAction }
   methods: [GET]
 
 admin_language:

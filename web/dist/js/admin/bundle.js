@@ -9750,17 +9750,7 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _symfonyCollection = __webpack_require__(184);
 
-var _ORM = __webpack_require__(185);
-
-var _repository = __webpack_require__(186);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var orm = _ORM.ORM.create();
-
-orm.attach({
-    'Admin': [_repository.LessonRepository]
-});
 
 (0, _symfonyCollection.symfonyCollection)();
 
@@ -22508,81 +22498,6 @@ const symfonyCollection = function () {
     }
 };
 /* harmony export (immutable) */ __webpack_exports__["symfonyCollection"] = symfonyCollection;
-
-
-/***/ }),
-/* 185 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-class UnitOfWork {
-    constructor() {
-        this.repositories = {};
-    }
-
-    attach(repositories) {
-        for (let repo in repositories) {
-            if (repositories.hasOwnProperty(repo)) {}
-        }
-        const repoName = repository.constructor.name;
-
-        this.repositories[repoName] = new repository();
-    }
-}
-
-class ORM {
-    constructor() {
-        this.unitOfWork = new UnitOfWork();
-    }
-
-    attach(entityName) {
-        this.unitOfWork.attach(entityName);
-    }
-
-    static create() {
-        return new ORM();
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["ORM"] = ORM;
-
-
-/***/ }),
-/* 186 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_js__ = __webpack_require__(187);
-
-
-class LessonRepository {
-    constructor(router) {
-        this.router = router;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["LessonRepository"] = LessonRepository;
-
-
-/***/ }),
-/* 187 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-class Lesson {
-    constructor(...props) {
-        this.id = props.id;
-        this.name = props.name;
-        this.description = props.description;
-        this.lessonDescription = props.lessonDescription;
-        this.isInitialLesson = props.isInitialLesson;
-        this.createdAt = props.createdAt;
-        this.updatedAt = props.updatedAt;
-        this.course = props.course;
-        this.lessonTexts = props.lessonTexts;
-    }
-}
-/* unused harmony export Lesson */
 
 
 /***/ })

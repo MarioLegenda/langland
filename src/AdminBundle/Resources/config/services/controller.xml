@@ -25,5 +25,12 @@
 
             <argument type="service" id="langland.learning_metadata.business.implementation.word_implementation" />
         </service>
+
+        <service
+                id="langland.learning_metadata.controller.language_info_controller"
+                class="Library\LearningMetadata\Business\Controller\LanguageInfoController">
+
+            <argument type="service" id="langland.learning_metadata.business.implementation.language_info_implementation" />
+        </service>
     </services>
 </container>

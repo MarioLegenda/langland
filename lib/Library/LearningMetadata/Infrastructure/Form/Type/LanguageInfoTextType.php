@@ -1,13 +1,13 @@
 <?php
 
-namespace AdminBundle\Form\Type;
+namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
-use AdminBundle\Entity\LanguageInfoText;
-use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
+use Library\Infrastructure\Form\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use AdminBundle\Entity\LanguageInfoText;
 
 class LanguageInfoTextType extends AbstractType
 {

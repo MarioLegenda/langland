@@ -21,7 +21,6 @@ class WordController
     ) {
         $this->wordImplementation = $wordImplementation;
     }
-
     /**
      * @return Response
      */

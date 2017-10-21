@@ -40,5 +40,23 @@
 
             <argument>AdminBundle\Entity\Word</argument>
         </service>
+
+        <service
+                id="langland.learning_metadata.repository.implementation.language_info_implementation"
+                class="Library\LearningMetadata\Repository\Implementation\LanguageInfoRepository">
+
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+
+            <argument>AdminBundle\Entity\LanguageInfo</argument>
+        </service>
+
+        <service
+                id="langland.learning_metadata.repository.implementation.language_info_text_implementation"
+                class="Library\LearningMetadata\Repository\Implementation\LanguageInfoTextRepository">
+
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+
+            <argument>AdminBundle\Entity\LanguageInfoText</argument>
+        </service>
     </services>
 </container>

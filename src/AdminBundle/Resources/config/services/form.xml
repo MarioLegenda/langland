@@ -39,6 +39,23 @@
         </service>
 
         <service
+                id="langland.learning_metadata.form.language_info"
+                class="Library\LearningMetadata\Infrastructure\Form\Type\LanguageInfoType">
+
+            <argument type="service" id="langland.learning_metadata.form.language_choice" />
+            <argument type="service" id="langland.learning_metadata.form.category_choice"/>
+
+            <tag name="form.type" />
+        </service>
+
+        <service
+                id="langland.learning_metadata.form.language_info_text"
+                class="Library\LearningMetadata\Infrastructure\Form\Type\LanguageInfoTextType">
+
+            <tag name="form.type" />
+        </service>
+
+        <service
                 id="langland.learning_metadata.form.form_builder"
                 class="Library\LearningMetadata\Infrastructure\Form\FormBuilder">
 

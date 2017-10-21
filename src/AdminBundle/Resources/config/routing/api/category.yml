@@ -1,7 +1,7 @@
 admin_category_index:
     path: /category
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.category_controller:indexAction}
+    defaults: { _controller: langland.learning_metadata.controller.category_controller:indexAction }
 
 admin_category_create:
     path: /category/create

@@ -2,12 +2,11 @@
 
 namespace Library\LearningMetadata\Business\Implementation;
 
-use AdminBundle\Entity\Category;
-use AdminBundle\Entity\Language;
 use Library\Infrastructure\Form\FormBuilderInterface;
-use Library\LearningMetadata\Infrastructure\Form\Type\CategoryType;
+use Library\LearningMetadata\Infrastructure\Form\Type\LanguageInfoType;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
-use Library\LearningMetadata\Repository\Implementation\CategoryRepository;
+use Library\LearningMetadata\Repository\Implementation\LanguageInfoRepository;
+use Library\LearningMetadata\Repository\Implementation\LanguageInfoTextRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Form\FormInterface;
@@ -17,17 +16,28 @@ use Library\Event\FileUploadEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
+use Library\LearningMetadata\Repository\Implementation\ImageRepository;
+use AdminBundle\Entity\LanguageInfo;
+use Library\Event\PrePersistEvent;
 
-class CategoryImplementation
+class LanguageInfoImplementation
 {
     /**
      * @var TemplateWrapper $templateWrapper
      */
     private $templateWrapper;
     /**
-     * @var CategoryRepository $categoryRepository
+     * @var LanguageInfoRepository $languageInfoRepository
      */
-    private $categoryRepository;
+    private $languageInfoRepository;
+    /**
+     * @var LanguageInfoTextRepository $languageInfoTextRepository
+     */
+    private $languageInfoTextRepository;
+    /**
+     * @var ImageRepository $imageRepository
+     */
+    private $imageRepository;
     /**
      * @var FormBuilderInterface $formBuilder
      */
@@ -45,22 +55,28 @@ class CategoryImplementation
      */
     private $session;
     /**
-     * CategoryImplementation constructor.
-     * @param CategoryRepository $categoryRepository
+     * LanguageImplementation constructor.
+     * @param LanguageInfoRepository $languageInfoRepository
+     * @param LanguageInfoTextRepository $languageInfoTextRepository
+     * @param ImageRepository $imageRepository
      * @param FormBuilderInterface $formBuilder
      * @param TemplateWrapper $templateWrapper
      * @param Router $router
      * @param Session $session
      */
     public function __construct(
-        CategoryRepository $categoryRepository,
+        LanguageInfoRepository $languageInfoRepository,
+        LanguageInfoTextRepository $languageInfoTextRepository,
+        ImageRepository $imageRepository,
         FormBuilderInterface $formBuilder,
         TemplateWrapper $templateWrapper,
         Router $router,
         TraceableEventDispatcher $eventDispatcher,
         Session $session
     ) {
-        $this->categoryRepository = $categoryRepository;
+        $this->languageInfoRepository = $languageInfoRepository;
+        $this->languageInfoTextRepository = $languageInfoTextRepository;
+        $this->imageRepository = $imageRepository;
         $this->formBuilder = $formBuilder;
         $this->templateWrapper = $templateWrapper;
         $this->router = $router;
@@ -68,20 +84,20 @@ class CategoryImplementation
         $this->session = $session;
     }
     /**
-     * @return Language[]
+     * @return LanguageInfo[]
      */
-    public function getCategories() : array
+    public function getWords() : array
     {
-        return $this->categoryRepository->findAll();
+        return $this->languageInfoRepository->findAll();
     }
     /**
-     * @param array|Language|null $data
+     * @param array|LanguageInfo|null $data
      * @param array $options
      * @return FormInterface
      */
     public function createForm($data = null, array $options = array()) : FormInterface
     {
-        return $this->formBuilder->getForm(CategoryType::class, $data);
+        return $this->formBuilder->getForm(LanguageInfoType::class, $data);
     }
     /**
      * @param string $template
@@ -92,9 +108,9 @@ class CategoryImplementation
     {
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_listing.html.twig';
         $data = (is_array($data)) ? $data : [
-            'listing_title' => 'Categories',
-            'categories' => $this->getCategories(),
-            'template' => '/Category/index.html.twig',
+            'listing_title' => 'Language infos',
+            'languageInfos' => $this->getWords(),
+            'template' => '/LanguageInfo/index.html.twig',
         ];
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
@@ -106,13 +122,13 @@ class CategoryImplementation
      */
     public function getCreatePresentation(string $template = null, array $data = null) : Response
     {
-        $form = $this->createForm(new Category());
+        $form = $this->createForm(new LanguageInfo());
 
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_action.html.twig';
         $data = (is_array($data)) ? $data : [
-            'listing_title' => 'Categories',
+            'listing_title' => 'Language infos',
             'form' => $form->createView(),
-            'template' => '/Category/create.html.twig',
+            'template' => '/LanguageInfo/create.html.twig',
         ];
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
@@ -124,17 +140,20 @@ class CategoryImplementation
      * @return Response
      * @throws \Throwable
      */
-    public function newCategory(Request $request, string $template = null, array $data = null) : Response
+    public function newLanguageInfo(Request $request, string $template = null, array $data = null) : Response
     {
-        $category = new Category();
-        $form = $this->createForm($category);
+        $languageInfo = new LanguageInfo();
+        $form = $this->createForm($languageInfo);
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             try {
-                $this->dispatchEvent(FileUploadEvent::class, $category);
 
-                $this->categoryRepository->persistAndFlush($category);
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'languageInfo' => $languageInfo,
+                ));
+
+                $this->languageInfoRepository->persistAndFlush($languageInfo);
             } catch (\Throwable $e) {
                 // log exception here
                 throw $e;
@@ -142,17 +161,17 @@ class CategoryImplementation
 
             $this->session->getFlashBag()->add(
                 'notice',
-                sprintf('Category created successfully')
+                sprintf('Language info created successfully')
             );
 
-            return new RedirectResponse($this->router->generate('admin_category_create'));
+            return new RedirectResponse($this->router->generate('admin_language_info_create'));
         }
 
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_action.html.twig';
         $data = (is_array($data)) ? $data : [
-            'listing_title' => 'Categories',
+            'listing_title' => 'Language infos',
             'form' => $form->createView(),
-            'template' => '/Category/create.html.twig',
+            'template' => '/LanguageInfo/create.html.twig',
         ];
 
         return new Response(
@@ -168,22 +187,27 @@ class CategoryImplementation
      * @return Response
      * @throws \Throwable
      */
-    public function updateCategory(Request $request, int $id, string $template = null, array $data = null) : Response
+    public function updateLanguageInfo(Request $request, int $id, string $template = null, array $data = null) : Response
     {
-        $category = $this->findCategory($id);
+        $languageInfo = $this->findLanguageInfo($id);
 
-        if (!$category instanceof Category) {
+        if (!$languageInfo instanceof LanguageInfo) {
             throw new NotFoundHttpException();
         }
 
-        $form = $this->createForm($category);
+        $form = $this->createForm($languageInfo);
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             try {
-                $this->dispatchEvent(FileUploadEvent::class, $category);
 
-                $this->categoryRepository->persistAndFlush($category);
+                $this->dispatchEvent(PrePersistEvent::class, array(
+                    'languageInfo' => $languageInfo,
+                ));
+
+                $this->removeDeletetedTexts($languageInfo);
+
+                $this->languageInfoRepository->persistAndFlush($languageInfo);
             } catch (\Throwable $e) {
                 // log exception here
                 throw $e;
@@ -191,20 +215,20 @@ class CategoryImplementation
 
             $this->session->getFlashBag()->add(
                 'notice',
-                sprintf('Category updated successfully')
+                sprintf('Language info updated successfully')
             );
 
-            return new RedirectResponse($this->router->generate('admin_category_update', [
+            return new RedirectResponse($this->router->generate('admin_language_info_update', [
                 'id' => $id
             ]));
         }
 
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_action.html.twig';
         $data = (is_array($data)) ? $data : [
-            'category' => $category,
-            'listing_title' => 'Categories',
+            'languageInfo' => $languageInfo,
+            'listing_title' => 'Language infos',
             'form' => $form->createView(),
-            'template' => '/Category/update.html.twig',
+            'template' => '/LanguageInfo/update.html.twig',
         ];
 
         if ($form->isSubmitted() and !$form->isValid()) {
@@ -221,14 +245,14 @@ class CategoryImplementation
     }
     /**
      * @param int $id
-     * @return Category
+     * @return LanguageInfo|null
      */
-    public function findCategory(int $id) : ?Category
+    public function findLanguageInfo(int $id) : ?LanguageInfo
     {
-        /** @var Category $category */
-        $category = $this->categoryRepository->find($id);
+        /** @var LanguageInfo $languageInfo */
+        $languageInfo = $this->languageInfoRepository->find($id);
 
-        return $category;
+        return $languageInfo;
     }
     /**
      * @param string $eventClass
@@ -240,5 +264,38 @@ class CategoryImplementation
         $event = new $eventClass($entity);
 
         $this->eventDispatcher->dispatch($event::NAME, $event);
+    }
+    /**
+     * @param int $id
+     * @return RedirectResponse
+     * @throws NotFoundHttpException
+     */
+    public function removeLanguageInfo(int $id)
+    {
+        /** @var LanguageInfo $languageInfo */
+        $languageInfo = $this->languageInfoRepository->find($id);
+
+        if (!$languageInfo instanceof LanguageInfo) {
+            throw new NotFoundHttpException();
+        }
+
+        $this->languageInfoRepository->removeAndFlush($languageInfo);
+
+        return new RedirectResponse($this->router->generate('admin_language_info_index'));
+    }
+    /**
+     * @param LanguageInfo $languageInfo
+     */
+    private function removeDeletetedTexts(LanguageInfo $languageInfo)
+    {
+        $dbLanguageInfoTexts = $this->languageInfoTextRepository->findBy(array(
+            'languageInfo' => $languageInfo,
+        ));
+
+        foreach ($dbLanguageInfoTexts as $text) {
+            if (!$languageInfo->hasLanguageInfoText($text)) {
+                $this->languageInfoTextRepository->removeAndFlush($text);
+            }
+        }
     }
 }

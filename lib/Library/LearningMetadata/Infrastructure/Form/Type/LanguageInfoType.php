@@ -1,15 +1,14 @@
 <?php
 
-namespace AdminBundle\Form\Type;
+namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
-use AdminBundle\Entity\LanguageInfo;
-use AdminBundle\Form\Type\Generic\LanguageChoiceFormService;
-use AdminBundle\Form\Type\Generic\TraitType\LanguageChoiceTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use Library\Infrastructure\Form\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
+use Library\Infrastructure\Form\LanguageChoiceFormService;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use AdminBundle\Entity\LanguageInfo;
 
 class LanguageInfoType extends AbstractType
 {

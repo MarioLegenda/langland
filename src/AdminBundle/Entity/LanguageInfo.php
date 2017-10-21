@@ -225,6 +225,27 @@ class LanguageInfo implements ContainsLanguageInterface
                 ->atPath('languageInfoTexts')
                 ->addViolation();
         }
+
+        $languageInfoTexts = $this->getLanguageInfoTexts();
+
+        if (!$languageInfoTexts->isEmpty()) {
+            /** @var LanguageInfoText $languageInfoText */
+            foreach ($languageInfoTexts as $languageInfoText) {
+                if (empty($languageInfoText->getName()) or empty($languageInfoText->getText())) {
+                    $message = null;
+
+                    if (!empty($languageInfoText->getName())) {
+                        $message = sprintf('Language info text with name \'%s\' is has empty text', $languageInfoText->getName());
+                    } else {
+                        $message = 'There can not be any language infos with empty text or name';
+                    }
+
+                    $context->buildViolation($message)
+                        ->atPath('languageInfoTexts')
+                        ->addViolation();
+                }
+            }
+        }
     }
 }
 

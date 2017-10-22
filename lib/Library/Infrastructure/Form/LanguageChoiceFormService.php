@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use AdminBundle\Transformer\SingleChoiceTransformer;
+use Library\Infrastructure\Form\Transformer\SingleChoiceTransformer;
 
 class LanguageChoiceFormService
 {

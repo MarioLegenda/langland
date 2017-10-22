@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Form\FormBuilderInterface;
 use AdminBundle\Entity\ContainsCategoriesInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use AdminBundle\Transformer\MultipleChoiceTransformer;
+use Library\Infrastructure\Form\Transformer\MultipleChoiceTransformer;
 
 class CategoryChoiceFormService
 {

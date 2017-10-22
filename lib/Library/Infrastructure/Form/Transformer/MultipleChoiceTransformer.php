@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Transformer;
+namespace Library\Infrastructure\Form\Transformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 

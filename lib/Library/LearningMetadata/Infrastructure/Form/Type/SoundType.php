@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Form\Type;
+namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
 use AdminBundle\Entity\Sound;
 use Symfony\Component\Form\AbstractType;

@@ -4,7 +4,10 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="AdminBundle\Entity\Sound" table="sounds">
+    <entity
+            name="AdminBundle\Entity\Sound"
+            table="sounds"
+            repository-class="Library\LearningMetadata\Repository\Implementation\SoundRepository">
 
         <id name="id" type="integer">
             <generator strategy="AUTO" />

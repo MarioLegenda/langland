@@ -56,5 +56,17 @@
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
+
+        <service
+                id="langland.learning_metadata.business.implementation.sound_implementation"
+                class="Library\LearningMetadata\Business\Implementation\SoundImplementation">
+
+            <argument type="service" id="langland.learning_metadata.repository.implementation.sound_implementation" />
+            <argument type="service" id="langland.learning_metadata.form.form_builder" />
+            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="router" />
+            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="session" />
+        </service>
     </services>
 </container>

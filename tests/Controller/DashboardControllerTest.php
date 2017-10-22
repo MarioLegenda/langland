@@ -14,7 +14,6 @@ class DashboardControllerTest extends LanglandAdminTestCase
         'Categories',
         'Words',
         'Sounds',
-        'Courses'
     ];
 
     public function testMainNavigation()
@@ -32,7 +31,7 @@ class DashboardControllerTest extends LanglandAdminTestCase
 
         $panels = $dashboard->filter('#page-wrapper')->filter('.panel-primary');
 
-        $this->assertEquals(6, count($panels));
+        $this->assertEquals(count($this->navTexts), count($panels));
 
         $panels->each(function(Crawler $panel) {
             $links = $panel->filter('a')->links();

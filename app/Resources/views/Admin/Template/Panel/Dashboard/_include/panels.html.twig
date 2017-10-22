@@ -22,6 +22,12 @@
             {title: 'Language infos', route: 'admin_language_info_create', icon: 'fa-info', buttonText: 'Create new language info'}
 %}
 
+{% include
+    '::Admin/Template/Panel/Dashboard/_include/panel.html.twig'
+        with
+            {title: 'Sounds', route: 'admin_sound_create', icon: 'fa-file-sound-o', buttonText: 'Create new sound'}
+%}
+
 {#
 
 {% include

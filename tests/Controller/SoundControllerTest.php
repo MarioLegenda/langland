@@ -21,13 +21,13 @@ class SoundControllerTest extends LanglandAdminTestCase
 
         $form = $createCrawler->selectButton('Create')->form();
 
-        $form['form[soundFile][0]']->upload(__DIR__.'/testSounds/test.mp3');
+        $form['form[soundFile][0]']->upload(__DIR__.'/../testSounds/test.mp3');
 
         $this->client->submit($form);
 
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
-        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/sounds', FilesystemIterator::SKIP_DOTS);
+        $editedFi = new FilesystemIterator(__DIR__.'/../uploads/sounds', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(1, iterator_count($editedFi));
     }

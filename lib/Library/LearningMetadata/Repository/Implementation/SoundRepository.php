@@ -1,15 +1,18 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mario
- * Date: 22.10.17.
- * Time: 08:03
- */
 
 namespace Library\LearningMetadata\Repository\Implementation;
 
+use AdminBundle\Entity\Sound;
+use Doctrine\ORM\EntityRepository;
 
-class SoundImplementation
+class SoundRepository extends EntityRepository
 {
-
+    /**
+     * @param Sound $sound
+     */
+    public function persistAndFlush(Sound $sound)
+    {
+        $this->getEntityManager()->persist($sound);
+        $this->getEntityManager()->flush($sound);
+    }
 }

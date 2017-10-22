@@ -58,5 +58,14 @@
 
             <argument>AdminBundle\Entity\LanguageInfoText</argument>
         </service>
+
+        <service
+                id="langland.learning_metadata.repository.implementation.sound_implementation"
+                class="Library\LearningMetadata\Repository\Implementation\SoundRepository">
+
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+
+            <argument>AdminBundle\Entity\Sound</argument>
+        </service>
     </services>
 </container>

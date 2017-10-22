@@ -39,5 +39,12 @@
 
             <argument type="service" id="langland.learning_metadata.business.implementation.language_info_implementation" />
         </service>
+
+        <service
+                id="langland.learning_metadata.controller.sound_controller"
+                class="Library\LearningMetadata\Business\Controller\SoundController">
+
+            <argument type="service" id="langland.learning_metadata.business.implementation.sound_implementation" />
+        </service>
     </services>
 </container>

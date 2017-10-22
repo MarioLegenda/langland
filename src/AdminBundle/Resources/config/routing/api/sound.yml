@@ -1,25 +1,19 @@
-#admin_sound_index:
-#    path: /sounds
-#    methods: [GET]
-#    defaults:
-#        _controller: admin.controller.sound:indexAction
-#        _sylius:
-#            template: Admin/Template/Panel/_listing.html.twig
-#
-#admin_sound_create:
-#    path: /sound/create
-#    methods: [POST, GET]
-#    defaults:
-#        _controller: admin.controller.sound:createAction
-#        _sylius:
-#            template: Admin/Template/Panel/_action.html.twig
-#            redirect: admin_sound_create
-#
-#admin_sound_update:
-#    path: /sound/update/{id}
-#    methods: [POST, GET]
-#    defaults:
-#        _controller: admin.controller.sound:updateAction
-#        _sylius:
-#            template: Admin/Template/Panel/_action.html.twig
-#            redirect: admin_sound_update
+admin_sound_index:
+    path: /sounds
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.sound_controller:indexAction }
+
+admin_sound_create:
+    path: /sound/create
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.sound_controller:createAction }
+
+admin_sound_new:
+    path: /sound/new
+    methods: [POST]
+    defaults: { _controller: langland.learning_metadata.controller.sound_controller:newAction }
+
+admin_sound_update:
+    path: /sound/update/{id}
+    methods: [POST, GET]
+    defaults: { _controller: langland.learning_metadata.controller.sound_controller:updateAction }

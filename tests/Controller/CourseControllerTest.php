@@ -155,7 +155,7 @@ class CourseControllerTest extends LanglandAdminTestCase
             ),
             array(
                 'name' => 'form[image][imageFile]',
-                'value' => __DIR__.'/testImages/fr.png',
+                'value' => __DIR__.'/../testImages/fr.png',
             ),
             array(
                 'name' => 'form[showOnPage]',
@@ -163,7 +163,7 @@ class CourseControllerTest extends LanglandAdminTestCase
             ),
         ));
 
-        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
+        $fi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(1, iterator_count($fi));
     }

@@ -5,7 +5,6 @@ namespace Library\LearningMetadata\Business\Implementation;
 use AdminBundle\Entity\Sound;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\LearningMetadata\Repository\Implementation\SoundRepository;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\HttpFoundation\Session\Session;

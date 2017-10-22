@@ -12,14 +12,6 @@ class AdminExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader(
-            $container,
-            new FileLocator(__DIR__.'/../Resources/config/services')
-        );
-
-        $loader->load('forms.yml');
-        $loader->load('listeners.yml');
-
         $loader = new XmlFileLoader(
             $container,
             new FileLocator(__DIR__.'/../Resources/config/services')

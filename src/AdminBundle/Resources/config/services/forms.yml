@@ -1,27 +1,4 @@
 services:
-#    admin.form.course:
-#        class: AdminBundle\Form\Type\CourseType
-#        arguments: ['@admin.form.language_choice']
-#        tags:
-#            - { name: form.type }
-#
-#    admin.form.language_info:
-#        class: AdminBundle\Form\Type\LanguageInfoType
-#        arguments: ['@admin.form.language_choice']
-#        tags:
-#            - { name: form.type }
-#
-#    admin.form.language_info_text_type:
-#        class: AdminBundle\Form\Type\Generic\NameTextCollectionType
-#        arguments: ['AdminBundle\Entity\LanguageInfoText']
-#        tags:
-#            - { name: form.type }
-#
-#    admin.form.lesson_text_type:
-#        class: AdminBundle\Form\Type\Generic\NameTextCollectionType
-#        arguments: ['AdminBundle\Entity\LessonText']
-#        tags:
-#            - { name: form.type }
 #
 #    admin.validation_group_resolver:
 #        class: AdminBundle\ValidationGroupResolver\GroupResolver

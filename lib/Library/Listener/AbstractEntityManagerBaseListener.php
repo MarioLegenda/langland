@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Listener\Custom;
+namespace Library\Listener;
 
 use Doctrine\ORM\EntityManager;
 

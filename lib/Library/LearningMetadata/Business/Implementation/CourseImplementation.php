@@ -2,37 +2,33 @@
 
 namespace Library\LearningMetadata\Business\Implementation;
 
-use AdminBundle\Entity\Word;
-use Library\Event\FileUploadEvent;
-use Library\Event\EntityProcessorEvent;
+use AdminBundle\Entity\Course;
+use AdminBundle\Entity\Language;
 use Library\Infrastructure\Form\FormBuilderInterface;
-use Library\LearningMetadata\Infrastructure\Form\Type\WordType;
+use Library\LearningMetadata\Infrastructure\Form\Type\CourseType;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
-use Library\LearningMetadata\Repository\Implementation\ImageRepository;
-use Library\LearningMetadata\Repository\Implementation\WordRepository;
+use Library\LearningMetadata\Repository\Implementation\CourseRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Library\Event\FileUploadEvent;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Router;
+use Library\Event\EntityProcessorEvent;
 
-class WordImplementation
+class CourseImplementation
 {
     /**
      * @var TemplateWrapper $templateWrapper
      */
     private $templateWrapper;
     /**
-     * @var WordRepository $wordRepository
+     * @var CourseRepository $courseRepository
      */
-    private $wordRepository;
-    /**
-     * @var ImageRepository $imageRepository
-     */
-    private $imageRepository;
+    private $courseRepository;
     /**
      * @var FormBuilderInterface $formBuilder
      */
@@ -50,25 +46,22 @@ class WordImplementation
      */
     private $session;
     /**
-     * WordImplementation constructor.
-     * @param WordRepository $wordRepository
-     * @param ImageRepository $imageRepository
+     * CourseImplementation constructor.
+     * @param CourseRepository $courseRepository
      * @param FormBuilderInterface $formBuilder
      * @param TemplateWrapper $templateWrapper
      * @param Router $router
      * @param Session $session
      */
     public function __construct(
-        WordRepository $wordRepository,
-        ImageRepository $imageRepository,
+        CourseRepository $courseRepository,
         FormBuilderInterface $formBuilder,
         TemplateWrapper $templateWrapper,
         Router $router,
         TraceableEventDispatcher $eventDispatcher,
         Session $session
     ) {
-        $this->wordRepository = $wordRepository;
-        $this->imageRepository = $imageRepository;
+        $this->courseRepository = $courseRepository;
         $this->formBuilder = $formBuilder;
         $this->templateWrapper = $templateWrapper;
         $this->router = $router;
@@ -76,20 +69,20 @@ class WordImplementation
         $this->session = $session;
     }
     /**
-     * @return Word[]
+     * @return Course[]
      */
-    public function getWords() : array
+    public function getCourses() : array
     {
-        return $this->wordRepository->findAll();
+        return $this->courseRepository->findAll();
     }
     /**
-     * @param array|Word|null $data
+     * @param array|Language|null $data
      * @param array $options
      * @return FormInterface
      */
     public function createForm($data = null, array $options = array()) : FormInterface
     {
-        return $this->formBuilder->getForm(WordType::class, $data);
+        return $this->formBuilder->getForm(CourseType::class, $data);
     }
     /**
      * @param string $template
@@ -100,9 +93,9 @@ class WordImplementation
     {
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_listing.html.twig';
         $data = (is_array($data)) ? $data : [
-            'listing_title' => 'Words',
-            'words' => $this->getWords(),
-            'template' => '/Word/index.html.twig',
+            'listing_title' => 'Course',
+            'courses' => $this->getCourses(),
+            'template' => '/Course/index.html.twig',
         ];
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
@@ -114,33 +107,38 @@ class WordImplementation
      */
     public function getCreatePresentation(string $template = null, array $data = null) : Response
     {
-        $form = $this->createForm(new Word());
+        $form = $this->createForm(new Course());
 
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_action.html.twig';
         $data = (is_array($data)) ? $data : [
-            'listing_title' => 'Words',
+            'listing_title' => 'Courses',
             'form' => $form->createView(),
-            'template' => '/Word/create.html.twig',
+            'template' => '/Course/create.html.twig',
         ];
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
     }
-
-    public function newWord(Request $request, string $template = null, array $data = null) : Response
+    /**
+     * @param Request $request
+     * @param string|null $template
+     * @param array|null $data
+     * @return Response
+     * @throws \Throwable
+     */
+    public function newCourse(Request $request, string $template = null, array $data = null) : Response
     {
-        $word = new Word();
-        $form = $this->createForm($word);
+        $course = new Course();
+        $form = $this->createForm($course);
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             try {
-                $this->dispatchEvent(EntityProcessorEvent::class, [
-                    'word' => $word,
-                ]);
 
-                $this->dispatchEvent(FileUploadEvent::class, $word);
+                $this->dispatchEvent(EntityProcessorEvent::class, array(
+                    'course' => $course,
+                ));
 
-                $this->wordRepository->persistAndFlush($word);
+                $this->courseRepository->persistAndFlush($course);
             } catch (\Throwable $e) {
                 // log exception here
                 throw $e;
@@ -148,17 +146,17 @@ class WordImplementation
 
             $this->session->getFlashBag()->add(
                 'notice',
-                sprintf('Word created successfully')
+                sprintf('Course created successfully')
             );
 
-            return new RedirectResponse($this->router->generate('admin_word_create'));
+            return new RedirectResponse($this->router->generate('admin_course_create'));
         }
 
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_action.html.twig';
         $data = (is_array($data)) ? $data : [
-            'listing_title' => 'Words',
+            'listing_title' => 'Courses',
             'form' => $form->createView(),
-            'template' => '/Word/create.html.twig',
+            'template' => '/Course/create.html.twig',
         ];
 
         return new Response(
@@ -174,28 +172,22 @@ class WordImplementation
      * @return Response
      * @throws \Throwable
      */
-    public function updateWord(Request $request, int $id, string $template = null, array $data = null) : Response
+    public function updateCourse(Request $request, int $id, string $template = null, array $data = null) : Response
     {
-        $word = $this->findWord($id);
+        $course = $this->findCourse($id);
 
-        if (!$word instanceof Word) {
+        if (!$course instanceof Course) {
             throw new NotFoundHttpException();
         }
 
-        $this->setImageIfExists($word);
-
-        $form = $this->createForm($word);
+        $form = $this->createForm($course);
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             try {
-                $this->dispatchEvent(EntityProcessorEvent::class, [
-                    'word' => $word,
-                ]);
+                $this->dispatchEvent(FileUploadEvent::class, $course);
 
-                $this->dispatchEvent(FileUploadEvent::class, $word);
-
-                $this->wordRepository->persistAndFlush($word);
+                $this->courseRepository->persistAndFlush($course);
             } catch (\Throwable $e) {
                 // log exception here
                 throw $e;
@@ -203,20 +195,20 @@ class WordImplementation
 
             $this->session->getFlashBag()->add(
                 'notice',
-                sprintf('Word updated successfully')
+                sprintf('Course updated successfully')
             );
 
-            return new RedirectResponse($this->router->generate('admin_word_update', [
+            return new RedirectResponse($this->router->generate('admin_course_update', [
                 'id' => $id
             ]));
         }
 
         $template = (is_string($template)) ? $template : '::Admin/Template/Panel/_action.html.twig';
         $data = (is_array($data)) ? $data : [
-            'word' => $word,
-            'listing_title' => 'Words',
+            'course' => $course,
+            'listing_title' => 'Courses',
             'form' => $form->createView(),
-            'template' => '/Word/update.html.twig',
+            'template' => '/Course/update.html.twig',
         ];
 
         if ($form->isSubmitted() and !$form->isValid()) {
@@ -233,37 +225,24 @@ class WordImplementation
     }
     /**
      * @param int $id
-     * @return Word
+     * @return Course
      */
-    public function findWord(int $id) : ?Word
+    public function findCourse(int $id) : ?Course
     {
-        /** @var Word $word */
-        $word = $this->wordRepository->find($id);
+        /** @var Course $course */
+        $course = $this->courseRepository->find($id);
 
-        return $word;
+        return $course;
     }
     /**
      * @param string $eventClass
-     * @param $entities
+     * @param $entity
      * @return void
      */
-    protected function dispatchEvent(string $eventClass, $entities)
+    protected function dispatchEvent(string $eventClass, $entity)
     {
-        $event = new $eventClass($entities);
+        $event = new $eventClass($entity);
 
         $this->eventDispatcher->dispatch($event::NAME, $event);
-    }
-    /**
-     * @param Word $word
-     */
-    private function setImageIfExists(Word $word)
-    {
-        $image = $this->imageRepository->findBy(array(
-            'word' => $word,
-        ));
-
-        if (!empty($image)) {
-            $word->setImage($image[0]);
-        }
     }
 }

@@ -4,7 +4,7 @@ namespace AdminBundle\Controller;
 
 use Sylius\Component\Resource\Exception\UpdateHandlingException;
 use Symfony\Component\HttpFoundation\Request;
-use Library\Event\PrePersistEvent;
+use Library\Event\EntityProcessorEvent;
 use Sylius\Component\Resource\ResourceActions;
 use FOS\RestBundle\View\View;
 
@@ -36,7 +36,7 @@ class CourseController extends GenericResourceController implements GenericContr
                 $this->stateMachine->apply($configuration, $newResource);
             }
 
-            $this->dispatchEvent(PrePersistEvent::class, array(
+            $this->dispatchEvent(EntityProcessorEvent::class, array(
                 'course' => $newResource,
             ));
 
@@ -82,7 +82,7 @@ class CourseController extends GenericResourceController implements GenericContr
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $form->handleRequest($request)->isValid()) {
             $resource = $form->getData();
 
-            $this->dispatchEvent(PrePersistEvent::class, array(
+            $this->dispatchEvent(EntityProcessorEvent::class, array(
                 'course' => $resource,
             ));
 

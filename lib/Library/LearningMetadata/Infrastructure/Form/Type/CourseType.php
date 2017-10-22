@@ -1,15 +1,15 @@
 <?php
 
-namespace AdminBundle\Form\Type;
+namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
 use AdminBundle\Entity\Course;
-use AdminBundle\Form\Type\Generic\TraitType\CheckboxTypeTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
-use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use Library\Infrastructure\Form\LanguageChoiceFormService;
+use Library\Infrastructure\Form\TraitType\CheckboxTypeTrait;
+use Library\Infrastructure\Form\TraitType\TextareaTypeTrait;
+use Library\Infrastructure\Form\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AdminBundle\Form\Type\Generic\LanguageChoiceFormService;
 
 class CourseType extends AbstractType
 {

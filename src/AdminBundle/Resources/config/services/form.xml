@@ -56,6 +56,14 @@
         </service>
 
         <service
+                id="langland.learning_metadata.form.course"
+                class="Library\LearningMetadata\Infrastructure\Form\Type\CourseType">
+            <argument type="service" id="langland.learning_metadata.form.language_choice" />
+
+            <tag name="form.type" />
+        </service>
+
+        <service
                 id="langland.learning_metadata.form.form_builder"
                 class="Library\LearningMetadata\Infrastructure\Form\FormBuilder">
 

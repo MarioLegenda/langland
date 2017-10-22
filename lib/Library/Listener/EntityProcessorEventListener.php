@@ -1,21 +1,19 @@
 <?php
 
-namespace AdminBundle\Listener\Custom;
+namespace Library\Listener;
 
 use AdminBundle\Entity\Course;
-use AdminBundle\Entity\Game\QuestionGame;
 use AdminBundle\Entity\LanguageInfo;
 use AdminBundle\Entity\Lesson;
-use AdminBundle\Entity\Sentence;
 use AdminBundle\Entity\Word;
 use Library\Event\MultipleEntityEvent;
 
-class PrePersistListener extends AbstractEntityManagerBaseListener
+class EntityProcessorEventListener extends AbstractEntityManagerBaseListener
 {
     /**
      * @param MultipleEntityEvent $event
      */
-    public function onPrePersist(MultipleEntityEvent $event)
+    public function onProcess(MultipleEntityEvent $event)
     {
         if (empty($event->getEntities())) {
             return;
@@ -67,15 +65,6 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
         }
     }
 
-    private function handleWordJob(Word $word)
-    {
-        foreach ($word->getTranslations() as $translation) {
-            if (is_null($translation->getName())) {
-                $word->removeTranslation($translation);
-            }
-        }
-    }
-
     private function handleLanguageInfoJob(LanguageInfo $languageInfo)
     {
         foreach ($languageInfo->getLanguageInfoTexts() as $languageInfoText) {
@@ -83,35 +72,40 @@ class PrePersistListener extends AbstractEntityManagerBaseListener
                 $languageInfo->removeLanguageInfoText($languageInfoText);
             }
         }
+
+        $dbLanguageInfoTexts = $this->em->getRepository('AdminBundle:LanguageInfoText')->findBy(array(
+            'languageInfo' => $languageInfo,
+        ));
+
+        if (!empty($dbLanguageInfoTexts)) {
+            foreach ($dbLanguageInfoTexts as $text) {
+                if (!$languageInfo->hasLanguageInfoText($text)) {
+                    $this->em->remove($text);
+                }
+            }
+
+            $this->em->flush();
+        }
     }
 
-    private function handleSentenceJob(Sentence $sentence, Course $course)
+    private function handleWordJob(Word $word)
     {
-        $sentence->setCourse($course);
-
-        foreach ($sentence->getSentenceTranslations() as $translation) {
-            if (empty($translation->getName())) {
-                $sentence->removeSentenceTranslation($translation);
-            }
-        }
-    }
-
-    private function handleQuestionGameJob(QuestionGame $game)
-    {
-        $game->setUrl(\URLify::filter($game->getName()));
-
-        foreach ($game->getAnswers() as $answer) {
-            if (empty($answer->getName())) {
-                $game->removeAnswer($answer);
+        foreach ($word->getTranslations() as $translation) {
+            if (is_null($translation->getName())) {
+                $word->removeTranslation($translation);
             }
         }
 
-        if (!is_null($game->getMaxTime())) {
-            $game->setHasTimeLimit(true);
-        }
+        $dbTranslations = $this->em->getRepository('AdminBundle:Translation')->findBy(array(
+            'word' => $word,
+        ));
 
-        if (is_null($game->getMaxTime())) {
-            $game->setHasTimeLimit(false);
+        if (!empty($dbTranslations)) {
+            foreach ($dbTranslations as $translation) {
+                if (!$word->hasTranslation($translation)) {
+                    $this->em->remove($translation);
+                }
+            }
         }
     }
 

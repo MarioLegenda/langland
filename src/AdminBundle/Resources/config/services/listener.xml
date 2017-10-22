@@ -13,5 +13,13 @@
 
             <tag name="kernel.event_listener" event="admin.upload_file_event" method="onFileUpload" />
         </service>
+
+        <service id="langland.common.entity_processor_event_listener"
+                 class="Library\Listener\EntityProcessorEventListener">
+
+            <argument type="service" id="doctrine.orm.entity_manager" />
+
+            <tag name="kernel.event_listener" event="entity_processor_event" method="onProcess" />
+        </service>
     </services>
 </container>

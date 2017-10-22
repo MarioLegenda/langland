@@ -12,13 +12,12 @@ use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Library\Event\FileUploadEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
 use Library\LearningMetadata\Repository\Implementation\ImageRepository;
 use AdminBundle\Entity\LanguageInfo;
-use Library\Event\PrePersistEvent;
+use Library\Event\EntityProcessorEvent;
 
 class LanguageInfoImplementation
 {
@@ -55,7 +54,7 @@ class LanguageInfoImplementation
      */
     private $session;
     /**
-     * LanguageImplementation constructor.
+     * LanguageInfoImplementation constructor.
      * @param LanguageInfoRepository $languageInfoRepository
      * @param LanguageInfoTextRepository $languageInfoTextRepository
      * @param ImageRepository $imageRepository
@@ -149,7 +148,7 @@ class LanguageInfoImplementation
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             try {
 
-                $this->dispatchEvent(PrePersistEvent::class, array(
+                $this->dispatchEvent(EntityProcessorEvent::class, array(
                     'languageInfo' => $languageInfo,
                 ));
 
@@ -201,9 +200,9 @@ class LanguageInfoImplementation
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             try {
 
-                $this->dispatchEvent(PrePersistEvent::class, array(
+                $this->dispatchEvent(EntityProcessorEvent::class, [
                     'languageInfo' => $languageInfo,
-                ));
+                ]);
 
                 $this->removeDeletetedTexts($languageInfo);
 
@@ -256,12 +255,12 @@ class LanguageInfoImplementation
     }
     /**
      * @param string $eventClass
-     * @param $entity
+     * @param $entities
      * @return void
      */
-    protected function dispatchEvent(string $eventClass, $entity)
+    protected function dispatchEvent(string $eventClass, $entities)
     {
-        $event = new $eventClass($entity);
+        $event = new $eventClass($entities);
 
         $this->eventDispatcher->dispatch($event::NAME, $event);
     }

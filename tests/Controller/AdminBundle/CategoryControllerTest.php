@@ -1,9 +1,6 @@
 <?php
 
-namespace TestLibrary\Language;
-
 use Faker\Factory;
-use function Symfony\Component\Validator\Tests\Constraints\choice_callback;
 use TestLibrary\LanglandAdminTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 

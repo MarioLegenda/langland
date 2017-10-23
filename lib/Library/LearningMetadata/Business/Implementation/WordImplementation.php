@@ -133,18 +133,13 @@ class WordImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(EntityProcessorEvent::class, [
-                    'word' => $word,
-                ]);
+            $this->dispatchEvent(EntityProcessorEvent::class, [
+                'word' => $word,
+            ]);
 
-                $this->dispatchEvent(FileUploadEvent::class, $word);
+            $this->dispatchEvent(FileUploadEvent::class, $word);
 
-                $this->wordRepository->persistAndFlush($word);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->wordRepository->persistAndFlush($word);
 
             $this->session->getFlashBag()->add(
                 'notice',
@@ -188,18 +183,13 @@ class WordImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(EntityProcessorEvent::class, [
-                    'word' => $word,
-                ]);
+            $this->dispatchEvent(EntityProcessorEvent::class, [
+                'word' => $word,
+            ]);
 
-                $this->dispatchEvent(FileUploadEvent::class, $word);
+            $this->dispatchEvent(FileUploadEvent::class, $word);
 
-                $this->wordRepository->persistAndFlush($word);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->wordRepository->persistAndFlush($word);
 
             $this->session->getFlashBag()->add(
                 'notice',

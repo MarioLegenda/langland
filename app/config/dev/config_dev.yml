@@ -21,6 +21,20 @@ monolog:
             path: '%kernel.logs_dir%/%kernel.environment%.log'
             level: debug
             channels: ['!event']
+        security:
+            level: error
+            type: stream
+            path: '%kernel.logs_dir%/security.log'
+            channels: [security]
+        exception:
+            level: alert
+            type: stream
+            path: '%kernel.logs_dir%/exception.log'
+        database:
+            level: critical
+            type: stream
+            path: '%kernel.logs_dir%/database.log'
+            channels: [doctrine]
         console:
             type: console
             channels: ['!event', '!doctrine']

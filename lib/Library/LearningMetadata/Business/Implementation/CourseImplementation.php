@@ -132,17 +132,12 @@ class CourseImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
 
-                $this->dispatchEvent(EntityProcessorEvent::class, array(
-                    'course' => $course,
-                ));
+            $this->dispatchEvent(EntityProcessorEvent::class, array(
+                'course' => $course,
+            ));
 
-                $this->courseRepository->persistAndFlush($course);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->courseRepository->persistAndFlush($course);
 
             $this->session->getFlashBag()->add(
                 'notice',
@@ -184,14 +179,9 @@ class CourseImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(FileUploadEvent::class, $course);
+            $this->dispatchEvent(FileUploadEvent::class, $course);
 
-                $this->courseRepository->persistAndFlush($course);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->courseRepository->persistAndFlush($course);
 
             $this->session->getFlashBag()->add(
                 'notice',

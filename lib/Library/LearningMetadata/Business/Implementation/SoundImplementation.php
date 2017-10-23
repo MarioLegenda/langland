@@ -129,12 +129,7 @@ class SoundImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(FileUploadEvent::class, $sound);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->dispatchEvent(FileUploadEvent::class, $sound);
 
             $this->session->getFlashBag()->add(
                 'notice',

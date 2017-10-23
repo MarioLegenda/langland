@@ -13,8 +13,8 @@ parameters:
     host: 33.33.33.10
     upload_dirs:
         relative_image_path: /uploads/images/
-        image_upload_dir: '%kernel.root_dir%/../tests/uploads/images'
-        sound_upload_dir: '%kernel.root_dir%/../tests/uploads/sounds'
+        image_upload_dir: '%kernel.root_dir%/../tests/Controller/AdminBundle/uploads/images'
+        sound_upload_dir: '%kernel.root_dir%/../tests/Controller/AdminBundle/uploads/sounds'
     security_admin_redirect: armor_admin_login
     security_app_redirect: app_login
     email_config: '%kernel.root_dir%/config/email.yml'

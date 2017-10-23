@@ -131,14 +131,9 @@ class LanguageImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(FileUploadEvent::class, $language);
+            $this->dispatchEvent(FileUploadEvent::class, $language);
 
-                $this->languageRepository->persistAndFlush($language);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->languageRepository->persistAndFlush($language);
 
             $this->session->getFlashBag()->add(
                 'notice',
@@ -182,14 +177,9 @@ class LanguageImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(FileUploadEvent::class, $language);
+            $this->dispatchEvent(FileUploadEvent::class, $language);
 
-                $this->languageRepository->persistAndFlush($language);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->languageRepository->persistAndFlush($language);
 
             $this->session->getFlashBag()->add(
                 'notice',

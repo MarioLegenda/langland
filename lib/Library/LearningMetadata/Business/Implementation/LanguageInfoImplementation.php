@@ -198,19 +198,13 @@ class LanguageInfoImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
+            $this->dispatchEvent(EntityProcessorEvent::class, [
+                'languageInfo' => $languageInfo,
+            ]);
 
-                $this->dispatchEvent(EntityProcessorEvent::class, [
-                    'languageInfo' => $languageInfo,
-                ]);
+            $this->removeDeletetedTexts($languageInfo);
 
-                $this->removeDeletetedTexts($languageInfo);
-
-                $this->languageInfoRepository->persistAndFlush($languageInfo);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->languageInfoRepository->persistAndFlush($languageInfo);
 
             $this->session->getFlashBag()->add(
                 'notice',

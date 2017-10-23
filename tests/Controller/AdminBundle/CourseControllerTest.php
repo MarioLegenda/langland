@@ -7,20 +7,25 @@ use Faker\Factory;
 use Symfony\Component\DomCrawler\Crawler;
 use FilesystemIterator;
 
-class WordControllerTest extends LanglandAdminTestCase
+class CourseControllerTest extends LanglandAdminTestCase
 {
-    private $navText = 'Words';
+    private $navText = 'Courses';
     private $dashboardRoute = 'http://33.33.33.10/admin/dashboard';
-    private $createUri = 'http://33.33.33.10/admin/word/create';
-    private $editUri = 'http://33.33.33.10/admin/word/update';
+    private $createUri = 'http://33.33.33.10/admin/course/create';
+    private $editUri = 'http://33.33.33.10/admin/course/update';
 
     public function testCreate()
     {
         $faker = Factory::create();
 
+        $createCrawler = $this->client->click($this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link());
+
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $this->assertEquals($this->createUri, $this->client->getRequest()->getUri());
+
         $createCrawler = $this->client->click($this->doTestDashboard($this->dashboardRoute, 'Languages')->selectLink('Create')->link());
 
-        $this->doTestCreateLanguage($createCrawler, 'French');
+        $this->doTestCreateLanguage($createCrawler, 'English');
 
         $createCrawler = $this->client->click($this->doTestDashboard($this->dashboardRoute, $this->navText)->selectLink('Create')->link());
 
@@ -30,11 +35,32 @@ class WordControllerTest extends LanglandAdminTestCase
         $this->doTestFailedValidation($createCrawler, array(
             array(
                 'name' => 'form[name]',
-                'value' => $faker->word,
+                'value' => 'French'
             ),
         ));
 
-        $form = $createCrawler->selectButton('Create')->form();
+        $this->doTestFailedValidation($createCrawler, array(
+            array(
+                'name' => 'form[whatToLearn]',
+                'value' => 'description'
+            ),
+        ));
+
+        $this->doTestFailedValidation($createCrawler, array(
+            array(
+                'name' => 'form[name]',
+                'value' => 'French'
+            ),
+            array(
+                'name' => 'form[whatToLearn]',
+                'value' => 'description'
+            ),
+        ));
+
+        $form = $createCrawler->selectButton('Create')->form(array(
+            'form[name]' => 'Course name',
+            'form[whatToLearn]' => $faker->text(600),
+        ));
 
         $form['form[language]']->select('1');
 
@@ -42,24 +68,32 @@ class WordControllerTest extends LanglandAdminTestCase
 
         $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
 
-        $words = array('Word 1', 'Word 2');
+        $form = $createCrawler->selectButton('Create')->form(array(
+            'form[name]' => $faker->text(600),
+            'form[whatToLearn]' => 'Description',
+        ));
 
-        foreach ($words as $word) {
-            $form = $createCrawler->selectButton('Create')->form();
+        $form['form[language]']->select('1');
 
-            $form['form[image][imageFile]']->upload(__DIR__.'/../testImages/fr.png');
+        $this->client->submit($form);
+
+        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+
+        $courses = array('Course 1', 'Course 2');
+
+        foreach ($courses as $course) {
+            $form = $createCrawler->selectButton('Create')->form(array(
+                'form[name]' => $course,
+                'form[whatToLearn]' => 'Description',
+            ));
+
             $form['form[language]']->select('1');
-            $form['form[name]'] = $word;
+            $form['form[initialCourse]']->tick();
 
             $this->client->submit($form);
 
             $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
         }
-
-        $editedFi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
-
-        $this->assertEquals(3, iterator_count($editedFi));
-
     }
 
     public function testUpdate()
@@ -70,24 +104,26 @@ class WordControllerTest extends LanglandAdminTestCase
 
         $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
 
-        $wordList = $this->doTestList($this->dashboardRoute, $this->navText);
+        $courseList = $this->doTestList($this->dashboardRoute, $this->navText);
 
-        $oldWords = array('Word 1', 'Word 2');
-        $newWords = array('Word 3', 'Word 4');
+        $oldCourses = array('Course 1', 'Course 2');
+        $newCourses = array('Course 3', 'Course 4');
 
         $count = 0;
-        $wordList->each(function(Crawler $card) use (&$count, $faker, $oldWords, $newWords) {
+        $courseList->each(function(Crawler $card) use (&$count, $faker, $oldCourses, $newCourses) {
             $editLink = $card->selectLink('Edit')->link();
 
             $editCrawler = $this->client->click($editLink);
 
             $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
 
-            $form = $editCrawler->selectButton('Edit')->form();
+            $form = $editCrawler->selectButton('Edit')->form(array(
+                'form[name]' => $newCourses[$count],
+                'form[whatToLearn]' => 'Description',
+            ));
 
-            $form['form[image][imageFile]']->upload(__DIR__.'/../testImages/fr.png');
             $form['form[language]']->select('1');
-            $form['form[name]'] = $newWords[$count];
+            $form['form[initialCourse]']->tick();
 
             $this->client->submit($form);
 
@@ -95,10 +131,6 @@ class WordControllerTest extends LanglandAdminTestCase
 
             ++$count;
         });
-
-        $editedFi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
-
-        $this->assertEquals(3, iterator_count($editedFi));
     }
 
     public function testIndex()
@@ -106,7 +138,7 @@ class WordControllerTest extends LanglandAdminTestCase
         $this->doTestIndex(
             $this->dashboardRoute,
             $this->navText,
-            array('Word 3', 'Word 4')
+            array('Course 3', 'Course 4')
         );
     }
 
@@ -123,7 +155,7 @@ class WordControllerTest extends LanglandAdminTestCase
             ),
             array(
                 'name' => 'form[image][imageFile]',
-                'value' => __DIR__.'/../testImages/fr.png',
+                'value' => __DIR__.'/testImages/fr.png',
             ),
             array(
                 'name' => 'form[showOnPage]',
@@ -131,7 +163,7 @@ class WordControllerTest extends LanglandAdminTestCase
             ),
         ));
 
-        $fi = new FilesystemIterator(__DIR__.'/../uploads/images', FilesystemIterator::SKIP_DOTS);
+        $fi = new FilesystemIterator(__DIR__.'/uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(1, iterator_count($fi));
     }

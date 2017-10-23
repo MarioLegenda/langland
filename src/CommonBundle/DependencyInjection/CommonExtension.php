@@ -9,6 +9,10 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 class CommonExtension extends Extension
 {
+    /**
+     * @param array $configs
+     * @param ContainerBuilder $container
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new XmlFileLoader(
@@ -17,5 +21,6 @@ class CommonExtension extends Extension
         );
 
         $loader->load('library.xml');
+        $loader->load('listener.xml');
     }
 }

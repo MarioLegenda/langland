@@ -32,5 +32,12 @@
 
             <argument type="service" id="validator" />
         </service>
+
+        <service
+                id="library.exception.exception_handler"
+                class="Library\Exception\Factory\ExceptionLoggingHandlerFactory">
+
+            <argument type="service" id="logger" />
+        </service>
     </services>
 </container>

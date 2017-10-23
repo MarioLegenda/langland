@@ -44,8 +44,8 @@ class LanglandAdminTestCase extends WebTestCase
         exec('/usr/bin/php /var/www/bin/console langland:reset');
 
         $dirs = array(
-            realpath(__DIR__.'/../uploads/images'),
-            realpath(__DIR__.'/../uploads/sounds'),
+            realpath(__DIR__.'/../Controller/AdminBundle/uploads/images'),
+            realpath(__DIR__.'/../Controller/AdminBundle/uploads/sounds'),
         );
 
         foreach ($dirs as $dir) {

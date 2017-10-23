@@ -4,10 +4,12 @@ namespace Library\LearningMetadata\Business\Implementation;
 
 use AdminBundle\Entity\Category;
 use AdminBundle\Entity\Language;
+use Doctrine\DBAL\ConnectionException;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Infrastructure\Form\Type\CategoryType;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\LearningMetadata\Repository\Implementation\CategoryRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Form\FormInterface;
@@ -51,6 +53,7 @@ class CategoryImplementation
      * @param TemplateWrapper $templateWrapper
      * @param Router $router
      * @param Session $session
+     * @param LoggerInterface $logger
      */
     public function __construct(
         CategoryRepository $categoryRepository,
@@ -131,14 +134,9 @@ class CategoryImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(FileUploadEvent::class, $category);
+            $this->dispatchEvent(FileUploadEvent::class, $category);
 
-                $this->categoryRepository->persistAndFlush($category);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->categoryRepository->persistAndFlush($category);
 
             $this->session->getFlashBag()->add(
                 'notice',
@@ -180,14 +178,9 @@ class CategoryImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            try {
-                $this->dispatchEvent(FileUploadEvent::class, $category);
+            $this->dispatchEvent(FileUploadEvent::class, $category);
 
-                $this->categoryRepository->persistAndFlush($category);
-            } catch (\Throwable $e) {
-                // log exception here
-                throw $e;
-            }
+            $this->categoryRepository->persistAndFlush($category);
 
             $this->session->getFlashBag()->add(
                 'notice',

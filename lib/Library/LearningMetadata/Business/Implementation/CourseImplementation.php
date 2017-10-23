@@ -215,6 +215,20 @@ class CourseImplementation
     }
     /**
      * @param int $id
+     * @return Response
+     */
+    public function manageCourse(int $id)
+    {
+        $course = $this->courseRepository->find($id);
+
+        if (!$course instanceof Course) {
+            throw new NotFoundHttpException();
+        }
+
+        return new Response($this->templateWrapper->getTemplate('::Admin/Template/Panel/CourseManager/Dashboard/dashboard.html.twig'));
+    }
+    /**
+     * @param int $id
      * @return Course
      */
     public function findCourse(int $id) : ?Course

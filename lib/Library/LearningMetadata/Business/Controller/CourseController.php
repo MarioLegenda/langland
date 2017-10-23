@@ -49,9 +49,13 @@ class CourseController
     {
         return $this->courseImplementation->newCourse($request);
     }
-
-    public function manageAction()
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function manageAction(Request $request, int $id)
     {
-
+        return $this->courseImplementation->manageCourse($id);
     }
 }

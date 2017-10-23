@@ -5,13 +5,11 @@
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
             {% include '::Admin/_header.html.twig' %}
 
-            {% include '::Admin/Template/_leftPaneNavigation.html.twig'%}
+            {% include '::Admin/Template/Panel/CourseManager/_leftPaneNavigation.html.twig'%}
         </nav>
 
         <div id="page-wrapper">
-            <div id="react-admin-app">
-
-            </div>
+            {% block content %} {% endblock %}
         </div>
     </div>
 {% endblock %}

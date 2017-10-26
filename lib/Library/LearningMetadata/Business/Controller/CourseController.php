@@ -5,6 +5,8 @@ namespace Library\LearningMetadata\Business\Controller;
 use Library\LearningMetadata\Business\Implementation\CourseImplementation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AdminBundle\Entity\Course;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CourseController
 {
@@ -50,12 +52,17 @@ class CourseController
         return $this->courseImplementation->newCourse($request);
     }
     /**
-     * @param Request $request
-     * @param int $id
+     * @param int $courseId
      * @return Response
      */
-    public function manageAction(Request $request, int $id)
+    public function manageAction(int $courseId)
     {
-        return $this->courseImplementation->manageCourse($id);
+        $course = $this->courseImplementation->findCourse($courseId);
+
+        if (!$course instanceof Course) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->courseImplementation->manageCourse($course);
     }
 }

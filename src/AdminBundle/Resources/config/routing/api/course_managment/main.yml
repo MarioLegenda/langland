@@ -1,0 +1,4 @@
+admin_lesson:
+  resource: "@AdminBundle/Resources/config/routing/api/course_managment/lesson.yml"
+  prefix: /
+  host: '%host%'

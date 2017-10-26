@@ -1,0 +1,4 @@
+admin_lesson_index:
+    path: /lessons
+    methods: [GET]
+    defaults: { _controller: langland.learning_metadata.controller.lesson_controller:indexAction }

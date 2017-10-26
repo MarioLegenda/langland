@@ -1,0 +1,26 @@
+{% extends '::Admin/Template/Panel/CourseManager/baseContent.html.twig' %}
+
+{% block content %}
+<div>
+    <div class="row">
+
+        {% include '::Admin/Template/Panel/CourseManager/_title.html.twig'%}
+
+        <div class="col-lg-12">
+            <div class="panel panel-primary">
+
+                <div class="panel-heading">
+                    Listing of all items
+                </div>
+
+                {% include '::Admin/Template/Form/flashNotice.html.twig' %}
+
+                <div class="panel-body">
+                    {% include '::Admin/Template/Panel/CourseManager' ~ template %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

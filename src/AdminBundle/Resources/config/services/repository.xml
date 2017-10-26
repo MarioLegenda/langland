@@ -76,5 +76,14 @@
 
             <argument>AdminBundle\Entity\Course</argument>
         </service>
+
+        <service
+                id="langland.learning_metadata.repository.implementation.lesson_implementation"
+                class="Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository">
+
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+
+            <argument>AdminBundle\Entity\Lesson</argument>
+        </service>
     </services>
 </container>

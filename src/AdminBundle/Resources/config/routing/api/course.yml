@@ -18,8 +18,12 @@ admin_course_update:
     methods: [POST, GET]
     defaults: { _controller: langland.learning_metadata.controller.course_controller:updateAction }
 
-
 admin_course_managment:
-    path: /course/manage/{id}
+    path: /course/manage/{courseId}
     methods: [GET]
     defaults: { _controller: langland.learning_metadata.controller.course_controller:manageAction }
+
+admin_course:
+  resource: "@AdminBundle/Resources/config/routing/api/course_managment/main.yml"
+  prefix: /course/manage/{courseId}
+  host: '%host%'

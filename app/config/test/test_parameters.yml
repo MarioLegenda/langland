@@ -14,6 +14,8 @@ parameters:
     image_upload:
         relative_image_path: /uploads/images
         image_upload_dir: '%kernel.root_dir%/../tests/Controller/AdminBundle/uploads/images'
+    audio_upload:
+        sound_upload_dir: '%kernel.root_dir%/../web/uploads/sounds'
     upload_dirs:
         relative_image_path: /uploads/images/
         image_upload_dir: '%kernel.root_dir%/../tests/Controller/AdminBundle/uploads/images'

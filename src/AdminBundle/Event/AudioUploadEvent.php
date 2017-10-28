@@ -4,9 +4,9 @@ namespace AdminBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
-class SoundUploadEvent extends Event
+class AudioUploadEvent extends Event
 {
-    const NAME = 'admin.sound_upload_event';
+    const NAME = 'admin.audio_upload_event';
     /**
      * @var object $entity
      */

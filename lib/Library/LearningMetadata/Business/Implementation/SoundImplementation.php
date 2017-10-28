@@ -3,6 +3,7 @@
 namespace Library\LearningMetadata\Business\Implementation;
 
 use AdminBundle\Entity\Sound;
+use AdminBundle\Event\AudioUploadEvent;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\LearningMetadata\Repository\Implementation\SoundRepository;
 use Symfony\Component\Routing\Router;
@@ -13,7 +14,6 @@ use Symfony\Component\Form\FormInterface;
 use Library\LearningMetadata\Infrastructure\Form\Type\SoundType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Library\Event\FileUploadEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SoundImplementation
@@ -129,7 +129,7 @@ class SoundImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(FileUploadEvent::class, $sound);
+            $this->dispatchEvent(AudioUploadEvent::class, $sound);
 
             $this->session->getFlashBag()->add(
                 'notice',

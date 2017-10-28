@@ -66,7 +66,7 @@ class ImageUpload implements FileUploadInterface
         );
     }
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getData(): array
     {
@@ -78,7 +78,6 @@ class ImageUpload implements FileUploadInterface
 
         return $this->data;
     }
-
     /**
      * @param array $measurements
      * @param $file

@@ -2,37 +2,66 @@
 
 namespace Library\LearningMetadata\Business\Listener;
 
+use AdminBundle\Event\AudioUploadEvent;
 use Doctrine\ORM\EntityManagerInterface;
-use Library\Event\ImageUploadEvent;
-use Library\Infrastructure\FileUpload\FileUploaderInterface;
+use Library\Infrastructure\FileUpload\FileUploadInterface;
+use AdminBundle\Entity\Sound;
 
 class AudioUploadListener
 {
     /**
-     * @var FileUploaderInterface $fileUploader
-     */
-    private $fileUploader;
-    /**
-     * @var EntityManagerInterface $em
+     * @var EntityManagerInterface
      */
     private $em;
     /**
-     * AudioUploadListener constructor.
-     * @param FileUploaderInterface $fileUploader
+     * @var FileUploadInterface $imageUpload
+     */
+    private $uploader;
+    /**
+     * ImageUploadListener constructor.
      * @param EntityManagerInterface $entityManager
+     * @param FileUploadInterface $uploader
      */
     public function __construct(
-        FileUploaderInterface $fileUploader,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        FileUploadInterface $uploader
     ) {
         $this->em = $entityManager;
-        $this->fileUploader = $fileUploader;
+        $this->uploader = $uploader;
     }
     /**
-     * @param ImageUploadEvent $event
+     * @param AudioUploadEvent $event
      */
-    public function onUpload(ImageUploadEvent $event)
+    public function onUpload(AudioUploadEvent $event)
     {
+        if ($event->getEntity() instanceof Sound) {
+            $this->uploadAudio($event->getEntity());
+        }
+    }
+    /**
+     * @param Sound $sound
+     */
+    private function uploadAudio(Sound $sound)
+    {
+        foreach ($sound->getSoundFile() as $soundFile) {
+            $this->uploader->upload($soundFile, array(
+                'repository' => 'AdminBundle:Sound',
+                'field' => 'name',
+            ));
 
+            $fileData = $this->uploader->getData();
+
+            $newSound = new Sound();
+
+            $newSound
+                ->setName($fileData['fileName'])
+                ->setOriginalName($fileData['originalName'])
+                ->setTargetDir($fileData['targetDir'])
+                ->setFullPath($fileData['fullPath']);
+
+            $this->em->persist($newSound);
+        }
+
+        $this->em->flush();
     }
 }

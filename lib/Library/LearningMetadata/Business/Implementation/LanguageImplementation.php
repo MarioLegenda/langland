@@ -13,10 +13,10 @@ use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Library\Event\FileUploadEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
+use AdminBundle\Event\ImageUploadEvent;
 
 class LanguageImplementation
 {
@@ -131,7 +131,7 @@ class LanguageImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(FileUploadEvent::class, $language);
+            $this->dispatchEvent(ImageUploadEvent::class, $language);
 
             $this->languageRepository->persistAndFlush($language);
 
@@ -177,7 +177,7 @@ class LanguageImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(FileUploadEvent::class, $language);
+            $this->dispatchEvent(ImageUploadEvent::class, $language);
 
             $this->languageRepository->persistAndFlush($language);
 

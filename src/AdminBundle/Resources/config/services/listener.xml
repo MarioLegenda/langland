@@ -21,5 +21,14 @@
 
             <tag name="kernel.event_listener" event="entity_processor_event" method="onProcess" />
         </service>
+
+        <service id="langland.listener.image_upload_listener"
+                 class="Library\LearningMetadata\Business\Listener\ImageUploadListener">
+
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="library.image_upload" />
+
+            <tag name="kernel.event_listener" event="admin.image_upload_event" method="onUpload" />
+        </service>
     </services>
 </container>

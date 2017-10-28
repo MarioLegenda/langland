@@ -39,5 +39,14 @@
 
             <argument type="service" id="logger" />
         </service>
+
+        <service
+                id="library.image_upload"
+                class="Library\Infrastructure\FileUpload\Implementation\ImageUpload">
+
+            <argument>%image_upload%</argument>
+            <argument type="service" id="library.image_resizer" />
+            <argument type="service" id="library.file_namer" />
+        </service>
     </services>
 </container>

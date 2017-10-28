@@ -3,7 +3,7 @@
 namespace Library\LearningMetadata\Business\Implementation;
 
 use AdminBundle\Entity\Word;
-use Library\Event\FileUploadEvent;
+use AdminBundle\Event\ImageUploadEvent;
 use Library\Event\EntityProcessorEvent;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Infrastructure\Form\Type\WordType;
@@ -137,7 +137,7 @@ class WordImplementation
                 'word' => $word,
             ]);
 
-            $this->dispatchEvent(FileUploadEvent::class, $word);
+            $this->dispatchEvent(ImageUploadEvent::class, $word);
 
             $this->wordRepository->persistAndFlush($word);
 
@@ -187,7 +187,7 @@ class WordImplementation
                 'word' => $word,
             ]);
 
-            $this->dispatchEvent(FileUploadEvent::class, $word);
+            $this->dispatchEvent(ImageUploadEvent::class, $word);
 
             $this->wordRepository->persistAndFlush($word);
 

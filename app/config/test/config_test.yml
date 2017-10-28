@@ -1,7 +1,6 @@
 imports:
     - { resource: test_parameters.yml }
     - { resource: test_security.yml }
-    - { resource: ../prod/services.yml }
     - { resource: "@ArmorBundle/Resources/config/services.xml" }
     - { resource: "@AppBundle/Resources/config/services.yml" }
 

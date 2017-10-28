@@ -11,6 +11,9 @@ parameters:
     mailer_password: null
     secret: cf16d1d0e5788fb5f30d32b3e36268b44241e3da
     host: 33.33.33.10
+    image_upload:
+        relative_image_path: /uploads/images
+        image_upload_dir: '%kernel.root_dir%/../tests/Controller/AdminBundle/uploads/images'
     upload_dirs:
         relative_image_path: /uploads/images/
         image_upload_dir: '%kernel.root_dir%/../tests/Controller/AdminBundle/uploads/images'

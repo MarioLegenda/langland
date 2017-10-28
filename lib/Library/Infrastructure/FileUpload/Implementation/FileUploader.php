@@ -79,7 +79,10 @@ class FileUploader
             'fullPath' => $this->imageDir.'/'.$fileName,
         );
     }
-
+    /**
+     * @param UploadedFile $file
+     * @param array $options
+     */
     public function uploadSound(UploadedFile $file, array $options)
     {
         $fileName = $this->fileNamer->createName($options).'.mp3';
@@ -102,6 +105,18 @@ class FileUploader
             'originalName' => $originalName,
             'fullPath' => '/uploads/sounds/'.$fileName,
         );
+    }
+    /**
+     * @param array $measurements
+     * @param $file
+     * @param $path
+     */
+    public function resizeAndSave(array $measurements, $file, $path)
+    {
+        $this->imageResize
+            ->setWidth($measurements['width'])
+            ->setHeight($measurements['height'])
+            ->resizeAndSave($file, $path);
     }
     /**
      * @return string
@@ -165,13 +180,5 @@ class FileUploader
     public function getData() : array
     {
         return $this->data;
-    }
-
-    public function resizeAndSave(array $measurements, $file, $path)
-    {
-        $this->imageResize
-            ->setWidth($measurements['width'])
-            ->setHeight($measurements['height'])
-            ->resizeAndSave($file, $path);
     }
 }

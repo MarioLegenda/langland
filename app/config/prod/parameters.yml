@@ -20,3 +20,7 @@ parameters:
     email_config: '%kernel.root_dir%/config/email.yml'
     blue_dot_dir: '%kernel.root_dir%/config/blueDot'
     api_base_route: /langland/api/v1
+
+    image_upload:
+        relative_image_path: /uploads/images
+        image_upload_dir: '%kernel.root_dir%/../tests/Controller/AdminBundle/uploads/images'

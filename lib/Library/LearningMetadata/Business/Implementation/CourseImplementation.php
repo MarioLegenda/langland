@@ -13,7 +13,6 @@ use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Library\Event\FileUploadEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
@@ -179,7 +178,10 @@ class CourseImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(FileUploadEvent::class, $course);
+
+            $this->dispatchEvent(EntityProcessorEvent::class, array(
+                'course' => $course,
+            ));
 
             $this->courseRepository->persistAndFlush($course);
 

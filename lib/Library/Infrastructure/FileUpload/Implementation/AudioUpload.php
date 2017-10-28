@@ -16,10 +16,6 @@ class AudioUpload implements FileUploadInterface
      */
     private $fileNamer;
     /**
-     * @var mixed $relativePath
-     */
-    private $relativePath;
-    /**
      * @var array $data
      */
     private $data = array();

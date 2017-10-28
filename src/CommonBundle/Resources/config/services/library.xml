@@ -18,15 +18,6 @@
         </service>
 
         <service
-                id="library.file_uploader"
-                class="Library\Infrastructure\FileUpload\Implementation\FileUploader">
-
-            <argument>%upload_dirs%</argument>
-            <argument type="service" id="library.image_resizer" />
-            <argument type="service" id="library.file_namer" />
-        </service>
-
-        <service
                 id="library.manual_validator"
                 class="Library\Infrastructure\ManualValidator">
 

@@ -11,10 +11,6 @@ parameters:
     mailer_password: null
     secret: cf16d1d0e5788fb5f30d32b3e36268b44241e3da
     host: 33.33.33.10
-    upload_dirs:
-        relative_image_path: /uploads/images/
-        image_upload_dir: '%kernel.root_dir%/../web/uploads/images'
-        sound_upload_dir: '%kernel.root_dir%/../web/uploads/sounds'
     security_admin_redirect: armor_admin_login
     security_app_redirect: app_login
     email_config: '%kernel.root_dir%/config/email.yml'

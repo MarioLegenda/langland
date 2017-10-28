@@ -70,7 +70,7 @@ class AppKernel extends Kernel
         }
 
         $projectBootstrap->bootstrapDirectories(
-            $this->container->getParameter('upload_dirs'),
+            $this->container->getParameter('image_upload'),
             array('relative_image_path')
         );
     }

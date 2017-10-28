@@ -4,7 +4,6 @@ namespace Library\LearningMetadata\Business\Implementation;
 
 use AdminBundle\Entity\Category;
 use AdminBundle\Entity\Language;
-use Doctrine\DBAL\ConnectionException;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Infrastructure\Form\Type\CategoryType;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Library\Event\FileUploadEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
@@ -134,7 +132,6 @@ class CategoryImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(FileUploadEvent::class, $category);
 
             $this->categoryRepository->persistAndFlush($category);
 
@@ -178,8 +175,6 @@ class CategoryImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(FileUploadEvent::class, $category);
-
             $this->categoryRepository->persistAndFlush($category);
 
             $this->session->getFlashBag()->add(

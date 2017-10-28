@@ -5,14 +5,6 @@
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="langland.common.file_upload_listener"
-                 class="Library\LearningMetadata\Business\Listener\FileUploaderListener">
-
-            <argument type="service" id="library.file_uploader"/>
-            <argument type="service" id="doctrine.orm.entity_manager" />
-
-            <tag name="kernel.event_listener" event="admin.upload_file_event" method="onFileUpload" />
-        </service>
 
         <service id="langland.common.entity_processor_event_listener"
                  class="Library\Listener\EntityProcessorEventListener">

@@ -59,6 +59,16 @@ class LessonView implements \JsonSerializable
         $this->internalName = $internalName;
     }
     /**
+     * @param Tip $tip
+     * @return LessonView
+     */
+    public function addTip(Tip $tip): LessonView
+    {
+        $this->tips[] = $tip;
+
+        return $this;
+    }
+    /**
      * @return Tip[]
      */
     public function getTips(): array
@@ -85,6 +95,16 @@ class LessonView implements \JsonSerializable
     public function setLessonTexts(array $lessonTexts)
     {
         $this->lessonTexts = $lessonTexts;
+    }
+    /**
+     * @param LessonText $lessonText
+     * @return LessonView
+     */
+    public function addLessonText(LessonText $lessonText): LessonView
+    {
+        $this->lessonTexts[] = $lessonText;
+
+        return $this;
     }
     /**
      * @return array
@@ -121,5 +141,29 @@ class LessonView implements \JsonSerializable
     public function jsonSerialize() : array
     {
         return $this->toArray();
+    }
+    /**
+     * @param array $lessonView
+     * @return LessonView
+     */
+    public static function createFromArray(array $lessonView): LessonView
+    {
+        $view = new LessonView(
+            $lessonView['internalName'],
+            $lessonView['name']
+        );
+
+        foreach ($lessonView['tips'] as $tip) {
+            $view->addTip(new Tip($tip));
+        }
+
+        foreach ($lessonView['lessonTexts'] as $lessonText) {
+            $view->addLessonText(new LessonText(
+                $lessonText['name'],
+                $lessonText['text']
+            ));
+        }
+
+        return $view;
     }
 }

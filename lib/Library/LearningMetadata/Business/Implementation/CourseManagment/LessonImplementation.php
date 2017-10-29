@@ -4,6 +4,7 @@ namespace Library\LearningMetadata\Business\Implementation\CourseManagment;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
+use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
@@ -66,7 +67,15 @@ class LessonImplementation
      */
     public function getLessons() : array
     {
-        return $this->lessonRepository->findAll();
+        $lessons = $this->lessonRepository->findAll();
+
+        $lessonViews = [];
+        /** @var Lesson $lesson */
+        foreach ($lessons as $lesson) {
+            $lessonViews[] = LessonView::createFromArray($lesson->getJsonLesson());
+        }
+
+        return $lessonViews;
     }
     /**
      * @param Course $course

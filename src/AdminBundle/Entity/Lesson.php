@@ -9,13 +9,17 @@ class Lesson
      */
     private $id;
     /**
-     * @var Course $course
+     * @var int $order
      */
-    private $course;
+    private $lessonOrder;
     /**
      * @var array $jsonLesson
      */
     private $jsonLesson;
+    /**
+     * @var Course $course
+     */
+    private $course;
     /**
      * @var \DateTime $createdAt
      */
@@ -24,6 +28,17 @@ class Lesson
      * @var \DateTime $updatedAt
      */
     private $updatedAt;
+
+    public function __construct(
+        int $order,
+        array $jsonLesson,
+        Course $course
+    ) {
+        $this
+            ->setLessonOrder($order)
+            ->setJsonLesson($jsonLesson)
+            ->setCourse($course);
+    }
     /**
      * Get id
      *
@@ -34,26 +49,21 @@ class Lesson
         return $this->id;
     }
     /**
-     * Set course
-     *
-     * @param string $course
-     *
-     * @return Lesson
+     * @return int
      */
-    public function setCourse($course) : Lesson
+    public function getLessonOrder(): int
     {
-        $this->course = $course;
-
-        return $this;
+        return $this->lessonOrder;
     }
     /**
-     * Get course
-     *
-     * @return string
+     * @param int $order
+     * @return Lesson
      */
-    public function getCourse()
+    public function setLessonOrder(int $order): Lesson
     {
-        return $this->course;
+        $this->lessonOrder = $order;
+
+        return $this;
     }
     /**
      * @return array
@@ -64,10 +74,30 @@ class Lesson
     }
     /**
      * @param array $jsonLesson
+     * @return Lesson
      */
-    public function setJsonLesson(array $jsonLesson)
+    public function setJsonLesson(array $jsonLesson): Lesson
     {
         $this->jsonLesson = $jsonLesson;
+
+        return $this;
+    }
+    /**
+     * @param string $course
+     * @return Lesson
+     */
+    public function setCourse($course) : Lesson
+    {
+        $this->course = $course;
+
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getCourse()
+    {
+        return $this->course;
     }
     /**
      * Set createdAt

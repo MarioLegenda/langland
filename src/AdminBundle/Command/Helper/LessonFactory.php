@@ -5,6 +5,7 @@ namespace AdminBundle\Command\Helper;
 use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Course;
+use Doctrine\ORM\EntityManagerInterface;
 use Library\LearningMetadata\Business\ViewModel\Lesson\LessonText;
 use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Library\LearningMetadata\Business\ViewModel\Lesson\Tip;
@@ -17,14 +18,14 @@ class LessonFactory
      */
     private $lessons;
     /**
-     * @var EntityManager $em
+     * @var EntityManagerInterface $em
      */
     private $em;
     /**
      * LessonFactory constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -54,10 +55,11 @@ class LessonFactory
             $lessonView->setTips($tips);
             $lessonView->setLessonTexts($lessonTexts);
 
-            $lesson = new Lesson();
-
-            $lesson->setCourse($course);
-            $lesson->setJsonLesson($lessonView->toArray());
+            $lesson = new Lesson(
+                $i,
+                $lessonView->toArray(),
+                $course
+            );
 
             $this->lessons[] = $lesson;
 

@@ -91,6 +91,8 @@
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
+            <argument type="service" id="library.deserializer" />
+            <argument type="service" id="logger" />
         </service>
     </services>
 </container>

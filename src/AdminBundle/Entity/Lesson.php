@@ -28,16 +28,20 @@ class Lesson
      * @var \DateTime $updatedAt
      */
     private $updatedAt;
-
+    /**
+     * Lesson constructor.
+     * @param int $order
+     * @param array $jsonLesson
+     * @param Course $course
+     */
     public function __construct(
         int $order,
         array $jsonLesson,
         Course $course
     ) {
-        $this
-            ->setLessonOrder($order)
-            ->setJsonLesson($jsonLesson)
-            ->setCourse($course);
+        $this->lessonOrder = $order;
+        $this->jsonLesson = $jsonLesson;
+        $this->course = $course;
     }
     /**
      * Get id

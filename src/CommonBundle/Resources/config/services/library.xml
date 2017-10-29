@@ -48,5 +48,12 @@
             <argument type="service" id="library.file_namer" />
         </service>
 
+        <service
+                id="library.deserializer"
+                class="Library\Infrastructure\Helper\Deserializer">
+
+            <argument type="service" id="jms_serializer" />
+        </service>
+
     </services>
 </container>

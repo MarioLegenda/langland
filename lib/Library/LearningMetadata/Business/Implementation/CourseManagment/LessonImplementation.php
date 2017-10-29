@@ -4,10 +4,12 @@ namespace Library\LearningMetadata\Business\Implementation\CourseManagment;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
+use Library\Infrastructure\Helper\Deserializer;
 use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
@@ -40,12 +42,22 @@ class LessonImplementation
      */
     private $session;
     /**
+     * @var Deserializer $deserializer
+     */
+    private $deserializer;
+    /**
+     * @var LoggerInterface $logger
+     */
+    private $logger;
+    /**
      * CategoryImplementation constructor.
      * @param LessonRepository $lessonRepository
      * @param FormBuilderInterface $formBuilder
      * @param TemplateWrapper $templateWrapper
      * @param Router $router
      * @param Session $session
+     * @param Deserializer $deserializer
+     * @param LoggerInterface $logger
      */
     public function __construct(
         LessonRepository $lessonRepository,
@@ -53,7 +65,9 @@ class LessonImplementation
         TemplateWrapper $templateWrapper,
         Router $router,
         TraceableEventDispatcher $eventDispatcher,
-        Session $session
+        Session $session,
+        Deserializer $deserializer,
+        LoggerInterface $logger
     ) {
         $this->lessonRepository = $lessonRepository;
         $this->formBuilder = $formBuilder;
@@ -61,6 +75,8 @@ class LessonImplementation
         $this->router = $router;
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
+        $this->deserializer = $deserializer;
+        $this->logger = $logger;
     }
     /**
      * @return Lesson[]
@@ -72,7 +88,7 @@ class LessonImplementation
         $lessonViews = [];
         /** @var Lesson $lesson */
         foreach ($lessons as $lesson) {
-            $lessonViews[] = LessonView::createFromArray($lesson->getJsonLesson());
+            $lessonViews[] = $this->deserializer->create($lesson->getJsonLesson(), LessonView::class);
         }
 
         return $lessonViews;

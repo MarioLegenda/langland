@@ -2,9 +2,6 @@
 
 namespace AdminBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
 class Lesson
 {
     /**
@@ -12,21 +9,13 @@ class Lesson
      */
     private $id;
     /**
-     * @var string $name
+     * @var Course $course
      */
-    private $name;
+    private $course;
     /**
-     * @var string $description
+     * @var array $jsonLesson
      */
-    private $description;
-    /**
-     * @var string $lessonUrl
-     */
-    private $lessonUrl;
-    /**
-     * @var bool $isInitialLesson
-     */
-    private $isInitialLesson;
+    private $jsonLesson;
     /**
      * @var \DateTime $createdAt
      */
@@ -36,21 +25,6 @@ class Lesson
      */
     private $updatedAt;
     /**
-     * @var Course $course
-     */
-    private $course;
-    /**
-     * @var ArrayCollection $lessonTexts
-     */
-    private $lessonTexts;
-
-    public function __construct()
-    {
-        $this->lessonTexts = new ArrayCollection();
-
-        $this->isInitialLesson = false;
-    }
-    /**
      * Get id
      *
      * @return int
@@ -58,79 +32,6 @@ class Lesson
     public function getId()
     {
         return $this->id;
-    }
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Lesson
-     */
-    public function setName($name) : Lesson
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-    /**
-     * @param string $description
-     * @return Lesson
-     */
-    public function setDescription($description) : Lesson
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-    /**
-     * @return string
-     */
-    public function getLessonUrl()
-    {
-        return $this->lessonUrl;
-    }
-    /**
-     * @param string $lessonUrl
-     * @return Lesson
-     */
-    public function setLessonUrl($lessonUrl) : Lesson
-    {
-        $this->lessonUrl = $lessonUrl;
-
-        return $this;
-    }
-    /**
-     * @return bool
-     */
-    public function getIsInitialLesson(): bool
-    {
-        return $this->isInitialLesson;
-    }
-    /**
-     * @param bool $isInitialLesson
-     * @return Lesson
-     */
-    public function setIsInitialLesson(bool $isInitialLesson) : Lesson
-    {
-        $this->isInitialLesson = $isInitialLesson;
-
-        return $this;
     }
     /**
      * Set course
@@ -155,44 +56,18 @@ class Lesson
         return $this->course;
     }
     /**
-     * @param LessonText $lessonText
-     * @return bool
+     * @return array
      */
-    public function hasLessonText(LessonText $lessonText) : bool
+    public function getJsonLesson(): array
     {
-        return $this->lessonTexts->contains($lessonText);
+        return $this->jsonLesson;
     }
     /**
-     * @param LessonText $lessonText
-     * @return Lesson
+     * @param array $jsonLesson
      */
-    public function addLessonText(LessonText $lessonText) : Lesson
+    public function setJsonLesson(array $jsonLesson)
     {
-        if (!$this->hasLessonText($lessonText)) {
-            $lessonText->setLesson($this);
-            $this->lessonTexts->add($lessonText);
-        }
-
-        return $this;
-    }
-    /**
-     * @param LessonText $lessonText
-     * @return Lesson
-     */
-    public function removeLessonText(LessonText $lessonText) : Lesson
-    {
-        if ($this->hasLessonText($lessonText)) {
-            $this->lessonTexts->removeElement($lessonText);
-        }
-
-        return $this;
-    }
-    /**
-     * @return ArrayCollection
-     */
-    public function getLessonTexts()
-    {
-        return $this->lessonTexts;
+        $this->jsonLesson = $jsonLesson;
     }
     /**
      * Set createdAt
@@ -234,32 +109,8 @@ class Lesson
         return $this;
     }
     /**
-     * @param ExecutionContextInterface $context
+     * @void
      */
-    public function validate(ExecutionContextInterface $context)
-    {
-        if (count($this->getLessonTexts()) < 1) {
-            $context->buildViolation('There has to be at least one lesson text for this lesson')
-                ->atPath('lessonTexts')
-                ->addViolation();
-
-            return;
-        }
-
-        $emptyTexts = 0;
-        foreach ($this->getLessonTexts() as $lessonText) {
-            if (empty($lessonText->getName()) and empty($lessonText->getText())) {
-                ++$emptyTexts;
-            }
-        }
-
-        if ($emptyTexts === count($this->getLessonTexts())) {
-            $context->buildViolation('All lesson texts are empty')
-                ->atPath('lessonTexts')
-                ->addViolation();
-        }
-    }
-
     public function updateTimestamps()
     {
         $this->setUpdatedAt(new \DateTime());

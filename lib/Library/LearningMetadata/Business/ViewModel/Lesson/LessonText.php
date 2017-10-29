@@ -67,9 +67,6 @@ class LessonText implements \JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return [
-            'name' => $this->getName(),
-            'text' => $this->getText(),
-        ];
+        return $this->toArray();
     }
 }

@@ -89,9 +89,9 @@ class LessonView implements \JsonSerializable
     /**
      * @return array
      */
-    public function jsonSerialize() : array
+    public function toArray(): array
     {
-        $jsonSeriazible =  [
+        $array = [
             'internalName' => $this->getInternalName(),
             'name' => $this->getName(),
             'tips' => [],
@@ -103,16 +103,23 @@ class LessonView implements \JsonSerializable
             $tips[] = (string) $tip;
         }
 
-        $jsonSeriazible['tips'] = $tips;
+        $array['tips'] = $tips;
 
         $lessonTexts = [];
         /** @var ArrayNotationInterface $text */
-        foreach ($lessonTexts as $text) {
+        foreach ($this->getLessonTexts() as $text) {
             $lessonTexts[] = $text->toArray();
         }
 
-        $jsonSeriazible['lessonTexts'] = $lessonTexts;
+        $array['lessonTexts'] = $lessonTexts;
 
-        return $jsonSeriazible;
+        return $array;
+    }
+    /**
+     * @return array
+     */
+    public function jsonSerialize() : array
+    {
+        return $this->toArray();
     }
 }

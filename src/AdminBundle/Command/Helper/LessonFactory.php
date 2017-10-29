@@ -5,7 +5,9 @@ namespace AdminBundle\Command\Helper;
 use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Course;
-use AdminBundle\Entity\LessonText;
+use Library\LearningMetadata\Business\ViewModel\Lesson\LessonText;
+use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
+use Library\LearningMetadata\Business\ViewModel\Lesson\Tip;
 
 class LessonFactory
 {
@@ -34,29 +36,32 @@ class LessonFactory
     public function create(Course $course, int $numberOfEntries)
     {
         for ($i = 0; $i < $numberOfEntries; $i++) {
+            $tips = [];
+            for ($i = 0; $i < 10; $i++) {
+                $tips[] = new Tip($this->getFaker()->name);
+            }
+
+            $lessonTexts = [];
+            for ($i = 0; $i < 10; $i++) {
+                $lessonTexts[] = new LessonText($this->getFaker()->name, $this->getFaker()->text);
+            }
+
+            $lessonView = new LessonView(
+                $this->getFaker()->name,
+                $this->getFaker()->name
+            );
+
+            $lessonView->setTips($tips);
+            $lessonView->setLessonTexts($lessonTexts);
+
             $lesson = new Lesson();
 
-            if ($i === 0) {
-                $lesson->setIsInitialLesson(true);
-            }
-
-            $lesson->setName($course->getLanguage()->getName(). ' ' .($i + 1));
-            $lesson->setDescription($this->getFaker()->sentence(100));
-            $lesson->setLessonUrl(\URLify::filter($lesson->getName()));
             $lesson->setCourse($course);
-
-            for ($v = 0; $v < 5; $v++) {
-                $lessonText = new LessonText();
-                $lessonText->setName($this->getFaker()->word);
-                $lessonText->setText($this->getFaker()->sentence(200));
-                $lessonText->setLesson($lesson);
-
-                $lesson->addLessonText($lessonText);
-            }
-
-            $this->em->persist($lesson);
+            $lesson->setJsonLesson($lessonView->toArray());
 
             $this->lessons[] = $lesson;
+
+            $this->em->persist($lesson);
         }
 
         $this->em->flush();

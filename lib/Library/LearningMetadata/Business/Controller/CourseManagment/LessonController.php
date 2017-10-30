@@ -44,4 +44,15 @@ class LessonController
 
         return $this->lessonImplementation->getListPresentation($course);
     }
+
+    public function createAction(int $courseId)
+    {
+        $course = $this->courseImplementation->findCourse($courseId);
+
+        if (!$course instanceof Course) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->lessonImplementation->createLesson($course);
+    }
 }

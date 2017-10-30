@@ -109,4 +109,19 @@ class LessonImplementation
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
     }
+    /**
+     * @param Course $course
+     * @return Response
+     */
+    public function createLesson(Course $course): Response
+    {
+        $template = '::Admin/Template/Panel/CourseManager/_action.html.twig';
+        $data = [
+            'listing_title' => 'Create lesson',
+            'course' => $course,
+            'template' => '/Lesson/create.html.twig',
+        ];
+
+        return new Response($this->templateWrapper->getTemplate($template, $data), 200);
+    }
 }

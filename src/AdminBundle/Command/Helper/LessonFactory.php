@@ -49,11 +49,10 @@ class LessonFactory
 
             $lessonView = new LessonView(
                 $this->getFaker()->name,
-                $this->getFaker()->name
+                $this->getFaker()->name,
+                $tips,
+                $lessonTexts
             );
-
-            $lessonView->setTips($tips);
-            $lessonView->setLessonTexts($lessonTexts);
 
             $lesson = new Lesson(
                 $i,

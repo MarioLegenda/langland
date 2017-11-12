@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        {% set cssRand = random(10000) %}
         <base href="/web/app_dev.php/">
         <meta charset="UTF-8" />
         <title>{% block title %}LangLand{% endblock %}</title>
@@ -14,6 +15,8 @@
 
             <link rel="stylesheet" href="{{ asset('css/lib/bootstrap/css/bootstrap.min.css') }}" />
             <link rel="stylesheet" href="{{ asset('css/lib/sb-admin/dist/css/sb-admin-2.min.css') }}" />
+
+            <link rel="stylesheet" href="{{ asset('css/admin/admin.css?v=' ~ cssRand) }}" />
 
         {% endblock %}
 

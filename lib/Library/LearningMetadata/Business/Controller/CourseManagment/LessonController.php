@@ -44,7 +44,10 @@ class LessonController
 
         return $this->lessonImplementation->getListPresentation($course);
     }
-
+    /**
+     * @param int $courseId
+     * @return Response
+     */
     public function createAction(int $courseId)
     {
         $course = $this->courseImplementation->findCourse($courseId);

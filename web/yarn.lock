@@ -792,14 +792,6 @@ buffer@^4.3.0:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-bufferutil@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/bufferutil/-/bufferutil-3.0.1.tgz#20b2ef5159ac49f20e44bce38e7c35a6a904ee66"
-  dependencies:
-    bindings "~1.2.1"
-    nan "~2.6.0"
-    prebuild-install "~2.1.0"
-
 builtin-modules@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
@@ -1311,8 +1303,8 @@ form-data@~2.1.1:
     mime-types "^2.1.12"
 
 form-schema-validation@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/form-schema-validation/-/form-schema-validation-1.6.0.tgz#284a4c943a64db84860f0a8676d55c56b6bd864b"
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/form-schema-validation/-/form-schema-validation-1.11.1.tgz#5f4b19015d7d07cf35e68b2097b82aeb2b471510"
 
 fs.realpath@^1.0.0:
   version "1.0.0"

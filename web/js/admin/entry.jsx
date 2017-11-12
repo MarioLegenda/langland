@@ -3,7 +3,18 @@ import ReactDOM from 'react-dom';
 
 import {symfonyCollection} from "./lib/symfonyCollection";
 
+import {Lesson} from './lesson/lesson.jsx';
+
 symfonyCollection();
+
+const isLesson = document.getElementById('react_lesson_form');
+
+if (isLesson !== null) {
+    ReactDOM.render(
+        <Lesson/>,
+        document.getElementById('react_lesson_form')
+    );
+}
 
 /*
 if (acWidget !== null) {

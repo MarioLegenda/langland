@@ -44,7 +44,7 @@ class LessonFactory
 
             $lessonTexts = [];
             for ($i = 0; $i < 10; $i++) {
-                $lessonTexts[] = new LessonText($this->getFaker()->name, $this->getFaker()->text);
+                $lessonTexts[] = new LessonText($this->getFaker()->text);
             }
 
             $lessonView = new LessonView(

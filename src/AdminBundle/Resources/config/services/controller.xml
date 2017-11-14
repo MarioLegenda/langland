@@ -60,6 +60,7 @@
 
             <argument type="service" id="langland.learning_metadata.business.implementation.lesson_implementation" />
             <argument type="service" id="langland.learning_metadata.business.implementation.course_implementation" />
+            <argument type="service" id="library.deserializer" />
         </service>
     </services>
 </container>

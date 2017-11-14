@@ -14,6 +14,12 @@ export const SubmitButton = (props) => {
     </div>
 };
 
+export const Notification = (props) => {
+    return <div className={props.className}>
+        <p>{props.message}</p>
+    </div>
+};
+
 class BaseInput extends React.Component {
     constructor(props) {
         super(props);
@@ -22,6 +28,14 @@ class BaseInput extends React.Component {
 
         this.state = {};
         this.state.value = props.inputValue;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.inputValue.length === 0 && this.state.value !== nextProps.inputValue) {
+            this.setState(function(prevState) {
+                prevState.value = "";
+            });
+        }
     }
 
     dataCollector(e) {

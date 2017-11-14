@@ -16,6 +16,15 @@ export class LessonTextControl extends React.Component {
         this.state.textValues = [];
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.lessonTexts.length === 0) {
+            this.setState(function(prevState) {
+                prevState.lessonTexts = [];
+                prevState.textValues = [];
+            });
+        }
+    }
+
     removeLessonText(controlKey) {
         this.setState(function(prevState) {
             prevState.lessonTexts.splice(controlKey, 1);

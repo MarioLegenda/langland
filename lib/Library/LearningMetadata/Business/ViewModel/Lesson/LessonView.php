@@ -4,22 +4,22 @@ namespace Library\LearningMetadata\Business\ViewModel\Lesson;
 
 use JMS\Serializer\Annotation as Serializer;
 use Library\Infrastructure\Notation\ArrayNotationInterface;
-use Webmozart\Assert\Assert;
+use Symfony\Component\Validator\Constraints as ValidationAssert;
 
 class LessonView implements \JsonSerializable
 {
     /**
      * @var string $internalName
-     * @Serializer\Type("string")
      */
     protected $internalName;
     /**
      * @var string $name
      * @Serializer\Type("string")
+     * @ValidationAssert\NotBlank(message="Name cannot be empty")
      */
     protected $name;
     /**
-     * @var Tip[] $tips
+     * @var array $tips
      * @Serializer\Type("array")
      * @Serializer\Accessor(setter="setTips")
      */
@@ -28,9 +28,17 @@ class LessonView implements \JsonSerializable
      * @var LessonText[] $lessonTexts
      * @Serializer\Type("array")
      * @Serializer\Accessor(setter="setLessonTexts")
+     * @Serializer\SerializedName("lessonTexts")
+     * @ValidationAssert\NotBlank(message="There has to be at least one lesson text")
      */
     protected $lessonTexts = [];
-
+    /**
+     * LessonView constructor.
+     * @param string $internalName
+     * @param string $name
+     * @param array $tips
+     * @param array $lessonTexts
+     */
     public function __construct(
         string $internalName,
         string $name,
@@ -89,20 +97,15 @@ class LessonView implements \JsonSerializable
     }
     /**
      * @param Tip[] $tips
+     * @return LessonView
      */
-    public function setTips(array $tips)
+    public function setTips($tips): LessonView
     {
         foreach ($tips as $tip) {
-            if ($tip instanceof Tip) {
-                $this->addTip($tip);
-
-                continue;
-            }
-
-            Assert::string($tip, 'Tip should be a string');
-
             $this->addTip(new Tip($tip));
         }
+
+        return $this;
     }
     /**
      * @return LessonText[]
@@ -113,26 +116,15 @@ class LessonView implements \JsonSerializable
     }
     /**
      * @param LessonText[] $lessonTexts
+     * @return LessonView
      */
-    public function setLessonTexts(array $lessonTexts)
+    public function setLessonTexts(array $lessonTexts): LessonView
     {
-        foreach ($lessonTexts as $text) {
-            if ($text instanceof LessonText) {
-                $this->addLessonText($text);
-
-                continue;
-            }
-
-            Assert::keyExists($text, 'name', 'Lesson text should have a key \'name\'');
-            Assert::keyExists($text, 'text', 'Lesson text should have a key \'name\'');
-            Assert::string($text['name'], 'Lesson name should be a string');
-            Assert::string($text['text'], 'Lesson text should be a string');
-
-            $this->addLessonText(new LessonText(
-                $text['name'],
-                $text['text']
-            ));
+        foreach ($lessonTexts as $lessonText) {
+            $this->addLessonText(new LessonText($lessonText));
         }
+
+        return $this;
     }
     /**
      * @param LessonText $lessonText
@@ -166,7 +158,7 @@ class LessonView implements \JsonSerializable
         $lessonTexts = [];
         /** @var ArrayNotationInterface $text */
         foreach ($this->getLessonTexts() as $text) {
-            $lessonTexts[] = $text->toArray();
+            $lessonTexts[] = (string) $text;
         }
 
         $array['lessonTexts'] = $lessonTexts;

@@ -10,6 +10,7 @@ use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
@@ -123,5 +124,22 @@ class LessonImplementation
         ];
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
+    }
+    /**
+     * @param Course $course
+     * @param LessonView $lessonView
+     * @return JsonResponse
+     */
+    public function newLesson(Course $course, LessonView $lessonView)
+    {
+        $lesson = new Lesson(
+            0,
+            $lessonView->toArray(),
+            $course
+        );
+
+        $this->lessonRepository->persistAndFlush($lesson);
+
+        return new JsonResponse();
     }
 }

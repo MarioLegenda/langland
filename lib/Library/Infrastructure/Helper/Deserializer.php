@@ -3,6 +3,8 @@
 namespace Library\Infrastructure\Helper;
 
 use JMS\Serializer\Serializer;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class Deserializer
 {
@@ -11,12 +13,20 @@ class Deserializer
      */
     private $serializer;
     /**
+     * @var Validation $validation
+     */
+    private $validation;
+    /**
      * Deserializer constructor.
      * @param Serializer $serializer
+     * @param ValidatorInterface $validation
      */
-    public function __construct(Serializer $serializer)
-    {
+    public function __construct(
+        Serializer $serializer,
+        ValidatorInterface $validation
+    ) {
         $this->serializer = $serializer;
+        $this->validation = $validation;
     }
     /**
      * @param string|array $data
@@ -42,6 +52,16 @@ class Deserializer
             $type = get_class($type);
         }
 
-        return $this->serializer->deserialize($data, $type, $format);
+        $object = $this->serializer->deserialize($data, $type, $format);
+
+        $errors = $this->validation->validate($object);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            throw new \RuntimeException($errorsString);
+        }
+
+        return $object;
     }
 }

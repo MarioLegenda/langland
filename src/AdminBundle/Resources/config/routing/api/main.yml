@@ -32,3 +32,10 @@ admin_course:
   resource: "@AdminBundle/Resources/config/routing/api/course.yml"
   prefix: /
   host: '%host%'
+
+# API #
+
+lesson_api:
+  resource: "@AdminBundle/Resources/config/routing/api/course_managment/lessonApi.yml"
+  prefix: /api/v1
+  host: '%host%'

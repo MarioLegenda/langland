@@ -2,41 +2,20 @@
 
 namespace Library\LearningMetadata\Business\ViewModel\Lesson;
 
-class LessonText implements \JsonSerializable
+class LessonText
 {
-    /**
-     * @var string $name
-     */
-    private $name;
     /**
      * @var string $text
      */
     private $text;
     /**
      * LessonText constructor.
-     * @param string $name
      * @param string $text
      */
     public function __construct(
-        string $name,
         string $text
     ) {
-        $this->name = $name;
         $this->text = $text;
-    }
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
     }
     /**
      * @return string
@@ -53,20 +32,10 @@ class LessonText implements \JsonSerializable
         $this->text = $text;
     }
     /**
-     * @return array
+     * @return string
      */
-    public function toArray(): array
+    public function __toString()
     {
-        return [
-            'name' => $this->getName(),
-            'text' => $this->getText(),
-        ];
-    }
-    /**
-     * @inheritdoc
-     */
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
+        return $this->text;
     }
 }

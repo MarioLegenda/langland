@@ -17,6 +17,15 @@ export class TipControl extends React.Component {
         this.state.tipValues = props.tips;
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.tips.length === 0) {
+            this.setState(function(prevState) {
+                prevState.tips = [];
+                prevState.tipValues = [];
+            });
+        }
+    }
+
     removeTip(controlKey) {
         this.setState(function(prevState) {
             prevState.tips.splice(controlKey, 1);

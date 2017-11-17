@@ -2,7 +2,7 @@
 
 namespace Library\LearningMetadata\Infrastructure\Form\Type;
 
-use AdminBundle\Form\Type\Generic\TraitType\TextTypeTrait;
+use Library\Infrastructure\Form\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

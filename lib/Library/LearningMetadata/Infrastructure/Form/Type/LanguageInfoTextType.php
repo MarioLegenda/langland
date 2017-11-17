@@ -5,7 +5,7 @@ namespace Library\LearningMetadata\Infrastructure\Form\Type;
 use Library\Infrastructure\Form\TraitType\TextTypeTrait;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use AdminBundle\Form\Type\Generic\TraitType\TextareaTypeTrait;
+use Library\Infrastructure\Form\TraitType\TextareaTypeTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use AdminBundle\Entity\LanguageInfoText;
 

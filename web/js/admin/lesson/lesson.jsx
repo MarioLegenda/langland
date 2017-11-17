@@ -32,6 +32,10 @@ export class Lesson extends React.Component {
         }
     }
 
+    componentDidMount() {
+
+    }
+
     setName(value) {
         this.setState(function(prevState) {
             prevState.model.name = value;

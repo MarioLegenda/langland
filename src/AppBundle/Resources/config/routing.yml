@@ -1,9 +1,0 @@
-app_page:
-  resource: "@AppBundle/Resources/config/routing/page/page.yml"
-  prefix: /langland
-  host: '%host%'
-
-app_api:
-  resource: "@AppBundle/Resources/config/routing/api.yml"
-  prefix: /langland/api/v1
-  host: '%host%'

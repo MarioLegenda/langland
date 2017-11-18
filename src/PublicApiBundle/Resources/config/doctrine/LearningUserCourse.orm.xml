@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="AppBundle\Entity\LearningUserCourse" table="learning_user_courses">
+    <entity name="PublicApiBundle\Entity\LearningUserCourse" table="learning_user_courses">
 
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
@@ -10,13 +10,13 @@
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 
-        <many-to-one target-entity="AppBundle\Entity\CourseHolder" field="courseHolder" inversed-by="learningUserCourses">
+        <many-to-one target-entity="PublicApiBundle\Entity\CourseHolder" field="courseHolder" inversed-by="learningUserCourses">
 
         </many-to-one>
 
         <one-to-one field="course" target-entity="AdminBundle\Entity\Course" />
 
-        <one-to-many target-entity="AppBundle\Entity\LearningUserLesson" mapped-by="learningUserCourse" field="learningUserLessons" fetch="EXTRA_LAZY">
+        <one-to-many target-entity="PublicApiBundle\Entity\LearningUserLesson" mapped-by="learningUserCourse" field="learningUserLessons" fetch="EXTRA_LAZY">
             <cascade>
                 <cascade-persist/>
             </cascade>

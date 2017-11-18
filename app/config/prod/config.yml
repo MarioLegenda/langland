@@ -3,7 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@ArmorBundle/Resources/config/services.xml" }
-    - { resource: "@AppBundle/Resources/config/services.yml" }
+    - { resource: "@PublicApiBundle/Resources/config/services.yml" }
 
     - { resource: vendor_config/jms_serializer.yml }
     - { resource: vendor_config/fos_rest.yml }

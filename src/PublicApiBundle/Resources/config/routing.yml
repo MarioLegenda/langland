@@ -1,0 +1,4 @@
+app_api:
+  resource: "@PublicApiBundle/Resources/config/routing/api.yml"
+  prefix: /langland/api/v1
+  host: '%host%'

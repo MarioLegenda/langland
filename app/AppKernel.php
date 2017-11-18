@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new AdminBundle\AdminBundle(),
             new ArmorBundle\ArmorBundle(),
             new PublicBundle\PublicBundle(),
-            new AppBundle\AppBundle(),
+            new PublicApiBundle\PublicApiBundle(),
             new CommonBundle\CommonBundle(),
         ];
 

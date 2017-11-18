@@ -1,9 +1,0 @@
-app_get_structured_languages:
-    path: /structured
-    defaults: { _controller: AppBundle:Api/Language:getStructured }
-    methods: [GET]
-
-app_get_viewable_languages:
-    path: /viewable
-    defaults: { _controller: AppBundle:Api/Language:getViewable }
-    methods: [GET]

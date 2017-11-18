@@ -1,0 +1,5 @@
+public_api_lesson:
+  resource: "@PublicApiBundle/Resources/config/routing/api/lesson.yml"
+  prefix: /lesson
+  host: '%host%'
+  methods: [GET]

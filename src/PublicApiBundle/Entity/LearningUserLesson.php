@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace PublicApiBundle\Entity;
 
 use AdminBundle\Entity\Lesson;
 

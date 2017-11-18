@@ -12,17 +12,16 @@ use AdminBundle\Entity\Course;
 class LessonMiddleware
 {
     /**
-     * @param Request $request
+     * @param array $data
      * @param CourseImplementation $courseImplementation
      * @param Deserializer $deserializer
      * @return array
      */
     public function createNewLessonMiddleware(
-        Request $request,
+        array $data,
         CourseImplementation $courseImplementation,
         Deserializer $deserializer
     ): array {
-        $data = $request->request->all();
         $courseId = $data['course'];
 
         $course = $courseImplementation->findCourse($courseId);
@@ -33,26 +32,15 @@ class LessonMiddleware
 
         /** @var LessonView $lessonView */
         $lessonView = $deserializer->create(
-            $request->request->all(),
+            $data,
             LessonView::class
         );
 
-        $lessonView->setInternalName($this->createLessonViewInternalName($lessonView));
+        $lessonView->setUuid(Uuid::uuid4());
 
         return [
             'course' => $course,
             'lessonView' => $lessonView,
         ];
-    }
-    /**
-     * @param LessonView $lessonView
-     * @return string
-     */
-    private function createLessonViewInternalName(LessonView $lessonView): string
-    {
-        $hash = substr(Uuid::uuid4()->toString(), 5, 8);
-        $internalName = $lessonView->getName().$hash;
-
-        return $internalName;
     }
 }

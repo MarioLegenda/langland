@@ -2,12 +2,19 @@
 
 namespace AdminBundle\Entity;
 
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
+
 class Lesson
 {
     /**
      * @var int $id
      */
     private $id;
+    /**
+     * @var UuidInterface $uuid
+     */
+    private $uuid;
     /**
      * @var int $order
      */
@@ -30,15 +37,18 @@ class Lesson
     private $updatedAt;
     /**
      * Lesson constructor.
+     * @param UuidInterface $uuid
      * @param int $order
      * @param array $jsonLesson
      * @param Course $course
      */
     public function __construct(
+        UuidInterface $uuid,
         int $order,
         array $jsonLesson,
         Course $course
     ) {
+        $this->uuid = $uuid;
         $this->lessonOrder = $order;
         $this->jsonLesson = $jsonLesson;
         $this->course = $course;
@@ -51,6 +61,23 @@ class Lesson
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * @return UuidInterface
+     */
+    public function getUuid(): UuidInterface
+    {
+        return Uuid::fromString($this->uuid);
+    }
+    /**
+     * @param string $uuid
+     * @return Lesson
+     */
+    public function setUuid($uuid): Lesson
+    {
+        $this->uuid = $uuid;
+
+        return $this;
     }
     /**
      * @return int

@@ -4,14 +4,16 @@ namespace Library\LearningMetadata\Business\ViewModel\Lesson;
 
 use JMS\Serializer\Annotation as Serializer;
 use Library\Infrastructure\Notation\ArrayNotationInterface;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as ValidationAssert;
 
 class LessonView implements \JsonSerializable
 {
     /**
-     * @var string $internalName
+     * @var UuidInterface $uuid
      */
-    protected $internalName;
+    protected $uuid;
     /**
      * @var string $name
      * @Serializer\Type("string")
@@ -34,19 +36,19 @@ class LessonView implements \JsonSerializable
     protected $lessonTexts = [];
     /**
      * LessonView constructor.
-     * @param string $internalName
+     * @param UuidInterface $uuid
      * @param string $name
      * @param array $tips
      * @param array $lessonTexts
      */
     public function __construct(
-        string $internalName,
+        UuidInterface $uuid,
         string $name,
         array $tips,
         array $lessonTexts
     ) {
+        $this->uuid = $uuid;
         $this->setName($name);
-        $this->setInternalName($internalName);
         $this->setTips($tips);
         $this->setLessonTexts($lessonTexts);
     }
@@ -65,18 +67,18 @@ class LessonView implements \JsonSerializable
         $this->name = $name;
     }
     /**
-     * @return string
+     * @return UuidInterface
      */
-    public function getInternalName(): string
+    public function getUuid(): UuidInterface
     {
-        return $this->internalName;
+        return $this->uuid;
     }
     /**
-     * @param string $internalName
+     * @param UuidInterface $uuid
      */
-    public function setInternalName(string $internalName)
+    public function setUuid(UuidInterface $uuid)
     {
-        $this->internalName = $internalName;
+        $this->uuid = $uuid;
     }
     /**
      * @param Tip $tip
@@ -142,7 +144,6 @@ class LessonView implements \JsonSerializable
     public function toArray(): array
     {
         $array = [
-            'internalName' => $this->getInternalName(),
             'name' => $this->getName(),
             'tips' => [],
             'lessonTexts' => [],

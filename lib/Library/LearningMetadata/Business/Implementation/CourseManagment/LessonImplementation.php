@@ -10,6 +10,7 @@ use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
 use Psr\Log\LoggerInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Router;
@@ -133,6 +134,7 @@ class LessonImplementation
     public function newLesson(Course $course, LessonView $lessonView)
     {
         $lesson = new Lesson(
+            $lessonView->getUuid(),
             0,
             $lessonView->toArray(),
             $course
@@ -140,6 +142,6 @@ class LessonImplementation
 
         $this->lessonRepository->persistAndFlush($lesson);
 
-        return new JsonResponse();
+        return new JsonResponse(null, 201);
     }
 }

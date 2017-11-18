@@ -78,7 +78,7 @@ class LessonController
     {
         $lessonMiddleware = new LessonMiddleware();
         $data = $lessonMiddleware->createNewLessonMiddleware(
-            $request,
+            $request->request->all(),
             $this->courseImplementation,
             $this->deserializer
         );

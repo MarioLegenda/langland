@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Library\LearningMetadata\Business\ViewModel\Lesson\LessonText;
 use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Library\LearningMetadata\Business\ViewModel\Lesson\Tip;
+use Ramsey\Uuid\Uuid;
 
 class LessonFactory
 {
@@ -48,13 +49,14 @@ class LessonFactory
             }
 
             $lessonView = new LessonView(
-                $this->getFaker()->name,
+                Uuid::uuid4(),
                 $this->getFaker()->name,
                 $tips,
                 $lessonTexts
             );
 
             $lesson = new Lesson(
+                $lessonView->getUuid(),
                 $i,
                 $lessonView->toArray(),
                 $course

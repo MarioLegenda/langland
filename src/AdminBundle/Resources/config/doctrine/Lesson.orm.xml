@@ -11,6 +11,7 @@
     </id>
 
     <field name="lessonOrder" type="integer" nullable="false" />
+    <field name="uuid" type="string" nullable="false" />
     <field name="jsonLesson" type="json_array" nullable="false" />
 
     <many-to-one target-entity="AdminBundle\Entity\Course" field="course" inversed-by="lessons">

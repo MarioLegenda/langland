@@ -5,5 +5,5 @@ app_page:
 
 app_api:
   resource: "@AppBundle/Resources/config/routing/api.yml"
-  prefix: /langland/api
+  prefix: /langland/api/v1
   host: '%host%'

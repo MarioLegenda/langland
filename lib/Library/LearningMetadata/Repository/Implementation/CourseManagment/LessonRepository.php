@@ -9,10 +9,13 @@ class LessonRepository extends EntityRepository
 {
     /**
      * @param Lesson $lesson
+     * @return Lesson
      */
-    public function persistAndFlush(Lesson $lesson)
+    public function persistAndFlush(Lesson $lesson): Lesson
     {
         $this->getEntityManager()->persist($lesson);
         $this->getEntityManager()->flush();
+
+        return $lesson;
     }
 }

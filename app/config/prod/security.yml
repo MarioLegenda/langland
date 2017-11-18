@@ -20,7 +20,6 @@ security:
                 default_target_path: admin_dashboard
                 login_path: armor_admin_login
                 check_path: armor_admin_login
-
             anonymous: ~
 
         langland:
@@ -31,7 +30,6 @@ security:
                 default_target_path: app_page_main_dashboard
                 login_path: armor_user_login
                 check_path: armor_user_login
-
             anonymous: ~
 
         app:
@@ -39,8 +37,8 @@ security:
             anonymous: true
 
     role_hierarchy:
-        ROLE_ALLOWED_MODIFY: [ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY]
-        ROLE_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY]
+        ROLE_ALLOWED_MODIFY: [ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY, ROLE_PUBLIC_API_USER]
+        ROLE_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY, ROLE_PUBLIC_API_USER]
 
     access_control:
         - { path: ^/*$, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -52,7 +50,8 @@ security:
         - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/user/confirm/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/langland/*, role: ROLE_USER }
+        - { path: ^/langland/api/*, role: [ROLE_PUBLIC_API_USER] }
+        - { path: ^/langland/*, role: [ROLE_USER] }
 
 
 

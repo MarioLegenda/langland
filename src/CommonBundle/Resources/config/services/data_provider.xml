@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="langland.data_provider.language"
+                class="Tests\TestLibrary\DataProvider\LanguageDataProvider">
+
+            <argument type="service" id="langland.learning_metadata.repository.implementation.language_implementation" />
+        </service>
+
+        <service
+                id="langland.data_provider.course"
+                class="Tests\TestLibrary\DataProvider\CourseDataProvider">
+
+            <argument type="service" id="langland.learning_metadata.repository.implementation.course_implementation" />
+            <argument type="service" id="langland.data_provider.language" />
+        </service>
+
+        <service
+                id="langland.data_provider.lesson"
+                class="Tests\TestLibrary\DataProvider\LessonDataProvider">
+
+            <argument type="service" id="langland.learning_metadata.repository.implementation.lesson_implementation" />
+            <argument type="service" id="langland.data_provider.course" />
+
+        </service>
+
+    </services>
+</container>

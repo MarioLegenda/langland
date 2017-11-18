@@ -7,9 +7,15 @@ use Doctrine\ORM\EntityRepository;
 
 class CourseRepository extends EntityRepository
 {
-    public function persistAndFlush(Course $course)
+    /**
+     * @param Course $course
+     * @return Course
+     */
+    public function persistAndFlush(Course $course): Course
     {
         $this->getEntityManager()->persist($course);
         $this->getEntityManager()->flush($course);
+
+        return $course;
     }
 }

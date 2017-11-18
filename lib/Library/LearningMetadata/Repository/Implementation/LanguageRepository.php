@@ -11,7 +11,7 @@ class LanguageRepository extends EntityRepository
      * @param Language $language
      * @return Language
      */
-    public function persistAndFlush(Language $language)
+    public function persistAndFlush(Language $language): Language
     {
         $this->getEntityManager()->persist($language);
         $this->getEntityManager()->flush($language);

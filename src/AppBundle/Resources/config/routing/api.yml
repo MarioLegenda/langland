@@ -1,8 +1,8 @@
-app_course:
-  resource: "@AppBundle/Resources/config/routing/api/course.yml"
-  prefix: /courses
+public_api_lesson:
+  resource: "@AppBundle/Resources/config/routing/api/lesson.yml"
+  prefix: /lesson
   host: '%host%'
-  methods: [GET, POST]
+  methods: [GET]
 
 app_user:
   resource: "@AppBundle/Resources/config/routing/api/user.yml"

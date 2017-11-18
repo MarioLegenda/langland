@@ -33,13 +33,18 @@ security:
             provider: armor_user_provider
             user_checker: armor.user.user_checker
 
+        public_api:
+            pattern: ^/api
+            provider: armor_user_provider
+            anonymous: ~
+
         app:
             pattern: ^/
             anonymous: true
 
     role_hierarchy:
-        ROLE_ALLOWED_MODIFY: [ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY]
-        ROLE_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY]
+        ROLE_ALLOWED_MODIFY: [ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY, ROLE_PUBLIC_API_USER]
+        ROLE_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY, ROLE_PUBLIC_API_USER]
 
     access_control:
         - { path: ^/*$, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -51,4 +56,5 @@ security:
         - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/user/confirm/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/langland/*, role: ROLE_USER }
+        - { path: ^/langland/api/*, role: [ROLE_PUBLIC_API_USER] }
+        - { path: ^/langland/*, role: [ROLE_USER] }

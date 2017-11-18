@@ -20,6 +20,7 @@ class CommonExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config/services')
         );
 
+        $loader->load('data_provider.xml');
         $loader->load('library.xml');
         $loader->load('listener.xml');
     }

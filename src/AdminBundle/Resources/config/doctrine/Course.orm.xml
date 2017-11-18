@@ -21,6 +21,9 @@
     </many-to-one>
 
     <one-to-many target-entity="AdminBundle\Entity\Lesson" mapped-by="course" field="lessons">
+      <cascade>
+        <cascade-persist/>
+      </cascade>
     </one-to-many>
 
     <lifecycle-callbacks>

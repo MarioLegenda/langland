@@ -3,23 +3,16 @@ AdminBundle\Entity\Lesson:
     properties:
         id:
             expose: true
-            groups: [lesson_autocomplete, lesson_list]
-        name:
+            groups: [public_api]
+        uuid:
             expose: true
-            groups: [lesson_autocomplete, lesson_list]
-        description:
+            groups: [public_api]
+        lessonOrder:
+            serialized_name: order
             expose: true
-            groups: [lesson_list]
-        lessonUrl:
+            groups: [public_api]
+        jsonLesson:
             expose: true
-            groups: [lesson_list]
-            serialized_name: lessonUrl
-        lessonTexts:
-            expose: true
-            groups: [lesson_text]
-            type: AdminBundle\Entity\LessonText
-            serialized_name: lessonText
-        isInitialLesson:
-            expose: true
-            groups: [lesson_list]
-            serialized_name: isInitialLesson
+            serialized_name: lesson
+            type: array
+            groups: [public_api]

@@ -1,0 +1,6 @@
+get_lesson_by_id:
+    path: /{id}
+    defaults: { _controller: langland.public_api.controller.lesson:getLessonById }
+    methods: [GET]
+    requirements:
+        _format: json

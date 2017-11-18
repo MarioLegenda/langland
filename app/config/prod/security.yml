@@ -42,7 +42,7 @@ security:
         - { path: ^/*$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/*, role: ROLE_DEVELOPER }
+        - { path: ^/admin/*, role: [ROLE_ADMIN] }
 
         - { path: ^/langland/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

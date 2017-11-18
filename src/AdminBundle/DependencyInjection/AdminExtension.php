@@ -21,6 +21,7 @@ class AdminExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config/services')
         );
 
+        $loader->load('command.xml');
         $loader->load('controller.xml');
         $loader->load('implementation.xml');
         $loader->load('repository.xml');

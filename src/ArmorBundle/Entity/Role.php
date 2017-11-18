@@ -24,9 +24,7 @@ class Role implements RoleInterface
      */
     public function __construct(string $role = null)
     {
-        if (!is_null($role)) {
-            $this->role = $role;
-        }
+        $this->role = $role;
     }
     /**
      * @return mixed
@@ -34,23 +32,6 @@ class Role implements RoleInterface
     public function getId()
     {
         return $this->id;
-    }
-    /**
-     * @return mixed
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-    /**
-     * @param mixed $role
-     * @return RoleInterface
-     */
-    public function setRole($role) : RoleInterface
-    {
-        $this->role = $role;
-
-        return $this;
     }
     /**
      * @return mixed
@@ -68,5 +49,12 @@ class Role implements RoleInterface
         $this->user = $user;
 
         return $this;
+    }
+    /**
+     * @return null|string
+     */
+    public function getRole()
+    {
+        return $this->role;
     }
 }

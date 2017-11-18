@@ -3,7 +3,8 @@
 namespace AdminBundle\Command\Helper;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
+use ArmorBundle\Entity\Role;
 use ArmorBundle\Entity\User;
 
 class UserFactory
@@ -13,7 +14,7 @@ class UserFactory
      */
     private $em;
     /**
-     * @var $encoder
+     * @var UserPasswordEncoder $encoder
      */
     private $encoder;
     /**
@@ -27,7 +28,7 @@ class UserFactory
         $this->encoder = $encoder;
     }
 
-    public function create(string $username, string $password, RoleInterface $role) : UserFactory
+    public function create(string $username, string $password, Role $role) : UserFactory
     {
         $user = new User();
         $user->setUsername($username);

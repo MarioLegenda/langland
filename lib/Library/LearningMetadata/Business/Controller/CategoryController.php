@@ -5,6 +5,7 @@ namespace Library\LearningMetadata\Business\Controller;
 use Library\LearningMetadata\Business\Implementation\CategoryImplementation;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class CategoryController
 {
@@ -22,6 +23,8 @@ class CategoryController
         $this->categoryImplementation = $categoryImplementation;
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_VIEW')")
+     *
      * @return Response
      */
     public function indexAction() : Response
@@ -29,6 +32,8 @@ class CategoryController
         return $this->categoryImplementation->getListPresentation();
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @return Response
      */
     public function createAction()
@@ -36,6 +41,8 @@ class CategoryController
         return $this->categoryImplementation->getCreatePresentation();
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @param Request $request
      * @return Response
      */
@@ -44,6 +51,8 @@ class CategoryController
         return $this->categoryImplementation->newCategory($request);
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @param Request $request
      * @param int $id
      * @return Response

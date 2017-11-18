@@ -5,6 +5,7 @@ namespace Library\LearningMetadata\Business\Controller;
 use Library\LearningMetadata\Business\Implementation\WordImplementation;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class WordController
 {
@@ -22,6 +23,8 @@ class WordController
         $this->wordImplementation = $wordImplementation;
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_VIEW')")
+     *
      * @return Response
      */
     public function indexAction()
@@ -29,6 +32,8 @@ class WordController
         return $this->wordImplementation->getListPresentation();
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @return Response
      */
     public function createAction()
@@ -36,6 +41,8 @@ class WordController
         return $this->wordImplementation->getCreatePresentation();
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @param Request $request
      * @return Response
      */
@@ -44,6 +51,8 @@ class WordController
         return $this->wordImplementation->newWord($request);
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @param Request $request
      * @param int $id
      * @return Response

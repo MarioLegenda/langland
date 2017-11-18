@@ -4,6 +4,7 @@ namespace Library\LearningMetadata\Business\Controller;
 
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class DashboardController
 {
@@ -21,6 +22,7 @@ class DashboardController
         $this->templateWrapper = $templateWrapper;
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_VIEW')")
      * @return string
      */
     public function dashboardAction()

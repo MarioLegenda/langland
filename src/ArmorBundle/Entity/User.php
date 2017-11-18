@@ -4,7 +4,6 @@ namespace ArmorBundle\Entity;
 
 use AppBundle\Entity\LearningUser;
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Core\Role\RoleInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
@@ -212,7 +211,7 @@ class User implements UserInterface
      */
     public function hasRole($role) : bool
     {
-        if (!is_string($role) and !$role instanceof RoleInterface) {
+        if (!is_string($role) and !$role instanceof Role) {
             return false;
         }
 

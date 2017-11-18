@@ -5,6 +5,7 @@ namespace Library\LearningMetadata\Business\Controller;
 use Library\LearningMetadata\Business\Implementation\SoundImplementation;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 class SoundController
 {
@@ -22,6 +23,8 @@ class SoundController
         $this->soundImplementation = $soundImplementation;
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @return Response
      */
     public function indexAction() : Response
@@ -29,6 +32,8 @@ class SoundController
         return $this->soundImplementation->getListPresentation();
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @return Response
      */
     public function createAction()
@@ -36,6 +41,8 @@ class SoundController
         return $this->soundImplementation->getCreatePresentation();
     }
     /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
      * @param Request $request
      * @return Response
      */

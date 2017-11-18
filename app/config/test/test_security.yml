@@ -37,11 +37,15 @@ security:
             pattern: ^/
             anonymous: true
 
+    role_hierarchy:
+        ROLE_ALLOWED_MODIFY: [ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY]
+        ROLE_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY]
+
     access_control:
         - { path: ^/*$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin/*, role: ROLE_DEVELOPER }
+        - { path: ^/admin/*, role: [ROLE_ADMIN, ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY] }
 
         - { path: ^/langland/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

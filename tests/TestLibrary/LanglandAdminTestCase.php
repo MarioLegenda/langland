@@ -84,7 +84,7 @@ class LanglandAdminTestCase extends WebTestCase
         // the firewall context defaults to the firewall name
         $firewallContext = 'admin';
 
-        $token = new UsernamePasswordToken('root', 'root', $firewallContext, array('ROLE_DEVELOPER'));
+        $token = new UsernamePasswordToken('root', 'root', $firewallContext, array('ROLE_ADMIN'));
         $session->set('_security_'.$firewallContext, serialize($token));
         $session->save();
 

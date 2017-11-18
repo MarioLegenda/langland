@@ -46,7 +46,6 @@ security:
         - { path: ^/*$, role: IS_AUTHENTICATED_ANONYMOUSLY }
 
         - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/*, role: [ROLE_ADMIN, ROLE_ALLOWED_VIEW, ROLE_ALLOWED_MODIFY] }
 
         - { path: ^/langland/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

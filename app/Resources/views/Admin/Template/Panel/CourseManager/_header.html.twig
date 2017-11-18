@@ -1,3 +1,6 @@
 <div class="navbar-header">
-    <a class="navbar-brand" href="{{ path('admin_course_managment', {courseId: course.id}) }}">Langland - admin {% if course is defined %}| {{ course.name }} course {% endif %}</a>
+    <a class="navbar-brand" href="{{ path('admin_dashboard', {courseId: course.id}) }}">Langland - admin</a>
+    <a class="navbar-brand" href="{{ path('admin_course_managment', {courseId: course.id}) }}">{{ course.name }}</a>
 </div>
+
+{% include '::Admin/Template/Header/_topNavbar.html.twig' %}

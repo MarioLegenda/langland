@@ -109,7 +109,7 @@ class LanguageInfoControllerTest extends LanglandAdminTestCase
             ++$count;
         });
 
-        $editedFi = new FilesystemIterator(__DIR__.'/uploads/images', FilesystemIterator::SKIP_DOTS);
+        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals($count, iterator_count($editedFi));
     }
@@ -146,7 +146,7 @@ class LanguageInfoControllerTest extends LanglandAdminTestCase
             ));
         }
 
-        $fi = new FilesystemIterator(__DIR__.'/uploads/images', FilesystemIterator::SKIP_DOTS);
+        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(2, iterator_count($fi));
     }

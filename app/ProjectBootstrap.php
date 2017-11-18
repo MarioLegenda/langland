@@ -37,7 +37,7 @@ class ProjectBootstrap
                     continue;
                 }
 
-                $this->createDirectory($directory);
+                $this->createDirectory($realPath);
             }
         }
 
@@ -57,19 +57,19 @@ class ProjectBootstrap
      */
     public function isBootstrapped() : bool
     {
-        if (!is_dir($this->path.'/uploads')) {
+        if (!is_dir($this->path.'/uploads') === true) {
             return false;
         }
 
-        if (!is_dir($this->path.'/uploads/images')) {
+        if (!is_dir($this->path.'/uploads/images') === true) {
             return false;
         }
 
-        if (!is_dir($this->path.'/uploads/sounds')) {
+        if (!is_dir($this->path.'/uploads/sounds') === true) {
             return false;
         }
 
-        if (is_dir($this->path.'/uploads/sounds/temp')) {
+        if (!is_dir($this->path.'/uploads/sounds/temp') === true) {
             return false;
         }
 

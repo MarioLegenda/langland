@@ -5,6 +5,7 @@ namespace TestLibrary;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -16,7 +17,13 @@ class LanglandAdminTestCase extends WebTestCase
      * @var Client $client
      */
     protected $client;
-
+    /**
+     * @var ContainerInterface $container
+     */
+    protected $container;
+    /**
+     * @inheritdoc
+     */
     public function setUp()
     {
         $this->client = static::createClient(array(), array(
@@ -24,28 +31,37 @@ class LanglandAdminTestCase extends WebTestCase
             'PHP_AUTH_PW'   => 'root',
         ));
 
+        $this->container = $this->client->getContainer();
+
         static::$inst = $this;
 
         static::login();
     }
-
+    /**
+     * @param $url
+     * @return Crawler
+     */
     public function clientGet($url) : Crawler
     {
         return $this->client->request('GET', $url);
     }
-
+    /**
+     * @inheritdoc
+     */
     public static function setUpBeforeClass()
     {
         exec('/usr/bin/php /var/www/bin/console langland:reset');
     }
-
+    /**
+     * @inheritdoc
+     */
     public static function tearDownAfterClass()
     {
         exec('/usr/bin/php /var/www/bin/console langland:reset');
 
         $dirs = array(
-            realpath(__DIR__.'/../Controller/AdminBundle/uploads/images'),
-            realpath(__DIR__.'/../Controller/AdminBundle/uploads/sounds'),
+            realpath(__DIR__.'/../uploads/images'),
+            realpath(__DIR__.'/../uploads/sounds'),
         );
 
         foreach ($dirs as $dir) {
@@ -58,7 +74,9 @@ class LanglandAdminTestCase extends WebTestCase
             }
         }
     }
-
+    /**
+     * @void
+     */
     protected static function login()
     {
         $session = static::$inst->client->getContainer()->get('session');
@@ -73,7 +91,11 @@ class LanglandAdminTestCase extends WebTestCase
         $cookie = new Cookie($session->getName(), $session->getId());
         static::$inst->client->getCookieJar()->set($cookie);
     }
-
+    /**
+     * @param Crawler $crawler
+     * @param array $fields
+     * @param string $button
+     */
     protected function doTestSuccessValidation(Crawler $crawler, array $fields, string $button = 'Create')
     {
         $form = $crawler->selectButton($button)->form();
@@ -98,7 +120,11 @@ class LanglandAdminTestCase extends WebTestCase
 
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
     }
-
+    /**
+     * @param Crawler $crawler
+     * @param array $fields
+     * @param string $button
+     */
     protected function doTestFailedValidation(Crawler $crawler, array $fields, string $button = 'Create')
     {
         $form = $crawler->selectButton($button)->form();
@@ -129,8 +155,13 @@ class LanglandAdminTestCase extends WebTestCase
 
         return $indexCrawler;
     }
-
-    protected function doTestIndex(string $dashboardRoute, string $navText, array $testables)
+    /**
+     * @param string $dashboardRoute
+     * @param string $navText
+     * @param array $testables
+     * @return Crawler
+     */
+    protected function doTestIndex(string $dashboardRoute, string $navText, array $testables) : Crawler
     {
         $link = $this->clientGet($dashboardRoute)->selectLink($navText)->link();
 
@@ -147,6 +178,8 @@ class LanglandAdminTestCase extends WebTestCase
 
             $this->assertContains($text, $testables);
         });
+
+        return $indexCrawler;
     }
 
     /**

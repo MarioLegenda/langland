@@ -163,7 +163,7 @@ class CourseControllerTest extends LanglandAdminTestCase
             ),
         ));
 
-        $fi = new FilesystemIterator(__DIR__.'/uploads/images', FilesystemIterator::SKIP_DOTS);
+        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(1, iterator_count($fi));
     }

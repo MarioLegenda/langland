@@ -96,7 +96,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
         }
 
         // test that there is only one image uploaded for each language
-        $fi = new FilesystemIterator(__DIR__.'/uploads/images', FilesystemIterator::SKIP_DOTS);
+        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals($count, iterator_count($fi));
     }
@@ -146,7 +146,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
             ++$count;
         });
 
-        $editedFi = new FilesystemIterator(__DIR__.'/uploads/images', FilesystemIterator::SKIP_DOTS);
+        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals($count, iterator_count($editedFi));
     }

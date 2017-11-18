@@ -27,7 +27,7 @@ class SoundControllerTest extends LanglandAdminTestCase
 
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
 
-        $editedFi = new FilesystemIterator(__DIR__.'/uploads/sounds', FilesystemIterator::SKIP_DOTS);
+        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/sounds', FilesystemIterator::SKIP_DOTS);
 
         $this->assertEquals(1, iterator_count($editedFi));
     }

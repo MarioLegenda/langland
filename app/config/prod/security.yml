@@ -7,7 +7,7 @@ security:
     providers:
         armor_user_provider:
             id: armor.user_provider
-        armor_public_user_provider:
+        armor_public_api_user_provider:
             id: armor.user_provider.public_api
 
     firewalls:
@@ -37,10 +37,9 @@ security:
         public_api:
             pattern: ^/api
             stateless: true
-            provider: armor_public_user_provider
+            provider: armor_public_api_user_provider
             simple_preauth:
                 authenticator: armor.authenticator.public_api
-            # user_checker: armor.public_api_user.user_checker
             anonymous: ~
 
         app:

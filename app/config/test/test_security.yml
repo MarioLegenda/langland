@@ -9,6 +9,8 @@ security:
 
         armor_user_provider:
             id: armor.user_provider
+        armor_public_api_user_provider:
+            id: armor.user_provider.public_api
 
     encoders:
         Symfony\Component\Security\Core\User\User: plaintext
@@ -35,7 +37,10 @@ security:
 
         public_api:
             pattern: ^/api
-            provider: armor_user_provider
+            stateless: true
+            provider: armor_public_api_user_provider
+            simple_preauth:
+                authenticator: armor.authenticator.public_api
             anonymous: ~
 
         app:
@@ -56,5 +61,6 @@ security:
         - { path: ^/langland/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/langland/user/confirm/*, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/langland/api/*, role: [ROLE_PUBLIC_API_USER] }
         - { path: ^/langland/*, role: [ROLE_USER] }
+
+        - { path: ^/api/*, role: [ROLE_PUBLIC_API_USER] }

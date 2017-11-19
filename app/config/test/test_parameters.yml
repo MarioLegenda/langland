@@ -21,3 +21,4 @@ parameters:
     email_config: '%kernel.root_dir%/config/email.yml'
     blue_dot_dir: '%kernel.root_dir%/config/blueDot'
     api_base_route: /langland/api/v1
+    root_firewalls: [_security_admin]

@@ -125,7 +125,6 @@ class LessonImplementation
      */
     public function newLesson(Course $course, LessonView $lessonView)
     {
-        $lessonView->setUuid(Uuid::uuid4());
         $lesson = new Lesson(
             $lessonView->getUuid(),
             0,

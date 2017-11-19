@@ -4,6 +4,8 @@ namespace Tests\PublicApi;
 
 use Faker\Factory;
 use Faker\Generator;
+use Library\Lesson\Business\Implementation\LessonImplementation;
+use Ramsey\Uuid\Uuid;
 use TestLibrary\LanglandAdminTestCase;
 use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
@@ -11,10 +13,6 @@ use Tests\TestLibrary\DataProvider\LessonDataProvider;
 
 class LessonControllerTest extends LanglandAdminTestCase
 {
-    /**
-     * @var string $mainLessonRoute
-     */
-    private $mainLessonRoute = 'http://33.33.33.10/langland/api/v1/lesson/';
     /**
      * @var LessonDataProvider $lessonDataProvider
      */
@@ -27,6 +25,10 @@ class LessonControllerTest extends LanglandAdminTestCase
      * @var LanguageDataProvider $languageDataProvider
      */
     private $languageDataProvider;
+    /**
+     * @var LessonImplementation $lessonImplementation
+     */
+    private $lessonImplementation;
     /**
      * @var Generator $faker
      */
@@ -43,6 +45,7 @@ class LessonControllerTest extends LanglandAdminTestCase
         $this->lessonDataProvider = $this->container->get('langland.data_provider.lesson');
         $this->courseDataProvider = $this->container->get('langland.data_provider.course');
         $this->languageDataProvider = $this->container->get('langland.data_provider.language');
+        $this->lessonImplementation = $this->container->get('langland.public_api.business.implementation.lesson');
     }
 
     public function test_get_lesson_by_id()
@@ -53,19 +56,22 @@ class LessonControllerTest extends LanglandAdminTestCase
 
         $this->courseDataProvider->getRepository()->persistAndFlush($course);
 
-        $route = sprintf($this->mainLessonRoute.'%d', $lesson->getId());
+        $serialized = $this->lessonImplementation->findAndSerialize(
+            $lesson->getId(),
+            ['public_api'],
+            'json'
+        );
 
-        $this->client->request('GET', $route);
+        static::assertInternalType('string', $serialized);
 
-        static::assertEquals(200, $this->client->getResponse()->getStatusCode());
+        $decoded = json_decode($serialized, true);
 
-        $content = json_decode($this->client->getResponse()->getContent(), true);
-
-        static::assertNotEmpty($content);
-
-        static::assertArrayHasKey('id', $content);
-        static::assertArrayHasKey('uuid', $content);
-        static::assertArrayHasKey('lesson', $content);
-        static::assertArrayHasKey('order', $content);
+        static::assertArrayHasKey('id', $decoded);
+        static::assertInternalType('int', $decoded['id']);
+        static::assertEquals($lesson->getId(), $decoded['id']);
+        static::assertArrayHasKey('uuid', $decoded);
+        static::assertInternalType('string', $decoded['uuid']);
+        static::assertTrue(Uuid::isValid($decoded['uuid']));
+        static::assertInternalType('array', $decoded['lesson']);
     }
 }

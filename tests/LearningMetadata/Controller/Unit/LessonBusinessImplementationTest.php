@@ -135,6 +135,8 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             $this->deserializer
         );
 
+        $data['lessonView']->setUuid(Uuid::uuid4());
+
         $response = $this->lessonImplementation->newLesson(
             $data['course'],
             $data['lessonView']

@@ -1,25 +1,25 @@
 admin_language_info_index:
     path: /language-info
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.language_info_controller:indexAction }
+    defaults: { _controller: langland.learning_metadata.controller.language_info:indexAction }
 
 
 admin_language_info_create:
     path: /language-info/create
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.language_info_controller:createAction }
+    defaults: { _controller: langland.learning_metadata.controller.language_info:createAction }
 
 admin_language_info_new:
     path: /language-info/new
     methods: [POST]
-    defaults: { _controller: langland.learning_metadata.controller.language_info_controller:newAction }
+    defaults: { _controller: langland.learning_metadata.controller.language_info:newAction }
 
 admin_language_info_update:
     path: /language-info/update/{id}
     methods: [POST, GET]
-    defaults: { _controller: langland.learning_metadata.controller.language_info_controller:updateAction }
+    defaults: { _controller: langland.learning_metadata.controller.language_info:updateAction }
 
 admin_language_info_delete:
     path: /language-info/delete/{id}
     methods: [POST]
-    defaults: { _controller: langland.learning_metadata.controller.language_info_controller:deleteAction }
+    defaults: { _controller: langland.learning_metadata.controller.language_info:deleteAction }

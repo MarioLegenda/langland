@@ -1,19 +1,19 @@
 admin_sound_index:
     path: /sounds
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.sound_controller:indexAction }
+    defaults: { _controller: langland.learning_metadata.controller.sound:indexAction }
 
 admin_sound_create:
     path: /sound/create
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.sound_controller:createAction }
+    defaults: { _controller: langland.learning_metadata.controller.sound:createAction }
 
 admin_sound_new:
     path: /sound/new
     methods: [POST]
-    defaults: { _controller: langland.learning_metadata.controller.sound_controller:newAction }
+    defaults: { _controller: langland.learning_metadata.controller.sound:newAction }
 
 admin_sound_update:
     path: /sound/update/{id}
     methods: [POST, GET]
-    defaults: { _controller: langland.learning_metadata.controller.sound_controller:updateAction }
+    defaults: { _controller: langland.learning_metadata.controller.sound:updateAction }

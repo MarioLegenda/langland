@@ -50,8 +50,8 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
     {
         parent::setUp();
 
-        $this->lessonImplementation = $this->container->get('langland.learning_metadata.business.implementation.lesson_implementation');
-        $this->courseImplementation = $this->container->get('langland.learning_metadata.business.implementation.course_implementation');
+        $this->lessonImplementation = $this->container->get('langland.learning_metadata.business.implementation.lesson');
+        $this->courseImplementation = $this->container->get('langland.learning_metadata.business.implementation.course');
         $this->deserializer = $this->container->get('library.deserializer');
         $this->lessonDataProvider = $this->container->get('langland.data_provider.lesson');
         $this->courseDataProvider = $this->container->get('langland.data_provider.course');

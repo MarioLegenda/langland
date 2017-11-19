@@ -9,7 +9,7 @@
                 id="langland.public_api.controller.lesson"
                 class="Library\Lesson\Business\Controller\LessonController">
 
-            <argument type="service" id="langland.public_api.implementation.lesson" />
+            <argument type="service" id="langland.public_api.business.implementation.lesson" />
         </service>
     </services>
 </container>

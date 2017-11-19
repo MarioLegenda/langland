@@ -6,7 +6,7 @@
 
     <services>
         <service
-                id="langland.public_api.implementation.lesson"
+                id="langland.public_api.business.implementation.lesson"
                 class="Library\Lesson\Business\Implementation\LessonImplementation">
 
             <argument type="service" id="langland.public_api.repository.lesson" />

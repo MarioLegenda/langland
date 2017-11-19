@@ -9,14 +9,14 @@
                 id="langland.data_provider.language"
                 class="Tests\TestLibrary\DataProvider\LanguageDataProvider">
 
-            <argument type="service" id="langland.learning_metadata.repository.implementation.language_implementation" />
+            <argument type="service" id="langland.learning_metadata.repository.language" />
         </service>
 
         <service
                 id="langland.data_provider.course"
                 class="Tests\TestLibrary\DataProvider\CourseDataProvider">
 
-            <argument type="service" id="langland.learning_metadata.repository.implementation.course_implementation" />
+            <argument type="service" id="langland.learning_metadata.repository.course" />
             <argument type="service" id="langland.data_provider.language" />
         </service>
 
@@ -24,7 +24,7 @@
                 id="langland.data_provider.lesson"
                 class="Tests\TestLibrary\DataProvider\LessonDataProvider">
 
-            <argument type="service" id="langland.learning_metadata.repository.implementation.lesson_implementation" />
+            <argument type="service" id="langland.learning_metadata.repository.lesson" />
             <argument type="service" id="langland.data_provider.course" />
 
         </service>

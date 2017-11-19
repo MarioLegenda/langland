@@ -1,9 +1,9 @@
 admin_lesson_index:
     path: /lessons
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.lesson_controller:indexAction }
+    defaults: { _controller: langland.learning_metadata.controller.lesson:indexAction }
 
 admin_lesson_create:
     path: /lesson/create
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.lesson_controller:createAction }
+    defaults: { _controller: langland.learning_metadata.controller.lesson:createAction }

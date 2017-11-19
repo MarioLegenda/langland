@@ -35,6 +35,10 @@ class BaseInput extends React.Component {
             this.setState(function(prevState) {
                 prevState.value = "";
             });
+        } else {
+            this.setState(function(prevState) {
+                prevState.value = nextProps.inputValue;
+            });
         }
     }
 

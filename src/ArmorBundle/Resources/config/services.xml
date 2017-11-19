@@ -18,13 +18,19 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
+        <service id="armor.user_provider.public_api" class="ArmorBundle\Provider\PublicApiUserProvider">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="security.token_storage" />
+        </service>
+
+        <service id="armor.authenticator.public_api" class="ArmorBundle\Authenticator\PublicApiAuthenticator">
+            <argument type="service" id="session" />
+            <argument>%root_firewalls%</argument>
+        </service>
+
         <service id="armor.user.user_checker" class="%armor.user.user_checker.class%">
 
         </service>
-
-        <!--
-            email
-        -->
 
         <service id="armor.email" class="%armor.email.class%">
             <argument type="service" id="mailer" />

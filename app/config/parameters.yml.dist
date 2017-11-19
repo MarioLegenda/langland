@@ -22,3 +22,5 @@ parameters:
 
     audio_upload:
         sound_upload_dir: '%kernel.root_dir%/../web/uploads/sounds'
+
+    root_firewalls: [_security_admin]

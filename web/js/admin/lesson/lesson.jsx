@@ -33,7 +33,17 @@ export class Lesson extends React.Component {
     }
 
     componentDidMount() {
+        this.lessonRepository.getLessonById($.proxy(function(data) {
+            this.setState(function(prevState) {
+                console.log(data);
+                data = JSON.parse(data);
+                prevState.model.name = data.lesson.name;
+                prevState.model.tips = data.lesson.tips;
+                prevState.model.lessonTexts = data.lesson.lessonTexts;
+            });
+        }, this), $.proxy(function(xhr) {
 
+        }, this));
     }
 
     setName(value) {
@@ -70,7 +80,7 @@ export class Lesson extends React.Component {
             return;
         }
 
-        this.lessonRepository.newLesson(this.state.model, $.proxy(function(data) {
+        this.lessonRepository.newLesson(this.state.model, $.proxy(function() {
             this.setState(function(prevState) {
                 prevState.form = {
                     internalError: false,

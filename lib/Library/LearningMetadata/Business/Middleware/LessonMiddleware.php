@@ -36,8 +36,6 @@ class LessonMiddleware
             LessonView::class
         );
 
-        $lessonView->setUuid(Uuid::uuid4());
-
         return [
             'course' => $course,
             'lessonView' => $lessonView,

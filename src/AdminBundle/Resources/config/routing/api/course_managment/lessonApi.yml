@@ -4,3 +4,10 @@ admin_api_lesson_new:
     defaults: { _controller: langland.learning_metadata.controller.lesson:newAction }
     requirements:
         _format: json
+
+admin_api_lesson_update:
+    path: /lesson/update
+    methods: [POST]
+    defaults: { _controller: langland.learning_metadata.controller.lesson:editAction }
+    requirements:
+        _format: json

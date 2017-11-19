@@ -85,15 +85,7 @@ class LessonImplementation
      */
     public function getLessons() : array
     {
-        $lessons = $this->lessonRepository->findAll();
-
-        $lessonViews = [];
-        /** @var Lesson $lesson */
-        foreach ($lessons as $lesson) {
-            $lessonViews[] = $this->deserializer->create($lesson->getJsonLesson(), LessonView::class);
-        }
-
-        return $lessonViews;
+        return $this->lessonRepository->findAll();
     }
     /**
      * @param Course $course
@@ -133,6 +125,7 @@ class LessonImplementation
      */
     public function newLesson(Course $course, LessonView $lessonView)
     {
+        $lessonView->setUuid(Uuid::uuid4());
         $lesson = new Lesson(
             $lessonView->getUuid(),
             0,

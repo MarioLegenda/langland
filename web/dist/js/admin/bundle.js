@@ -6760,6 +6760,10 @@ var BaseInput = function (_React$Component) {
                 this.setState(function (prevState) {
                     prevState.value = "";
                 });
+            } else {
+                this.setState(function (prevState) {
+                    prevState.value = nextProps.inputValue;
+                });
             }
         }
     }, {
@@ -22470,6 +22474,19 @@ var Lesson = exports.Lesson = function (_React$Component) {
     }
 
     _createClass(Lesson, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this.lessonRepository.getLessonById($.proxy(function (data) {
+                this.setState(function (prevState) {
+                    console.log(data);
+                    data = JSON.parse(data);
+                    prevState.model.name = data.lesson.name;
+                    prevState.model.tips = data.lesson.tips;
+                    prevState.model.lessonTexts = data.lesson.lessonTexts;
+                });
+            }, this), $.proxy(function (xhr) {}, this));
+        }
+    }, {
         key: 'setName',
         value: function setName(value) {
             this.setState(function (prevState) {
@@ -22508,7 +22525,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
                 return;
             }
 
-            this.lessonRepository.newLesson(this.state.model, $.proxy(function (data) {
+            this.lessonRepository.newLesson(this.state.model, $.proxy(function () {
                 this.setState(function (prevState) {
                     prevState.form = {
                         internalError: false,
@@ -22898,16 +22915,17 @@ var LessonTextControl = exports.LessonTextControl = function (_React$Component) 
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 class LessonRepository {
     constructor() {
-        this.course = this._extractCourse();
+        this.urlMetadata = this._extractUrlInformation();
 
         this.routes = {
-            admin_api_lesson_new: '/app_dev.php/admin/api/v1/lesson/new'
+            admin_api_lesson_new: '/app_dev.php/admin/api/v1/lesson/new',
+            public_api_get_lesson_by_id: '/app_dev.php/api/v1/lesson/{id}'
         };
     }
 
-    _extractCourse() {
+    _extractUrlInformation() {
         const urlSplitted = location.pathname.split('/');
-        const course = urlSplitted.filter(function (val) {
+        const info = urlSplitted.filter(function (val) {
             const entry = parseInt(val);
 
             if (entry !== Number.NaN) {
@@ -22915,21 +22933,37 @@ class LessonRepository {
             }
         });
 
-        if (course.length !== 1) {
-            throw new Error(`Course could not be determined from url ${location.pathname}`);
+        if (info.length < 0 || info.length > 2) {
+            throw new Error(`Course and lesson could not be determined from url ${location.pathname}`);
         }
 
-        return parseInt(course[0]);
+        return {
+            courseId: parseInt(info[0]),
+            lessonId: info.length > 1 ? info[1] : null
+        };
     }
 
     newLesson(data, success, failure) {
-        data.course = this.course;
+        data.course = this.urlMetadata.courseId;
 
         $.ajax({
             url: this.routes.admin_api_lesson_new,
             method: 'POST',
             data: JSON.stringify(data),
             contentType: 'application/json'
+        }).done(success).fail(failure);
+    }
+
+    getLessonById(success, failure) {
+        const lessonId = this.urlMetadata.lessonId;
+
+        $.ajax({
+            url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': 'root'
+            }
         }).done(success).fail(failure);
     }
 }

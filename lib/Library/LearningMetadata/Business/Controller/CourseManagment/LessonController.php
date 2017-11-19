@@ -94,4 +94,14 @@ class LessonController
             $data['lessonView']
         );
     }
+    /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function editAction(Request $request)
+    {
+
+    }
 }

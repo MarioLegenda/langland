@@ -19,7 +19,6 @@ class AdminSecurityController extends Controller implements UserLoggedInInterfac
 
         $authenticationUtils = $this->get('security.authentication_utils');
 
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
         if ($error instanceof BadCredentialsException) {
@@ -36,7 +35,7 @@ class AdminSecurityController extends Controller implements UserLoggedInInterfac
         ));
     }
 
-    public function adminLogoutAction(Request $request)
+    public function adminLogoutAction()
     {
         $this->get('security.token_storage')->setToken(null);
 

@@ -27,4 +27,8 @@
     <route id="armor_user_confirm" path="/langland/user/confirm/{hash}" methods="GET POST">
         <default key="_controller">ArmorBundle:UserSecurity:confirmUser</default>
     </route>
+
+    <route id="armor_get_logged_in_user" path="/admin/get-logged-in-user" methods="GET">
+        <default key="_controller">ArmorBundle:AdminSecurity:getLoggedInUser</default>
+    </route>
 </routes>

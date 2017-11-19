@@ -3,12 +3,18 @@
 namespace ArmorBundle\Controller;
 
 use ArmorBundle\Admin\UserLoggedInInterface;
+use JMS\Serializer\SerializationContext;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 class AdminSecurityController extends Controller implements UserLoggedInInterface
 {
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function adminLoginAction(Request $request)
     {
         $securityContext = $this->get('security.authorization_checker');
@@ -34,11 +40,28 @@ class AdminSecurityController extends Controller implements UserLoggedInInterfac
             'action_path' => 'armor_admin_login'
         ));
     }
-
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function adminLogoutAction()
     {
         $this->get('security.token_storage')->setToken(null);
 
         return $this->redirectToRoute('armor_admin_login');
+    }
+    /**
+     * @return JsonResponse
+     */
+    public function getLoggedInUserAction()
+    {
+        $user = $this->getUser();
+
+        $context = SerializationContext::create();
+        $context->setGroups(['exposed_user']);
+
+        return new JsonResponse(
+            $this->get('jms_serializer')->serialize($user, 'json', $context),
+            200
+        );
     }
 }

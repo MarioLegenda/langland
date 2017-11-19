@@ -22478,7 +22478,6 @@ var Lesson = exports.Lesson = function (_React$Component) {
         value: function componentDidMount() {
             this.lessonRepository.getLessonById($.proxy(function (data) {
                 this.setState(function (prevState) {
-                    console.log(data);
                     data = JSON.parse(data);
                     prevState.model.name = data.lesson.name;
                     prevState.model.tips = data.lesson.tips;
@@ -22913,9 +22912,14 @@ var LessonTextControl = exports.LessonTextControl = function (_React$Component) 
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__userRepository_jsx__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__userRepository_jsx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__userRepository_jsx__);
+
+
 class LessonRepository {
     constructor() {
         this.urlMetadata = this._extractUrlInformation();
+        this.userRepository = new __WEBPACK_IMPORTED_MODULE_0__userRepository_jsx__["UserRepository"]();
 
         this.routes = {
             admin_api_lesson_new: '/app_dev.php/admin/api/v1/lesson/new',
@@ -22957,18 +22961,74 @@ class LessonRepository {
     getLessonById(success, failure) {
         const lessonId = this.urlMetadata.lessonId;
 
-        $.ajax({
-            url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
-            method: 'GET',
-            contentType: 'application/json',
-            headers: {
-                'X-LANGLAND-PUBLIC-API': 'root'
-            }
-        }).done(success).fail(failure);
+        this.userRepository.getLoggedInUser($.proxy(function (data) {
+            $.ajax({
+                url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
+                method: 'GET',
+                contentType: 'application/json',
+                headers: {
+                    'X-LANGLAND-PUBLIC-API': data.username
+                }
+            }).done(success).fail(failure);
+        }, this), function (xhr) {
+            throw new Error('Invalid request');
+        });
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["LessonRepository"] = LessonRepository;
 
+
+/***/ }),
+/* 188 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var UserRepository = exports.UserRepository = function () {
+    function UserRepository() {
+        _classCallCheck(this, UserRepository);
+
+        this.routes = {
+            armor_get_logged_in_user: '/app_dev.php/admin/get-logged-in-user'
+        };
+
+        this.loggedInUser = null;
+    }
+
+    _createClass(UserRepository, [{
+        key: 'getLoggedInUser',
+        value: function getLoggedInUser(success, failure) {
+            if (this.loggedInUser !== null) {
+                success(this.loggedInUser);
+
+                return;
+            }
+
+            $.ajax({
+                url: this.routes.armor_get_logged_in_user,
+                method: 'GET',
+                contentType: 'application/json'
+            }).done($.proxy(function (data) {
+                data = JSON.parse(data);
+
+                success(data);
+
+                this.loggedInUser = data;
+            }, this)).fail(failure);
+        }
+    }]);
+
+    return UserRepository;
+}();
 
 /***/ })
 /******/ ]);

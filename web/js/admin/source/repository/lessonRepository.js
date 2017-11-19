@@ -1,6 +1,9 @@
+import {UserRepository} from "./userRepository.jsx";
+
 export class LessonRepository {
     constructor() {
         this.urlMetadata = this._extractUrlInformation();
+        this.userRepository = new UserRepository();
 
         this.routes = {
             admin_api_lesson_new: '/app_dev.php/admin/api/v1/lesson/new',
@@ -42,13 +45,17 @@ export class LessonRepository {
     getLessonById(success, failure) {
         const lessonId = this.urlMetadata.lessonId;
 
-        $.ajax({
-            url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
-            method: 'GET',
-            contentType: 'application/json',
-            headers: {
-                'X-LANGLAND-PUBLIC-API': 'root'
-            }
-        }).done(success).fail(failure);
+        this.userRepository.getLoggedInUser($.proxy(function(data) {
+            $.ajax({
+                url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
+                method: 'GET',
+                contentType: 'application/json',
+                headers: {
+                    'X-LANGLAND-PUBLIC-API': data.username
+                }
+            }).done(success).fail(failure);
+        }, this), function(xhr) {
+            throw new Error('Invalid request');
+        });
     }
 }

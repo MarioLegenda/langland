@@ -85,5 +85,6 @@
 
             <argument>AdminBundle\Entity\Lesson</argument>
         </service>
+
     </services>
 </container>

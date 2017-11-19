@@ -6,6 +6,7 @@ use AdminBundle\Entity\Lesson;
 use Library\Infrastructure\Helper\CommonSerializer;
 use Library\Infrastructure\Repository\RepositoryInterface;
 use Library\Lesson\Repository\LessonRepository;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LessonImplementation
 {
@@ -39,7 +40,7 @@ class LessonImplementation
         $lesson = $this->lessonRepository->find($id);
 
         if (!$lesson instanceof Lesson) {
-            throw new \RuntimeException(sprintf('Lesson with id %d not found', $id));
+            throw new NotFoundHttpException();
         }
 
         return $lesson;

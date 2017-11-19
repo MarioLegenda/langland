@@ -3,8 +3,8 @@
 namespace Library\LearningMetadata\Repository\Implementation;
 
 use AdminBundle\Entity\LanguageInfo;
-use Doctrine\ORM\EntityRepository;
 use AdminBundle\Entity\Language;
+use Doctrine\ORM\EntityRepository;
 
 class LanguageInfoRepository extends EntityRepository
 {
@@ -14,7 +14,7 @@ class LanguageInfoRepository extends EntityRepository
     public function persistAndFlush(LanguageInfo $languageInfo)
     {
         $this->getEntityManager()->persist($languageInfo);
-        $this->getEntityManager()->flush($languageInfo);
+        $this->getEntityManager()->flush();
     }
     /**
      * @param LanguageInfo $languageInfo

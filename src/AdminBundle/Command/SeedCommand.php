@@ -63,7 +63,7 @@ class SeedCommand extends ContainerAwareCommand
             $courseFactory->create($languageObject, 6);
         }
 
-        $courses = $this->getContainer()->get('doctrine')->getRepository('AdminBundle:Course')->findAll();
+        $courses = $this->getContainer()->get('langland.learning_metadata.repository.implementation.course_implementation')->findAll();
 
         foreach ($courses as $course) {
             $lessonFactory->create($course, 10);

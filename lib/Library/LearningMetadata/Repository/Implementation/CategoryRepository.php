@@ -13,6 +13,6 @@ class CategoryRepository extends EntityRepository
     public function persistAndFlush(Category $category)
     {
         $this->getEntityManager()->persist($category);
-        $this->getEntityManager()->flush($category);
+        $this->getEntityManager()->flush();
     }
 }

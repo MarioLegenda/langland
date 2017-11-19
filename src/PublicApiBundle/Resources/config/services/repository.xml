@@ -9,10 +9,11 @@
                 id="langland.public_api.repository.lesson"
                 class="Library\Lesson\Repository\LessonRepository">
 
-            <call method="build">
-                <argument type="service" id="doctrine.orm.default_entity_manager" />
-                <argument>AdminBundle\Entity\Lesson</argument>
-            </call>
+            <factory class="Library\Infrastructure\Repository\RepositoryFactory" method="getRepository"/>
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\Lesson</argument>
+            <argument>Library\Lesson\Repository\LessonRepository</argument>
         </service>
     </services>
 </container>

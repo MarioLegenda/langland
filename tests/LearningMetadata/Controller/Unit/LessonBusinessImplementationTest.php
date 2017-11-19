@@ -11,18 +11,14 @@ use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRep
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\ContainerAwareTest;
-use AdminBundle\Command\Helper\LanguageFactory;
-use AdminBundle\Command\Helper\CourseFactory;
-use AdminBundle\Entity\Language;
 use Library\LearningMetadata\Business\Middleware\LessonMiddleware;
 use AdminBundle\Entity\Lesson;
+use Tests\TestLibrary\DataProvider\LessonDataProvider;
+use Tests\TestLibrary\DataProvider\CourseDataProvider;
+use Tests\TestLibrary\DataProvider\LanguageDataProvider;
 
 class LessonBusinessImplementationTest extends ContainerAwareTest
 {
-    /**
-     * @var LessonRepository $lessonRepository
-     */
-    private $lessonRepository;
     /**
      * @var LessonImplementation $lessonImplementation
      */
@@ -36,34 +32,40 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
      */
     private $deserializer;
     /**
+     * @var LessonDataProvider $lessonDataProvider
+     */
+    private $lessonDataProvider;
+    /**
+     * @var CourseDataProvider $courseDataProvider
+     */
+    private $courseDataProvider;
+    /**
+     * @var LanguageDataProvider $languageDataProvider
+     */
+    private $languageDataProvider;
+    /**
      * @inheritdoc
      */
     public function setUp()
     {
         parent::setUp();
 
-        $this->lessonRepository = $this->container->get('langland.learning_metadata.repository.implementation.lesson_implementation');
         $this->lessonImplementation = $this->container->get('langland.learning_metadata.business.implementation.lesson_implementation');
         $this->courseImplementation = $this->container->get('langland.learning_metadata.business.implementation.course_implementation');
         $this->deserializer = $this->container->get('library.deserializer');
-
-        $em = $this->container->get('doctrine')->getManager();
-        $languageFactory = new LanguageFactory($em);
-
-        $languages = $languageFactory->create([
-            'French',
-            'English',
-        ], true);
-
-        $courseFactory = new CourseFactory($em);
-        /** @var Language $language */
-        foreach ($languages as $language) {
-            $courseFactory->create($language, 5);
-        }
+        $this->lessonDataProvider = $this->container->get('langland.data_provider.lesson');
+        $this->courseDataProvider = $this->container->get('langland.data_provider.course');
+        $this->languageDataProvider = $this->container->get('langland.data_provider.language');
     }
 
     public function test_lesson_creation()
     {
+        $course = $this->courseDataProvider->createDefault($this->faker);
+        $lesson = $this->lessonDataProvider->createDefault($this->faker, $course);
+        $course->addLesson($lesson);
+
+        $this->courseDataProvider->getRepository()->persistAndFlush($course);
+
         $uuid = Uuid::uuid4();
         $data = [
             'tips' => [
@@ -83,12 +85,12 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
         $lessonView = $this->deserializer->create($data, LessonView::class);
         $lessonView->setUuid($uuid);
 
-        $course = $this->courseImplementation->findCourse(1);
+        $course = $this->courseImplementation->findCourse($course->getId());
 
         $this->lessonImplementation->newLesson($course, $lessonView);
 
         /** @var Lesson $lesson */
-        $lesson = $this->lessonRepository->findOneBy([
+        $lesson = $this->lessonDataProvider->getRepository()->findOneBy([
             'uuid' => $uuid->toString(),
         ]);
 
@@ -104,8 +106,15 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
 
     public function test_new_lesson()
     {
+        /** @var Course $course */
+        $course = $this->courseDataProvider->createDefault($this->faker);
+        $lesson = $this->lessonDataProvider->createDefault($this->faker, $course);
+        $course->addLesson($lesson);
+
+        $this->courseDataProvider->getRepository()->persistAndFlush($course);
+
         $data = [
-            'course' => 1,
+            'course' => $course->getId(),
             'tips' => [
                 'Tip 1',
                 'Tip 2',

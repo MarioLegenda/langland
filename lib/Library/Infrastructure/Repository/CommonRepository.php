@@ -3,7 +3,6 @@
 namespace Library\Infrastructure\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Ramsey\Uuid\Uuid;
 
 class CommonRepository implements RepositoryInterface
@@ -13,48 +12,68 @@ class CommonRepository implements RepositoryInterface
      */
     protected $em;
     /**
-     * @var EntityRepository $repository
+     * @var string $class
      */
-    protected $repository;
+    private $class;
     /**
+     * CommonRepository constructor.
      * @param EntityManagerInterface $em
-     * @param string $entity
+     * @param string $class
      */
-    public function build(
+    public function __construct
+    (
         EntityManagerInterface $em,
-        string $entity
+        string $class
     ) {
-        $this->repository = $em->getRepository($entity);
         $this->em = $em;
+        $this->class = $class;
     }
     /**
-     * @inheritdoc
+     * @param int $id
+     * @return object
      */
     public function find(int $id)
     {
-        return $this->repository->find($id);
+        return $this->em->find($this->class, $id);
+    }
+    /**
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null|int $limit
+     * @param null|int $offset
+     * @return array
+     */
+    public function findBy(array $criteria, array $orderBy = null, int $limit = null, int $offset = null)
+    {
+        $persister = $this->em->getUnitOfWork()->getEntityPersister($this->class);
+
+        return $persister->loadAll($criteria, $orderBy, $limit, $offset);
     }
     /**
      * @inheritdoc
      */
-    public function findBy(array $criteria)
+    public function findOneBy(array $criteria, $orderBy = null)
     {
-        return $this->repository->findBy($criteria);
+        $persister = $this->em->getUnitOfWork()->getEntityPersister($this->class);
+
+        return $persister->load($criteria, null, null, array(), null, 1, $orderBy);
     }
     /**
-     * @inheritdoc
-     */
-    public function findOneBy(array $criteria)
-    {
-        return $this->repository->findOneBy($criteria);
-    }
-    /**
-     * @inheritdoc
+     * @param Uuid $uuid
+     * @return null|object
      */
     public function findByUuid(Uuid $uuid)
     {
-        return $this->repository->findOneBy([
+        return $this->findOneBy([
             'uuid' => $uuid->toString(),
         ]);
+    }
+    /**
+     * @void
+     * @return array
+     */
+    public function findAll()
+    {
+        return $this->findBy(array());
     }
 }

@@ -81,6 +81,28 @@ class LessonImplementation
         $this->logger = $logger;
     }
     /**
+     * @param int $id
+     * @return null|object
+     */
+    public function find(int $id)
+    {
+        return $this->lessonRepository->find($id);
+    }
+    /**
+     * @param int $id
+     * @return Lesson|null
+     */
+    public function tryFind(int $id): ?Lesson
+    {
+        $lesson = $this->lessonRepository->find($id);
+
+        if (!$lesson instanceof Lesson) {
+            throw new \RuntimeException(sprintf('Lesson with id %d not found', $id));
+        }
+
+        return $lesson;
+    }
+    /**
      * @return Lesson[]
      */
     public function getLessons() : array
@@ -114,6 +136,23 @@ class LessonImplementation
             'listing_title' => 'Create lesson',
             'course' => $course,
             'template' => '/Lesson/create.html.twig',
+        ];
+
+        return new Response($this->templateWrapper->getTemplate($template, $data), 200);
+    }
+    /**
+     * @param Course $course
+     * @param Lesson $lesson
+     * @return Response
+     */
+    public function editLesson(Course $course, Lesson $lesson): Response
+    {
+        $template = '::Admin/Template/Panel/CourseManager/_action.html.twig';
+        $data = [
+            'listing_title' => sprintf('Edit lesson | %s', $lesson->getJsonLesson()['name']),
+            'course' => $course,
+            'lesson' => $lesson,
+            'template' => '/Lesson/edit.html.twig',
         ];
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);

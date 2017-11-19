@@ -9,6 +9,6 @@ admin_lesson_create:
     defaults: { _controller: langland.learning_metadata.controller.lesson:createAction }
 
 admin_lesson_update_view:
-    path: /lesson/edit/{id}
+    path: /lesson/edit/{lessonId}
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.lesson:createAction }
+    defaults: { _controller: langland.learning_metadata.controller.lesson:editViewAction }

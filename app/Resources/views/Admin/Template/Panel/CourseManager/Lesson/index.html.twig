@@ -26,7 +26,7 @@
                             <tr class="gradeA odd" role="row">
                                 <td class="sorting_1">{{ lesson.jsonLesson.name }}</td>
                                 <td class="sorting_1">
-                                    <a class="btn btn-primary" style="float: right" href="{{ path('admin_lesson_update_view', {courseId: course.id, id: lesson.id}) }}">Edit</a>
+                                    <a class="btn btn-primary" style="float: right" href="{{ path('admin_lesson_update_view', {courseId: course.id, lessonId: lesson.id}) }}">Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}

@@ -22621,8 +22621,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TipControl = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(20);
@@ -22666,6 +22664,11 @@ var TipControl = exports.TipControl = function (_React$Component) {
                 this.setState(function (prevState) {
                     prevState.tips = [];
                     prevState.tipValues = [];
+                });
+            } else {
+                this.setState(function (prevState) {
+                    prevState.tips = this._createTips(nextProps.tips);
+                    prevState.tipValues = nextProps.tips;
                 });
             }
         }
@@ -22713,41 +22716,20 @@ var TipControl = exports.TipControl = function (_React$Component) {
         key: '_createTips',
         value: function _createTips(tips) {
             var tipObjects = [];
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = tips[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var _step$value = _slicedToArray(_step.value, 2),
-                        key = _step$value[0],
-                        tip = _step$value[1];
-
-                    tipObjects.push(_react2.default.createElement(_fields.RemovableInputText, {
-                        key: key,
-                        controlKey: key,
-                        remove: this.removeTip,
-                        inputValue: tip,
-                        inputClass: "form-control tip",
-                        buttonClass: 'btn btn-sm btn-danger margin-top-20',
-                        buttonText: "Remove tip",
-                        dataCollector: this.dataCollector
-                    }));
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
+            for (var i = 0; i < tips.length; i++) {
+                tipObjects.push(_react2.default.createElement(_fields.RemovableInputText, {
+                    key: i,
+                    controlKey: i,
+                    remove: this.removeTip,
+                    inputValue: tips[i],
+                    inputClass: "form-control tip",
+                    buttonClass: 'btn btn-sm btn-danger margin-top-20',
+                    buttonText: "Remove tip",
+                    dataCollector: this.dataCollector
+                }));
             }
+
+            return tipObjects;
         }
     }, {
         key: 'render',
@@ -22818,6 +22800,7 @@ var LessonTextControl = exports.LessonTextControl = function (_React$Component) 
         _this.addLessonText = _this.addLessonText.bind(_this);
         _this.removeLessonText = _this.removeLessonText.bind(_this);
         _this.dataCollector = _this.dataCollector.bind(_this);
+        _this._createLessonTexts = _this._createLessonTexts.bind(_this);
 
         _this.state = {};
 
@@ -22833,6 +22816,11 @@ var LessonTextControl = exports.LessonTextControl = function (_React$Component) 
                 this.setState(function (prevState) {
                     prevState.lessonTexts = [];
                     prevState.textValues = [];
+                });
+            } else {
+                this.setState(function (prevState) {
+                    prevState.lessonTexts = this._createLessonTexts(nextProps.lessonTexts);
+                    prevState.textValues = nextProps.lessonTexts;
                 });
             }
         }
@@ -22875,6 +22863,26 @@ var LessonTextControl = exports.LessonTextControl = function (_React$Component) 
                     dataCollector: this.dataCollector
                 }));
             });
+        }
+    }, {
+        key: '_createLessonTexts',
+        value: function _createLessonTexts(lessonTexts) {
+            var lessonTextObjects = [];
+
+            for (var i = 0; i < lessonTexts.length; i++) {
+                lessonTextObjects.push(_react2.default.createElement(_fields.RemovableTextarea, {
+                    key: i,
+                    controlKey: i,
+                    remove: this.removeLessonText,
+                    buttonClass: 'btn btn-sm btn-danger margin-top-20',
+                    className: "form-control lessonText",
+                    buttonText: "Remove lesson text",
+                    dataCollector: this.dataCollector,
+                    inputValue: lessonTexts[i]
+                }));
+            }
+
+            return lessonTextObjects;
         }
     }, {
         key: 'render',

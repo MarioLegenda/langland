@@ -9,6 +9,7 @@ export class LessonTextControl extends React.Component {
         this.addLessonText = this.addLessonText.bind(this);
         this.removeLessonText = this.removeLessonText.bind(this);
         this.dataCollector = this.dataCollector.bind(this);
+        this._createLessonTexts = this._createLessonTexts.bind(this);
 
         this.state = {};
 
@@ -21,6 +22,11 @@ export class LessonTextControl extends React.Component {
             this.setState(function(prevState) {
                 prevState.lessonTexts = [];
                 prevState.textValues = [];
+            });
+        } else {
+            this.setState(function(prevState) {
+                prevState.lessonTexts = this._createLessonTexts(nextProps.lessonTexts);
+                prevState.textValues = nextProps.lessonTexts;
             });
         }
     }
@@ -60,6 +66,25 @@ export class LessonTextControl extends React.Component {
                 dataCollector={this.dataCollector}
             />);
         });
+    }
+
+    _createLessonTexts(lessonTexts) {
+        let lessonTextObjects = [];
+
+        for (let i = 0; i < lessonTexts.length; i++) {
+            lessonTextObjects.push(<RemovableTextarea
+                key={i}
+                controlKey={i}
+                remove={this.removeLessonText}
+                buttonClass={'btn btn-sm btn-danger margin-top-20'}
+                className={"form-control lessonText"}
+                buttonText={"Remove lesson text"}
+                dataCollector={this.dataCollector}
+                inputValue={lessonTexts[i]}
+            />);
+        }
+
+        return lessonTextObjects;
     }
 
     render() {

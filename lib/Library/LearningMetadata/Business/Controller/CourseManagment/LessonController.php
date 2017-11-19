@@ -3,6 +3,7 @@
 namespace Library\LearningMetadata\Business\Controller\CourseManagment;
 
 use AdminBundle\Entity\Course;
+use AdminBundle\Entity\Lesson;
 use Library\Infrastructure\Helper\Deserializer;
 use Library\LearningMetadata\Business\Implementation\CourseImplementation;
 use Library\LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
@@ -101,11 +102,24 @@ class LessonController
     /**
      * @Security("has_role('ROLE_ALLOWED_MODIFY')")
      *
-     * @param Request $request
+     * @param int $courseId
+     * @param int $lessonId
      * @return Response
      */
-    public function editAction(Request $request)
+    public function editViewAction(int $courseId, int $lessonId)
     {
+        $course = $this->courseImplementation->findCourse($courseId);
 
+        if (!$course instanceof Course) {
+            throw new NotFoundHttpException();
+        }
+
+        $lesson = $this->lessonImplementation->tryFind($lessonId);
+
+        if (!$lesson instanceof Lesson) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->lessonImplementation->editLesson($course, $lesson);
     }
 }

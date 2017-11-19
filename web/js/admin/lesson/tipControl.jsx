@@ -23,6 +23,11 @@ export class TipControl extends React.Component {
                 prevState.tips = [];
                 prevState.tipValues = [];
             });
+        } else {
+            this.setState(function(prevState) {
+                prevState.tips = this._createTips(nextProps.tips);
+                prevState.tipValues = nextProps.tips;
+            });
         }
     }
 
@@ -65,18 +70,20 @@ export class TipControl extends React.Component {
 
     _createTips(tips) {
         let tipObjects = [];
-        for (let [key, tip] of tips) {
+        for (let i = 0; i < tips.length; i++) {
             tipObjects.push(<RemovableInputText
-                key={key}
-                controlKey={key}
+                key={i}
+                controlKey={i}
                 remove={this.removeTip}
-                inputValue={tip}
+                inputValue={tips[i]}
                 inputClass={"form-control tip"}
                 buttonClass={'btn btn-sm btn-danger margin-top-20'}
                 buttonText={"Remove tip"}
                 dataCollector={this.dataCollector}
             />)
         }
+
+        return tipObjects;
     }
 
     render() {

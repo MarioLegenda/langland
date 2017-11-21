@@ -7,7 +7,7 @@ use AdminBundle\Entity\Language;
 use Faker\Generator;
 use Library\LearningMetadata\Repository\Implementation\CourseRepository;
 
-class CourseDataProvider
+class CourseDataProvider implements DefaultDataProviderInterface
 {
     /**
      * @var CourseRepository $courseRepository

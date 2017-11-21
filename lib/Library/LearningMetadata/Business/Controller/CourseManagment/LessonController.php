@@ -51,7 +51,7 @@ class LessonController
      * @param int $courseId
      * @return Response
      */
-    public function indexAction(int $courseId)
+    public function indexAction(int $courseId): Response
     {
         $course = $this->courseImplementation->findCourse($courseId);
 
@@ -67,7 +67,7 @@ class LessonController
      * @param int $courseId
      * @return Response
      */
-    public function createAction(int $courseId)
+    public function createAction(int $courseId): Response
     {
         $course = $this->courseImplementation->findCourse($courseId);
 
@@ -76,28 +76,6 @@ class LessonController
         }
 
         return $this->lessonImplementation->createLesson($course);
-    }
-    /**
-     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
-     *
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function newAction(Request $request)
-    {
-        $lessonMiddleware = new LessonMiddleware();
-        $data = $lessonMiddleware->createNewLessonMiddleware(
-            $request->request->all(),
-            $this->courseImplementation,
-            $this->deserializer
-        );
-
-        $data['lessonView']->setUuid(Uuid::uuid4());
-
-        return $this->lessonImplementation->newLesson(
-            $data['course'],
-            $data['lessonView']
-        );
     }
     /**
      * @Security("has_role('ROLE_ALLOWED_MODIFY')")
@@ -120,6 +98,53 @@ class LessonController
             throw new NotFoundHttpException();
         }
 
-        return $this->lessonImplementation->editLesson($course, $lesson);
+        return $this->lessonImplementation->editLessonView($course, $lesson);
+    }
+    /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function newAction(Request $request): JsonResponse
+    {
+        $lessonMiddleware = new LessonMiddleware();
+        $data = $lessonMiddleware->createNewLessonMiddleware(
+            $request->request->all(),
+            $this->courseImplementation,
+            $this->deserializer
+        );
+
+        $data['lessonView']->setUuid(Uuid::uuid4());
+
+        return $this->lessonImplementation->newLesson(
+            $data['course'],
+            $data['lessonView']
+        );
+    }
+    /**
+     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateAction(Request $request): JsonResponse
+    {
+        $lessonMiddleware = new LessonMiddleware();
+
+        try {
+            $data = $lessonMiddleware->createExistingLessonMiddleware(
+                $request->request->all(),
+                $this->lessonImplementation,
+                $this->deserializer
+            );
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException();
+        }
+
+        return $this->lessonImplementation->updateLesson(
+            $data['lessonView'],
+            $data['lesson']
+        );
     }
 }

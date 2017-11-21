@@ -7,7 +7,8 @@ export class LessonRepository {
 
         this.routes = {
             admin_api_lesson_new: '/app_dev.php/admin/api/v1/lesson/new',
-            public_api_get_lesson_by_id: '/app_dev.php/api/v1/lesson/{id}'
+            admin_api_lesson_update: '/app_dev.php/admin/api/v1/lesson/update',
+            public_api_get_lesson_by_id: '/app_dev.php/api/v1/lesson/{id}',
         }
     }
 
@@ -42,20 +43,31 @@ export class LessonRepository {
         }).done(success).fail(failure);
     }
 
+    updateLesson(data, success, failure) {
+        $.ajax({
+            url: this.routes.admin_api_lesson_update,
+            method: 'PUT',
+            data: JSON.stringify(data),
+            contentType: 'application/json'
+        }).done(success).fail(failure);
+    }
+
     getLessonById(success, failure) {
         const lessonId = this.urlMetadata.lessonId;
 
-        this.userRepository.getLoggedInUser($.proxy(function(data) {
-            $.ajax({
-                url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
-                method: 'GET',
-                contentType: 'application/json',
-                headers: {
-                    'X-LANGLAND-PUBLIC-API': data.username
-                }
-            }).done(success).fail(failure);
-        }, this), function(xhr) {
-            throw new Error('Invalid request');
-        });
+        if (lessonId !== null) {
+            this.userRepository.getLoggedInUser($.proxy(function(data) {
+                $.ajax({
+                    url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
+                    method: 'GET',
+                    contentType: 'application/json',
+                    headers: {
+                        'X-LANGLAND-PUBLIC-API': data.username
+                    }
+                }).done(success).fail(failure);
+            }, this), function(xhr) {
+                throw new Error('Invalid request');
+            });
+        }
     }
 }

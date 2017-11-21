@@ -22449,6 +22449,8 @@ var Lesson = exports.Lesson = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Lesson.__proto__ || Object.getPrototypeOf(Lesson)).call(this, props));
 
+        _this.formType = _this._getPageType();
+
         _this.lessonRepository = new _lessonRepository.LessonRepository();
 
         _this.setName = _this.setName.bind(_this);
@@ -22456,6 +22458,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
         _this.collectLessonTexts = _this.collectLessonTexts.bind(_this);
         _this.submit = _this.submit.bind(_this);
 
+        console.log(_this._getPageType());
         _this.state = {};
 
         _this.state.model = {
@@ -22470,15 +22473,34 @@ var Lesson = exports.Lesson = function (_React$Component) {
             errors: [],
             success: false
         };
+
+        _this.lessonId = null;
+        _this.lessonUuid = null;
         return _this;
     }
 
     _createClass(Lesson, [{
+        key: '_getPageType',
+        value: function _getPageType() {
+            var regex = /(create|edit)/;
+            var match = regex.exec(location.pathname);
+            var type = match[1];
+
+            if (type === 'create' || type === 'edit') {
+                return type;
+            }
+
+            throw new Error('Lesson form type could not be determined. Expected \'create\' or \'edit\', got \'' + type + '\'');
+        }
+    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             this.lessonRepository.getLessonById($.proxy(function (data) {
                 this.setState(function (prevState) {
                     data = JSON.parse(data);
+                    this.lessonId = data.id;
+                    this.lessonUuid = data.lesson.uuid;
+
                     prevState.model.name = data.lesson.name;
                     prevState.model.tips = data.lesson.tips;
                     prevState.model.lessonTexts = data.lesson.lessonTexts;
@@ -22524,7 +22546,38 @@ var Lesson = exports.Lesson = function (_React$Component) {
                 return;
             }
 
-            this.lessonRepository.newLesson(this.state.model, $.proxy(function () {
+            var model = this._createModel();
+
+            if (model.hasOwnProperty('id')) {
+                this._update(model);
+            } else if (model.hasOwnProperty('id')) {
+                this._create(model);
+            }
+        }
+    }, {
+        key: '_update',
+        value: function _update(model) {
+            this.lessonRepository.updateLesson(model, $.proxy(function () {
+                this.setState(function (prevState) {
+                    prevState.form = {
+                        internalError: false,
+                        isValid: false,
+                        errors: [],
+                        success: true
+                    };
+                });
+            }, this), $.proxy(function (xhr) {
+                if (xhr.status === 500) {
+                    this.setState(function (prevState) {
+                        prevState.form.internalError = true;
+                    });
+                }
+            }, this));
+        }
+    }, {
+        key: '_create',
+        value: function _create() {
+            this.lessonRepository.newLesson(model, $.proxy(function () {
                 this.setState(function (prevState) {
                     prevState.form = {
                         internalError: false,
@@ -22564,6 +22617,25 @@ var Lesson = exports.Lesson = function (_React$Component) {
             return errors;
         }
     }, {
+        key: '_createModel',
+        value: function _createModel() {
+            var model = {
+                name: this.state.model.name,
+                tips: this.state.model.tips,
+                lessonTexts: this.state.model.lessonTexts
+            };
+
+            if (this.lessonId !== null) {
+                model.id = this.lessonId;
+            }
+
+            if (this.lessonUuid !== null) {
+                model.lessonUuid = this.lessonUuid;
+            }
+
+            return model;
+        }
+    }, {
         key: 'render',
         value: function render() {
             var name = this.state.model.name;
@@ -22572,6 +22644,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
             var internalError = this.state.form.internalError;
             var errors = this.state.form.errors;
             var success = this.state.form.success;
+            var buttonText = this.formType === 'Create' ? 'Create lesson' : 'Edit lesson';
 
             return _react2.default.createElement(
                 'div',
@@ -22599,7 +22672,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
                 _react2.default.createElement(_fields.SubmitButton, {
                     wrapperClass: "col-xs-12 no-padding margin-top-30",
                     buttonClass: "btn btn-success move-right",
-                    buttonText: "Create lesson",
+                    buttonText: buttonText,
                     dataCollector: this.submit
                 })
             );
@@ -22931,6 +23004,7 @@ class LessonRepository {
 
         this.routes = {
             admin_api_lesson_new: '/app_dev.php/admin/api/v1/lesson/new',
+            admin_api_lesson_update: '/app_dev.php/admin/api/v1/lesson/update',
             public_api_get_lesson_by_id: '/app_dev.php/api/v1/lesson/{id}'
         };
     }
@@ -22966,21 +23040,32 @@ class LessonRepository {
         }).done(success).fail(failure);
     }
 
+    updateLesson(data, success, failure) {
+        $.ajax({
+            url: this.routes.admin_api_lesson_update,
+            method: 'PUT',
+            data: JSON.stringify(data),
+            contentType: 'application/json'
+        }).done(success).fail(failure);
+    }
+
     getLessonById(success, failure) {
         const lessonId = this.urlMetadata.lessonId;
 
-        this.userRepository.getLoggedInUser($.proxy(function (data) {
-            $.ajax({
-                url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
-                method: 'GET',
-                contentType: 'application/json',
-                headers: {
-                    'X-LANGLAND-PUBLIC-API': data.username
-                }
-            }).done(success).fail(failure);
-        }, this), function (xhr) {
-            throw new Error('Invalid request');
-        });
+        if (lessonId !== null) {
+            this.userRepository.getLoggedInUser($.proxy(function (data) {
+                $.ajax({
+                    url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
+                    method: 'GET',
+                    contentType: 'application/json',
+                    headers: {
+                        'X-LANGLAND-PUBLIC-API': data.username
+                    }
+                }).done(success).fail(failure);
+            }, this), function (xhr) {
+                throw new Error('Invalid request');
+            });
+        }
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["LessonRepository"] = LessonRepository;

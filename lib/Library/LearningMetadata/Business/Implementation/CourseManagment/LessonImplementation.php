@@ -9,6 +9,7 @@ use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
+use Library\LearningMetadata\Repository\Implementation\CourseRepository;
 use Psr\Log\LoggerInterface;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +28,10 @@ class LessonImplementation
      * @var LessonRepository $lessonRepository
      */
     private $lessonRepository;
+    /**
+     * @var CourseRepository $courseRepository
+     */
+    private $courseRepository;
     /**
      * @var FormBuilderInterface $formBuilder
      */
@@ -54,6 +59,7 @@ class LessonImplementation
     /**
      * CategoryImplementation constructor.
      * @param LessonRepository $lessonRepository
+     * @param CourseRepository $courseRepository
      * @param FormBuilderInterface $formBuilder
      * @param TemplateWrapper $templateWrapper
      * @param Router $router
@@ -63,6 +69,7 @@ class LessonImplementation
      */
     public function __construct(
         LessonRepository $lessonRepository,
+        CourseRepository $courseRepository,
         FormBuilderInterface $formBuilder,
         TemplateWrapper $templateWrapper,
         Router $router,
@@ -79,6 +86,7 @@ class LessonImplementation
         $this->session = $session;
         $this->deserializer = $deserializer;
         $this->logger = $logger;
+        $this->courseRepository = $courseRepository;
     }
     /**
      * @param int $id
@@ -86,7 +94,13 @@ class LessonImplementation
      */
     public function find(int $id)
     {
-        return $this->lessonRepository->find($id);
+        $lesson = $this->lessonRepository->find($id);
+
+        if (!$lesson instanceof Lesson) {
+            throw new \RuntimeException(sprintf('Lesson with id %d not found', $id));
+        }
+
+        return $lesson;
     }
     /**
      * @param int $id
@@ -94,11 +108,8 @@ class LessonImplementation
      */
     public function tryFind(int $id): ?Lesson
     {
+        /** @var Lesson $lesson */
         $lesson = $this->lessonRepository->find($id);
-
-        if (!$lesson instanceof Lesson) {
-            throw new \RuntimeException(sprintf('Lesson with id %d not found', $id));
-        }
 
         return $lesson;
     }
@@ -145,7 +156,7 @@ class LessonImplementation
      * @param Lesson $lesson
      * @return Response
      */
-    public function editLesson(Course $course, Lesson $lesson): Response
+    public function editLessonView(Course $course, Lesson $lesson): Response
     {
         $template = '::Admin/Template/Panel/CourseManager/_action.html.twig';
         $data = [
@@ -165,14 +176,30 @@ class LessonImplementation
     public function newLesson(Course $course, LessonView $lessonView)
     {
         $lesson = new Lesson(
+            $lessonView->getName(),
             $lessonView->getUuid(),
             0,
             $lessonView->toArray(),
             $course
         );
 
-        $this->lessonRepository->persistAndFlush($lesson);
+        $course->addLesson($lesson);
+
+        $this->courseRepository->persistAndFlush($course);
 
         return new JsonResponse(null, 201);
+    }
+    /**
+     * @param LessonView $lessonView
+     * @param Lesson $lesson
+     * @return JsonResponse
+     */
+    public function updateLesson(LessonView $lessonView, Lesson $lesson)
+    {
+        $lesson->setJsonLesson($lessonView->toArray());
+
+        $this->lessonRepository->persistAndFlush($lesson);
+
+        return new JsonResponse(null, 205);
     }
 }

@@ -9,7 +9,7 @@ use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRep
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
-class LessonDataProvider
+class LessonDataProvider implements DefaultDataProviderInterface
 {
     /**
      * @var LessonRepository $lessonRepository
@@ -36,15 +36,19 @@ class LessonDataProvider
      * @param Course $course
      * @return Lesson
      */
-    public function createDefault(Generator $faker, Course $course): Lesson
+    public function createDefault(Generator $faker, Course $course = null): Lesson
     {
+        if (!$course instanceof Course) {
+            throw new \RuntimeException(sprintf('LessonDataProvider::createDefault() has to receive an %s object', Course::class));
+        }
+
         $course = $this->courseDataProvider->createDefault($faker);
 
         return $this->createLesson(
             $course,
             Uuid::uuid4(),
             0,
-            []
+            ['name' => $faker->name]
         );
     }
     /**
@@ -55,9 +59,15 @@ class LessonDataProvider
     {
         $course = $this->courseDataProvider->createDefaultDb($faker);
 
-        return $this->lessonRepository->persistAndFlush(
+        $lesson = $this->lessonRepository->persistAndFlush(
             $this->createDefault($faker, $course)
         );
+
+        $course->addLesson($lesson);
+
+        $this->courseDataProvider->getRepository()->persistAndFlush($course);
+
+        return $lesson;
     }
     /**
      * @param Course $course
@@ -74,6 +84,7 @@ class LessonDataProvider
         array $arrayLesson
     ) {
         return new Lesson(
+            $arrayLesson['name'],
             $lessonUuid,
             $order,
             $arrayLesson,

@@ -9,6 +9,8 @@ export class Lesson extends React.Component {
     constructor(props) {
         super(props);
 
+        this.formType = this._getPageType();
+
         this.lessonRepository = new LessonRepository();
 
         this.setName = this.setName.bind(this);
@@ -16,6 +18,7 @@ export class Lesson extends React.Component {
         this.collectLessonTexts = this.collectLessonTexts.bind(this);
         this.submit = this.submit.bind(this);
 
+        console.log(this._getPageType());
         this.state = {};
 
         this.state.model = {
@@ -29,13 +32,31 @@ export class Lesson extends React.Component {
             isValid: false,
             errors: [],
             success: false
+        };
+
+        this.lessonId = null;
+        this.lessonUuid = null;
+    }
+
+    _getPageType() {
+        const regex = /(create|edit)/;
+        const match = regex.exec(location.pathname);
+        const type = match[1];
+
+        if (type === 'create' || type === 'edit') {
+            return type;
         }
+
+        throw new Error(`Lesson form type could not be determined. Expected \'create\' or \'edit\', got \'${type}\'`)
     }
 
     componentDidMount() {
         this.lessonRepository.getLessonById($.proxy(function(data) {
             this.setState(function(prevState) {
                 data = JSON.parse(data);
+                this.lessonId = data.id;
+                this.lessonUuid = data.lesson.uuid;
+
                 prevState.model.name = data.lesson.name;
                 prevState.model.tips = data.lesson.tips;
                 prevState.model.lessonTexts = data.lesson.lessonTexts;
@@ -79,7 +100,38 @@ export class Lesson extends React.Component {
             return;
         }
 
-        this.lessonRepository.newLesson(this.state.model, $.proxy(function() {
+        const model = this._createModel();
+
+        if (model.hasOwnProperty('id')) {
+            this._update(model);
+        } else if (model.hasOwnProperty('id')) {
+            this._create(model);
+        }
+    }
+
+    _update(model)
+    {
+        this.lessonRepository.updateLesson(model, $.proxy(function() {
+            this.setState(function(prevState) {
+                prevState.form = {
+                    internalError: false,
+                    isValid: false,
+                    errors: [],
+                    success: true
+                };
+            });
+        }, this), $.proxy(function(xhr) {
+            if (xhr.status === 500) {
+                this.setState(function(prevState) {
+                    prevState.form.internalError = true;
+                });
+            }
+        }, this));
+    }
+
+    _create()
+    {
+        this.lessonRepository.newLesson(model, $.proxy(function() {
             this.setState(function(prevState) {
                 prevState.form = {
                     internalError: false,
@@ -118,6 +170,25 @@ export class Lesson extends React.Component {
         return errors;
     }
 
+    _createModel()
+    {
+        const model = {
+            name: this.state.model.name,
+            tips: this.state.model.tips,
+            lessonTexts: this.state.model.lessonTexts
+        };
+
+        if (this.lessonId !== null) {
+            model.id = this.lessonId;
+        }
+
+        if (this.lessonUuid !== null) {
+            model.lessonUuid = this.lessonUuid;
+        }
+
+        return model;
+    }
+
     render() {
         const name = this.state.model.name;
         const tips = this.state.model.tips;
@@ -125,6 +196,7 @@ export class Lesson extends React.Component {
         const internalError = this.state.form.internalError;
         const errors = this.state.form.errors;
         const success = this.state.form.success;
+        const buttonText = (this.formType === 'Create') ? 'Create lesson': 'Edit lesson';
 
         return <div>
                     {internalError === true &&
@@ -157,7 +229,7 @@ export class Lesson extends React.Component {
                     <SubmitButton
                         wrapperClass={"col-xs-12 no-padding margin-top-30"}
                         buttonClass={"btn btn-success move-right"}
-                        buttonText={"Create lesson"}
+                        buttonText={buttonText}
                         dataCollector={this.submit}
                     />
                </div>

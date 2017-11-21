@@ -12,6 +12,10 @@ class Lesson
      */
     private $id;
     /**
+     * @var string $name
+     */
+    private $name;
+    /**
      * @var UuidInterface $uuid
      */
     private $uuid;
@@ -37,12 +41,14 @@ class Lesson
     private $updatedAt;
     /**
      * Lesson constructor.
+     * @param string $name
      * @param UuidInterface $uuid
      * @param int $order
      * @param array $jsonLesson
      * @param Course $course
      */
     public function __construct(
+        string $name,
         UuidInterface $uuid,
         int $order,
         array $jsonLesson,
@@ -52,6 +58,7 @@ class Lesson
         $this->lessonOrder = $order;
         $this->jsonLesson = $jsonLesson;
         $this->course = $course;
+        $this->name = $name;
     }
     /**
      * Get id
@@ -61,6 +68,23 @@ class Lesson
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    /**
+     * @param string $name
+     * @return Lesson
+     */
+    public function setName($name): Lesson
+    {
+        $this->name = $name;
+
+        return $this;
     }
     /**
      * @return UuidInterface

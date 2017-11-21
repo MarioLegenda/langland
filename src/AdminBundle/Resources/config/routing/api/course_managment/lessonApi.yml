@@ -7,7 +7,7 @@ admin_api_lesson_new:
 
 admin_api_lesson_update:
     path: /lesson/update
-    methods: [POST]
-    defaults: { _controller: langland.learning_metadata.controller.lesson:editAction }
+    methods: [PUT]
+    defaults: { _controller: langland.learning_metadata.controller.lesson:updateAction }
     requirements:
         _format: json

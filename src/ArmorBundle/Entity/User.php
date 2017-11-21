@@ -2,7 +2,6 @@
 
 namespace ArmorBundle\Entity;
 
-use AppBundle\Entity\LearningUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 

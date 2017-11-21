@@ -9,8 +9,6 @@ use ArmorBundle\Event\AccountConfirmedEvent;
 use ArmorBundle\Exception\AccountNotEnabledException;
 use ArmorBundle\Form\Type\RegistrationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;

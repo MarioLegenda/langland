@@ -2,10 +2,7 @@
 
 namespace ArmorBundle\Provider;
 
-use ArmorBundle\Repository\UserRepository;
-use BlueDot\BlueDotInterface;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;

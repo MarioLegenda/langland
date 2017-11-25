@@ -10,7 +10,6 @@ use Library\Infrastructure\Helper\Deserializer;
 use Library\LearningMetadata\Business\Implementation\CourseImplementation;
 use Library\LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
 use Library\LearningMetadata\Business\Middleware\LessonMiddleware;
-use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

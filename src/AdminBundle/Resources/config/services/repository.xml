@@ -86,5 +86,14 @@
             <argument>AdminBundle\Entity\Lesson</argument>
         </service>
 
+        <service
+                id="langland.learning_metadata.repository.basic_word_game"
+                class="Library\LearningMetadata\Repository\Implementation\CourseManagment\Game\BasicWordGameRepository">
+
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+
+            <argument>AdminBundle\Entity\BasicWordGame</argument>
+        </service>
+
     </services>
 </container>

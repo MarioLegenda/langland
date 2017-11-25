@@ -2,10 +2,7 @@
 
 namespace AdminBundle\Entity;
 
-/**
- * Game
- */
-class Game
+class BasicWordGame
 {
     /**
      * @var int $id
@@ -15,10 +12,6 @@ class Game
      * @var string $name
      */
     private $name;
-    /**
-     * @var string $description
-     */
-    private $description;
     /**
      * @var Lesson $lesson
      */
@@ -32,8 +25,6 @@ class Game
      */
     private $updatedAt;
     /**
-     * Get id
-     *
      * @return int
      */
     public function getId()
@@ -41,48 +32,22 @@ class Game
         return $this->id;
     }
     /**
-     * Set name
-     *
      * @param string $name
      *
-     * @return Game
+     * @return BasicWordGame
      */
-    public function setName($name) : Game
+    public function setName($name): BasicWordGame
     {
         $this->name = $name;
 
         return $this;
     }
     /**
-     * Get name
-     *
      * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return Game
-     */
-    public function setDescription($description) : Game
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
     /**
      * @return Lesson
@@ -93,30 +58,26 @@ class Game
     }
     /**
      * @param Lesson $lesson
-     * @return Game
+     * @return BasicWordGame
      */
-    public function setLesson(Lesson $lesson) : Game
+    public function setLesson(Lesson $lesson) : BasicWordGame
     {
         $this->lesson = $lesson;
 
         return $this;
     }
     /**
-     * Set createdAt
-     *
      * @param \DateTime $createdAt
      *
-     * @return Game
+     * @return BasicWordGame
      */
-    public function setCreatedAt($createdAt) : Game
+    public function setCreatedAt($createdAt) : BasicWordGame
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
     /**
-     * Get createdAt
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -125,28 +86,26 @@ class Game
     }
 
     /**
-     * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      *
-     * @return Game
+     * @return BasicWordGame
      */
-    public function setUpdatedAt($updatedAt) : Game
+    public function setUpdatedAt($updatedAt) : BasicWordGame
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
     /**
-     * Get updatedAt
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
     {
         return $this->updatedAt;
     }
-
+    /**
+     * @void
+     */
     public function updateTimestamps()
     {
         $this->setUpdatedAt(new \DateTime());

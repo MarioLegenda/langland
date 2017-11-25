@@ -95,5 +95,15 @@
             <argument type="service" id="library.deserializer" />
             <argument type="service" id="logger" />
         </service>
+
+        <service
+                id="langland.learning_metadata.business.implementation.basic_word_game"
+                class="Library\LearningMetadata\Business\Implementation\CourseManagment\Game\BasicWordGameImplementation">
+
+            <argument type="service" id="langland.learning_metadata.repository.basic_word_game" />
+            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="library.deserializer" />
+            <argument type="service" id="logger" />
+        </service>
     </services>
 </container>

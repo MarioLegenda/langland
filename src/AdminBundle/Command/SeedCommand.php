@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Command;
 
+use AdminBundle\Command\Helper\BasicWordGameFactory;
 use AdminBundle\Command\Helper\CategoryFactory;
 use AdminBundle\Command\Helper\CourseFactory;
 use AdminBundle\Command\Helper\LanguageFactory;
@@ -44,6 +45,7 @@ class SeedCommand extends ContainerAwareCommand
         $languageInfoFactory = new LanguageInfoFactory($em);
         $courseFactory = new CourseFactory($em);
         $lessonFactory = new LessonFactory($em);
+        $basicWordGameFactory = new BasicWordGameFactory($em);
 
         $categoryFactory->create($categories, true);
         $languageObjects = $languageFactory->create($languages, true);
@@ -65,8 +67,17 @@ class SeedCommand extends ContainerAwareCommand
 
         $courses = $this->getContainer()->get('langland.learning_metadata.repository.course')->findAll();
 
+        $lessons = [];
         foreach ($courses as $course) {
-            $lessonFactory->create($course, 10);
+            $lessons = $lessonFactory->create($course, 10);
+        }
+
+        if (empty($lessons)) {
+            throw new \RuntimeException('Seeding went wrong. There are no created lessons');
+        }
+
+        foreach ($lessons as $lesson) {
+            $basicWordGameFactory->create($lesson);
         }
     }
 }

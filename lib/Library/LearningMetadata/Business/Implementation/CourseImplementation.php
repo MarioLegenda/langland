@@ -75,6 +75,32 @@ class CourseImplementation
         return $this->courseRepository->findAll();
     }
     /**
+     * @param int $id
+     * @return Course
+     */
+    public function find(int $id): Course
+    {
+        $course = $this->courseRepository->find($id);
+
+        if (!$course instanceof Course) {
+            $message = sprintf('Course with id %d not found', $id);
+            throw new \RuntimeException($message);
+        }
+
+        return $course;
+    }
+    /**
+     * @param int $id
+     * @return Course|null
+     */
+    public function tryFind(int $id): ?Course
+    {
+        /** @var Course $course */
+        $course = $this->courseRepository->find($id);
+
+        return $course;
+    }
+    /**
      * @param array|Language|null $data
      * @param array $options
      * @return FormInterface

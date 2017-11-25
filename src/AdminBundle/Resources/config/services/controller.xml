@@ -62,5 +62,13 @@
             <argument type="service" id="langland.learning_metadata.business.implementation.course" />
             <argument type="service" id="library.deserializer" />
         </service>
+
+        <service
+                id="langland.learning_metadata.controller.basic_word_game"
+                class="Library\LearningMetadata\Business\Controller\CourseManagment\Game\BasicWordGameController">
+
+            <argument type="service" id="langland.learning_metadata.business.implementation.course" />
+            <argument type="service" id="langland.learning_metadata.business.implementation.basic_word_game" />
+        </service>
     </services>
 </container>

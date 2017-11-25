@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -32,6 +33,10 @@ class Lesson
      */
     private $course;
     /**
+     * @var ArrayCollection $basicWordGames
+     */
+    private $basicWordGames;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -59,6 +64,8 @@ class Lesson
         $this->jsonLesson = $jsonLesson;
         $this->course = $course;
         $this->name = $name;
+
+        $this->basicWordGames = new ArrayCollection();
     }
     /**
      * Get id
@@ -153,6 +160,31 @@ class Lesson
     public function getCourse()
     {
         return $this->course;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getBasicWordGames()
+    {
+        return $this->basicWordGames;
+    }
+    /**
+     * @param array $basicWordGames
+     * @return Lesson
+     */
+    public function setBasicWordGames(array $basicWordGames): Lesson
+    {
+        $this->basicWordGames = $basicWordGames;
+    }
+    /**
+     * @param BasicWordGame $basicWordGame
+     * @return Lesson
+     */
+    public function addBasicWordGame(BasicWordGame $basicWordGame): Lesson
+    {
+        $this->basicWordGames->add($basicWordGame);
+
+        return $this;
     }
     /**
      * Set createdAt

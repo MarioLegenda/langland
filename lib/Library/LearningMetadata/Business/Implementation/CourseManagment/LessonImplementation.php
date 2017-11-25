@@ -114,6 +114,19 @@ class LessonImplementation
         return $lesson;
     }
     /**
+     * @param string $name
+     * @return Lesson|null
+     */
+    public function tryFindByName(string $name): ?Lesson
+    {
+        /** @var Lesson $lesson */
+        $lesson = $this->lessonRepository->findOneBy([
+            'name' => $name,
+        ]);
+
+        return $lesson;
+    }
+    /**
      * @return Lesson[]
      */
     public function getLessons() : array
@@ -185,6 +198,8 @@ class LessonImplementation
 
         $course->addLesson($lesson);
 
+        $lesson->setName($lessonView->getName());
+
         $this->courseRepository->persistAndFlush($course);
 
         return new JsonResponse(null, 201);
@@ -200,6 +215,15 @@ class LessonImplementation
 
         $this->lessonRepository->persistAndFlush($lesson);
 
-        return new JsonResponse(null, 205);
+        return new JsonResponse(null, 201);
+    }
+    /**
+     * @param int $statusCode
+     * @param array $errors
+     * @return JsonResponse
+     */
+    public function createErrorResponse(int $statusCode, array $errors): JsonResponse
+    {
+        return new JsonResponse($errors, $statusCode);
     }
 }

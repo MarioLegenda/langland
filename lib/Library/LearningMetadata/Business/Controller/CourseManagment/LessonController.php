@@ -4,6 +4,8 @@ namespace Library\LearningMetadata\Business\Controller\CourseManagment;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
+use Library\Exception\RequestStatusException;
+use Library\Exception\StatusInterface;
 use Library\Infrastructure\Helper\Deserializer;
 use Library\LearningMetadata\Business\Implementation\CourseImplementation;
 use Library\LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
@@ -108,12 +110,23 @@ class LessonController
      */
     public function newAction(Request $request): JsonResponse
     {
-        $lessonMiddleware = new LessonMiddleware();
-        $data = $lessonMiddleware->createNewLessonMiddleware(
-            $request->request->all(),
-            $this->courseImplementation,
-            $this->deserializer
-        );
+        try {
+            $lessonMiddleware = new LessonMiddleware();
+            $data = $lessonMiddleware->createNewLessonMiddleware(
+                $request->request->all(),
+                $this->courseImplementation,
+                $this->lessonImplementation,
+                $this->deserializer
+            );
+        } catch (RequestStatusException $e) {
+            /** @var StatusInterface $status */
+            $status = $e->getStatus();
+
+            return $this->lessonImplementation->createErrorResponse(
+                $status->getStatusCode(),
+                $status->getData()
+            );
+        }
 
         $data['lessonView']->setUuid(Uuid::uuid4());
 
@@ -137,6 +150,14 @@ class LessonController
                 $request->request->all(),
                 $this->lessonImplementation,
                 $this->deserializer
+            );
+        } catch (RequestStatusException $e) {
+            /** @var StatusInterface $status */
+            $status = $e->getStatus();
+
+            return $this->lessonImplementation->createErrorResponse(
+                $status->getStatusCode(),
+                $status->getData()
             );
         } catch (\Exception $e) {
             throw new NotFoundHttpException();

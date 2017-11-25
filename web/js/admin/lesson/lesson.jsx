@@ -104,7 +104,7 @@ export class Lesson extends React.Component {
 
         if (model.hasOwnProperty('id')) {
             this._update(model);
-        } else if (model.hasOwnProperty('id')) {
+        } else if (!model.hasOwnProperty('id')) {
             this._create(model);
         }
     }
@@ -126,10 +126,27 @@ export class Lesson extends React.Component {
                     prevState.form.internalError = true;
                 });
             }
+
+            if (xhr.status === 400) {
+                this.setState(function(prevState) {
+                    prevState.form = {
+                        internalError: false,
+                        isValid: false,
+                        errors: [],
+                        success: false
+                    };
+                });
+
+                this.setState(function(prevState) {
+                    for (let i = 0; i < xhr.responseJSON.length; i++) {
+                        prevState.form.errors.push(<Notification key={i} className={'alert alert-danger'} message={xhr.responseJSON[i]} />)
+                    }
+                });
+            }
         }, this));
     }
 
-    _create()
+    _create(model)
     {
         this.lessonRepository.newLesson(model, $.proxy(function() {
             this.setState(function(prevState) {
@@ -150,6 +167,23 @@ export class Lesson extends React.Component {
             if (xhr.status === 500) {
                 this.setState(function(prevState) {
                     prevState.form.internalError = true;
+                });
+            }
+
+            if (xhr.status === 400) {
+                this.setState(function(prevState) {
+                    prevState.form = {
+                        internalError: false,
+                        isValid: false,
+                        errors: [],
+                        success: false
+                    };
+                });
+
+                this.setState(function(prevState) {
+                    for (let i = 0; i < xhr.responseJSON.length; i++) {
+                        prevState.form.errors.push(<Notification key={i} className={'alert alert-danger'} message={xhr.responseJSON[i]} />)
+                    }
                 });
             }
         }, this));
@@ -196,7 +230,8 @@ export class Lesson extends React.Component {
         const internalError = this.state.form.internalError;
         const errors = this.state.form.errors;
         const success = this.state.form.success;
-        const buttonText = (this.formType === 'Create') ? 'Create lesson': 'Edit lesson';
+        const buttonText = (this.formType === 'create') ? 'Create lesson': 'Edit lesson';
+        const actionText = (this.formType === 'create') ? 'Lesson created successfully': 'Lesson updated successfully';
 
         return <div>
                     {internalError === true &&
@@ -204,7 +239,7 @@ export class Lesson extends React.Component {
                     }
 
                     {success === true &&
-                        <Notification className={'alert alert-success'} message={"Lesson created successfully"} />
+                        <Notification className={'alert alert-success'} message={actionText} />
 
                     }
 

@@ -3,11 +3,11 @@
 namespace Tests\LearningMetadata\Controller\Unit;
 
 use AdminBundle\Entity\Course;
+use Library\Exception\RequestStatusException;
 use Library\Infrastructure\Helper\Deserializer;
 use Library\LearningMetadata\Business\Implementation\CourseImplementation;
 use Library\LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
 use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
-use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\ContainerAwareTest;
@@ -78,7 +78,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 2',
                 'Lesson text 3',
             ],
-            'name' => $this->faker->word,
+            'name' => 'name-'.Uuid::uuid4()->toString(),
         ];
 
         /** @var LessonView $lessonView */
@@ -123,13 +123,14 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 2',
                 'Lesson text 3',
             ],
-            'name' => $this->faker->word,
+            'name' => 'name-'.Uuid::uuid4()->toString(),
         ];
 
         $lessonMiddleware = new LessonMiddleware();
         $data = $lessonMiddleware->createNewLessonMiddleware(
             $data,
             $this->courseImplementation,
+            $this->lessonImplementation,
             $this->deserializer
         );
 
@@ -152,13 +153,17 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
 
         static::assertInstanceOf(Lesson::class, $lesson);
     }
-
-    public function test_lesson_update()
+    /**
+     * @expectedException Library\Exception\RequestStatusException
+     */
+    public function test_new_lesson_fail()
     {
         /** @var Course $course */
         $course = $this->courseDataProvider->createDefault($this->faker);
 
         $this->courseDataProvider->getRepository()->persistAndFlush($course);
+
+        $name = 'name-'.Uuid::uuid4()->toString();
 
         $data = [
             'course' => $course->getId(),
@@ -172,21 +177,18 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 2',
                 'Lesson text 3',
             ],
-            'name' => $this->faker->word,
+            'name' => $name,
         ];
 
         $lessonMiddleware = new LessonMiddleware();
         $data = $lessonMiddleware->createNewLessonMiddleware(
             $data,
             $this->courseImplementation,
+            $this->lessonImplementation,
             $this->deserializer
         );
 
-        static::assertArrayHasKey('lessonView', $data);
-
-        /** @var LessonView $lessonView */
-        $lessonView = $data['lessonView'];
-        $lessonView->setUuid(Uuid::uuid4());
+        $data['lessonView']->setUuid(Uuid::uuid4());
 
         $response = $this->lessonImplementation->newLesson(
             $data['course'],
@@ -196,60 +198,98 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(201, $response->getStatusCode());
 
-        $course = $this->courseImplementation->findCourse($course->getId());
+        $data = [
+            'course' => $course->getId(),
+            'tips' => [
+                'Tip 1',
+                'Tip 2',
+                'Tip 3',
+            ],
+            'lessonTexts' => [
+                'Lesson text 1',
+                'Lesson text 2',
+                'Lesson text 3',
+            ],
+            'name' => $name,
+        ];
 
-        static::assertInstanceOf(Course::class, $course);
-        static::assertFalse($course->getLessons()->isEmpty());
-
-        $lesson = $course->getLessons()[0];
-
-        static::assertInstanceOf(Lesson::class, $lesson);
-
-        /** @var Lesson $existingLesson */
-        $existingLesson = $this->lessonImplementation->find($lesson->getId());
-
-        $data = $existingLesson->getJsonLesson();
-
-        $data['id'] = $lesson->getId();
-        $data['tips'] = [];
-        $data['tips'][] = 'Tip 1';
-
-        $lessonData = $lessonMiddleware->createExistingLessonMiddleware(
+        $lessonMiddleware = new LessonMiddleware();
+        $data = $lessonMiddleware->createNewLessonMiddleware(
             $data,
+            $this->courseImplementation,
             $this->lessonImplementation,
             $this->deserializer
         );
 
-        static::assertArrayHasKey('lesson', $lessonData);
-        static::assertArrayHasKey('lessonView', $lessonData);
+        $data['lessonView']->setUuid(Uuid::uuid4());
 
-        static::assertInstanceOf(LessonView::class, $lessonData['lessonView']);
-
-        /** @var LessonView $lessonView */
-        $updatedLessonView = $lessonData['lessonView'];
-
-        $response = $this->lessonImplementation->updateLesson($updatedLessonView, $existingLesson);
+        $response = $this->lessonImplementation->newLesson(
+            $data['course'],
+            $data['lessonView']
+        );
 
         static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertEquals(205, $response->getStatusCode());
+        static::assertEquals(400, $response->getStatusCode());
+    }
 
-        $existingLesson = $this->lessonImplementation->find($existingLesson->getId());
+    public function test_edit_lesson()
+    {
+        /** @var Course $course */
+        $course = $this->courseDataProvider->createDefault($this->faker);
 
-        $lessonData = $lessonMiddleware->createExistingLessonMiddleware(
-            $data,
+        $this->courseDataProvider->getRepository()->persistAndFlush($course);
+
+        $name = 'name-'.Uuid::uuid4()->toString();
+
+        $initialData = [
+            'course' => $course->getId(),
+            'tips' => [
+                'Tip 1',
+                'Tip 2',
+                'Tip 3',
+            ],
+            'lessonTexts' => [
+                'Lesson text 1',
+                'Lesson text 2',
+                'Lesson text 3',
+            ],
+            'name' => $name,
+        ];
+
+        $lessonMiddleware = new LessonMiddleware();
+        $data = $lessonMiddleware->createNewLessonMiddleware(
+            $initialData,
+            $this->courseImplementation,
             $this->lessonImplementation,
             $this->deserializer
         );
 
-        static::assertArrayHasKey('lesson', $lessonData);
-        static::assertArrayHasKey('lessonView', $lessonData);
+        $data['lessonView']->setUuid(Uuid::uuid4());
 
-        static::assertInstanceOf(LessonView::class, $lessonData['lessonView']);
+        $response = $this->lessonImplementation->newLesson(
+            $data['course'],
+            $data['lessonView']
+        );
 
-        /** @var LessonView $lessonView */
-        $updatedLessonView = $lessonData['lessonView'];
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertEquals(201, $response->getStatusCode());
 
-        static::assertEquals($lessonView->getName(), $updatedLessonView->getName());
-        static::assertEquals(1, count($updatedLessonView->getTips()));
+        $initialData['id'] = $course->getLessons()[0]->getId();
+        $initialData['name'] = 'name-'.Uuid::uuid4()->toString();
+
+        $lessonMiddleware = new LessonMiddleware();
+        $updatedData = $lessonMiddleware->createExistingLessonMiddleware(
+            $initialData,
+            $this->lessonImplementation,
+            $this->deserializer
+        );
+
+        $response = $this->lessonImplementation->updateLesson(
+            $updatedData['lessonView'],
+            $updatedData['lesson']
+        );
+
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertEquals(201, $response->getStatusCode());
     }
 }

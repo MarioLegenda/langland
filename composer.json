@@ -4,7 +4,9 @@
     "type": "project",
     "autoload": {
         "psr-0": {
+            "Tests": "tests/",
             "Library": "lib/",
+            "LearningSystem": "lib/",
             "API": "lib/",
             "BlueDot": "lib/bluedot/src",
             "TestLibrary": "tests/"
@@ -27,6 +29,7 @@
     },
     "require": {
         "php": ">=5.5.9",
+        "beberlei/assert": "^2.7",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/orm": "^2.5",
@@ -35,6 +38,7 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "jbroadway/urlify": "^1.1",
         "jms/serializer-bundle": "^1.4",
+        "phpunit/phpunit": "^6.4",
         "ramsey/uuid": "^3.7",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
@@ -47,7 +51,6 @@
     "require-dev": {
         "fabpot/goutte": "^3.2",
         "fzaninotto/faker": "^1.6",
-        "phpunit/phpunit": "^5.7",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
     },

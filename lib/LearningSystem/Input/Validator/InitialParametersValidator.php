@@ -3,9 +3,11 @@
 namespace LearningSystem\Input\Validator;
 
 use Assert\Assertion;
+use Assert\LazyAssertionException;
 use LearningSystem\Exception\ParameterException;
 use LearningSystem\Infrastructure\ParameterBagInterface;
 use LearningSystem\Infrastructure\Validator\ValidatorInterface;
+use PHPUnit\Framework\AssertionFailedError;
 
 class InitialParametersValidator implements ValidatorInterface
 {
@@ -64,7 +66,7 @@ class InitialParametersValidator implements ValidatorInterface
 
         $parameters = $bag->get('person_type')['parameter'];
 
-        Assertion::string($parameters['value']);
+        Assertion::integer($parameters['value']);
     }
     /**
      * @param ParameterBagInterface $bag
@@ -86,7 +88,7 @@ class InitialParametersValidator implements ValidatorInterface
 
         $parameters = $bag->get('free_time')['parameter'];
 
-        Assertion::string($parameters['value']);
+        Assertion::integer($parameters['value']);
     }
     /**
      * @param ParameterBagInterface $bag

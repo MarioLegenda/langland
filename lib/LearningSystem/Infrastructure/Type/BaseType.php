@@ -2,7 +2,7 @@
 
 namespace LearningSystem\Infrastructure\Type;
 
-class BaseType
+class BaseType implements TypeInterface
 {
     /**
      * @var array $type
@@ -18,9 +18,9 @@ class BaseType
     }
     /**
      * @param mixed $value
-     * @return BaseType
+     * @return TypeInterface
      */
-    public static function fromValue($value)
+    public static function fromValue($value): TypeInterface
     {
         foreach (static::$types as $key => $type) {
             if ($value === $type) {
@@ -34,7 +34,7 @@ class BaseType
      * @param $key
      * @return static
      */
-    public static function fromKey($key)
+    public static function fromKey($key): TypeInterface
     {
         foreach (static::$types as $k => $type) {
             if ($k === $key) {
@@ -77,10 +77,10 @@ class BaseType
         return array_values($this->type)[0];
     }
     /**
-     * @param BaseType $type
+     * @param TypeInterface $type
      * @return bool
      */
-    public function equals(BaseType $type)
+    public function equals(TypeInterface $type): bool
     {
         return $this->equalsKey($type->getKey()) && $this->equalsValue($type->getValue());
     }

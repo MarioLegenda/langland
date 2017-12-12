@@ -2,13 +2,14 @@
 
 namespace LearningSystem\Infrastructure\Type;
 
-class SwitchType extends BaseType
+class MemoryType extends BaseType
 {
     /**
      * @var array $types
      */
     protected static $types = [
-        0 => 0,
-        1 => 1,
+        0 => 'short_term',
+        1 => 'long_term',
+        2 => 'in_between',
     ];
 }

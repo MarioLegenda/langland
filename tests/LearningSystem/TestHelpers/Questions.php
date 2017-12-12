@@ -18,7 +18,7 @@ class Questions
             'person_type' => [
                 'question' => 'Are you a risk taker or a \'sure thing\' person?',
                 'name' => 'person_type',
-                'value' => 'risk_taker',
+                'value' => 0,
             ],
             'learning_time' => [
                 'question' => 'What is the best time of day for you to learn?',
@@ -28,7 +28,7 @@ class Questions
             'free_time' => [
                 'question' => 'How much free time do you have in a day?',
                 'name' => 'free_time',
-                'value' => '30 minutes',
+                'value' => 1,
             ],
             'memory' => [
                 'question' => 'Would you say that you have a better short term or long term memory? Or is it something in between?',
@@ -38,7 +38,7 @@ class Questions
             'challenges' => [
                 'question' => 'Do you embrace challenges?',
                 'name' => 'challenges',
-                'value' => 1
+                'value' => 1,
             ],
             'stressful_job' => [
                 'question' => 'Is your job stressful?',

@@ -3,10 +3,15 @@
 namespace Library\LearningMetadata\Business\Controller;
 
 use Library\LearningMetadata\Business\Implementation\CategoryImplementation;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
+/**
+ * Class CategoryController
+ * @package Library\LearningMetadata\Business\Controller
+ */
 class CategoryController
 {
     /**

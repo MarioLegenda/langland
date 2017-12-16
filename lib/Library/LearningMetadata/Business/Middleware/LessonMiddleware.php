@@ -10,6 +10,7 @@ use Library\LearningMetadata\Business\Implementation\CourseImplementation;
 use Library\LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
 use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use AdminBundle\Entity\Course;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LessonMiddleware
 {
@@ -46,10 +47,7 @@ class LessonMiddleware
         $lesson = $lessonImplementation->tryFindByName($lessonView->getName());
 
         if ($lesson instanceof Lesson) {
-            throw new RequestStatusException(new HttpResponseStatus(
-                400,
-                [sprintf('Lesson with name \'%s\' already exists', $lessonView->getName())]
-            ));
+            throw new BadRequestHttpException(sprintf('Lesson with name \'%s\' already exists', $lessonView->getName()));
         }
 
         return [
@@ -89,10 +87,7 @@ class LessonMiddleware
 
         if ($existing instanceof Lesson) {
             if ($lesson->getName() !== $existing->getName()) {
-                throw new RequestStatusException(new HttpResponseStatus(
-                    400,
-                    [sprintf('Lesson with name \'%s\' already exists', $lessonView->getName())]
-                ));
+                throw new BadRequestHttpException(sprintf('Lesson with name \'%s\' already exists', $lessonView->getName()));
             }
         }
 

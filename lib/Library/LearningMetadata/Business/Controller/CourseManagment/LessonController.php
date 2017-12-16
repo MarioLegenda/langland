@@ -109,23 +109,13 @@ class LessonController
      */
     public function newAction(Request $request): JsonResponse
     {
-        try {
-            $lessonMiddleware = new LessonMiddleware();
-            $data = $lessonMiddleware->createNewLessonMiddleware(
-                $request->request->all(),
-                $this->courseImplementation,
-                $this->lessonImplementation,
-                $this->deserializer
-            );
-        } catch (RequestStatusException $e) {
-            /** @var StatusInterface $status */
-            $status = $e->getStatus();
-
-            return $this->lessonImplementation->createErrorResponse(
-                $status->getStatusCode(),
-                $status->getData()
-            );
-        }
+        $lessonMiddleware = new LessonMiddleware();
+        $data = $lessonMiddleware->createNewLessonMiddleware(
+            $request->request->all(),
+            $this->courseImplementation,
+            $this->lessonImplementation,
+            $this->deserializer
+        );
 
         $data['lessonView']->setUuid(Uuid::uuid4());
 
@@ -144,23 +134,11 @@ class LessonController
     {
         $lessonMiddleware = new LessonMiddleware();
 
-        try {
-            $data = $lessonMiddleware->createExistingLessonMiddleware(
-                $request->request->all(),
-                $this->lessonImplementation,
-                $this->deserializer
-            );
-        } catch (RequestStatusException $e) {
-            /** @var StatusInterface $status */
-            $status = $e->getStatus();
-
-            return $this->lessonImplementation->createErrorResponse(
-                $status->getStatusCode(),
-                $status->getData()
-            );
-        } catch (\Exception $e) {
-            throw new NotFoundHttpException();
-        }
+        $data = $lessonMiddleware->createExistingLessonMiddleware(
+            $request->request->all(),
+            $this->lessonImplementation,
+            $this->deserializer
+        );
 
         return $this->lessonImplementation->updateLesson(
             $data['lessonView'],

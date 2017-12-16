@@ -61,7 +61,13 @@ doctrine:
         auto_mapping: true
 
 monolog:
+    channels:
+        - generic_exception
     handlers:
+        generic_exception:
+            type: stream
+            path: '%kernel.logs_dir%/exception.log'
+            level: alert
         main:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'

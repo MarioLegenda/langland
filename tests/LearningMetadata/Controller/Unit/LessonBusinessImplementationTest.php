@@ -16,6 +16,7 @@ use AdminBundle\Entity\Lesson;
 use Tests\TestLibrary\DataProvider\LessonDataProvider;
 use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LessonBusinessImplementationTest extends ContainerAwareTest
 {
@@ -154,7 +155,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
         static::assertInstanceOf(Lesson::class, $lesson);
     }
     /**
-     * @expectedException Library\Exception\RequestStatusException
+     * @expectedException Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      */
     public function test_new_lesson_fail()
     {

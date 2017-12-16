@@ -8,7 +8,7 @@
             "Library": "lib/",
             "LearningSystem": "lib/",
             "API": "lib/",
-            "BlueDot": "lib/bluedot/src",
+            "BlueDot": "submodules/blue-dot/src/",
             "TestLibrary": "tests/"
         },
         "psr-4": {

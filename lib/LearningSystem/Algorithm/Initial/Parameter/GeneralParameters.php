@@ -5,8 +5,8 @@ namespace LearningSystem\Algorithm\Initial\Parameter;
 use LearningSystem\Infrastructure\Observer\Observer;
 use LearningSystem\Infrastructure\ParameterBagInterface;
 use LearningSystem\Infrastructure\Observer\Subject;
-use LearningSystem\Infrastructure\Type\FreeTimeType;
-use LearningSystem\Infrastructure\Type\PersonType;
+use LearningSystem\Algorithm\Initial\Type\FreeTimeType;
+use LearningSystem\Algorithm\Initial\Type\PersonType;
 use LearningSystem\Infrastructure\Type\SwitchType;
 use LearningSystem\Infrastructure\Type\TypeInterface;
 

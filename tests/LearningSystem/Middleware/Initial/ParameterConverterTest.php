@@ -3,7 +3,7 @@
 namespace LearningSystem\Middleware;
 
 use LearningSystem\Algorithm\Initial\Parameter\AlgorithmParameters;
-use LearningSystem\Algorithm\Initial\Parameter\GameTypes;
+use LearningSystem\Algorithm\Initial\Parameter\GameTypesCollection;
 use LearningSystem\Algorithm\Initial\Parameter\GeneralParameters;
 use LearningSystem\Infrastructure\ParameterBagInterface;
 use LearningSystem\Input\InitialDataParameterBag;
@@ -51,8 +51,14 @@ class ParameterConverterTest extends ContainerAwareTest
 
         $parameterConverter = new ParameterConverter($bag);
 
+        $gameTypes = new GameTypesCollection(
+            'game_types',
+            $bag,
+            ['general_parameters']
+        );
+
         $parameterConverter
-            ->attach(new GameTypes('game_types', $bag, ['general_parameters']))
+            ->attach($gameTypes)
             ->attach(new GeneralParameters('general_parameters', $bag));
 
         $parameterConverter->notify();

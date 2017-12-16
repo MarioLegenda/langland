@@ -2,7 +2,7 @@
 
 namespace Tests\LearningSystem\Infrastructure;
 
-use LearningSystem\Infrastructure\Type\FreeTimeType;
+use LearningSystem\Algorithm\Initial\Type\FreeTimeType;
 use TestLibrary\ContainerAwareTest;
 
 class TypesTest extends ContainerAwareTest

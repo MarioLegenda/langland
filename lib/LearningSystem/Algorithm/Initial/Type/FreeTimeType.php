@@ -1,6 +1,8 @@
 <?php
 
-namespace LearningSystem\Infrastructure\Type;
+namespace LearningSystem\Algorithm\Initial\Type;
+
+use LearningSystem\Infrastructure\Type\BaseType;
 
 class FreeTimeType extends BaseType
 {

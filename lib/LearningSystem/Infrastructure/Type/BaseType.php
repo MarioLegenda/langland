@@ -28,7 +28,7 @@ class BaseType implements TypeInterface
             }
         }
 
-        throw new \RuntimeException(sprintf('%s could not be created from value', static::class));
+        throw new \RuntimeException(sprintf('%s could not be created from value %s', static::class, (string) $value));
     }
     /**
      * @param $key

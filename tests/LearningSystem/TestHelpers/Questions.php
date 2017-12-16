@@ -38,12 +38,12 @@ class Questions
             'challenges' => [
                 'question' => 'Do you embrace challenges?',
                 'name' => 'challenges',
-                'value' => 1,
+                'value' => 0,
             ],
             'stressful_job' => [
                 'question' => 'Is your job stressful?',
                 'name' => 'stressful_job',
-                'value' => 1,
+                'value' => 0,
             ],
         ];
     /**

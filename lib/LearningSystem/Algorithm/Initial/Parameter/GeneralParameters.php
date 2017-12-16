@@ -47,7 +47,7 @@ class GeneralParameters extends BaseAlgorithmParameter implements Observer
     {
         $wordNumber = 15;
 
-        $speakingLanguages = $this->bag->get('speaking_language')['parameter']['value'];
+        $speakingLanguages = $this->bag->get('speaking_languages')['parameter']['value'];
         $personType = PersonType::fromKey($this->bag->get('person_type')['parameter']['value']);
         $freeTime = FreeTimeType::fromKey($this->bag->get('free_time')['parameter']['value']);
         $challengeType = SwitchType::fromKey($this->bag->get('challenges')['parameter']['value']);
@@ -61,7 +61,7 @@ class GeneralParameters extends BaseAlgorithmParameter implements Observer
         $wordNumber = $this->calculateFreeTimeWordNumber($freeTime, $wordNumber);
         $wordNumber = $this->calculateChallengeTypeWordNumber($challengeType, $wordNumber);
 
-        if ($stressfulJob === 1) {
+        if ($stressfulJob->getValue() === 1) {
             if ($wordNumber >= 20) {
                 $wordNumber -= 5;
             }
@@ -93,6 +93,8 @@ class GeneralParameters extends BaseAlgorithmParameter implements Observer
                 return $wordNumber += 3;
             case 1:
                 return $wordNumber -= 2;
+            case 2:
+                return $wordNumber;
         }
 
         throw new \RuntimeException('Initial general parameters word number could not be constructed from person type');

@@ -8,10 +8,11 @@ use LearningSystem\Algorithm\Initial\Parameter\GameType\SentenceGameTypeParamete
 use LearningSystem\Infrastructure\Observer\Observer;
 use LearningSystem\Infrastructure\Observer\Subject;
 use LearningSystem\Infrastructure\ParameterBagInterface;
+use LearningSystem\Infrastructure\Sort\Contract\SortableObjectInterface;
 use LearningSystem\Infrastructure\Type\RepeatType;
 use LearningSystem\Infrastructure\Type\TimeTrialType;
 
-class GameTypesCollection extends BaseAlgorithmParameter implements Observer, ObserverDependencyInterface
+class GameTypesCollection extends BaseAlgorithmParameter implements Observer, ObserverDependencyInterface, SortableObjectInterface
 {
     /**
      * @var ParameterBagInterface $bag
@@ -76,7 +77,7 @@ class GameTypesCollection extends BaseAlgorithmParameter implements Observer, Ob
             'repeat' => [
                 RepeatType::fromValue('end_repeat_all'),
             ],
-            'order' => 1
+            'order' => 1,
         ]);
 
         $imageWordGameType2 = new ImageWordGameTypeParameter([
@@ -87,17 +88,25 @@ class GameTypesCollection extends BaseAlgorithmParameter implements Observer, Ob
                 RepeatType::fromValue('had_trouble_words_repeat'),
                 RepeatType::fromValue('had_trouble_words_repeat_end'),
             ],
-            'order' => 2
+            'order' => 2,
         ]);
 
         $types = [
-            $imageWordGameType1,
+            $imageWordGameType2,
             $sentenceType,
-            $imageWordGameType2
+            $imageWordGameType1,
         ];
 
         $this->addToMetadata($types);
     }
+    /**
+     * @return string
+     */
+    public function getMarker(): string
+    {
+        return 'order';
+    }
+
     /**
      * @param iterable $types
      */

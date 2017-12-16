@@ -144,7 +144,6 @@ class InitialParametersValidator implements ValidatorInterface
         $parameters = $value['parameter'];
 
         Assertion::keyExists($parameters, 'name');
-        Assertion::keyExists($parameters, 'question');
         Assertion::keyExists($parameters, 'value');
 
         Assertion::eq($key, $parameters['name']);

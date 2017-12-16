@@ -74,6 +74,15 @@ class Questions
      */
     public function toArray(): array
     {
-        return $this->questions;
+        $questions = [];
+
+        foreach ($this->questions as $name => $question) {
+            $questions[$name] = [
+                'name' => $question['name'],
+                'value' => $question['value'],
+            ];
+        }
+
+        return $questions;
     }
 }

@@ -12,22 +12,9 @@ use LearningSystem\Infrastructure\ParameterBagInterface;
 class ParameterConverter implements Subject, ObservableAccessInterface
 {
     /**
-     * @var ParameterBagInterface $bag
-     */
-    private $bag;
-    /**
      * @var array $observers
      */
     private $observers = [];
-    /**
-     * ParameterConverterSubject constructor.
-     * @param ParameterBagInterface $bag
-     */
-    public function __construct(
-        ParameterBagInterface $bag
-    ) {
-        $this->bag = $bag;
-    }
     /**
      * @inheritdoc
      */

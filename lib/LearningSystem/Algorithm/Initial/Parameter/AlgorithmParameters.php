@@ -5,6 +5,8 @@ namespace LearningSystem\Algorithm\Initial\Parameter;
 use LearningSystem\Algorithm\Initial\Parameter\Contract\AlgorithmParameterInterface;
 use LearningSystem\Infrastructure\BaseParameterBag;
 use LearningSystem\Infrastructure\Observer\ObservableAccessInterface;
+use LearningSystem\Infrastructure\Sort\Contract\SortableObjectInterface;
+use LearningSystem\Infrastructure\Sort\Sort;
 
 class AlgorithmParameters extends BaseParameterBag
 {
@@ -51,7 +53,13 @@ class AlgorithmParameters extends BaseParameterBag
             /** @var AlgorithmParameterInterface $observer */
             $observer = $subject->getObserver($mandatoryParameter);
 
-            $parameters[$observer->getName()] = $observer->getMetadata();
+            $metadata = $observer->getMetadata();
+
+            if ($observer instanceof SortableObjectInterface) {
+                $metadata = Sort::init()->sortParameterBag($observer->getMarker(), $metadata);
+            }
+
+            $parameters[$observer->getName()] = $metadata;
         }
 
         return $parameters;

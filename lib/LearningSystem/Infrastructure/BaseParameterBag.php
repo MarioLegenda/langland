@@ -5,7 +5,7 @@ namespace LearningSystem\Infrastructure;
 use LearningSystem\Exception\ParameterException;
 use LearningSystem\Infrastructure\Validator\ValidatorInterface;
 
-class BaseParameterBag implements ParameterBagInterface, \IteratorAggregate, \Countable
+class BaseParameterBag implements ParameterBagInterface, \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
      * @var array $parameters
@@ -114,5 +114,37 @@ class BaseParameterBag implements ParameterBagInterface, \IteratorAggregate, \Co
     public function toArray(): array
     {
         return $this->parameters;
+    }
+    /**
+     * @inheritdoc
+     */
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+    /**
+     * @inheritdoc
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * @inheritdoc
+     * @throws ParameterException
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->add($offset, $value);
+    }
+
+    /**
+     * @param mixed $offset
+     * @throws ParameterException
+     */
+    public function offsetUnset($offset)
+    {
+        throw new ParameterException('Cannot unset an entry in parameter bag');
     }
 }

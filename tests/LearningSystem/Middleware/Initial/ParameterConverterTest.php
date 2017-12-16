@@ -3,10 +3,14 @@
 namespace LearningSystem\Middleware;
 
 use LearningSystem\Algorithm\Initial\Parameter\AlgorithmParameters;
-use LearningSystem\Algorithm\Initial\Parameter\Contract\AlgorithmParameterInterface;
+use LearningSystem\Algorithm\Initial\Parameter\GameType\ImageWordGameTypeParameter;
+use LearningSystem\Algorithm\Initial\Parameter\GameType\SentenceGameTypeParameter;
 use LearningSystem\Algorithm\Initial\Parameter\GameTypesCollection;
 use LearningSystem\Algorithm\Initial\Parameter\GeneralParameters;
 use LearningSystem\Infrastructure\ParameterBagInterface;
+use LearningSystem\Infrastructure\Sort\Sort;
+use LearningSystem\Infrastructure\Sort\Type\ParameterBagSort;
+use LearningSystem\Infrastructure\Type\TimeTrialType;
 use LearningSystem\Input\InitialDataParameterBag;
 use TestLibrary\ContainerAwareTest;
 use Tests\LearningSystem\TestHelpers\Questions;
@@ -41,6 +45,44 @@ class ParameterConverterTest extends ContainerAwareTest
 
         static::assertArrayHasKey('word_number', $parameter);
         static::assertArrayHasKey('word_level', $parameter);
+
+        static::assertTrue($algorithmParameters->has('game_types'));
+        static::assertInternalType('array', $algorithmParameters->get('game_types'));
+
+        $gameTypesParameter = $algorithmParameters->get('game_types');
+
+        static::assertArrayHasKey('parameter', $gameTypesParameter);
+
+        $sortedGameTypes = $gameTypesParameter['parameter'];
+
+        static::assertEquals(3, count($sortedGameTypes));
+
+        /** @var ParameterBagInterface $imageWordGameParameter1 */
+        $imageWordGameParameter1 = $sortedGameTypes[0];
+
+        static::assertInstanceOf(ImageWordGameTypeParameter::class, $imageWordGameParameter1);
+        static::assertEquals(1, $imageWordGameParameter1->get('word_level')['parameter']);
+        static::assertNull($imageWordGameParameter1->get('time_trial')['parameter']);
+        static::assertArrayHasKey('repeat', $imageWordGameParameter1);
+        static::assertEquals(0, $imageWordGameParameter1->get('order')['parameter']);
+
+        /** @var ParameterBagInterface $sentenceGameParameter */
+        $sentenceGameParameter = $sortedGameTypes[1];
+
+        static::assertInstanceOf(SentenceGameTypeParameter::class, $sentenceGameParameter);
+        static::assertEquals(1, $sentenceGameParameter->get('word_level')['parameter']);
+        static::assertNull($sentenceGameParameter->get('time_trial')['parameter']);
+        static::assertArrayHasKey('repeat', $sentenceGameParameter);
+        static::assertEquals(1, $sentenceGameParameter->get('order')['parameter']);
+
+        /** @var ParameterBagInterface $imageWordGameParameter2 */
+        $imageWordGameParameter2 = $sortedGameTypes[2];
+
+        static::assertInstanceOf(ImageWordGameTypeParameter::class, $imageWordGameParameter2);
+        static::assertEquals(1, $imageWordGameParameter2->get('word_level')['parameter']);
+        static::assertInstanceOf(TimeTrialType::class, $imageWordGameParameter2->get('time_trial')['parameter']);
+        static::assertArrayHasKey('repeat', $imageWordGameParameter2);
+        static::assertEquals(2, $imageWordGameParameter2->get('order')['parameter']);
     }
 
     public function test_general_parameters_resolving()
@@ -149,7 +191,7 @@ class ParameterConverterTest extends ContainerAwareTest
     {
         $bag = new InitialDataParameterBag($questions);
 
-        $parameterConverter = new ParameterConverter($bag);
+        $parameterConverter = new ParameterConverter();
 
         $gameTypes = new GameTypesCollection(
             'game_types',

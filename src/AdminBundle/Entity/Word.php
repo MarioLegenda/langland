@@ -314,6 +314,12 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
                 ->atPath('translations')
                 ->addViolation();
         }
+
+        if ($this->getLevel() < 0 || $this->getLevel() > 4) {
+            $context->buildViolation('Level can be in range from 1 to 5')
+                ->atPath('level')
+                ->addViolation();
+        }
     }
 
     public function updateTimestamps()

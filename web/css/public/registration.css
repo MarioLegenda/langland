@@ -1,17 +1,15 @@
 /*
-Error: Undefined variable: "$max-width".
-        on line 2 of appareance.scss
+Error: Undefined variable: "$min-width".
+        on line 2 of registration.scss
 
-1: .container {
-2:   width: $max-width;
+1: #registration {
+2:   width: $min-width;
 3: 
-4:   position:relative;
-5: 
-6:   overflow: hidden;
-7:   margin: 0 auto;
+4:   margin: 0 auto;
+5: }
 
 Backtrace:
-appareance.scss:2
+registration.scss:2
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/variable.rb:49:in `_perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/node.rb:58:in `perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:397:in `visit_prop'
@@ -63,4 +61,4 @@ appareance.scss:2
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined variable: \"$max-width\".\A         on line 2 of appareance.scss\A \A 1: .container {\A 2:   width: $max-width;\A 3: \A 4:   position:relative;\A 5: \A 6:   overflow: hidden;\A 7:   margin: 0 auto;"; }
+  content: "Error: Undefined variable: \"$min-width\".\A         on line 2 of registration.scss\A \A 1: #registration {\A 2:   width: $min-width;\A 3: \A 4:   margin: 0 auto;\A 5: }"; }

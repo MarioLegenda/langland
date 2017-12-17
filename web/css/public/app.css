@@ -1,17 +1,19 @@
 /*
-Error: Undefined variable: "$max-width".
-        on line 2 of appareance.scss
+Error: Undefined variable: "$playfairFont".
+        on line 12 of app.scss
 
-1: .container {
-2:   width: $max-width;
-3: 
-4:   position:relative;
-5: 
-6:   overflow: hidden;
-7:   margin: 0 auto;
+7:   -webkit-box-sizing: border-box;
+8:   -moz-box-sizing: border-box;
+9: }
+10: 
+11: body {
+12:   font-family: $playfairFont;
+13:   font-size: 16px;
+14:   background-color: white;
+15: }
 
 Backtrace:
-appareance.scss:2
+app.scss:12
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/variable.rb:49:in `_perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/node.rb:58:in `perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:397:in `visit_prop'
@@ -63,4 +65,4 @@ appareance.scss:2
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined variable: \"$max-width\".\A         on line 2 of appareance.scss\A \A 1: .container {\A 2:   width: $max-width;\A 3: \A 4:   position:relative;\A 5: \A 6:   overflow: hidden;\A 7:   margin: 0 auto;"; }
+  content: "Error: Undefined variable: \"$playfairFont\".\A         on line 12 of app.scss\A \A 7:   -webkit-box-sizing: border-box;\A 8:   -moz-box-sizing: border-box;\A 9: }\A 10: \A 11: body {\A 12:   font-family: $playfairFont;\A 13:   font-size: 16px;\A 14:   background-color: white;\A 15: }"; }

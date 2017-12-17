@@ -1,20 +1,46 @@
 /*
-Error: Undefined variable: "$max-width".
-        on line 2 of appareance.scss
+Error: Undefined variable: "$appMainColor".
+        on line 33 of itemListing.scss
 
-1: .container {
-2:   width: $max-width;
-3: 
-4:   position:relative;
-5: 
-6:   overflow: hidden;
-7:   margin: 0 auto;
+28: 
+29:       margin-top:10px;
+30: 
+31:       text-align: center;
+32: 
+33:       color: $appMainColor;
+34: 
+35:       font-family: $spectralFont;
+36: 
+37:       font-size: 1.4em;
+38:       font-weight: bold;
 
 Backtrace:
-appareance.scss:2
+itemListing.scss:33
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/variable.rb:49:in `_perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/node.rb:58:in `perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:397:in `visit_prop'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/base.rb:36:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `block in with_base'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:115:in `with_frame'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `with_base'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block (2 levels) in visit_rule'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `map'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block in visit_rule'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:181:in `with_environment'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:431:in `visit_rule'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/base.rb:36:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `block in with_base'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:115:in `with_frame'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `with_base'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `visit'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block (2 levels) in visit_rule'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `map'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block in visit_rule'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:181:in `with_environment'
+/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:431:in `visit_rule'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/base.rb:36:in `visit'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `block in with_base'
@@ -63,4 +89,4 @@ appareance.scss:2
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined variable: \"$max-width\".\A         on line 2 of appareance.scss\A \A 1: .container {\A 2:   width: $max-width;\A 3: \A 4:   position:relative;\A 5: \A 6:   overflow: hidden;\A 7:   margin: 0 auto;"; }
+  content: "Error: Undefined variable: \"$appMainColor\".\A         on line 33 of itemListing.scss\A \A 28: \A 29:       margin-top:10px;\A 30: \A 31:       text-align: center;\A 32: \A 33:       color: $appMainColor;\A 34: \A 35:       font-family: $spectralFont;\A 36: \A 37:       font-size: 1.4em;\A 38:       font-weight: bold;"; }

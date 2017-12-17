@@ -21,5 +21,10 @@
 /web/node_modules
 /web/node_modules/.yarn-integrity
 /web/.babelrc
+/web/css/.sass-cache
+/web/css/app
+/web/css/framework
+/web/css/lib
+/web/css/public
 
 

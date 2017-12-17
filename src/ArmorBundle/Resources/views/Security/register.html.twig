@@ -1,18 +1,10 @@
 {% extends '::Public/base.html.twig' %}
 
 {% block content %}
-
-    <a href="{{ path('public_homepage') }}">LangLand</a>
-
-    <div class="user-actions">
-
-    {% include '@Armor/Security/_include/_actions.html.twig' %}
-
-    <div class="user-action full-width align-left">
-        <p class="full-width align-left">Enter valid information to <span class="highlight">register</span></p>
+    <div id="registration">
         <form action="{{ path('armor_user_register') }}" method="post" novalidate>
 
-            <div class="full-width align-left error margin-bottom-20">
+            <div class="">
                 {{ form_errors(form) }}
             </div>
 
@@ -22,72 +14,70 @@
                 </div>
             {% endif %}
 
-            <div class="form-row margin-bottom-10 full-width align-left border-top border-bottom">
+            <div class="">
                 <div>
                     {{ form_label(form.username) }}<span class="highlight"> *</span>
                     {{ form_widget(form.username) }}
                 </div>
 
                 {% if form.username.vars.valid == false %}
-                    <div class="full-width align-left error margin-top-10">{{ form_errors(form.username) }}</div>
+                    <div class="">{{ form_errors(form.username) }}</div>
                 {% endif %}
             </div>
 
-            <div class="form-row full-width align-left border-bottom">
+            <div class="">
                 <div>
-                    {{ form_label(form.plainPassword.first) }}<span class="highlight"> *</span>
+                    {{ form_label(form.plainPassword.first) }}<span class=""> *</span>
                     {{ form_widget(form.plainPassword.first) }}
                 </div>
 
                 {% if form.plainPassword.first.vars.valid == false %}
-                    <div class="full-width align-left error margin-top-10">{{ form_errors(form.plainPassword.first) }}</div>
+                    <div class="">{{ form_errors(form.plainPassword.first) }}</div>
                 {% endif %}
             </div>
 
-            <div class="form-row full-width align-left border-bottom">
+            <div class="">
                 <div>
-                    {{ form_label(form.plainPassword.second) }}<span class="highlight"> *</span>
+                    {{ form_label(form.plainPassword.second) }}<span class=""> *</span>
                     {{ form_widget(form.plainPassword.second) }}
                 </div>
             </div>
 
 
-            <div class="form-row full-width align-left border-bottom">
+            <div class="">
                 <div>
-                    {{ form_label(form.name) }}<span class="highlight"> *</span>
+                    {{ form_label(form.name) }}<span class=""> *</span>
                     {{ form_widget(form.name) }}
                 </div>
 
                 {% if form.name.vars.valid == false %}
-                    <div class="full-width align-left error margin-top-10">{{ form_errors(form.name) }}</div>
-                {% endif %}            </div>
+                    <div class="">{{ form_errors(form.name) }}</div>
+                {% endif %}
+            </div>
 
-            <div class="form-row full-width align-left border-bottom">
+            <div class="">
                 <div>
-                    {{ form_label(form.lastname) }}<span class="highlight"> *</span>
+                    {{ form_label(form.lastname) }}<span class=""> *</span>
                     {{ form_widget(form.lastname) }}
                 </div>
 
                 {% if form.lastname.vars.valid == false %}
-                    <div class="full-width align-left error margin-top-10">{{ form_errors(form.lastname) }}</div>
-                {% endif %}            </div>
+                    <div class="">{{ form_errors(form.lastname) }}</div>
+                {% endif %}
+            </div>
 
-            <div class="form-row full-width align-left border-bottom">
+            <div class="">
                 <div>
-                    {{ form_label(form.gender) }}<span class="highlight"> *</span>
+                    {{ form_label(form.gender) }}<span class=""> *</span>
                     {{ form_widget(form.gender) }}
                 </div>
 
                 {% if form.gender.vars.valid == false %}
-                    <div class="full-width align-left error margin-top-10">{{ form_errors(form.gender) }}</div>
+                    <div class="">{{ form_errors(form.gender) }}</div>
                 {% endif %}
             </div>
 
             {{ form_rest(form) }}
-
-            <div class="action-button full-width align-left">
-                <button type="submit">SIGN UP</button>
-            </div>
         </form>
     </div>
 </div>

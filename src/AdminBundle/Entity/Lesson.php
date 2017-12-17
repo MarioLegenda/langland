@@ -68,8 +68,13 @@ class Lesson
         $this->basicWordGames = new ArrayCollection();
     }
     /**
-     * Get id
-     *
+     * @param int $id
+     */
+    public function setId(int $id)
+    {
+        $this->id = $id;
+    }
+    /**
      * @return int
      */
     public function getId()
@@ -135,11 +140,17 @@ class Lesson
         return $this->jsonLesson;
     }
     /**
-     * @param array $jsonLesson
+     * @param array|string $jsonLesson
      * @return Lesson
      */
-    public function setJsonLesson(array $jsonLesson): Lesson
+    public function setJsonLesson($jsonLesson): Lesson
     {
+        if (is_string($jsonLesson)) {
+            $this->jsonLesson = json_decode($jsonLesson, true);
+
+            return $this;
+        }
+
         $this->jsonLesson = $jsonLesson;
 
         return $this;
@@ -187,40 +198,48 @@ class Lesson
         return $this;
     }
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
+     * @param \DateTime|string $createdAt
      *
      * @return Lesson
      */
-    public function setCreatedAt(\DateTime $createdAt) : Lesson
+    public function setCreatedAt($createdAt) : Lesson
     {
+        $createdAt = $this->toDateTime($createdAt);
+
+        if (!$createdAt instanceof \DateTime) {
+            throw new \RuntimeException('Invalid date time in %s', Lesson::class);
+        }
+
         $this->createdAt = $createdAt;
 
         return $this;
     }
     /**
-     * Get createdAt
-     *
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->createdAt;
     }
     /**
-     * @return mixed
+     * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
     /**
-     * @param \DateTime $updatedAt
+     * @param \DateTime|string $updatedAt
      * @return Lesson
      */
-    public function setUpdatedAt(\DateTime $updatedAt) : Lesson
+    public function setUpdatedAt($updatedAt) : Lesson
     {
+        $updatedAt = $this->toDateTime($updatedAt);
+
+        if (!$updatedAt instanceof \DateTime) {
+            throw new \RuntimeException('Invalid date time in %s', Lesson::class);
+        }
+
         $this->updatedAt = $updatedAt;
 
         return $this;
@@ -235,6 +254,25 @@ class Lesson
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
         }
+    }
+    /**
+     * @param \DateTime|string $dateTime
+     * @return \DateTime
+     */
+    private function toDateTime($dateTime): \DateTime
+    {
+        if ($dateTime instanceof \DateTime) {
+            return $dateTime;
+        }
+
+        $dateTime = \DateTime::createFromFormat('Y-m-d H:m:s', $dateTime);
+
+        if (!$dateTime instanceof \DateTime) {
+            $message = sprintf('Invalid date time in %s', Lesson::class);
+            throw new \RuntimeException($message);
+        }
+
+        return $dateTime;
     }
 }
 

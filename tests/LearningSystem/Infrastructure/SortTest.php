@@ -2,7 +2,6 @@
 
 namespace LearningSystem\Infrastructure;
 
-use BlueDot\BlueDot;
 use LearningSystem\Input\InitialDataParameterBag;
 use TestLibrary\ContainerAwareTest;
 use LearningSystem\Infrastructure\Sort\Sort;
@@ -11,7 +10,6 @@ class SortTest extends ContainerAwareTest
 {
     public function test_parameter_bag_sort()
     {
-        new BlueDot();
         $toSort = [
             new InitialDataParameterBag([
                 'order' => 5

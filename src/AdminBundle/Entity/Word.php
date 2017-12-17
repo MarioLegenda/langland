@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use LearningSystem\Infrastructure\Type\WordLevelType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -28,6 +29,10 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
      * @var string $description
      */
     private $description;
+    /**
+     * @var int $level
+     */
+    private $level;
     /**
      * @var string $pluralForm
      */
@@ -214,6 +219,23 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
     public function setDescription($description) : Word
     {
         $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+    /**
+     * @param int $level
+     * @return Word
+     */
+    public function setLevel(int $level): Word
+    {
+        $this->level = $level;
 
         return $this;
     }

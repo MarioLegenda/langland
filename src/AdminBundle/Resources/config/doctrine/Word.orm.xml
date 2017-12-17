@@ -17,6 +17,7 @@
         <field name="type" type="string" length="255" nullable="true"/>
         <field name="pluralForm" type="string" length="255" column="plural_form" nullable="true"/>
         <field name="description" type="text" nullable="true"/>
+        <field name="level" type="string" nullable="false" />
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 

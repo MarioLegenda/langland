@@ -6,7 +6,9 @@ use Library\Infrastructure\Form\TraitType\ImageTypeTrait;
 use Library\Infrastructure\Form\CategoryChoiceFormService;
 use Library\Infrastructure\Form\TraitType\TextareaTypeTrait;
 use Library\Infrastructure\Form\TraitType\TextTypeTrait;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -60,6 +62,15 @@ class WordType extends AbstractType
         );
 
         $builder
+            ->add('level', ChoiceType::class, [
+                'choices' => [
+                    1 => 0,
+                    2 => 1,
+                    3 => 2,
+                    4 => 3,
+                    5 => 4,
+                ],
+            ])
             ->add('translations', CollectionType::class, array(
                 'label' => 'Add translations ...',
                 'entry_type' => TranslationType::class,

@@ -9,9 +9,12 @@ use ArmorBundle\Event\AccountConfirmedEvent;
 use ArmorBundle\Exception\AccountNotEnabledException;
 use ArmorBundle\Form\Type\RegistrationForm;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserSecurityController extends Controller implements UserLoggedInInterface
 {
@@ -76,50 +79,34 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
             $user->addRole(new Role('ROLE_USER'));
             $user->setEnabled(0);
 
-            $userRepo = $this->get('doctrine')->getRepository('ArmorBundle:User');
-            for (;;) {
-                $hash = md5(uniqid(rand(), true));
-
-                if (empty($userRepo->findUserByConfirmationHash($hash))) {
-                    $user->setConfirmHash($hash);
-
-                    break;
-                }
-            }
-
-            $confirm = $this->get('armor.email')->send(
-                'confirmation_email',
-                $user->getUsername(),
-                array('confirm_url' => 'http://'.$this->getParameter('host').$this->generateUrl('armor_user_confirm', array(
-                    'hash' => $user->getConfirmHash(),
-                ), UrlGenerator::ABSOLUTE_PATH))
-            );
-
-            if ($confirm !== 1) {
-                $this->addFlash(
-                    'email_failed',
-                    sprintf('Email sent to %s failed. Please, try again', $user->getUsername())
-                );
-
-                return $this->render(
-                    'ArmorBundle:Security:register.html.twig', array(
-                        'form' => $form->createView(),
-                    )
-                );
-            }
-
             $em = $this->get('doctrine')->getManager();
 
-            $em->persist($user);
-            $em->flush();
+            $confirmByMail = $this->getParameter('mail_confirm');
+            if ($confirmByMail === true) {
+                $isConfirmed = $this->sendConfirmationMail($user, $form);
 
-            $this->addFlash(
-                'user_created_notice',
-                sprintf('Your account has be successfully created and a confirmation email has been sent to %s', $user->getUsername())
-            );
+                if ($isConfirmed !== false) {
+                    return $isConfirmed;
+                }
 
+                $em->persist($user);
+                $em->flush();
 
-            return $this->redirectToRoute('armor_user_login');
+                $this->addFlash(
+                    'user_created_notice',
+                    sprintf('Your account has be successfully created and a confirmation email has been sent to %s', $user->getUsername())
+                );
+
+                return $this->redirectToRoute('armor_user_login');
+            } else {
+                $user->setConfirmHash(null);
+                $user->setEnabled(1);
+
+                $em->persist($user);
+                $em->flush();
+
+                return $this->redirectToRoute('armor_user_login');
+            }
         }
 
         return $this->render(
@@ -159,12 +146,14 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 
         $this->addFlash(
             'user_not_confirmed',
-            sprintf('For some reason, you email %s could not be confirmed. Please, sign up with another email', $user[0]->getUsername())
+            sprintf('You email %s could not be confirmed. Please, sign up with another email', $user[0]->getUsername())
         );
 
         return $this->redirectToRoute('armor_user_login');
     }
-
+    /**
+     * @return null|RedirectResponse
+     */
     private function tryRedirectIfAuthorized()
     {
         $securityContext = $this->get('security.authorization_checker');
@@ -175,5 +164,46 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 
             return null;
         }
+    }
+    /**
+     * @param User $user
+     * @param FormInterface $form
+     * @return bool|Response
+     */
+    private function sendConfirmationMail(User $user, $form)
+    {
+        $userRepo = $this->get('doctrine')->getRepository('ArmorBundle:User');
+        for (;;) {
+            $hash = md5(uniqid(rand(), true));
+
+            if (empty($userRepo->findUserByConfirmationHash($hash))) {
+                $user->setConfirmHash($hash);
+
+                break;
+            }
+        }
+
+        $confirm = $this->get('armor.email')->send(
+            'confirmation_email',
+            $user->getUsername(),
+            array('confirm_url' => 'http://'.$this->getParameter('host').$this->generateUrl('armor_user_confirm', array(
+                    'hash' => $user->getConfirmHash(),
+                ), UrlGenerator::ABSOLUTE_PATH))
+        );
+
+        if ($confirm !== 1) {
+            $this->addFlash(
+                'email_failed',
+                sprintf('Email sent to %s failed. Please, try again', $user->getUsername())
+            );
+
+            return $this->render(
+                'ArmorBundle:Security:register.html.twig', array(
+                    'form' => $form->createView(),
+                )
+            );
+        }
+
+        return false;
     }
 }

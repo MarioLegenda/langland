@@ -221,8 +221,66 @@ body {
     color: #C2561A;
     border-bottom: 1px solid #C2561A; }
 
-#registration {
+.login-and-registration-generic, .user-action {
   width: 480px;
-  margin: 0 auto; }
+  margin: 100px auto; }
+
+.input-inherit, .user-action .row .field input[type="email"], .user-action .row .field-right input[type="email"], .user-action .row .field input[type="text"], .user-action .row .field-right input[type="text"], .user-action .row .field input[type="password"], .user-action .row .field-right input[type="password"] {
+  display: block;
+  float: right;
+  border: none;
+  border-bottom: 1px solid #F16C20;
+  padding: 5px 5px 1px 0;
+  font-family: "Playfair Display", serif;
+  font-size: 16px;
+  color: #C2561A; }
+
+.user-action .error {
+  color: red;
+  width: 100%;
+  float: left; }
+.user-action .row {
+  width: 100%;
+  overflow: hidden;
+  padding: 5px 0 5px 0;
+  margin-bottom: 5px; }
+  .user-action .row .field-wrapper {
+    width: 100%;
+    float: left; }
+  .user-action .row .field, .user-action .row .field-right {
+    width: 200px;
+    float: left; }
+    .user-action .row .field .highlight, .user-action .row .field-right .highlight {
+      color: red; }
+    .user-action .row .field label, .user-action .row .field-right label {
+      display: inline-block;
+      padding-top: 14px;
+      color: #F16C20;
+      float: left; }
+  .user-action .row .field-right {
+    width: 250px;
+    float: right; }
+.user-action .button-wrapper {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 20px;
+  border-bottom: 1px solid #F16C20; }
+  .user-action .button-wrapper button {
+    display: block;
+    border: none;
+    background: none;
+    padding: 0 0 5px 0;
+    font-family: "Playfair Display", serif;
+    font-size: 16px;
+    float: right;
+    transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+    -webkit-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+    -moz-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+    -o-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+    color: #F16C20; }
+    .user-action .button-wrapper button:hover {
+      padding-right: 5px;
+      color: #C2561A;
+      cursor: pointer; }
 
 /*# sourceMappingURL=public.css.map */

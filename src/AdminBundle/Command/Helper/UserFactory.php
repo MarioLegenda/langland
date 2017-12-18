@@ -36,7 +36,6 @@ class UserFactory
         $user->setPassword($password);
         $user->setName('Mile');
         $user->setLastname('Mile');
-        $user->setGender('male');
 
         $user->addRole($role);
 

@@ -53,19 +53,6 @@
             </constraint>
         </property>
 
-        <property name="gender">
-            <constraint name="NotNull">
-                <option name="message">Gender can only be male or female</option>
-            </constraint>
-            <constraint name="Choice">
-                <option name="choices">
-                    <value>male</value>
-                    <value>female</value>
-                </option>
-                <option name="message">Gender can only be male or female</option>
-            </constraint>
-        </property>
-
         <!-- ... -->
     </class>
 </constraint-mapping>

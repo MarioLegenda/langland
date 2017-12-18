@@ -2,56 +2,58 @@
 
 {% block content %}
 
-<a href="{{ path('public_homepage') }}">LangLand</a>
+<div class="user-action">
+        {% if error %}
+            <div class="error margin-bottom-20">{{ error }}</div>
+        {% endif %}
 
-<div class="user-actions">
-    {% include '@Armor/Security/_include/_actions.html.twig' %}
-
-        <div class="user-action align-left">
-            <p class="full-width align-left">Enter your email and password <span class="highlight">to sign in</span></p>
-
-            {% if error %}
-                <div class="error margin-bottom-40">{{ error }}</div>
-            {% endif %}
-
-            {% if app.session.flashBag.has('user_created_notice') %}
+        {% if app.session.flashBag.has('user_created_notice') %}
             <div class="success margin-bottom-20">
                 {{ app.session.flashBag.get('user_created_notice')[0] }}
             </div>
-            {% endif %}
+        {% endif %}
 
-            {% if app.session.flashBag.has('user_confirmed') %}
-                <div class="success margin-bottom-20">
-                    {{ app.session.flashBag.get('user_confirmed')[0] }}
-                </div>
-            {% endif %}
+        {% if app.session.flashBag.has('user_confirmed') %}
+            <div class="success margin-bottom-20">
+                {{ app.session.flashBag.get('user_confirmed')[0] }}
+            </div>
+        {% endif %}
 
-            {% if app.session.flashBag.has('user_not_confirmed') %}
-                <div class="success margin-bottom-20">
-                    {{ app.session.flashBag.get('user_not_confirmed')[0] }}
-                </div>
-            {% endif %}
+        {% if app.session.flashBag.has('user_not_confirmed') %}
+            <div class="success margin-bottom-20">
+                {{ app.session.flashBag.get('user_not_confirmed')[0] }}
+            </div>
+        {% endif %}
 
-            <form action="{{ path('armor_user_login') }}" method="post">
-                <div class="form-row margin-bottom-10 full-width align-left border-top border-bottom">
-                    <div>
+        <form action="{{ path('armor_user_login') }}" method="post">
+
+            <div class="row">
+                <div class="field-wrapper">
+                    <div class="field">
                         <label for="username">EMAIL <span class="highlight">*</span></label>
+                    </div>
+
+                    <div class="field-right">
                         <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Your username" />
                     </div>
                 </div>
+            </div>
 
-                <div class="form-row full-width align-left border-bottom">
-                    <div>
+            <div class="row">
+                <div class="field-wrapper">
+                    <div class="field">
                         <label for="password">PASSWORD <span class="highlight">*</span></label>
+                    </div>
+
+                    <div class="field-right">
                         <input type="password" id="password" name="_password" placeholder="Your password" />
                     </div>
                 </div>
+            </div>
 
-                <div class="action-button full-width align-left">
-                    <a href="#" class="highlight">Forgot your password?</a>
-                    <button type="submit">SIGN IN</button>
-                </div>
-            </form>
-        </div>
-    </div>
+            <div class="button-wrapper">
+                <button type="submit">Login</button>
+            </div>
+        </form>
+</div>
 {% endblock %}

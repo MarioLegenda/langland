@@ -24,19 +24,19 @@ class RegistrationForm extends AbstractType
             ->add('username', EmailType::class, array(
                 'label' => 'EMAIL',
                 'attr' => array(
-                    'placeholder' => 'Email',
+                    'placeholder' => '...',
                 ),
             ))
             ->add('name', TextType::class, array(
                 'label' => 'NAME',
                 'attr' => array(
-                    'placeholder' => 'Name',
+                    'placeholder' => '...',
                 ),
             ))
             ->add('lastname', TextType::class, array(
                 'label' => 'LAST NAME',
                 'attr' => array(
-                    'placeholder' => 'Last name',
+                    'placeholder' => '...',
                 ),
             ))
             ->add('plainPassword', RepeatedType::class, array(
@@ -45,23 +45,14 @@ class RegistrationForm extends AbstractType
                 'first_options'  => array(
                     'label' => 'PASSWORD',
                     'attr' => array(
-                        'placeholder' => 'Password'
+                        'placeholder' => '...'
                     )
                 ),
                 'second_options' => array(
                     'label' => 'REPEAT PASSWORD',
                     'attr' => array(
-                        'placeholder' => 'Repeat password'
+                        'placeholder' => '...'
                     )
-                ),
-            ))
-            ->add('gender', ChoiceType::class, array(
-                'label' => 'GENDER',
-                'multiple' => false,
-                'placeholder' => 'Choose...',
-                'choices' => array(
-                    'male' => 'male',
-                    'female' => 'female',
                 ),
             ));
         ;

@@ -37,7 +37,7 @@ class LessonImplementation
     public function find(int $id): Lesson
     {
         /** @var Lesson $lesson */
-        $lesson = $this->lessonRepository->find($id);
+        $lesson = $this->lessonRepository->find($id, 'simple.select.find_lesson_by_id');
 
         if (!$lesson instanceof Lesson) {
             throw new NotFoundHttpException();
@@ -52,7 +52,7 @@ class LessonImplementation
     public function tryFind(int $id): ?Lesson
     {
         /** @var Lesson $lesson */
-        $lesson = $this->lessonRepository->find($id);
+        $lesson = $this->lessonRepository->find($id, 'simple.select.find_lesson_by_id');
 
         return $lesson;
     }

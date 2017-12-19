@@ -2,3 +2,8 @@ app_api:
   resource: "@PublicApiBundle/Resources/config/routing/api.yml"
   prefix: /api/v1
   host: '%host%'
+
+app_static:
+  resource: "@PublicApiBundle/Resources/config/routing/static.yml"
+  prefix: /langland
+  host: '%host%'

@@ -29,7 +29,7 @@ security:
             provider: armor_user_provider
             user_checker: armor.user.user_checker
             form_login:
-                default_target_path: app_page_main_dashboard
+                default_target_path: app_language_index
                 login_path: armor_user_login
                 check_path: armor_user_login
             anonymous: ~

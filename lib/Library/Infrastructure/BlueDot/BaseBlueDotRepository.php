@@ -23,13 +23,14 @@ class BaseBlueDotRepository
     }
     /**
      * @param int $id
+     * @param string $statement
      * @return null|object
      * @throws \BlueDot\Exception\BlueDotRuntimeException
      * @throws \BlueDot\Exception\ConnectionException
      */
-    public function find(int $id): ?object
+    public function find(int $id, string $statement): ?object
     {
-        return $this->blueDot->execute('simple.select.find_lesson_by_id', [
+        return $this->blueDot->execute($statement, [
             'id' => $id,
         ])->getResult();
     }

@@ -64,7 +64,7 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
         $securityContext = $this->get('security.authorization_checker');
 
         if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('app_page_main_dashboard');
+            return $this->redirectToRoute('app_language_index');
         }
         
         $user = new User();
@@ -76,6 +76,7 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
             $password = $this->get('security.password_encoder')->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
 
+            $user->addRole(new Role('ROLE_PUBLIC_API_USER'));
             $user->addRole(new Role('ROLE_USER'));
             $user->setEnabled(0);
 
@@ -128,6 +129,7 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
                 sprintf('Thank you, %s. You have successfully confirmed your account. Now, sign in and start learning a new language', $user[0]->getUsername())
             );
 
+            /** @var User $user */
             $user = $user[0];
 
             $user->setConfirmHash(null);
@@ -158,8 +160,8 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
     {
         $securityContext = $this->get('security.authorization_checker');
         if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            if ($this->getUser()->hasRole('ROLE_USER')) {
-                return $this->redirectToRoute('app_dashboard');
+            if ($this->getUser()->hasRole('ROLE_PUBLIC_API_USER')) {
+                return $this->redirectToRoute('armor_user_login');
             }
 
             return null;

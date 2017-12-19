@@ -11,5 +11,12 @@
 
             <argument type="service" id="langland.public_api.business.implementation.lesson" />
         </service>
+
+        <service
+                id="langland.static.controller.language_index"
+                class="Library\App\Business\Controller\StaticController">
+
+            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+        </service>
     </services>
 </container>

@@ -54,6 +54,6 @@ class ResetCommand extends ContainerAwareCommand
 
         $userFactory
             ->create('root', 'root', new Role('ROLE_ADMIN'))
-            ->create('marioskrlec@outlook.com', 'root', new Role('ROLE_USER'));
+            ->create('marioskrlec@outlook.com', 'root', new Role('ROLE_PUBLIC_API_USER'));
     }
 }

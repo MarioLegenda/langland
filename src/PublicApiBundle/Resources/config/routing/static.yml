@@ -1,0 +1,5 @@
+app_static_language:
+  resource: "@PublicApiBundle/Resources/config/routing/static/language.yml"
+  prefix: /
+  host: '%host%'
+  methods: [GET]

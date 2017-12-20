@@ -6,7 +6,7 @@
 
     <entity
             name="AdminBundle\Entity\Word"
-            repository-class="Library\LearningMetadata\Repository\Implementation\WordRepository"
+            repository-class="LearningMetadata\Repository\Implementation\WordRepository"
             table="words">
 
         <id name="id" type="integer">

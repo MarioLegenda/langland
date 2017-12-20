@@ -23,7 +23,7 @@
 
         <service
                 id="langland.learning_metadata.form.word"
-                class="Library\LearningMetadata\Infrastructure\Form\Type\WordType">
+                class="LearningMetadata\Infrastructure\Form\Type\WordType">
 
             <argument type="service" id="langland.learning_metadata.form.language_choice" />
             <argument type="service" id="langland.learning_metadata.form.category_choice"/>
@@ -33,14 +33,14 @@
 
         <service
                 id="langland.learning_metadata.form.image"
-                class="Library\LearningMetadata\Infrastructure\Form\Type\ImageType">
+                class="LearningMetadata\Infrastructure\Form\Type\ImageType">
 
             <tag name="form.type" />
         </service>
 
         <service
                 id="langland.learning_metadata.form.language_info"
-                class="Library\LearningMetadata\Infrastructure\Form\Type\LanguageInfoType">
+                class="LearningMetadata\Infrastructure\Form\Type\LanguageInfoType">
 
             <argument type="service" id="langland.learning_metadata.form.language_choice" />
             <argument type="service" id="langland.learning_metadata.form.category_choice"/>
@@ -50,14 +50,14 @@
 
         <service
                 id="langland.learning_metadata.form.language_info_text"
-                class="Library\LearningMetadata\Infrastructure\Form\Type\LanguageInfoTextType">
+                class="LearningMetadata\Infrastructure\Form\Type\LanguageInfoTextType">
 
             <tag name="form.type" />
         </service>
 
         <service
                 id="langland.learning_metadata.form.course"
-                class="Library\LearningMetadata\Infrastructure\Form\Type\CourseType">
+                class="LearningMetadata\Infrastructure\Form\Type\CourseType">
             <argument type="service" id="langland.learning_metadata.form.language_choice" />
 
             <tag name="form.type" />
@@ -65,7 +65,7 @@
 
         <service
                 id="langland.learning_metadata.form.form_builder"
-                class="Library\LearningMetadata\Infrastructure\Form\FormBuilder">
+                class="LearningMetadata\Infrastructure\Form\FormBuilder">
 
             <argument type="service" id="form.factory" />
         </service>

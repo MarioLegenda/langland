@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.public_api.repository.lesson"
-                class="Library\Lesson\Repository\LessonRepository">
+                class="PublicApi\Lesson\Repository\LessonRepository">
 
             <argument type="service" id="langland.common.blue_dot" />
             <argument>public_api_lesson</argument>

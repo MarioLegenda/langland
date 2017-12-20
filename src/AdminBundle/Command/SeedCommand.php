@@ -2,16 +2,12 @@
 
 namespace AdminBundle\Command;
 
-use AdminBundle\Command\Helper\BasicWordGameFactory;
 use AdminBundle\Command\Helper\CategoryFactory;
 use AdminBundle\Command\Helper\CourseFactory;
 use AdminBundle\Command\Helper\LanguageFactory;
 use AdminBundle\Command\Helper\LanguageInfoFactory;
 use AdminBundle\Command\Helper\LessonFactory;
-use AdminBundle\Command\Helper\QuestionGameFactory;
-use AdminBundle\Command\Helper\SentenceFactory;
 use AdminBundle\Command\Helper\WordFactory;
-use AdminBundle\Command\Helper\WordGameFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +41,6 @@ class SeedCommand extends ContainerAwareCommand
         $languageInfoFactory = new LanguageInfoFactory($em);
         $courseFactory = new CourseFactory($em);
         $lessonFactory = new LessonFactory($em);
-        $basicWordGameFactory = new BasicWordGameFactory($em);
 
         $categoryFactory->create($categories, true);
         $languageObjects = $languageFactory->create($languages, true);
@@ -74,10 +69,6 @@ class SeedCommand extends ContainerAwareCommand
 
         if (empty($lessons)) {
             throw new \RuntimeException('Seeding went wrong. There are no created lessons');
-        }
-
-        foreach ($lessons as $lesson) {
-            $basicWordGameFactory->create($lesson);
         }
     }
 }

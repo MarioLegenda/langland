@@ -7,7 +7,7 @@
     <entity
             name="AdminBundle\Entity\Image"
             table="images"
-            repository-class="Library\LearningMetadata\Repository\Implementation\ImageRepository">
+            repository-class="LearningMetadata\Repository\Implementation\ImageRepository">
 
         <id name="id" type="integer">
             <generator strategy="AUTO" />

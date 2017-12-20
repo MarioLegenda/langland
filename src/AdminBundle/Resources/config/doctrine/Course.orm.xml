@@ -3,7 +3,7 @@
   <entity
           name="AdminBundle\Entity\Course"
           table="courses"
-          repository-class="Library\LearningMetadata\Repository\Implementation\CourseRepository">
+          repository-class="LearningMetadata\Repository\Implementation\CourseRepository">
 
     <id name="id" type="integer" column="id">
       <generator strategy="AUTO"/>

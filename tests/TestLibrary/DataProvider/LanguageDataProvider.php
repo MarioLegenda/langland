@@ -4,7 +4,7 @@ namespace Tests\TestLibrary\DataProvider;
 
 use AdminBundle\Entity\Language;
 use Faker\Generator;
-use Library\LearningMetadata\Repository\Implementation\LanguageRepository;
+use LearningMetadata\Repository\Implementation\LanguageRepository;
 
 class LanguageDataProvider implements DefaultDataProviderInterface
 {

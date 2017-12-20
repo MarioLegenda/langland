@@ -3,7 +3,6 @@
 namespace AdminBundle\Command\Helper;
 
 use AdminBundle\Entity\Word;
-use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\Translation;
 
 class WordTranslationFactory

@@ -4,12 +4,13 @@
     "type": "project",
     "autoload": {
         "psr-0": {
-            "Tests": "tests/",
-            "Library": "lib/",
+            "LearningMetadata": "lib/",
+            "PublicApi": "lib/",
             "LearningSystem": "lib/",
-            "API": "lib/",
+            "Library": "lib/",
             "BlueDot": "submodules/blue-dot/src/",
-            "TestLibrary": "tests/"
+            "TestLibrary": "tests/",
+            "Tests": "tests/"
         },
         "psr-4": {
             "": "src/"

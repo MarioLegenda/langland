@@ -4,7 +4,7 @@
   <entity
           name="AdminBundle\Entity\Lesson"
           table="lessons"
-          repository-class="Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository">
+          repository-class="LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository">
 
     <id name="id" type="integer" column="id">
       <generator strategy="AUTO"/>
@@ -21,12 +21,6 @@
     <many-to-one target-entity="AdminBundle\Entity\Course" field="course" inversed-by="lessons">
       <join-column name="course_id" referenced-column-name="id" />
     </many-to-one>
-
-    <one-to-many target-entity="AdminBundle\Entity\BasicWordGame" mapped-by="lesson" field="basicWordGames">
-      <cascade>
-        <cascade-persist/>
-      </cascade>
-    </one-to-many>
 
     <lifecycle-callbacks>
       <lifecycle-callback type="prePersist" method="updateTimestamps" />

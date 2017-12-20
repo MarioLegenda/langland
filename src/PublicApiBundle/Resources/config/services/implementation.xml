@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.public_api.business.implementation.lesson"
-                class="Library\Lesson\Business\Implementation\LessonImplementation">
+                class="PublicApi\Lesson\Business\Implementation\LessonImplementation">
 
             <argument type="service" id="langland.public_api.repository.lesson" />
             <argument type="service" id="library.common_serializer" />

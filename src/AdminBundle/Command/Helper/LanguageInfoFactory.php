@@ -2,7 +2,6 @@
 
 namespace AdminBundle\Command\Helper;
 
-
 use AdminBundle\Entity\Language;
 use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\LanguageInfo;

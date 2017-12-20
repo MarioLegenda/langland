@@ -5,7 +5,7 @@ namespace Tests\TestLibrary\DataProvider;
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Language;
 use Faker\Generator;
-use Library\LearningMetadata\Repository\Implementation\CourseRepository;
+use LearningMetadata\Repository\Implementation\CourseRepository;
 
 class CourseDataProvider implements DefaultDataProviderInterface
 {

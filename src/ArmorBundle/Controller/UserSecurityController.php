@@ -8,6 +8,7 @@ use ArmorBundle\Entity\User;
 use ArmorBundle\Event\AccountConfirmedEvent;
 use ArmorBundle\Exception\AccountNotEnabledException;
 use ArmorBundle\Form\Type\RegistrationForm;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,7 +46,11 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
             'error'         => $errorMessage,
         ));
     }
-
+    /**
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @return Response
+     */
     public function userLogoutAction(Request $request)
     {
         $this->get('security.token_storage')->setToken(null);

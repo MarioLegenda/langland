@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.learning_metadata.presentation.template_wrapper"
-                class="Library\LearningMetadata\Presentation\Template\TemplateWrapper">
+                class="LearningMetadata\Presentation\Template\TemplateWrapper">
 
             <argument type="service" id="templating" />
         </service>

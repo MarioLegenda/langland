@@ -2,7 +2,7 @@
 
 namespace Library\App\Business\Controller;
 
-use Library\LearningMetadata\Presentation\Template\TemplateWrapper;
+use LearningMetadata\Presentation\Template\TemplateWrapper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 

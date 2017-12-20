@@ -5,7 +5,7 @@ namespace Tests\TestLibrary\DataProvider;
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
 use Faker\Generator;
-use Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
+use LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 

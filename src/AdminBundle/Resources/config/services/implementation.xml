@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.learning_metadata.business.implementation.language"
-                class="Library\LearningMetadata\Business\Implementation\LanguageImplementation">
+                class="LearningMetadata\Business\Implementation\LanguageImplementation">
 
             <argument type="service" id="langland.learning_metadata.repository.language" />
             <argument type="service" id="langland.learning_metadata.repository.image" />
@@ -20,7 +20,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.category"
-                class="Library\LearningMetadata\Business\Implementation\CategoryImplementation">
+                class="LearningMetadata\Business\Implementation\CategoryImplementation">
 
             <argument type="service" id="langland.learning_metadata.repository.category" />
             <argument type="service" id="langland.learning_metadata.form.form_builder" />
@@ -32,7 +32,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.word"
-                class="Library\LearningMetadata\Business\Implementation\WordImplementation">
+                class="LearningMetadata\Business\Implementation\WordImplementation">
 
             <argument type="service" id="langland.learning_metadata.repository.word" />
             <argument type="service" id="langland.learning_metadata.repository.image" />
@@ -45,7 +45,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.language_info"
-                class="Library\LearningMetadata\Business\Implementation\LanguageInfoImplementation">
+                class="LearningMetadata\Business\Implementation\LanguageInfoImplementation">
 
             <argument type="service" id="langland.learning_metadata.repository.language_info" />
             <argument type="service" id="langland.learning_metadata.repository.language_info_text" />
@@ -59,7 +59,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.sound"
-                class="Library\LearningMetadata\Business\Implementation\SoundImplementation">
+                class="LearningMetadata\Business\Implementation\SoundImplementation">
 
             <argument type="service" id="langland.learning_metadata.repository.sound" />
             <argument type="service" id="langland.learning_metadata.form.form_builder" />
@@ -71,7 +71,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.course"
-                class="Library\LearningMetadata\Business\Implementation\CourseImplementation">
+                class="LearningMetadata\Business\Implementation\CourseImplementation">
 
             <argument type="service" id="langland.learning_metadata.repository.course" />
             <argument type="service" id="langland.learning_metadata.form.form_builder" />
@@ -83,7 +83,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.lesson"
-                class="Library\LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation">
+                class="LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation">
 
             <argument type="service" id="langland.learning_metadata.repository.lesson" />
             <argument type="service" id="langland.learning_metadata.repository.course" />
@@ -92,16 +92,6 @@
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
-            <argument type="service" id="library.deserializer" />
-            <argument type="service" id="logger" />
-        </service>
-
-        <service
-                id="langland.learning_metadata.business.implementation.basic_word_game"
-                class="Library\LearningMetadata\Business\Implementation\CourseManagment\Game\BasicWordGameImplementation">
-
-            <argument type="service" id="langland.learning_metadata.repository.basic_word_game" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="library.deserializer" />
             <argument type="service" id="logger" />
         </service>

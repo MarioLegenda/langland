@@ -3,20 +3,18 @@
 namespace Tests\LearningMetadata\Controller\Unit;
 
 use AdminBundle\Entity\Course;
-use Library\Exception\RequestStatusException;
 use Library\Infrastructure\Helper\Deserializer;
-use Library\LearningMetadata\Business\Implementation\CourseImplementation;
-use Library\LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
-use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
+use LearningMetadata\Business\Implementation\CourseImplementation;
+use LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
+use LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\ContainerAwareTest;
-use Library\LearningMetadata\Business\Middleware\LessonMiddleware;
+use LearningMetadata\Business\Middleware\LessonMiddleware;
 use AdminBundle\Entity\Lesson;
 use Tests\TestLibrary\DataProvider\LessonDataProvider;
 use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LessonBusinessImplementationTest extends ContainerAwareTest
 {

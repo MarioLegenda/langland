@@ -2,7 +2,7 @@
 
 namespace TestLibrary\Unit;
 
-use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
+use LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use TestLibrary\ContainerAwareTest;
 
 class LessonViewTest extends ContainerAwareTest

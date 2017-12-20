@@ -1,0 +1,114 @@
+.login-and-registration-generic {
+  width: $min-width;
+
+  margin: 100px auto;
+}
+
+.input-inherit {
+  display: block;
+
+  float: right;
+  border: none;
+  border-bottom: 1px solid $orange1;
+
+  padding: 5px 5px 1px 0;
+
+  font-family: $playfairFont;
+
+  font-size: 16px;
+
+  color: $orange2;
+}
+
+.user-action {
+  @extend .login-and-registration-generic;
+
+  .error {
+    color: red;
+    width: 100%;
+    float: left;
+  }
+
+  .row {
+    width: 100%;
+    overflow: hidden;
+    padding: 5px 0 5px 0;
+
+    margin-bottom: 5px;
+
+    .field-wrapper {
+      width: 100%;
+      float: left;
+    }
+
+    .field {
+      width: 200px;
+      float: left;
+
+      .highlight {
+        color: red;
+      }
+
+      label {
+        display: inline-block;
+        padding-top: 14px;
+        color: $orange1;
+        float: left;
+      }
+
+      input[type="email"] {
+        @extend .input-inherit;
+      }
+
+      input[type="text"] {
+        @extend .input-inherit;
+      }
+
+      input[type="password"] {
+        @extend .input-inherit;
+      }
+    }
+
+    .field-right {
+      @extend .field;
+
+      width: 250px;
+      float: right;
+    }
+  }
+
+  .button-wrapper {
+    width: 100%;
+
+    overflow: hidden;
+    margin-top: 20px;
+
+    border-bottom: 1px solid $orange1;
+
+    button {
+      display: block;
+      border: none;
+      background: none;
+      padding: 0 0 5px 0;
+
+      font-family: $playfairFont;
+
+      font-size: 16px;
+
+      float: right;
+
+      transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+      -webkit-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+      -moz-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+      -o-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+
+      color: $orange1;
+
+      &:hover {
+        padding-right: 5px;
+        color: $orange2;
+        cursor: pointer;
+      }
+    }
+  }
+}

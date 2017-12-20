@@ -2,7 +2,7 @@
 
 namespace LearningMetadata\Business\Controller;
 
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 

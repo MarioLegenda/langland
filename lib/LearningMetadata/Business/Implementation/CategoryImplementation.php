@@ -6,7 +6,7 @@ use AdminBundle\Entity\Category;
 use AdminBundle\Entity\Language;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use LearningMetadata\Infrastructure\Form\Type\CategoryType;
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use LearningMetadata\Repository\Implementation\CategoryRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;

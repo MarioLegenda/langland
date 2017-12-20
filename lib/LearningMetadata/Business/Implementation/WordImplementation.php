@@ -7,7 +7,7 @@ use AdminBundle\Event\ImageUploadEvent;
 use Library\Event\EntityProcessorEvent;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use LearningMetadata\Infrastructure\Form\Type\WordType;
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use LearningMetadata\Repository\Implementation\ImageRepository;
 use LearningMetadata\Repository\Implementation\WordRepository;
 use Symfony\Component\HttpFoundation\Session\Session;

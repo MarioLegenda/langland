@@ -2,7 +2,7 @@
 
 namespace PublicApi\StaticPage\Business\Controller;
 
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 

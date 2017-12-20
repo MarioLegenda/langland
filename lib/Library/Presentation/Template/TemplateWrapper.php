@@ -1,6 +1,6 @@
 <?php
 
-namespace LearningMetadata\Presentation\Template;
+namespace Library\Presentation\Template;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 

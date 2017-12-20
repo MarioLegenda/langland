@@ -5,7 +5,7 @@ namespace LearningMetadata\Business\Implementation;
 use AdminBundle\Entity\Language;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use LearningMetadata\Infrastructure\Form\Type\LanguageType;
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use LearningMetadata\Repository\Implementation\ImageRepository;
 use LearningMetadata\Repository\Implementation\LanguageRepository;
 use Symfony\Component\HttpFoundation\Session\Session;

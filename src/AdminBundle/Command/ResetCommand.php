@@ -8,6 +8,7 @@ use AdminBundle\Command\Helper\UserFactory;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ResetCommand extends ContainerAwareCommand
@@ -24,7 +25,8 @@ class ResetCommand extends ContainerAwareCommand
     {
         $this
             ->setName('langland:reset')
-            ->setDescription('Seeds users');
+            ->setDescription('Seeds users')
+            ->addOption('cache', 'cache', InputOption::VALUE_OPTIONAL, 'To clear the cache?', 'n');
     }
     /**
      * @inheritdoc
@@ -34,7 +36,10 @@ class ResetCommand extends ContainerAwareCommand
         $this->em = $this->getContainer()->get('doctrine')->getManager();
 
         $this->resetDatabase($output);
-        $this->clearCache($output);
+        if ($input->getOption('cache') === 'y') {
+            $this->clearCache($output);
+        }
+
         $this->createUsers($output);
 
         $output->writeln('');

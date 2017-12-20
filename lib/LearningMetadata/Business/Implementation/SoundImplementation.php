@@ -4,7 +4,7 @@ namespace LearningMetadata\Business\Implementation;
 
 use AdminBundle\Entity\Sound;
 use AdminBundle\Event\AudioUploadEvent;
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use LearningMetadata\Repository\Implementation\SoundRepository;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;

@@ -6,7 +6,7 @@ use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Language;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use LearningMetadata\Infrastructure\Form\Type\CourseType;
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use LearningMetadata\Repository\Implementation\CourseRepository;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;

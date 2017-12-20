@@ -4,7 +4,7 @@ namespace LearningMetadata\Business\Implementation;
 
 use Library\Infrastructure\Form\FormBuilderInterface;
 use LearningMetadata\Infrastructure\Form\Type\LanguageInfoType;
-use LearningMetadata\Presentation\Template\TemplateWrapper;
+use Library\Presentation\Template\TemplateWrapper;
 use LearningMetadata\Repository\Implementation\LanguageInfoRepository;
 use LearningMetadata\Repository\Implementation\LanguageInfoTextRepository;
 use Symfony\Component\HttpFoundation\Session\Session;

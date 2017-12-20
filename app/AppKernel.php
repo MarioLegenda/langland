@@ -52,8 +52,13 @@ class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
         $env = $this->getEnvironment();
+
         $load = sprintf($this->getRootDir().'/config/%s/config_%s.yml', $env, $env);
-        
+
+        if ($env === 'prod') {
+            $load = sprintf($this->getRootDir().'/config/%s/config.yml', $env, $env);
+        }
+
         $loader->load($load);
     }
 

@@ -188,16 +188,6 @@ class Lesson
         $this->basicWordGames = $basicWordGames;
     }
     /**
-     * @param BasicWordGame $basicWordGame
-     * @return Lesson
-     */
-    public function addBasicWordGame(BasicWordGame $basicWordGame): Lesson
-    {
-        $this->basicWordGames->add($basicWordGame);
-
-        return $this;
-    }
-    /**
      * @param \DateTime|string $createdAt
      *
      * @return Lesson

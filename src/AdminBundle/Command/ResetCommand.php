@@ -50,7 +50,7 @@ class ResetCommand extends ContainerAwareCommand
         exec('/usr/bin/php bin/console do:da:dr --force');
         exec('/usr/bin/php bin/console do:da:cr');
         exec('/usr/bin/php bin/console do:sc:up --force');
-        
+
         $output->writeln('<info>Database reset finished</info>');
     }
     /**

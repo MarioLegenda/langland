@@ -1,15 +1,21 @@
-.header {
-  background: $main-color;
+#header {
 
-  padding: 20px;
+  border-bottom: 1px solid $orange1;
 
-  .header-logo {
-    width: 200px;
+  padding: 10px 0 10px 0;
 
-    color:white;
+  .logo {
+    width: 100px;
+  }
 
-    font-size: 2em;
+  .actions {
+    width: 100px;
 
-    font-family: $language-font;
+    a {
+      display:block;
+      float:right;
+      color: $orange1;
+      text-align: right;
+    }
   }
 }

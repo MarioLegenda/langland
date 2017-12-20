@@ -2,26 +2,28 @@
 
 namespace Library\Listener;
 
-use Library\Exception\Factory\ExceptionLoggingHandlerFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ExceptionLoggingHandlerFactory $exceptionLoggingFactory
+     * @var LoggerInterface $logger
      */
-    private $exceptionLoggingFactory;
+    private $logger;
     /**
      * ExceptionSubscriber constructor.
-     * @param ExceptionLoggingHandlerFactory $exceptionLoggingHandlerFactory
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        ExceptionLoggingHandlerFactory $exceptionLoggingHandlerFactory
+        LoggerInterface $logger
     ) {
-        $this->exceptionLoggingFactory = $exceptionLoggingHandlerFactory;
+        $this->logger = $logger;
     }
     /**
      * @return array
@@ -36,9 +38,31 @@ class ExceptionSubscriber implements EventSubscriberInterface
     }
     /**
      * @param GetResponseForExceptionEvent $event
+     * @throws \Exception
      */
     public function logException(GetResponseForExceptionEvent $event)
     {
-        $this->exceptionLoggingFactory->handle($event->getException());
+        $exception = $event->getException();
+
+        if ($exception instanceof HttpExceptionInterface) {
+            $response = new Response();
+            $response->setStatusCode($exception->getStatusCode());
+
+            $event->setResponse($response);
+
+            return;
+        }
+
+
+        $message = sprintf(
+            'Exception: %s; Message: %s; Stack trace: %s',
+            get_class($exception),
+            $exception->getMessage(),
+            $exception->getTraceAsString()
+        );
+
+        $this->logger->alert($message);
+
+        throw $exception;
     }
 }

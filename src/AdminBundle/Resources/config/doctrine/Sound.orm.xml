@@ -7,7 +7,7 @@
     <entity
             name="AdminBundle\Entity\Sound"
             table="sounds"
-            repository-class="Library\LearningMetadata\Repository\Implementation\SoundRepository">
+            repository-class="LearningMetadata\Repository\Implementation\SoundRepository">
 
         <id name="id" type="integer">
             <generator strategy="AUTO" />

@@ -2,7 +2,6 @@
 
 namespace ArmorBundle\Entity;
 
-use AppBundle\Entity\LearningUser;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -38,10 +37,6 @@ class User implements UserInterface
      * @var ArrayCollection $roles
      */
     private $roles;
-    /**
-     * @var string $gender
-     */
-    private $gender;
     /**
      * @var string $confirmHash
      */
@@ -241,23 +236,6 @@ class User implements UserInterface
                 $this->addRole($role);
             }
         }
-    }
-    /**
-     * @return mixed
-     */
-    public function getGender()
-    {
-        return $this->gender;
-    }
-    /**
-     * @param mixed $gender
-     * @return UserInterface
-     */
-    public function setGender($gender) : UserInterface
-    {
-        $this->gender = $gender;
-
-        return $this;
     }
     /**
      * @return mixed

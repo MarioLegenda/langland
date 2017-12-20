@@ -2,13 +2,12 @@
 
 namespace AdminBundle\Command\Helper;
 
-use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Course;
 use Doctrine\ORM\EntityManagerInterface;
-use Library\LearningMetadata\Business\ViewModel\Lesson\LessonText;
-use Library\LearningMetadata\Business\ViewModel\Lesson\LessonView;
-use Library\LearningMetadata\Business\ViewModel\Lesson\Tip;
+use LearningMetadata\Business\ViewModel\Lesson\LessonText;
+use LearningMetadata\Business\ViewModel\Lesson\LessonView;
+use LearningMetadata\Business\ViewModel\Lesson\Tip;
 use Ramsey\Uuid\Uuid;
 
 class LessonFactory

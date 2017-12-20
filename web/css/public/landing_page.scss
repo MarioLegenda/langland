@@ -1,55 +1,54 @@
-.landing-page {
-  .action {
-    width: 70%;
-    overflow: hidden;
+#landing-page {
+  .greeting-wrapper {
+    width: 480px;
+    margin: 17% auto;
+    float:left;
+  }
 
-    margin: 0 auto;
-    margin-top: 15%;
-
-    .sign-up-title {
-      font-family: $mallanna;
-      color: white;
-      font-size: 4em;
-      text-align: center;
+  .greeting {
+    .main-title-1 {
+      color: $orange1;
+      font-size: 40px;
     }
 
-    .sign-up-buttons {
+    .main-title-2 {
+      color: $orange2;
+      font-size: 20px;
 
-      width: 500px;
+      margin-left: 199px;
 
-      margin: 0 auto;
+      span {
+        margin-right: 15px;
+        font-size: 15px;
+      }
+    }
+  }
 
-      margin-bottom: 20px;
+  .actions {
+    a {
+      width: 100%;
+      display: block;
+      float: right;
+      text-align: right;
 
-      a {
-        display:block;
-        float:left;
+      margin-top: 50px;
+      margin-right: 90px;
 
-        box-sizing: border-box;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
+      padding-bottom: 5px;
 
-        width: 230px;
+      color: $orange1;
 
-        font-family: $mallanna;
-        background: none;
+      border-bottom: 1px solid $orange1;
 
-        padding: 15px;
+      -webkit-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+      -moz-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+      -o-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+      transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
 
-        color:white;
-
-        text-align: center;
-
-        margin-left: 10px;
-
-        border: 1px solid white;
-
-        border-radius: 20px;
-
-        &:hover {
-          background-color: white;
-          color: $publicMainColor;
-        }
+      &:hover {
+        padding-right: 10px;
+        color: $orange2;
+        border-bottom: 1px solid $orange2;
       }
     }
   }

@@ -70,7 +70,6 @@ class AdminUserCreateCommand extends UserCreateCommand
         $user->setPassword($password);
         $user->setName($data['name']);
         $user->setLastname($data['lastname']);
-        $user->setGender($data['gender']);
 
         /** @var Role $role */
         foreach ($data['roles'] as $role) {
@@ -92,7 +91,6 @@ class AdminUserCreateCommand extends UserCreateCommand
             return [
                 'name' => $this->askForName($input, $output),
                 'lastname' => $this->askForLastname($input, $output),
-                'gender' => $this->askForGender($input, $output),
                 'username' => $this->askForUsername($input, $output),
                 'password' => $this->askForPassword($input, $output),
                 'roles' => $this->askForRoles($input, $output)
@@ -104,22 +102,6 @@ class AdminUserCreateCommand extends UserCreateCommand
 
             return [];
         }
-    }
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return string
-     */
-    public function askForGender(InputInterface $input, OutputInterface $output): string
-    {
-        $question = new ChoiceQuestion('Gender', [
-            'male',
-            'female',
-        ]);
-
-        $answer = $this->getHelper('question')->ask($input, $output, $question);
-
-        return $answer;
     }
     /**
      * @param InputInterface $input

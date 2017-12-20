@@ -23,5 +23,6 @@ class CommonExtension extends Extension
         $loader->load('data_provider.xml');
         $loader->load('library.xml');
         $loader->load('listener.xml');
+        $loader->load('blue_dot.xml');
     }
 }

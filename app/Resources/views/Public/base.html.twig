@@ -6,27 +6,23 @@
 
     <title>{% block title %}LangLand{% endblock %}</title>
 
-    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Palanquin+Dark:400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
 
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('dist/css/public.css') ~ '?v=' ~ random(9999999) }}" />
+        <link rel="stylesheet" href="{{ asset('css/public.css') ~ '?v=' ~ random(9999999) }}" />
     {% endblock %}
 
 </head>
 
 <body>
 
-<div class="container-full-width app">
+<div class="container-full-width">
+
+    {% include 'Public/header.html.twig' %}
 
     {% block content %}{% endblock %}
 
 </div>
-
-{% block javascripts %}
-    <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/public/public.js') }}"></script>
-{%  endblock %}
 
 </body>
 </html>

@@ -1,0 +1,4 @@
+app_language_index:
+    path: /
+    defaults: { _controller: langland.static.controller.language_index:languageIndexAction }
+    methods: [GET]

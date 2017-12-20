@@ -7,13 +7,10 @@
     <services>
         <service
                 id="langland.public_api.repository.lesson"
-                class="Library\Lesson\Repository\LessonRepository">
+                class="PublicApi\Lesson\Repository\LessonRepository">
 
-            <factory class="Library\Infrastructure\Repository\RepositoryFactory" method="getRepository"/>
-
-            <argument type="service" id="doctrine.orm.default_entity_manager" />
-            <argument>AdminBundle\Entity\Lesson</argument>
-            <argument>Library\Lesson\Repository\LessonRepository</argument>
+            <argument type="service" id="langland.common.blue_dot" />
+            <argument>public_api_lesson</argument>
         </service>
     </services>
 </container>

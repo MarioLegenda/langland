@@ -3,7 +3,7 @@
   <entity
           name="AdminBundle\Entity\LanguageInfoText"
           table="language_info_texts"
-          repository-class="Library\LearningMetadata\Repository\Implementation\LanguageInfoTextRepository"
+          repository-class="LearningMetadata\Repository\Implementation\LanguageInfoTextRepository"
   >
 
     <id name="id" type="integer" column="id">

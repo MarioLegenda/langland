@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.learning_metadata.repository.language"
-                class="Library\LearningMetadata\Repository\Implementation\LanguageRepository">
+                class="LearningMetadata\Repository\Implementation\LanguageRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -16,7 +16,7 @@
 
         <service
                 id="langland.learning_metadata.repository.image"
-                class="Library\LearningMetadata\Repository\Implementation\ImageRepository">
+                class="LearningMetadata\Repository\Implementation\ImageRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -25,7 +25,7 @@
 
         <service
                 id="langland.learning_metadata.repository.category"
-                class="Library\LearningMetadata\Repository\Implementation\CategoryRepository">
+                class="LearningMetadata\Repository\Implementation\CategoryRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -34,7 +34,7 @@
 
         <service
                 id="langland.learning_metadata.repository.word"
-                class="Library\LearningMetadata\Repository\Implementation\WordRepository">
+                class="LearningMetadata\Repository\Implementation\WordRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -43,7 +43,7 @@
 
         <service
                 id="langland.learning_metadata.repository.language_info"
-                class="Library\LearningMetadata\Repository\Implementation\LanguageInfoRepository">
+                class="LearningMetadata\Repository\Implementation\LanguageInfoRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -52,7 +52,7 @@
 
         <service
                 id="langland.learning_metadata.repository.language_info_text"
-                class="Library\LearningMetadata\Repository\Implementation\LanguageInfoTextRepository">
+                class="LearningMetadata\Repository\Implementation\LanguageInfoTextRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -61,7 +61,7 @@
 
         <service
                 id="langland.learning_metadata.repository.sound"
-                class="Library\LearningMetadata\Repository\Implementation\SoundRepository">
+                class="LearningMetadata\Repository\Implementation\SoundRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -70,7 +70,7 @@
 
         <service
                 id="langland.learning_metadata.repository.course"
-                class="Library\LearningMetadata\Repository\Implementation\CourseRepository">
+                class="LearningMetadata\Repository\Implementation\CourseRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 
@@ -79,7 +79,7 @@
 
         <service
                 id="langland.learning_metadata.repository.lesson"
-                class="Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository">
+                class="LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
 

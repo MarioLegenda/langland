@@ -7,60 +7,61 @@
     <services>
         <service
                 id="langland.learning_metadata.controller.dashboard"
-                class="Library\LearningMetadata\Business\Controller\DashboardController">
+                class="LearningMetadata\Business\Controller\DashboardController">
 
             <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
         </service>
 
         <service
                 id="langland.learning_metadata.controller.language"
-                class="Library\LearningMetadata\Business\Controller\LanguageController">
+                class="LearningMetadata\Business\Controller\LanguageController">
 
             <argument type="service" id="langland.learning_metadata.business.implementation.language" />
         </service>
 
         <service
                 id="langland.learning_metadata.controller.category"
-                class="Library\LearningMetadata\Business\Controller\CategoryController">
+                class="LearningMetadata\Business\Controller\CategoryController">
 
             <argument type="service" id="langland.learning_metadata.business.implementation.category" />
         </service>
 
         <service
                 id="langland.learning_metadata.controller.word"
-                class="Library\LearningMetadata\Business\Controller\WordController">
+                class="LearningMetadata\Business\Controller\WordController">
 
             <argument type="service" id="langland.learning_metadata.business.implementation.word" />
         </service>
 
         <service
                 id="langland.learning_metadata.controller.language_info"
-                class="Library\LearningMetadata\Business\Controller\LanguageInfoController">
+                class="LearningMetadata\Business\Controller\LanguageInfoController">
 
             <argument type="service" id="langland.learning_metadata.business.implementation.language_info" />
         </service>
 
         <service
                 id="langland.learning_metadata.controller.sound"
-                class="Library\LearningMetadata\Business\Controller\SoundController">
+                class="LearningMetadata\Business\Controller\SoundController">
 
             <argument type="service" id="langland.learning_metadata.business.implementation.sound" />
         </service>
 
         <service
                 id="langland.learning_metadata.controller.course"
-                class="Library\LearningMetadata\Business\Controller\CourseController">
+                class="LearningMetadata\Business\Controller\CourseController">
 
             <argument type="service" id="langland.learning_metadata.business.implementation.course" />
         </service>
 
         <service
                 id="langland.learning_metadata.controller.lesson"
-                class="Library\LearningMetadata\Business\Controller\CourseManagment\LessonController">
+                class="LearningMetadata\Business\Controller\CourseManagment\LessonController">
 
             <argument type="service" id="langland.learning_metadata.business.implementation.lesson" />
             <argument type="service" id="langland.learning_metadata.business.implementation.course" />
             <argument type="service" id="library.deserializer" />
         </service>
+
     </services>
 </container>

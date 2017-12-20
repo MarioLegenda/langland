@@ -4,16 +4,19 @@
   <entity
           name="AdminBundle\Entity\Lesson"
           table="lessons"
-          repository-class="Library\LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository">
+          repository-class="LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository">
 
     <id name="id" type="integer" column="id">
       <generator strategy="AUTO"/>
     </id>
 
-    <field name="name" type="string" nullable="false" />
+    <field name="name" type="string" nullable="false" unique="true" />
     <field name="lessonOrder" type="integer" nullable="false" />
-    <field name="uuid" type="string" nullable="false" />
+    <field name="uuid" type="string" nullable="false" unique="true"/>
     <field name="jsonLesson" type="json_array" nullable="false" />
+
+    <field name="createdAt" column="created_at" type="datetime" nullable="false" />
+    <field name="updatedAt" column="updated_at" type="datetime" nullable="true" />
 
     <many-to-one target-entity="AdminBundle\Entity\Course" field="course" inversed-by="lessons">
       <join-column name="course_id" referenced-column-name="id" />

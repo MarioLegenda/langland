@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use LearningSystem\Infrastructure\Type\WordLevelType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -28,6 +29,10 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
      * @var string $description
      */
     private $description;
+    /**
+     * @var int $level
+     */
+    private $level;
     /**
      * @var string $pluralForm
      */
@@ -218,6 +223,23 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
         return $this;
     }
     /**
+     * @return int
+     */
+    public function getLevel(): ?int
+    {
+        return $this->level;
+    }
+    /**
+     * @param int $level
+     * @return Word
+     */
+    public function setLevel(int $level): Word
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+    /**
      * @return string
      */
     public function getPluralForm()
@@ -290,6 +312,12 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
         if (count($this->getTranslations()) > 25) {
             $context->buildViolation('There can be only up to 25 translations for a word')
                 ->atPath('translations')
+                ->addViolation();
+        }
+
+        if ($this->getLevel() < 0 || $this->getLevel() > 4) {
+            $context->buildViolation('Level can be in range from 1 to 5')
+                ->atPath('level')
                 ->addViolation();
         }
     }

@@ -7,7 +7,7 @@
     <entity
             name="AdminBundle\Entity\Category"
             table="categories"
-            repository-class="Library\LearningMetadata\Repository\Implementation\CategoryRepository">
+            repository-class="LearningMetadata\Repository\Implementation\CategoryRepository">
 
         <id name="id" type="integer">
             <generator strategy="AUTO" />

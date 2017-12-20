@@ -5,7 +5,7 @@
         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <entity
-            repository-class="Library\LearningMetadata\Repository\Implementation\LanguageRepository"
+            repository-class="LearningMetadata\Repository\Implementation\LanguageRepository"
             name="AdminBundle\Entity\Language"
             table="languages">
 

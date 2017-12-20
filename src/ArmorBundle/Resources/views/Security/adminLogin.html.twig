@@ -1,49 +1,51 @@
 {% extends '::Public/base.html.twig' %}
 
 {% block content %}
+    <div class="user-action">
+        {% if error %}
+            <div class="error margin-bottom-20">{{ error }}</div>
+        {% endif %}
 
+        {% if app.session.flashBag.has('user_created_notice') %}
+            <div class="success margin-bottom-20">
+                {{ app.session.flashBag.get('user_created_notice')[0] }}
+            </div>
+        {% endif %}
 
-    <a href="{{ path('public_homepage') }}">LangLand</a>
-
-    <div class="user-actions">
-        <div class="user-action align-left">
-            <p class="full-width align-left">Enter your email and password <span class="highlight">to sign in</span> on admin</p>
-
-            {% if error %}
-                <div class="error margin-bottom-40">{{ error }}</div>
-            {% endif %}
-
-            {% if app.session.flashBag.has('user_created_notice') %}
-                <div class="success margin-bottom-20">
-                    {{ app.session.flashBag.get('user_created_notice')[0] }}
-                </div>
-            {% endif %}
-
-            <form action="{{ path(action_path) }}" method="post">
-                <div class="form-row margin-bottom-10 full-width align-left border-top border-bottom">
-                    <div>
+        <form action="{{ path(action_path) }}" method="post">
+            <div class="row">
+                <div class="field-wrapper">
+                    <div class="field">
                         <label for="username">EMAIL <span class="highlight">*</span></label>
+                    </div>
+
+                    <div class="field-right">
                         <input type="text" id="username" name="_username" value="{{ last_username }}" placeholder="Your username" />
                     </div>
                 </div>
+            </div>
 
-                <div class="form-row full-width align-left border-bottom">
-                    <div>
+            <div class="row">
+                <div class="field-wrapper">
+                    <div class="field">
                         <label for="password">PASSWORD <span class="highlight">*</span></label>
+                    </div>
+
+                    <div class="field-right">
                         <input type="password" id="password" name="_password" placeholder="Your password" />
                     </div>
                 </div>
+            </div>
 
-                {#
-                    If you want to control the URL the user
-                    is redirected to on success (more details below)
-                    <input type="hidden" name="_target_path" value="/account" />
-                #}
+            {#
+                If you want to control the URL the user
+                is redirected to on success (more details below)
+                <input type="hidden" name="_target_path" value="/account" />
+            #}
 
-                <div class="action-button full-width align-left">
-                    <button type="submit" name="submit">SIGN IN</button>
-                </div>
-            </form>
-        </div>
+            <div class="button-wrapper">
+                <button type="submit" name="submit">Login</button>
+            </div>
+        </form>
     </div>
 {% endblock %}

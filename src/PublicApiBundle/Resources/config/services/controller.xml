@@ -7,9 +7,16 @@
     <services>
         <service
                 id="langland.public_api.controller.lesson"
-                class="Library\Lesson\Business\Controller\LessonController">
+                class="PublicApi\Lesson\Business\Controller\LessonController">
 
             <argument type="service" id="langland.public_api.business.implementation.lesson" />
+        </service>
+
+        <service
+                id="langland.static.controller.language_index"
+                class="PublicApi\StaticPage\Business\Controller\StaticController">
+
+            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
         </service>
     </services>
 </container>

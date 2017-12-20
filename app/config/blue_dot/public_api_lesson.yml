@@ -1,0 +1,16 @@
+configuration:
+    connection:
+        host: 127.0.0.1
+        database_name: langland
+        user: root
+        password: root
+
+    sql_import: imports/public_api_lesson.yml
+
+    simple:
+        select:
+            find_lesson_by_id:
+                sql: public_api.lesson.find_by_id
+                parameters: [id]
+                model:
+                    object: AdminBundle\Entity\Lesson

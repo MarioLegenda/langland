@@ -7,10 +7,7 @@ use AdminBundle\Command\Helper\CourseFactory;
 use AdminBundle\Command\Helper\LanguageFactory;
 use AdminBundle\Command\Helper\LanguageInfoFactory;
 use AdminBundle\Command\Helper\LessonFactory;
-use AdminBundle\Command\Helper\QuestionGameFactory;
-use AdminBundle\Command\Helper\SentenceFactory;
 use AdminBundle\Command\Helper\WordFactory;
-use AdminBundle\Command\Helper\WordGameFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -65,8 +62,13 @@ class SeedCommand extends ContainerAwareCommand
 
         $courses = $this->getContainer()->get('langland.learning_metadata.repository.course')->findAll();
 
+        $lessons = [];
         foreach ($courses as $course) {
-            $lessonFactory->create($course, 10);
+            $lessons = $lessonFactory->create($course, 10);
+        }
+
+        if (empty($lessons)) {
+            throw new \RuntimeException('Seeding went wrong. There are no created lessons');
         }
     }
 }

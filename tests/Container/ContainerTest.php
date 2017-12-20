@@ -34,6 +34,7 @@ class ContainerTest extends ContainerAwareTest
             'sound',
             'course',
             'lesson',
+            'basic_word_game',
         ];
     }
 

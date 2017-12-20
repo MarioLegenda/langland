@@ -7,6 +7,8 @@
 
             {% include '::Admin/Template/Form/field.html.twig' with {'field': form.language, 'description': 'choose a language for this word' } only %}
 
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.level, 'description': 'choose this words learning level' } only %}
+
             {% include '::Admin/Template/Form/field.html.twig' with {'field': form.name, 'description': 'the word to be translated' } only %}
 
             {% include '::Admin/Template/Form/field.html.twig' with {'field': form.pluralForm, 'description': 'plural form of the word' } only %}
@@ -41,7 +43,6 @@
         </form>
     </div>
 </div>
->>>>>>> Stashed changes
 <div class="row">
     <div class="col-sm-10">
         {{ form_errors(form) }}

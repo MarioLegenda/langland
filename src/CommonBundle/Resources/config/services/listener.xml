@@ -8,7 +8,7 @@
         <service id="langland.common.exception_subscriber"
                  class="Library\Listener\ExceptionSubscriber">
 
-            <argument type="service" id="library.exception.exception_handler" />
+            <argument type="service" id="monolog.logger.generic_exception" />
 
             <tag name="kernel.event_subscriber" />
         </service>

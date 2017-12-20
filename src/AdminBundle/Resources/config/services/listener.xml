@@ -15,7 +15,7 @@
         </service>
 
         <service id="langland.listener.image_upload_listener"
-                 class="Library\LearningMetadata\Business\Listener\ImageUploadListener">
+                 class="LearningMetadata\Business\Listener\ImageUploadListener">
 
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="library.image_upload" />
@@ -24,7 +24,7 @@
         </service>
 
         <service id="langland.listener.audio_upload_listener"
-                 class="Library\LearningMetadata\Business\Listener\AudioUploadListener">
+                 class="LearningMetadata\Business\Listener\AudioUploadListener">
 
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument type="service" id="library.audio_upload" />

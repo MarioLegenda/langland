@@ -12,9 +12,9 @@
 
     <title>{% block title %}LangLand{% endblock %}</title>
 
-    {% block stylesheets %}
-        <link href="https://fonts.googleapis.com/css?family=Mallanna" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
 
+    {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}"/>
         <link rel="stylesheet" href="{{ asset('dist/css/app.css') ~ version }}" />
     {% endblock %}
@@ -29,10 +29,7 @@
 </div>
 
 {% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js"></script>
     <script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
-
-    <script src="{{ asset('dist/js/app/bundle.js') ~ version }}"></script>
 {% endblock %}
 
 </body>

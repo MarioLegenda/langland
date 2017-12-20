@@ -1,3 +1,6 @@
 [submodule "lib/bluedot"]
 	path = lib/bluedot
 	url = https://github.com/MarioLegenda/blue-dot
+[submodule "submodules/blue-dot"]
+	path = submodules/blue-dot
+	url = git@github.com:MarioLegenda/blue-dot.git

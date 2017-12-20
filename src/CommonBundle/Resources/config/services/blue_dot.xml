@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="langland.common.factory.blue_dot"
+                class="Library\Infrastructure\BlueDot\Factory\BlueDotFactory">
+
+            <argument type="service" id="doctrine.dbal.default_connection" />
+            <argument>%blue_dot_dir%</argument>
+        </service>
+
+        <service id="langland.common.blue_dot"
+                 class="BlueDot\BlueDot">
+
+            <factory service="langland.common.factory.blue_dot" method="createBlueDot" />
+        </service>
+    </services>
+</container>

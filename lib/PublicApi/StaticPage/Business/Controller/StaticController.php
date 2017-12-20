@@ -1,6 +1,6 @@
 <?php
 
-namespace Library\App\Business\Controller;
+namespace PublicApi\StaticPage\Business\Controller;
 
 use LearningMetadata\Presentation\Template\TemplateWrapper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;

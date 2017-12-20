@@ -14,7 +14,7 @@
 
         <service
                 id="langland.static.controller.language_index"
-                class="Library\App\Business\Controller\StaticController">
+                class="PublicApi\StaticPage\Business\Controller\StaticController">
 
             <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
         </service>

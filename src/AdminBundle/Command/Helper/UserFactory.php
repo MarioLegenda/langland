@@ -28,7 +28,7 @@ class UserFactory
         $this->encoder = $encoder;
     }
 
-    public function create(string $username, string $password, Role $role) : UserFactory
+    public function create(string $username, string $password, array $roles) : UserFactory
     {
         $user = new User();
         $user->setUsername($username);
@@ -37,7 +37,15 @@ class UserFactory
         $user->setName('Mile');
         $user->setLastname('Mile');
 
-        $user->addRole($role);
+        foreach ($roles as $role) {
+            if (!$role instanceof Role) {
+                $message = sprintf('Roles is not an instance of %s', Role::class);
+
+                throw new \RuntimeException($message);
+            }
+
+            $user->addRole($role);
+        }
 
         $user->setEnabled(true);
 

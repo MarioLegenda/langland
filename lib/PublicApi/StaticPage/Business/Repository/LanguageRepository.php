@@ -1,6 +1,6 @@
 <?php
 
-namespace Library\App\Business\Repository;
+namespace PublicApi\StaticPage\Business\Repository;
 
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 

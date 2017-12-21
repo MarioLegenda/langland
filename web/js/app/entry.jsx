@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {factory} from "./source/preload";
 import {global} from "../global/constants";
+import {factory} from "./source/preload";
 
 const Preload = factory().preload();
 

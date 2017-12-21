@@ -1,6 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
+import {factory} from "./source/preload";
+import {global} from "../global/constants";
+
+const Preload = factory().preload();
+
+Preload.loadImages([]);
+
+console.log(global.base_url);
+/*import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {HeaderContainer as Header} from "./module/header.jsx";
 import {LanguageListContainer} from "./module/languages.jsx";
@@ -39,7 +48,7 @@ function App() {
 ReactDOM.render(
     <App/>,
     document.getElementById('react-app')
-);
+);*/
 
 
 

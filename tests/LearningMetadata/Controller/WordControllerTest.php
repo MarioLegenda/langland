@@ -58,7 +58,7 @@ class WordControllerTest extends LanglandAdminTestCase
 
         $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
-        $this->assertEquals(3, iterator_count($editedFi));
+        $this->assertEquals(2, iterator_count($editedFi));
 
     }
 
@@ -98,7 +98,7 @@ class WordControllerTest extends LanglandAdminTestCase
 
         $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
 
-        $this->assertEquals(3, iterator_count($editedFi));
+        $this->assertEquals(2, iterator_count($editedFi));
     }
 
     public function testIndex()
@@ -122,17 +122,9 @@ class WordControllerTest extends LanglandAdminTestCase
                 'value' => 'Text',
             ),
             array(
-                'name' => 'form[image][imageFile]',
-                'value' => __DIR__.'/testImages/fr.png',
-            ),
-            array(
                 'name' => 'form[showOnPage]',
                 'value' => true,
             ),
         ));
-
-        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
-
-        $this->assertEquals(1, iterator_count($fi));
     }
 }

@@ -37,69 +37,8 @@ class ImageUploadListener
      */
     public function onUpload(ImageUploadEvent $event)
     {
-        if ($event->getEntity() instanceof Language) {
-            $this->uploadLanguageIcon($event->getEntity());
-        }
-
         if ($event->getEntity() instanceof Word) {
             $this->uploadWordImage($event->getEntity());
-        }
-    }
-    /**
-     * @param Language $language
-     */
-    private function uploadLanguageIcon(Language $language)
-    {
-        $existingImage = null;
-        if ($language->getImage()->getImageFile() instanceof UploadedFile) {
-            $dbImage = $this->em->getRepository('AdminBundle:Image')->findBy(array(
-                'language' => $language,
-            ));
-
-            if (!empty($dbImage)) {
-                $image = $dbImage[0];
-
-                $file = $image->getTargetDir().'/'.$image->getName();
-
-                if (file_exists($file)) {
-                    unlink($image->getTargetDir().'/'.$image->getName());
-                }
-
-                $existingImage = $image;
-            }
-        }
-
-        if ($language->getImage()->getImageFile() instanceof UploadedFile) {
-            $this->imageUpload->upload($language->getImage()->getImageFile(), array(
-                'repository' => 'AdminBundle:Image',
-                'field' => 'name',
-            ));
-
-            $data = $this->imageUpload->getData();
-
-            if ($existingImage instanceof Image) {
-                $existingImage
-                    ->setName($data['fileName'])
-                    ->setOriginalName($data['originalName'])
-                    ->setRelativePath($data['relativePath'])
-                    ->setTargetDir($data['targetDir'])
-                    ->setFullPath($data['fullPath']);
-
-                $this->em->persist($existingImage);
-                $this->em->flush();
-
-                return;
-            }
-
-            $language->getImage()
-                ->setName($data['fileName'])
-                ->setOriginalName($data['originalName'])
-                ->setRelativePath($data['relativePath'])
-                ->setTargetDir($data['targetDir'])
-                ->setFullPath($data['fullPath']);
-
-            $language->getImage()->setLanguage($language);
-            $this->em->persist($language->getImage());
         }
     }
     /**

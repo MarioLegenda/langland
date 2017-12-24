@@ -83,10 +83,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
                     'value' => $faker->text(255),
                 ),
                 array(
-                    'name' => 'form[image][imageFile]',
-                    'value' => __DIR__.'/testImages/fr.png',
-                ),
-                array(
                     'name' => 'form[showOnPage]',
                     'value' => true,
                 ),
@@ -94,11 +90,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
 
             ++$count;
         }
-
-        // test that there is only one image uploaded for each language
-        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
-
-        $this->assertEquals($count, iterator_count($fi));
     }
 
     public function test_update()
@@ -134,10 +125,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
                     'value' => $faker->text(255),
                 ),
                 array(
-                    'name' => 'form[image][imageFile]',
-                    'value' => __DIR__.'/testImages/fr.png',
-                ),
-                array(
                     'name' => 'form[showOnPage]',
                     'value' => true,
                 ),
@@ -145,10 +132,6 @@ class LanguageControllerTest extends LanglandAdminTestCase
 
             ++$count;
         });
-
-        $editedFi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
-
-        $this->assertEquals($count, iterator_count($editedFi));
     }
 
     public function test_index()

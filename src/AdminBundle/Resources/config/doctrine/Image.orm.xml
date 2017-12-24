@@ -25,9 +25,6 @@
         <many-to-one field="word" target-entity="AdminBundle\Entity\Word">
         </many-to-one>
 
-        <many-to-one field="language" target-entity="AdminBundle\Entity\Language">
-        </many-to-one>
-
         <lifecycle-callbacks>
             <lifecycle-callback type="prePersist" method="updateTimestamps" />
             <lifecycle-callback type="preUpdate" method="updateTimestamps" />

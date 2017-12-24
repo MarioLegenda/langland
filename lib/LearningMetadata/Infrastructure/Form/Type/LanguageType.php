@@ -23,8 +23,7 @@ class LanguageType extends AbstractType
         $this
             ->addTextType('Language name: ', 'name', $builder)
             ->addCheckboxType('Show on page', 'showOnPage', $builder)
-            ->addTextareaType('Description', 'listDescription', $builder)
-            ->addImageType('image', $builder);
+            ->addTextareaType('Description', 'listDescription', $builder);
     }
     /**
      * @return string

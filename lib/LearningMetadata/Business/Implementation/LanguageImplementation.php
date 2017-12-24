@@ -131,8 +131,6 @@ class LanguageImplementation
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(ImageUploadEvent::class, $language);
-
             $this->languageRepository->persistAndFlush($language);
 
             $this->session->getFlashBag()->add(
@@ -171,14 +169,10 @@ class LanguageImplementation
             throw new NotFoundHttpException();
         }
 
-        $this->setImageIfExists($language);
-
         $form = $this->createForm($language);
         $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
-            $this->dispatchEvent(ImageUploadEvent::class, $language);
-
             $this->languageRepository->persistAndFlush($language);
 
             $this->session->getFlashBag()->add(
@@ -221,29 +215,5 @@ class LanguageImplementation
         $language = $this->languageRepository->find($id);
 
         return $language;
-    }
-    /**
-     * @param string $eventClass
-     * @param $entity
-     * @return void
-     */
-    protected function dispatchEvent(string $eventClass, $entity)
-    {
-        $event = new $eventClass($entity);
-
-        $this->eventDispatcher->dispatch($event::NAME, $event);
-    }
-    /**
-     * @param Language $language
-     */
-    private function setImageIfExists(Language $language)
-    {
-        $image = $this->imageRepository->findBy(array(
-            'language' => $language,
-        ));
-
-        if (!empty($image)) {
-            $language->setImage($image[0]);
-        }
     }
 }

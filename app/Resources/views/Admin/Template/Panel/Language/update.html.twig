@@ -9,14 +9,6 @@
 
             {% include '::Admin/Template/Form/field.html.twig' with {'field': form.listDescription, 'description': 'This field will be shown in frontend language list' } only %}
 
-            {% include '::Admin/Template/Form/imageField.html.twig' with {'field': form.image, 'description': 'Upload an icon that will be shown in the language list' } only %}
-
-            {% if language.image is not empty %}
-                <div class="row" style="margin-bottom: 25px; margin-left: 1px">
-                    <img class="img-thumbnail" width="128px" height="128px" src="{{language.image.relativePath ~ language.image.name }}" />
-                </div>
-            {% endif %}
-
             {% include '::Admin/Template/Form/checkbox.html.twig' with {'field': form.showOnPage, 'description': 'Is this language ready for production?' } only %}
 
             {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Edit'} %}

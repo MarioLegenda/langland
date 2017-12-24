@@ -154,17 +154,9 @@ class CourseControllerTest extends LanglandAdminTestCase
                 'value' => 'Text',
             ),
             array(
-                'name' => 'form[image][imageFile]',
-                'value' => __DIR__.'/testImages/fr.png',
-            ),
-            array(
                 'name' => 'form[showOnPage]',
                 'value' => true,
             ),
         ));
-
-        $fi = new FilesystemIterator(__DIR__.'/../../uploads/images', FilesystemIterator::SKIP_DOTS);
-
-        $this->assertEquals(1, iterator_count($fi));
     }
 }

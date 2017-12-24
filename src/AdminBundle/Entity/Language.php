@@ -21,14 +21,6 @@ class Language
      */
     private $listDescription;
     /**
-     * @var $languageIcon
-     */
-    private $image;
-    /**
-     * @var $viewImage
-     */
-    private $viewImage;
-    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -99,34 +91,6 @@ class Language
         $this->listDescription = $listDescription;
 
         return $this;
-    }
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-    /**
-     * @param mixed $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
-    /**
-     * @return LanguageImage
-     */
-    public function getViewImage()
-    {
-        return $this->viewImage;
-    }
-    /**
-     * @param LanguageImage $viewImage
-     */
-    public function setViewImage($viewImage = null)
-    {
-        $this->viewImage = $viewImage;
     }
     /**
      * @return \DateTime

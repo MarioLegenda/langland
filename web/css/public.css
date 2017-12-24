@@ -175,31 +175,59 @@ body {
   font-size: 16px;
   background-color: white; }
 
-.header {
-  margin: 0 auto;
-  color: #F16C20; }
-  .header .title-wrapper {
+#main_content header {
+  width: 100%;
+  float: left; }
+  #main_content header .title-wrapper {
     width: 480px;
     margin: 0 auto;
     margin-top: 35px; }
-    .header .title-wrapper .decorate-border {
+    #main_content header .title-wrapper .decorate-border {
       display: block;
       width: 70px;
       border: 1px solid #F16C20;
       margin-top: 28px; }
-    .header .title-wrapper .decorate-border-left {
+    #main_content header .title-wrapper .decorate-border-left {
       float: left;
       margin-left: 70px; }
-    .header .title-wrapper .decorate-border-right {
+    #main_content header .title-wrapper .decorate-border-right {
       float: right;
       margin-right: 70px; }
-    .header .title-wrapper h1 {
+    #main_content header .title-wrapper h1 {
       width: 170px;
       float: left;
       margin-left: 12px;
       text-align: center;
       font-size: 40px;
+      color: #F16C20;
       padding: 5px; }
+
+#main_content .languages-wrapper {
+  width: 100%;
+  float: left;
+  margin: 35px 0 0 0;
+  background-color: #F16C20; }
+  #main_content .languages-wrapper .language {
+    width: 960px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 10px;
+    border-bottom: 1px solid #F16C20; }
+    #main_content .languages-wrapper .language .title-wrapper {
+      width: 100%;
+      float: left;
+      padding: 0 0 10px 0;
+      border-bottom: 1px solid #F16C20; }
+      #main_content .languages-wrapper .language .title-wrapper h1 {
+        color: #F16C20; }
+    #main_content .languages-wrapper .language .description-wrapper {
+      width: 480px;
+      float: left;
+      margin: 10px 0 0 0; }
+      #main_content .languages-wrapper .language .description-wrapper p {
+        color: #352a2a;
+        letter-spacing: 0.15em;
+        line-height: 1.4em; }
 
 #header {
   border-bottom: 1px solid #F16C20;

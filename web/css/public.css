@@ -215,11 +215,22 @@ body {
     padding: 10px;
     border-bottom: 1px solid #F16C20; }
     #main_content .languages-wrapper .language .title-wrapper {
+      position: relative;
       width: 100%;
       float: left;
       padding: 0 0 10px 0;
       border-bottom: 1px solid #F16C20; }
+      #main_content .languages-wrapper .language .title-wrapper .icon {
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: -8px;
+        left: 0;
+        float: left;
+        background: url("/images/french/icon.png") no-repeat center;
+        background-size: contain; }
       #main_content .languages-wrapper .language .title-wrapper h1 {
+        padding-left: 45px;
         color: #F16C20; }
     #main_content .languages-wrapper .language .description-wrapper {
       width: 480px;
@@ -237,6 +248,27 @@ body {
         display: block;
         width: 100%;
         float: left; }
+    #main_content .languages-wrapper .language .button-wrapper {
+      width: 100%;
+      float: left;
+      margin: 50px 0 0 0; }
+      #main_content .languages-wrapper .language .button-wrapper button {
+        display: block;
+        border: none;
+        background: none;
+        padding: 0 0 5px 0;
+        float: right;
+        margin: 0 auto;
+        font-family: "Playfair Display", serif;
+        font-size: 20px;
+        transition: color 0.5s, border-bottom 0.5s;
+        -webkit-transition: color 0.5s, border-bottom 0.5s;
+        -moz-transition: color 0.5s, border-bottom 0.5s;
+        -o-transition: color 0.5s, border-bottom 0.5s;
+        color: #F16C20; }
+        #main_content .languages-wrapper .language .button-wrapper button:hover {
+          color: #C2561A;
+          cursor: pointer; }
 
 #header {
   border-bottom: 1px solid #F16C20;

@@ -1,0 +1,6 @@
+get_all_languages:
+    path: /
+    defaults: { _controller: langland.public_api.controller.language:getAll }
+    methods: [GET]
+    requirements:
+        _format: json

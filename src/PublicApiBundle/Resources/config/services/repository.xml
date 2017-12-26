@@ -12,5 +12,13 @@
             <argument type="service" id="langland.common.blue_dot" />
             <argument>public_api_lesson</argument>
         </service>
+
+        <service
+                id="langland.public_api.repository.language"
+                class="PublicApi\Language\Repository\LanguageRepository">
+
+            <argument type="service" id="langland.common.blue_dot" />
+            <argument>public_api_language</argument>
+        </service>
     </services>
 </container>

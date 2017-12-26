@@ -1,0 +1,18 @@
+configuration:
+    connection:
+        host: 127.0.0.1
+        database_name: langland
+        user: root
+        password: root
+
+    sql_import: imports/public_api_language.yml
+
+    simple:
+        select:
+            find_all_languages:
+                sql: public_api.language.find_all_languages
+
+    callable:
+        find_all_languages:
+            type: object
+            name: PublicApi\Language\Repository\BlueDotCallable\FindAllLanguagesCallable

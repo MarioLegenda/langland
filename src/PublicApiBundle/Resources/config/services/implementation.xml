@@ -12,5 +12,12 @@
             <argument type="service" id="langland.public_api.repository.lesson" />
             <argument type="service" id="library.common_serializer" />
         </service>
+
+        <service
+                id="langland.public_api.business.implementation.language"
+                class="PublicApi\Language\Business\Implementation\LanguageImplementation">
+
+            <argument type="service" id="langland.public_api.repository.language" />
+        </service>
     </services>
 </container>

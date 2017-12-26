@@ -4,8 +4,8 @@ namespace Tests\PublicApi;
 
 use Faker\Factory;
 use Faker\Generator;
-use Library\Lesson\Business\Implementation\LessonImplementation;
 use Ramsey\Uuid\Uuid;
+use PublicApi\Lesson\Business\Implementation\LessonImplementation;
 use TestLibrary\LanglandAdminTestCase;
 use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;

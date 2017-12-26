@@ -1,0 +1,3 @@
+public_api:
+    language:
+        find_all_languages: "SELECT name, list_description, images FROM languages WHERE show_on_page = 1"

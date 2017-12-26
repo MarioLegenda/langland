@@ -205,11 +205,12 @@ body {
 #main_content .languages-wrapper {
   width: 100%;
   float: left;
-  margin: 35px 0 0 0;
-  background-color: #F16C20; }
+  margin: 35px 0 0 0; }
   #main_content .languages-wrapper .language {
     width: 960px;
+    overflow: hidden;
     margin: 0 auto;
+    margin-bottom: 50px;
     background-color: white;
     padding: 10px;
     border-bottom: 1px solid #F16C20; }
@@ -226,8 +227,16 @@ body {
       margin: 10px 0 0 0; }
       #main_content .languages-wrapper .language .description-wrapper p {
         color: #352a2a;
-        letter-spacing: 0.15em;
+        letter-spacing: 0.02em;
         line-height: 1.4em; }
+    #main_content .languages-wrapper .language .image-wrapper {
+      width: 300px;
+      height: 300px;
+      float: right; }
+      #main_content .languages-wrapper .language .image-wrapper img {
+        display: block;
+        width: 100%;
+        float: left; }
 
 #header {
   border-bottom: 1px solid #F16C20;

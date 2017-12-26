@@ -14,5 +14,15 @@
 
             <tag name="console.command" />
         </service>
+
+        <service
+                id="langland.command.language_images_add_command"
+                class="AdminBundle\Command\LanguageImagesAddingCommand">
+
+            <argument>%image_upload%</argument>
+            <argument type="service" id="langland.learning_metadata.repository.language" />
+
+            <tag name="console.command" />
+        </service>
     </services>
 </container>

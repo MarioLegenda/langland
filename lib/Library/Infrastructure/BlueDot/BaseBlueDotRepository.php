@@ -3,6 +3,8 @@
 namespace Library\Infrastructure\BlueDot;
 
 use BlueDot\BlueDot;
+use BlueDot\Entity\Entity;
+use BlueDot\Entity\PromiseInterface;
 
 class BaseBlueDotRepository
 {
@@ -24,14 +26,24 @@ class BaseBlueDotRepository
     /**
      * @param int $id
      * @param string $statement
-     * @return null|object
+     * @return PromiseInterface
      * @throws \BlueDot\Exception\BlueDotRuntimeException
      * @throws \BlueDot\Exception\ConnectionException
      */
-    public function find(int $id, string $statement): ?object
+    public function find(int $id, string $statement): PromiseInterface
     {
         return $this->blueDot->execute($statement, [
             'id' => $id,
-        ])->getResult();
+        ]);
+    }
+    /**
+     * @param string $statement
+     * @return PromiseInterface
+     * @throws \BlueDot\Exception\BlueDotRuntimeException
+     * @throws \BlueDot\Exception\ConnectionException
+     */
+    public function findAll(string $statement): PromiseInterface
+    {
+        return $this->blueDot->execute($statement);
     }
 }

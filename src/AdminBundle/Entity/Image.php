@@ -4,7 +4,7 @@ namespace AdminBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class Image
+class Image implements \JsonSerializable
 {
     private $id;
     /**
@@ -23,7 +23,9 @@ class Image
      * @var string $fullPath
      */
     private $fullPath;
-
+    /**
+     * @var string $relativePath
+     */
     private $relativePath;
     /**
      * @var UploadedFile $imageFile
@@ -219,7 +221,9 @@ class Image
 
         return $this;
     }
-
+    /**
+     * @void
+     */
     public function updateTimestamps()
     {
         $this->setUpdatedAt(new \DateTime());
@@ -227,5 +231,24 @@ class Image
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
         }
+    }
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->getName(),
+            'originalName' => $this->getOriginalName(),
+            'fullPath' => $this->getFullPath(),
+            'relativePath' => $this->getRelativePath(),
+        ];
+    }
+    /**
+     * @return array
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

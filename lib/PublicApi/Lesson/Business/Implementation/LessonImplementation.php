@@ -3,6 +3,7 @@
 namespace PublicApi\Lesson\Business\Implementation;
 
 use AdminBundle\Entity\Lesson;
+use BlueDot\Entity\PromiseInterface;
 use Library\Infrastructure\Helper\CommonSerializer;
 use Library\Infrastructure\Repository\RepositoryInterface;
 use PublicApi\Lesson\Repository\LessonRepository;
@@ -36,14 +37,14 @@ class LessonImplementation
      */
     public function find(int $id): Lesson
     {
-        /** @var Lesson $lesson */
-        $lesson = $this->lessonRepository->find($id, 'simple.select.find_lesson_by_id');
+        /** @var PromiseInterface $promise */
+        $promise = $this->lessonRepository->find($id, 'simple.select.find_lesson_by_id');
 
-        if (!$lesson instanceof Lesson) {
+        return $promise->success(function(PromiseInterface $promise) {
+            return $promise->getResult();
+        })->failure(function() {
             throw new NotFoundHttpException();
-        }
-
-        return $lesson;
+        })->getResult();
     }
     /**
      * @param int $id

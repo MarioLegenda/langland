@@ -10,6 +10,7 @@
                 class="Tests\TestLibrary\DataProvider\LanguageDataProvider">
 
             <argument type="service" id="langland.learning_metadata.repository.language" />
+            <argument type="service" id="langland.data_provider.image" />
         </service>
 
         <service
@@ -26,6 +27,12 @@
 
             <argument type="service" id="langland.learning_metadata.repository.lesson" />
             <argument type="service" id="langland.data_provider.course" />
+
+        </service>
+
+        <service
+                id="langland.data_provider.image"
+                class="Tests\TestLibrary\DataProvider\ImageDataProvider">
 
         </service>
 

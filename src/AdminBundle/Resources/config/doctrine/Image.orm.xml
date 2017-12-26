@@ -21,7 +21,6 @@
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 
-
         <many-to-one field="word" target-entity="AdminBundle\Entity\Word">
         </many-to-one>
 

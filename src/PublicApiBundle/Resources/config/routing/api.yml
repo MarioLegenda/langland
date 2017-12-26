@@ -3,3 +3,9 @@ public_api_lesson:
   prefix: /lesson
   host: '%host%'
   methods: [GET]
+
+public_api_language:
+  resource: "@PublicApiBundle/Resources/config/routing/api/language.yml"
+  prefix: /language
+  host: '%host%'
+  methods: [GET]

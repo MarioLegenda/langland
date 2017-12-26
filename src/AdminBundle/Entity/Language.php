@@ -21,6 +21,10 @@ class Language
      */
     private $listDescription;
     /**
+     * @var array $images
+     */
+    private $images;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -89,6 +93,23 @@ class Language
     public function setListDescription($listDescription) : Language
     {
         $this->listDescription = $listDescription;
+
+        return $this;
+    }
+    /**
+     * @return array
+     */
+    public function getImages(): array
+    {
+        return $this->images;
+    }
+    /**
+     * @param array $images
+     * @return Language
+     */
+    public function setImages(array $images): Language
+    {
+        $this->images = $images;
 
         return $this;
     }

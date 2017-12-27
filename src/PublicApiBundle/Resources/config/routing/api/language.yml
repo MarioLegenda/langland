@@ -2,3 +2,10 @@ get_all_languages:
     path: /
     defaults: { _controller: langland.public_api.controller.language:getAll }
     methods: [GET]
+    requirements:
+        _format: json
+
+register_language:
+    path: /register
+    defaults: { _controller: langland.public_api.controller.language:register }
+    methods: [POST]

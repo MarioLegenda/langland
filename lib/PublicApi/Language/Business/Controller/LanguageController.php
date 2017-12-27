@@ -5,6 +5,7 @@ namespace PublicApi\Language\Business\Controller;
 use PublicApi\Language\Business\Implementation\LanguageImplementation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class LanguageController
 {
@@ -33,5 +34,13 @@ class LanguageController
         $data = $this->languageImplementation->findAll();
 
         return new JsonResponse($data, 200);
+    }
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function register(Request $request): JsonResponse
+    {
+
     }
 }

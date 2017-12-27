@@ -3,7 +3,6 @@
 namespace Library\Infrastructure\BlueDot;
 
 use BlueDot\BlueDot;
-use BlueDot\Entity\Entity;
 use BlueDot\Entity\PromiseInterface;
 
 class BaseBlueDotRepository

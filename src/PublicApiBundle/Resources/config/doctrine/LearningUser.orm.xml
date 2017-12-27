@@ -16,12 +16,6 @@
 
     <one-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
 
-    <one-to-many target-entity="PublicApiBundle\Entity\CourseHolder" mapped-by="learningUser" field="courseHolders" fetch="EXTRA_LAZY">
-      <cascade>
-        <cascade-persist/>
-      </cascade>
-    </one-to-many>
-
     <many-to-many field="languages" target-entity="AdminBundle\Entity\Language">
       <join-table name="learning_user_languages">
         <join-columns>

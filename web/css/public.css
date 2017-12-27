@@ -220,18 +220,19 @@ body {
       float: left;
       padding: 0 0 10px 0;
       border-bottom: 1px solid #F16C20; }
-      #main_content .languages-wrapper .language .title-wrapper .icon {
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        top: -8px;
-        left: 0;
-        float: left;
-        background: url("/images/french/icon.png") no-repeat center;
-        background-size: contain; }
       #main_content .languages-wrapper .language .title-wrapper h1 {
         padding-left: 45px;
         color: #F16C20; }
+    #main_content .languages-wrapper .language .icon-wrapper {
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      top: -8px;
+      left: 0;
+      float: left; }
+      #main_content .languages-wrapper .language .icon-wrapper img {
+        display: block;
+        width: 100%; }
     #main_content .languages-wrapper .language .description-wrapper {
       width: 480px;
       float: left;

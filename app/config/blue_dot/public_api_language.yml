@@ -11,6 +11,11 @@ configuration:
         select:
             find_all_languages:
                 sql: public_api.language.find_all_languages
+            find_by_id:
+                sql: public_api.language.find_by_id
+                parameters: [id]
+                model:
+                    object: AdminBundle\Entity\Language
 
     callable:
         find_all_languages:

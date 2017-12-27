@@ -2,7 +2,8 @@
 
 namespace PublicApi\Language\Business\Implementation;
 
-use BlueDot\Entity\Entity;
+use AdminBundle\Entity\Language;
+use ArmorBundle\Entity\User;
 use BlueDot\Entity\PromiseInterface;
 use PublicApi\Language\Repository\LanguageRepository;
 
@@ -45,5 +46,40 @@ class LanguageImplementation
         })->getResult();
 
         return $result;
+    }
+    /**
+     * @param int $languageId
+     * @param User $user
+     */
+    public function registerLearningUser(int $languageId, User $user)
+    {
+        $language = $this->getLanguage($languageId);
+    }
+    /**
+     * @param int|Language $language
+     * @throws \BlueDot\Exception\BlueDotRuntimeException
+     * @throws \BlueDot\Exception\ConnectionException
+     * @return Language
+     */
+    private function getLanguage($language): Language
+    {
+        if (is_int($language)) {
+            /** @var PromiseInterface $promise */
+            $promise = $this->languageRepository->find($language, 'simple.select.find_by_id');
+
+            if ($promise->isFailure()) {
+                $message = sprintf('Language with id %d not found', $language);
+                throw new \RuntimeException($message);
+            }
+
+            $language = $promise->getResult();
+        }
+
+        if (!$language instanceof Language) {
+            $message = sprintf('Language with id %d not found', $language);
+            throw new \RuntimeException($message);
+        }
+
+        return $language;
     }
 }

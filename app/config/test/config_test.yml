@@ -2,7 +2,6 @@ imports:
     - { resource: test_parameters.yml }
     - { resource: test_security.yml }
     - { resource: "@ArmorBundle/Resources/config/services.xml" }
-    - { resource: "@PublicApiBundle/Resources/config/services.yml" }
 
     - { resource: ../prod/vendor_config/jms_serializer.yml }
 

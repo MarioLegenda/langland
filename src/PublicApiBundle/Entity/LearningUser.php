@@ -30,10 +30,6 @@ class LearningUser
      */
     private $languages;
     /**
-     * @var ArrayCollection $courseHolders
-     */
-    private $courseHolders;
-    /**
      * @var Language $currentLanguage
      */
     private $currentLanguage;
@@ -41,7 +37,6 @@ class LearningUser
     public function __construct()
     {
         $this->languages = new ArrayCollection();
-        $this->courseHolders = new ArrayCollection();
     }
     /**
      * Get id
@@ -115,67 +110,6 @@ class LearningUser
         return $this;
     }
     /**
-     * @param CourseHolder $courseHolder
-     * @return bool
-     */
-    public function hasCourseHolder(CourseHolder $courseHolder) : bool
-    {
-        return $this->courseHolders->contains($courseHolder);
-    }
-    /**
-     * @param CourseHolder $courseHolder
-     * @return LearningUser
-     */
-    public function addCourseHolder(CourseHolder $courseHolder) : LearningUser
-    {
-        if (!$this->hasCourseHolder($courseHolder)) {
-            $courseHolder->setLearningUser($this);
-            $this->courseHolders->add($courseHolder);
-        }
-
-        return $this;
-    }
-    /**
-     * @param CourseHolder $courseHolder
-     * @return LearningUser
-     */
-    public function removeCourseHolder(CourseHolder $courseHolder) : LearningUser
-    {
-        if ($this->hasCourseHolder($courseHolder)) {
-            $this->courseHolders->removeElement($courseHolder);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return CourseHolder|null
-     */
-    public function getCourseHolderByCurrentLanguage()
-    {
-        foreach ($this->courseHolders as $courseHolder) {
-            if ($this->getCurrentLanguage() === $courseHolder->getLanguage()) {
-                return $courseHolder;
-            }
-        }
-
-        return null;
-    }
-    /**
-     * @return mixed
-     */
-    public function getCourseHolders()
-    {
-        return $this->courseHolders;
-    }
-    /**
-     * @param mixed $courseHolders
-     */
-    public function setCourseHolders($courseHolders)
-    {
-        $this->courseHolders = $courseHolders;
-    }
-    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
@@ -227,22 +161,6 @@ class LearningUser
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
         }
-    }
-    /**
-     * @param User|null $user
-     * @param Language|null $language
-     * @return LearningUser
-     */
-    public static function create(User $user = null, Language $language = null) : LearningUser
-    {
-        $learningUser = new LearningUser();
-
-        $learningUser
-            ->setUser($user)
-            ->setCurrentLanguage($language)
-            ->addLanguage($language);
-
-        return $learningUser;
     }
 }
 

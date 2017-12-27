@@ -1,9 +1,7 @@
 imports:
     - { resource: ../parameters.yml }
     - { resource: security.yml }
-    - { resource: services.yml }
     - { resource: "@ArmorBundle/Resources/config/services.xml" }
-    - { resource: "@PublicApiBundle/Resources/config/services.yml" }
 
     - { resource: vendor_config/jms_serializer.yml }
     - { resource: vendor_config/fos_rest.yml }

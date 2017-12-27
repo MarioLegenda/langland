@@ -2,6 +2,10 @@ export const env = {
     current: getServerEnvironment()
 };
 
+export const user = {
+    current: null
+};
+
 export const local_env = {
     current: 'dev'
 };

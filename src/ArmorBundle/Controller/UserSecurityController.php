@@ -16,6 +16,8 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class UserSecurityController extends Controller implements UserLoggedInInterface
 {
@@ -212,5 +214,20 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
         }
 
         return false;
+    }
+    /**
+     * @return JsonResponse
+     */
+    public function getLoggedInPublicUserAction()
+    {
+        $user = $this->getUser();
+
+        $context = SerializationContext::create();
+        $context->setGroups(['exposed_user']);
+
+        return new JsonResponse(
+            $this->get('jms_serializer')->serialize($user, 'json', $context),
+            200
+        );
     }
 }

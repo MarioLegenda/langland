@@ -113,6 +113,10 @@ class PublicApiAuthenticator implements SimplePreAuthenticatorInterface
     ): User {
         $user = null;
 
+        if ($userProvider->loadUserByUsername($username)->hasRole('ROLE_PUBLIC_API_USER')) {
+            return $userProvider->loadUserByUsername($username);
+        }
+
         foreach ($this->session->all() as $firewallName => $userPasswordToken) {
             if (in_array($firewallName, $this->rootFirewalls) === true) {
                 $token = unserialize($userPasswordToken);

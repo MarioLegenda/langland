@@ -1,14 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
-import {global} from "../global/constants";
-import {factory} from "./source/preload";
+import {env, user} from "../global/constants.js";
+import {List} from "./source/language.jsx";
+import {factory as repoFactory} from "./source/repository/factory.js";
 
-const Preload = factory().preload();
+function App() {
 
-Preload.loadImages([]);
+    const langList = (match) => <List/>;
 
-console.log(global.base_url);
+    return (
+        <Router>
+            <div>
+                <Switch>
+                    <Route exact path={env.current + "langland"} render={langList} />
+                </Switch>
+            </div>
+        </Router>
+    );
+}
+
+const react_language_list = document.getElementById('react_language_list');
+
+if (react_language_list !== null) {
+    repoFactory('user').getLoggedInUser($.proxy(function() {
+        ReactDOM.render(
+            <App/>,
+            react_language_list
+        );
+    }));
+}
+
 /*import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {HeaderContainer as Header} from "./module/header.jsx";

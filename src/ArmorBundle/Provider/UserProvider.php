@@ -2,6 +2,7 @@
 
 namespace ArmorBundle\Provider;
 
+use ArmorBundle\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -12,16 +13,17 @@ use ArmorBundle\Entity\User;
 class UserProvider implements UserProviderInterface
 {
     /**
-     * @var EntityManager $em
+     * @var UserRepository $userRepository
      */
-    private $em;
+    private $userRepository;
     /**
      * UserProvider constructor.
-     * @param EntityManager $em
+     * @param UserRepository $userRepository
      */
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
+    public function __construct(
+        UserRepository $userRepository
+    ) {
+        $this->userRepository = $userRepository;
     }
     /**
      * @param string $username
@@ -30,9 +32,9 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $user = $this->em->getRepository('ArmorBundle:User')->findBy(array(
+        $user = $this->userRepository->findBy([
             'username' => $username,
-        ));
+        ]);
 
         if (!empty($user)) {
             if ($user[0] instanceof User) {

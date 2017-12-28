@@ -19,5 +19,13 @@
 
             <argument type="service" id="langland.public_api.repository.language" />
         </service>
+
+        <service
+                id="langland.public_api.business.implementation.learning_user"
+                class="PublicApi\LearningUser\Business\Implementation\LearningUserImplementation">
+
+            <argument type="service" id="langland.public_api.repository.learning_user" />
+            <argument type="service" id="langland.public_api.repository.language" />
+        </service>
     </services>
 </container>

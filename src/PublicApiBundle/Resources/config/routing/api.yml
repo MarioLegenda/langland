@@ -9,3 +9,9 @@ public_api_language:
   prefix: /language
   host: '%host%'
   methods: [GET]
+
+public_api_learning_user:
+  resource: "@PublicApiBundle/Resources/config/routing/api/learning_user.yml"
+  prefix: /learning-user
+  host: '%host%'
+  methods: [POST]

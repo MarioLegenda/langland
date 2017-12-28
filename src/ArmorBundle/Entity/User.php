@@ -42,10 +42,6 @@ class User implements UserInterface
      */
     private $confirmHash;
     /**
-     * @var LearningUser $currentLearningUser
-     */
-    private $currentLearningUser;
-    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -251,30 +247,6 @@ class User implements UserInterface
     public function setConfirmHash($confirmHash) : UserInterface
     {
         $this->confirmHash = $confirmHash;
-
-        return $this;
-    }
-    /**
-     * @return bool
-     */
-    public function hasCurrentLearningUser() : bool
-    {
-        return $this->getCurrentLearningUser() instanceof LearningUser;
-    }
-    /**
-     * @return LearningUser
-     */
-    public function getCurrentLearningUser()
-    {
-        return $this->currentLearningUser;
-    }
-    /**
-     * @param LearningUser $currentLearningUser
-     * @return UserInterface
-     */
-    public function setCurrentLearningUser(LearningUser $currentLearningUser) : UserInterface
-    {
-        $this->currentLearningUser = $currentLearningUser;
 
         return $this;
     }

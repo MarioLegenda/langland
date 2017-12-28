@@ -2,9 +2,10 @@
 
 namespace ArmorBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use ArmorBundle\Entity\User;
+use Library\Infrastructure\Repository\CommonRepository;
 
-class UserRepository extends EntityRepository
+class UserRepository extends CommonRepository
 {
     /**
      * @param string $username
@@ -25,5 +26,17 @@ class UserRepository extends EntityRepository
         return $this->findBy(array(
             'confirmHash' => $confirmHash,
         ));
+    }
+    /**
+     * @param User $user
+     * @return User
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function persistAndFlush(User $user): User
+    {
+        $this->em->persist($user);
+        $this->em->flush();
+
+        return $user;
     }
 }

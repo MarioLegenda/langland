@@ -2,10 +2,11 @@
 
 namespace PublicApi\Language\Business\Controller;
 
+use Library\Infrastructure\Helper\CommonSerializer;
 use PublicApi\Language\Business\Implementation\LanguageImplementation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class LanguageController
 {
@@ -14,33 +15,35 @@ class LanguageController
      */
     private $languageImplementation;
     /**
+     * @var CommonSerializer $commonSerializer
+     */
+    private $commonSerializer;
+    /**
      * LanguageController constructor.
      * @param LanguageImplementation $languageImplementation
+     * @param CommonSerializer $commonSerializer
      */
     public function __construct(
-        LanguageImplementation $languageImplementation
+        LanguageImplementation $languageImplementation,
+        CommonSerializer $commonSerializer
     ) {
         $this->languageImplementation = $languageImplementation;
+        $this->commonSerializer = $commonSerializer;
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
      *
-     * @return JsonResponse
-     * @throws \BlueDot\Exception\BlueDotRuntimeException
-     * @throws \BlueDot\Exception\ConnectionException
+     * @return Response
      */
-    public function getAll(): JsonResponse
+    public function getAll(): Response
     {
-        $data = $this->languageImplementation->findAll();
+        $data = $this->commonSerializer->serializeMany(
+            $this->languageImplementation->findAll(),
+            ['viewable']
+        );
 
-        return new JsonResponse($data, 200);
-    }
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function register(Request $request): JsonResponse
-    {
-
+        return new Response($data, 200, [
+            'Content-Type' => 'application/json',
+        ]);
     }
 }

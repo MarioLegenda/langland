@@ -14,18 +14,7 @@
 
     <many-to-one field="user" target-entity="ArmorBundle\Entity\User" />
 
-    <one-to-one field="currentLanguage" target-entity="AdminBundle\Entity\Language" />
-
-    <many-to-many field="languages" target-entity="AdminBundle\Entity\Language">
-      <join-table name="learning_user_languages">
-        <join-columns>
-          <join-column name="learning_user_id" referenced-column-name="id"/>
-        </join-columns>
-        <inverse-join-columns>
-          <join-column name="language_id" referenced-column-name="id" />
-        </inverse-join-columns>
-      </join-table>
-    </many-to-many>
+    <one-to-one field="language" target-entity="AdminBundle\Entity\Language" />
 
     <lifecycle-callbacks>
       <lifecycle-callback type="prePersist" method="updateTimestamps" />

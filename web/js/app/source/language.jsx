@@ -6,10 +6,14 @@ class Item extends React.Component {
         super(props);
 
         this.registerLanguage = this.registerLanguage.bind(this);
+
+        this.learningUserRepository = repoFactory('learning-user');
     }
 
     registerLanguage() {
+        const language = this.props.language;
 
+        this.learningUserRepository.registerLearningUser(language.id);
     }
 
     render() {
@@ -58,7 +62,7 @@ export class List extends React.Component{
             const language = {
                 id: parseInt(lang.id),
                 name: lang.name,
-                desc: lang.list_description,
+                desc: lang.desc,
                 images: {
                     cover: images.cover_image.relativePath + '/' + images.cover_image.originalName,
                     icon: images.icon.relativePath + '/' + images.icon.originalName

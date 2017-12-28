@@ -15,11 +15,11 @@
     <services>
 
         <service id="armor.user_provider" class="%armor.user_provider.class%">
-            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="armor.repository.user" />
         </service>
 
         <service id="armor.user_provider.public_api" class="ArmorBundle\Provider\PublicApiUserProvider">
-            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument type="service" id="armor.repository.user" />
             <argument type="service" id="security.token_storage" />
         </service>
 
@@ -30,6 +30,12 @@
 
         <service id="armor.user.user_checker" class="%armor.user.user_checker.class%">
 
+        </service>
+
+        <service id="armor.repository.user" class="ArmorBundle\Repository\UserRepository">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>ArmorBundle\Entity\User</argument>
         </service>
 
         <service id="armor.email" class="%armor.email.class%">

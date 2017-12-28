@@ -41,6 +41,11 @@ class CommonSerializer
      */
     public function serializeMany(array $objectsArray, array $groups, $type = 'json'): string
     {
+        $arrayed = [];
+        foreach ($objectsArray as $object) {
+            $arrayed[] = json_decode($this->serialize($object, $groups, $type), true);
+        }
 
+        return json_encode($arrayed);
     }
 }

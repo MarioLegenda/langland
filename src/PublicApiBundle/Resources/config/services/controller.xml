@@ -17,6 +17,15 @@
                 class="PublicApi\Language\Business\Controller\LanguageController">
 
             <argument type="service" id="langland.public_api.business.implementation.language" />
+            <argument type="service" id="library.common_serializer" />
+        </service>
+
+        <service
+                id="langland.public_api.controller.learning_user"
+                class="PublicApi\LearningUser\Business\Controller\LearningUserController">
+
+            <argument type="service" id="langland.public_api.business.implementation.learning_user" />
+            <argument type="service" id="security.token_storage" />
         </service>
 
         <service

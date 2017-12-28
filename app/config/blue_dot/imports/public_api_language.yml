@@ -1,4 +1,0 @@
-public_api:
-    language:
-        find_all_languages: "SELECT id, name, list_description, images FROM languages WHERE show_on_page = 1"
-        find_by_id: "SELECT id FROM languages WHERE id = :id AND show_on_page = 1"

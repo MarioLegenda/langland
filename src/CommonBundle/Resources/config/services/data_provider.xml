@@ -31,6 +31,14 @@
         </service>
 
         <service
+                id="langland.data_provider.user"
+                class="TestLibrary\DataProvider\UserDataProvider">
+
+            <argument type="service" id="armor.repository.user" />
+
+        </service>
+
+        <service
                 id="langland.data_provider.image"
                 class="Tests\TestLibrary\DataProvider\ImageDataProvider">
 

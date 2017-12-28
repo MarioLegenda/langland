@@ -17,8 +17,16 @@
                 id="langland.public_api.repository.language"
                 class="PublicApi\Language\Repository\LanguageRepository">
 
-            <argument type="service" id="langland.common.blue_dot" />
-            <argument>public_api_language</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\Language</argument>
+        </service>
+
+        <service
+                id="langland.public_api.repository.learning_user"
+                class="PublicApi\LearningUser\Repository\LearningUserRepository">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\LearningUser</argument>
         </service>
     </services>
 </container>

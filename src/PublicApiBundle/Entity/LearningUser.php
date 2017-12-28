@@ -26,18 +26,9 @@ class LearningUser
      */
     private $user;
     /**
-     * @var ArrayCollection $languages
+     * @var Language $language
      */
-    private $languages;
-    /**
-     * @var Language $currentLanguage
-     */
-    private $currentLanguage;
-
-    public function __construct()
-    {
-        $this->languages = new ArrayCollection();
-    }
+    private $language;
     /**
      * Get id
      *
@@ -64,48 +55,20 @@ class LearningUser
 
         return $this;
     }
-
-    /**
-     * @param Language $language
-     * @return bool
-     */
-    public function hasLanguage(Language $language) : bool
-    {
-        return $this->languages->contains($language);
-    }
-    /**
-     * @param Language $language
-     * @return LearningUser
-     */
-    public function addLanguage(Language $language) : LearningUser
-    {
-        if (!$this->hasLanguage($language)) {
-            $this->languages->add($language);
-        }
-
-        return $this;
-    }
     /**
      * @return mixed
      */
-    public function getLanguages()
+    public function getLanguage()
     {
-        return $this->languages;
+        return $this->language;
     }
     /**
-     * @return mixed
-     */
-    public function getCurrentLanguage()
-    {
-        return $this->currentLanguage;
-    }
-    /**
-     * @param mixed $currentLanguage
+     * @param mixed $language
      * @return LearningUser
      */
-    public function setCurrentLanguage($currentLanguage) : LearningUser
+    public function setLanguage($language) : LearningUser
     {
-        $this->currentLanguage = $currentLanguage;
+        $this->language = $language;
 
         return $this;
     }

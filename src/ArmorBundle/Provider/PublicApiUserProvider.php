@@ -2,7 +2,7 @@
 
 namespace ArmorBundle\Provider;
 
-use Doctrine\ORM\EntityManager;
+use ArmorBundle\Repository\UserRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -13,23 +13,23 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class PublicApiUserProvider implements UserProviderInterface
 {
     /**
-     * @var EntityManager $em
+     * @var UserRepository $userRepository
      */
-    private $em;
+    private $userRepository;
     /**
      * @var TokenStorageInterface $tokenStorage
      */
     private $tokenStorage;
     /**
      * UserProvider constructor.
-     * @param EntityManager $em
+     * @param UserRepository $userRepository
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
-        EntityManager $em,
+        UserRepository $userRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->em = $em;
+        $this->userRepository = $userRepository;
         $this->tokenStorage = $tokenStorage;
     }
     /**
@@ -40,7 +40,7 @@ class PublicApiUserProvider implements UserProviderInterface
     public function loadUserByUsername($username)
     {
         /** @var User $user */
-        $user = $this->em->getRepository('ArmorBundle:User')->findBy(array(
+        $user = $this->userRepository->findBy(array(
             'username' => $username,
         ));
 

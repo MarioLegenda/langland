@@ -4,7 +4,7 @@ namespace Tests\PublicApi;
 
 use AdminBundle\Command\Helper\FakerTrait;
 use PublicApi\Language\Business\Controller\LanguageController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use TestLibrary\LanglandAdminTestCase;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
 
@@ -38,7 +38,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
 
         $response = $this->languageController->getAll();
 
-        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertInstanceOf(Response::class, $response);
 
         $content = $response->getContent();
 

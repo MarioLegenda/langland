@@ -2,9 +2,9 @@
 
 namespace PublicApi\Language\Repository;
 
-use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
+use Library\Infrastructure\Repository\CommonRepository;
 
-class LanguageRepository extends BaseBlueDotRepository
+class LanguageRepository extends CommonRepository
 {
 
 }

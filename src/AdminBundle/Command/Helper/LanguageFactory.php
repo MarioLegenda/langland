@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Command\Helper;
 
+use AdminBundle\Entity\Image;
 use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\Language;
 
@@ -37,6 +38,7 @@ class LanguageFactory
             $language->setName($lang);
             $language->setShowOnPage(true);
             $language->setListDescription($this->getFaker()->sentence(60));
+            $language->setImages($this->createImages());
 
             $this->em->persist($language);
 
@@ -50,5 +52,30 @@ class LanguageFactory
         $this->em->flush();
 
         return $languageObjects;
+    }
+    /**
+     * @return array
+     */
+    private function createImages(): array
+    {
+        $images = [
+            'icon' => 'icon.png',
+            'cover_image' => 'cover.jpg',
+        ];
+
+        $objects = [];
+
+        foreach ($images as $name => $image) {
+            $object = new Image();
+            $object->setName($image);
+            $object->setRelativePath('/images/french');
+            $object->setOriginalName($image);
+            $object->setFullPath('/var/www/web/images/french/'.$image);
+            $object->setTargetDir('/var/www/web/uploads/images');
+
+            $objects[$name] = $object->toArray();
+        }
+
+        return $objects;
     }
 }

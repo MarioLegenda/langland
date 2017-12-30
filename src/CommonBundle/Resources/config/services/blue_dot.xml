@@ -7,14 +7,14 @@
     <services>
         <service
                 id="langland.common.factory.blue_dot"
-                class="Library\Infrastructure\BlueDot\Factory\BlueDotFactory">
+                class="Library\Infrastructure\BlueDot\Factory\BlueDotFactory" public="true">
 
             <argument type="service" id="doctrine.dbal.default_connection" />
             <argument>%blue_dot_dir%</argument>
         </service>
 
         <service id="langland.common.blue_dot"
-                 class="BlueDot\BlueDot">
+                 class="BlueDot\BlueDot" public="true">
 
             <factory service="langland.common.factory.blue_dot" method="createBlueDot" />
         </service>

@@ -7,14 +7,14 @@
     <services>
         <service
                 id="langland.public_api.controller.lesson"
-                class="PublicApi\Lesson\Business\Controller\LessonController">
+                class="PublicApi\Lesson\Business\Controller\LessonController" public="true">
 
             <argument type="service" id="langland.public_api.business.implementation.lesson" />
         </service>
 
         <service
                 id="langland.public_api.controller.language"
-                class="PublicApi\Language\Business\Controller\LanguageController">
+                class="PublicApi\Language\Business\Controller\LanguageController" public="true">
 
             <argument type="service" id="langland.public_api.business.implementation.language" />
             <argument type="service" id="library.common_serializer" />
@@ -22,7 +22,7 @@
 
         <service
                 id="langland.public_api.controller.learning_user"
-                class="PublicApi\LearningUser\Business\Controller\LearningUserController">
+                class="PublicApi\LearningUser\Business\Controller\LearningUserController" public="true">
 
             <argument type="service" id="langland.public_api.business.implementation.learning_user" />
             <argument type="service" id="security.token_storage" />
@@ -30,7 +30,7 @@
 
         <service
                 id="langland.static.controller.language_index"
-                class="PublicApi\StaticPage\Business\Controller\StaticController">
+                class="PublicApi\StaticPage\Business\Controller\StaticController" public="true">
 
             <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
         </service>

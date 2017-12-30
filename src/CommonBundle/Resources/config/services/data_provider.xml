@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.data_provider.language"
-                class="Tests\TestLibrary\DataProvider\LanguageDataProvider">
+                class="Tests\TestLibrary\DataProvider\LanguageDataProvider" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.language" />
             <argument type="service" id="langland.data_provider.image" />
@@ -15,7 +15,7 @@
 
         <service
                 id="langland.data_provider.course"
-                class="Tests\TestLibrary\DataProvider\CourseDataProvider">
+                class="Tests\TestLibrary\DataProvider\CourseDataProvider" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.course" />
             <argument type="service" id="langland.data_provider.language" />
@@ -23,7 +23,7 @@
 
         <service
                 id="langland.data_provider.lesson"
-                class="Tests\TestLibrary\DataProvider\LessonDataProvider">
+                class="Tests\TestLibrary\DataProvider\LessonDataProvider" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.lesson" />
             <argument type="service" id="langland.data_provider.course" />
@@ -32,7 +32,7 @@
 
         <service
                 id="langland.data_provider.user"
-                class="TestLibrary\DataProvider\UserDataProvider">
+                class="TestLibrary\DataProvider\UserDataProvider" public="true">
 
             <argument type="service" id="armor.repository.user" />
 
@@ -40,7 +40,7 @@
 
         <service
                 id="langland.data_provider.image"
-                class="Tests\TestLibrary\DataProvider\ImageDataProvider">
+                class="Tests\TestLibrary\DataProvider\ImageDataProvider" public="true">
 
         </service>
 

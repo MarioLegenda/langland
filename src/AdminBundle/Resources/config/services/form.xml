@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.learning_metadata.form.language_choice"
-                class="Library\Infrastructure\Form\LanguageChoiceFormService">
+                class="Library\Infrastructure\Form\LanguageChoiceFormService" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="request_stack" />
@@ -15,7 +15,7 @@
 
         <service
                 id="langland.learning_metadata.form.category_choice"
-                class="Library\Infrastructure\Form\CategoryChoiceFormService">
+                class="Library\Infrastructure\Form\CategoryChoiceFormService" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="request_stack" />
@@ -23,7 +23,7 @@
 
         <service
                 id="langland.learning_metadata.form.word"
-                class="LearningMetadata\Infrastructure\Form\Type\WordType">
+                class="LearningMetadata\Infrastructure\Form\Type\WordType" public="true">
 
             <argument type="service" id="langland.learning_metadata.form.language_choice" />
             <argument type="service" id="langland.learning_metadata.form.category_choice"/>
@@ -33,14 +33,14 @@
 
         <service
                 id="langland.learning_metadata.form.image"
-                class="LearningMetadata\Infrastructure\Form\Type\ImageType">
+                class="LearningMetadata\Infrastructure\Form\Type\ImageType" public="true">
 
             <tag name="form.type" />
         </service>
 
         <service
                 id="langland.learning_metadata.form.language_info"
-                class="LearningMetadata\Infrastructure\Form\Type\LanguageInfoType">
+                class="LearningMetadata\Infrastructure\Form\Type\LanguageInfoType" public="true">
 
             <argument type="service" id="langland.learning_metadata.form.language_choice" />
             <argument type="service" id="langland.learning_metadata.form.category_choice"/>
@@ -50,14 +50,14 @@
 
         <service
                 id="langland.learning_metadata.form.language_info_text"
-                class="LearningMetadata\Infrastructure\Form\Type\LanguageInfoTextType">
+                class="LearningMetadata\Infrastructure\Form\Type\LanguageInfoTextType" public="true">
 
             <tag name="form.type" />
         </service>
 
         <service
                 id="langland.learning_metadata.form.course"
-                class="LearningMetadata\Infrastructure\Form\Type\CourseType">
+                class="LearningMetadata\Infrastructure\Form\Type\CourseType" public="true">
             <argument type="service" id="langland.learning_metadata.form.language_choice" />
 
             <tag name="form.type" />
@@ -65,7 +65,7 @@
 
         <service
                 id="langland.learning_metadata.form.form_builder"
-                class="LearningMetadata\Infrastructure\Form\FormBuilder">
+                class="LearningMetadata\Infrastructure\Form\FormBuilder" public="true">
 
             <argument type="service" id="form.factory" />
         </service>

@@ -7,26 +7,26 @@
     <services>
         <service
                 id="library.file_namer"
-                class="Library\Infrastructure\FileUpload\Implementation\FileNamer">
+                class="Library\Infrastructure\FileUpload\Implementation\FileNamer" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
 
         <service
                 id="library.image_resizer"
-                class="Library\Infrastructure\FileUpload\Implementation\ImageResize">
+                class="Library\Infrastructure\FileUpload\Implementation\ImageResize" public="true">
         </service>
 
         <service
                 id="library.manual_validator"
-                class="Library\Infrastructure\ManualValidator">
+                class="Library\Infrastructure\ManualValidator" public="true">
 
             <argument type="service" id="validator" />
         </service>
 
         <service
                 id="library.image_upload"
-                class="Library\Infrastructure\FileUpload\Implementation\ImageUpload">
+                class="Library\Infrastructure\FileUpload\Implementation\ImageUpload" public="true">
 
             <argument>%image_upload%</argument>
             <argument type="service" id="library.image_resizer" />
@@ -35,7 +35,7 @@
 
         <service
                 id="library.audio_upload"
-                class="Library\Infrastructure\FileUpload\Implementation\AudioUpload">
+                class="Library\Infrastructure\FileUpload\Implementation\AudioUpload" public="true">
 
             <argument>%audio_upload%</argument>
             <argument type="service" id="library.file_namer" />
@@ -43,7 +43,7 @@
 
         <service
                 id="library.deserializer"
-                class="Library\Infrastructure\Helper\Deserializer">
+                class="Library\Infrastructure\Helper\Deserializer" public="true">
 
             <argument type="service" id="jms_serializer" />
             <argument type="service" id="validator" />
@@ -51,7 +51,7 @@
 
         <service
                 id="library.common_serializer"
-                class="Library\Infrastructure\Helper\CommonSerializer">
+                class="Library\Infrastructure\Helper\CommonSerializer" public="true">
 
             <argument type="service" id="jms_serializer" />
         </service>

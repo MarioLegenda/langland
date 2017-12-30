@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.public_api.business.implementation.lesson"
-                class="PublicApi\Lesson\Business\Implementation\LessonImplementation">
+                class="PublicApi\Lesson\Business\Implementation\LessonImplementation" public="true">
 
             <argument type="service" id="langland.public_api.repository.lesson" />
             <argument type="service" id="library.common_serializer" />
@@ -15,14 +15,14 @@
 
         <service
                 id="langland.public_api.business.implementation.language"
-                class="PublicApi\Language\Business\Implementation\LanguageImplementation">
+                class="PublicApi\Language\Business\Implementation\LanguageImplementation" public="true">
 
             <argument type="service" id="langland.public_api.repository.language" />
         </service>
 
         <service
                 id="langland.public_api.business.implementation.learning_user"
-                class="PublicApi\LearningUser\Business\Implementation\LearningUserImplementation">
+                class="PublicApi\LearningUser\Business\Implementation\LearningUserImplementation" public="true">
 
             <argument type="service" id="langland.public_api.repository.learning_user" />
             <argument type="service" id="langland.public_api.repository.language" />

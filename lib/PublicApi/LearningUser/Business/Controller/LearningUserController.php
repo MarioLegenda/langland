@@ -2,7 +2,10 @@
 
 namespace PublicApi\LearningUser\Business\Controller;
 
+use AdminBundle\Entity\Language;
+use ArmorBundle\Entity\User;
 use PublicApi\LearningUser\Business\Implementation\LearningUserImplementation;
+use PublicApiBundle\Entity\LearningUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,21 +36,21 @@ class LearningUserController
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
      *
-     * @param Request $request
+     * @param Language $language
+     * @param User $user
      * @return JsonResponse
      */
-    public function registerLearningUser(Request $request): JsonResponse
+    public function registerLearningUser(Language $language, User $user): JsonResponse
     {
-        $languageId = $request->request->get('languageId');
+        $learningUser = $this->learningUserImplementation->findExact($language, $user);
 
-        if (empty($languageId)) {
-            $message = sprintf('Language does not exist');
-            throw new \RuntimeException($message);
+        if ($learningUser instanceof LearningUser) {
+            return new JsonResponse([], 205);
         }
 
         $this->learningUserImplementation->registerLearningUser(
-            $languageId,
-            $this->tokenStorage->getToken()->getUser()
+            $language,
+            $user
         );
 
         return new JsonResponse([], 201);

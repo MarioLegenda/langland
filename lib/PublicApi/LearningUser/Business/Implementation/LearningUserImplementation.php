@@ -31,29 +31,64 @@ class LearningUserImplementation
         $this->languageRepository = $languageRepository;
     }
     /**
-     * @param int $languageId
-     * @param User $user
+     * @param int $id
+     * @return null|LearningUser
      */
-    public function registerLearningUser(int $languageId, User $user)
+    public function tryFind(int $id): ?LearningUser
     {
-        $language = $this->languageRepository->find($languageId);
-
-        if (!$language instanceof Language) {
-            $message = sprintf('Language does not exist');
-            throw new \RuntimeException($message);
-        }
-
-        $learningUser = $this->learningUserRepository->findOneBy([
-            'user' => $user,
-            'language' => $language,
-        ]);
+        $learningUser = $this->learningUserRepository->find($id);
 
         if (!$learningUser instanceof LearningUser) {
-            $learningUser = new LearningUser();
-            $learningUser->setLanguage($language);
-            $learningUser->setUser($user);
-
-            $this->learningUserRepository->persistAndFlush($learningUser);
+            return null;
         }
+
+        return $learningUser;
+    }
+    /**
+     * @param int $id
+     * @return LearningUser
+     */
+    public function find(int $id): LearningUser
+    {
+        $learningUser = $this->learningUserRepository->find($id);
+
+        if (!$learningUser instanceof LearningUser) {
+            throw new \RuntimeException('Learning user not found');
+        }
+
+        return $learningUser;
+    }
+    /**
+     * @param int|Language $language
+     * @param User $user
+     * @return null|object
+     */
+    public function findExact($language, User $user)
+    {
+        if (is_int($language)) {
+            $language = $this->languageRepository->find($language);
+        }
+
+        if (!$language instanceof Language) {
+            throw new \RuntimeException('Not a valid language');
+        }
+
+        return $this->learningUserRepository->findOneBy([
+            'language' => $language,
+            'user' => $user,
+        ]);
+    }
+    /**
+     * @param Language $language
+     * @param User $user
+     * @return LearningUser
+     */
+    public function registerLearningUser(Language $language, User $user): LearningUser
+    {
+        $learningUser = new LearningUser();
+        $learningUser->setLanguage($language);
+        $learningUser->setUser($user);
+
+        return $this->learningUserRepository->persistAndFlush($learningUser);
     }
 }

@@ -6,7 +6,7 @@
 
     <services>
         <service id="langland.common.exception_subscriber"
-                 class="Library\Listener\ExceptionSubscriber">
+                 class="Library\Listener\ExceptionSubscriber" public="true">
 
             <argument type="service" id="monolog.logger.generic_exception" />
 

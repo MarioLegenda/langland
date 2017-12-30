@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.public_api.repository.lesson"
-                class="PublicApi\Lesson\Repository\LessonRepository">
+                class="PublicApi\Lesson\Repository\LessonRepository" public="true">
 
             <argument type="service" id="langland.common.blue_dot" />
             <argument>public_api_lesson</argument>
@@ -15,7 +15,7 @@
 
         <service
                 id="langland.public_api.repository.language"
-                class="PublicApi\Language\Repository\LanguageRepository">
+                class="PublicApi\Language\Repository\LanguageRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>AdminBundle\Entity\Language</argument>
@@ -23,7 +23,7 @@
 
         <service
                 id="langland.public_api.repository.learning_user"
-                class="PublicApi\LearningUser\Repository\LearningUserRepository">
+                class="PublicApi\LearningUser\Repository\LearningUserRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>PublicApiBundle\Entity\LearningUser</argument>

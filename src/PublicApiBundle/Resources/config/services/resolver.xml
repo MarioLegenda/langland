@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="langland.public_api.language_value_resolver"
+                class="PublicApi\LearningUser\Business\Infrastructure\Resolver\PostMethodLanguageValueResolver" public="true">
+
+            <argument type="service" id="langland.public_api.repository.language" />
+
+            <tag name="controller.argument_value_resolver" priority="50" />
+        </service>
+
+        <service
+                id="langland.public_api.user_value_resolver"
+                class="PublicApi\LearningUser\Business\Infrastructure\Resolver\UserValueResolver" public="true">
+
+            <argument type="service" id="security.token_storage" />
+
+            <tag name="controller.argument_value_resolver" priority="50" />
+        </service>
+    </services>
+</container>

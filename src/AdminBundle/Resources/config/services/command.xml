@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.command.admin_user_create"
-                class="Library\Command\AdminUserCreateCommand">
+                class="Library\Command\AdminUserCreateCommand" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument type="service" id="security.password_encoder" />
@@ -17,7 +17,7 @@
 
         <service
                 id="langland.command.language_images_add_command"
-                class="AdminBundle\Command\LanguageImagesAddingCommand">
+                class="AdminBundle\Command\LanguageImagesAddingCommand" public="true">
 
             <argument>%image_upload%</argument>
             <argument type="service" id="langland.learning_metadata.repository.language" />

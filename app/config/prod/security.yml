@@ -18,6 +18,7 @@ security:
         admin:
             pattern: ^/admin
             provider: armor_user_provider
+            logout_on_user_change: true
             form_login:
                 default_target_path: admin_dashboard
                 login_path: armor_admin_login
@@ -26,6 +27,7 @@ security:
 
         langland:
             pattern: ^/langland
+            logout_on_user_change: true
             provider: armor_user_provider
             user_checker: armor.user.user_checker
             form_login:
@@ -36,6 +38,7 @@ security:
 
         public_api:
             pattern: ^/api
+            logout_on_user_change: true
             stateless: true
             provider: armor_public_api_user_provider
             simple_preauth:
@@ -44,6 +47,7 @@ security:
 
         app:
             pattern: ^/
+            logout_on_user_change: true
             anonymous: true
 
     role_hierarchy:

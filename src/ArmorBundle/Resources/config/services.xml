@@ -14,16 +14,16 @@
 
     <services>
 
-        <service id="armor.user_provider" class="%armor.user_provider.class%">
+        <service id="armor.user_provider" class="%armor.user_provider.class%" public="true">
             <argument type="service" id="armor.repository.user" />
         </service>
 
-        <service id="armor.user_provider.public_api" class="ArmorBundle\Provider\PublicApiUserProvider">
+        <service id="armor.user_provider.public_api" class="ArmorBundle\Provider\PublicApiUserProvider" public="true">
             <argument type="service" id="armor.repository.user" />
             <argument type="service" id="security.token_storage" />
         </service>
 
-        <service id="armor.authenticator.public_api" class="ArmorBundle\Authenticator\PublicApiAuthenticator">
+        <service id="armor.authenticator.public_api" class="ArmorBundle\Authenticator\PublicApiAuthenticator" public="true">
             <argument type="service" id="session" />
             <argument>%root_firewalls%</argument>
         </service>
@@ -32,13 +32,13 @@
 
         </service>
 
-        <service id="armor.repository.user" class="ArmorBundle\Repository\UserRepository">
+        <service id="armor.repository.user" class="ArmorBundle\Repository\UserRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>ArmorBundle\Entity\User</argument>
         </service>
 
-        <service id="armor.email" class="%armor.email.class%">
+        <service id="armor.email" class="%armor.email.class%" public="true">
             <argument type="service" id="mailer" />
             <argument type="service" id="templating" />
             <argument>%email_config%</argument>

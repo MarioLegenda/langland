@@ -2,9 +2,9 @@
 
 namespace ArmorBundle\Entity;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 
-class Role implements RoleInterface
+class Role extends SymfonyRole
 {
     /**
      * @var int $id
@@ -19,12 +19,11 @@ class Role implements RoleInterface
      */
     private $user;
     /**
-     * Role constructor.
-     * @param string|null $role
+     * @param string $role The role name
      */
-    public function __construct(string $role = null)
+    public function __construct($role)
     {
-        $this->role = $role;
+        $this->role = (string) $role;
     }
     /**
      * @return mixed
@@ -41,17 +40,17 @@ class Role implements RoleInterface
         return $this->user;
     }
     /**
-     * @param mixed $user
-     * @return RoleInterface
+     * @param User $user
+     * @return SymfonyRole
      */
-    public function setUser($user) : RoleInterface
+    public function setUser($user) : SymfonyRole
     {
         $this->user = $user;
 
         return $this;
     }
     /**
-     * @return null|string
+     * {@inheritdoc}
      */
     public function getRole()
     {

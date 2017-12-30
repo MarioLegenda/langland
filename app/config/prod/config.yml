@@ -37,6 +37,11 @@ framework:
     php_errors:
         log: true
 
+sensio_framework_extra:
+    request:
+        converters: true
+        auto_convert: false
+
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'

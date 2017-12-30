@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.learning_metadata.business.implementation.language"
-                class="LearningMetadata\Business\Implementation\LanguageImplementation">
+                class="LearningMetadata\Business\Implementation\LanguageImplementation" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.language" />
             <argument type="service" id="langland.learning_metadata.repository.image" />
@@ -20,7 +20,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.category"
-                class="LearningMetadata\Business\Implementation\CategoryImplementation">
+                class="LearningMetadata\Business\Implementation\CategoryImplementation" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.category" />
             <argument type="service" id="langland.learning_metadata.form.form_builder" />
@@ -32,7 +32,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.word"
-                class="LearningMetadata\Business\Implementation\WordImplementation">
+                class="LearningMetadata\Business\Implementation\WordImplementation" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.word" />
             <argument type="service" id="langland.learning_metadata.repository.image" />
@@ -45,7 +45,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.language_info"
-                class="LearningMetadata\Business\Implementation\LanguageInfoImplementation">
+                class="LearningMetadata\Business\Implementation\LanguageInfoImplementation" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.language_info" />
             <argument type="service" id="langland.learning_metadata.repository.language_info_text" />
@@ -59,7 +59,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.sound"
-                class="LearningMetadata\Business\Implementation\SoundImplementation">
+                class="LearningMetadata\Business\Implementation\SoundImplementation" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.sound" />
             <argument type="service" id="langland.learning_metadata.form.form_builder" />
@@ -71,7 +71,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.course"
-                class="LearningMetadata\Business\Implementation\CourseImplementation">
+                class="LearningMetadata\Business\Implementation\CourseImplementation" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.course" />
             <argument type="service" id="langland.learning_metadata.form.form_builder" />
@@ -83,7 +83,7 @@
 
         <service
                 id="langland.learning_metadata.business.implementation.lesson"
-                class="LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation">
+                class="LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.lesson" />
             <argument type="service" id="langland.learning_metadata.repository.course" />

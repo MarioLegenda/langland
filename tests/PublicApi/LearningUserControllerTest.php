@@ -47,10 +47,8 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
-        $languageId = $language->getId();
-
         $this->learningUserImplementation->registerLearningUser(
-            $languageId,
+            $language,
             $user
         );
 
@@ -72,10 +70,8 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
-        $languageId = $language->getId();
-
         $this->learningUserImplementation->registerLearningUser(
-            $languageId,
+            $language,
             $user
         );
 
@@ -91,7 +87,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $newLanguage = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
         $this->learningUserImplementation->registerLearningUser(
-            $newLanguage->getId(),
+            $newLanguage,
             $user
         );
 

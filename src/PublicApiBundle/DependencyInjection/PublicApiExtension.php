@@ -21,6 +21,7 @@ class PublicApiExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config/services')
         );
 
+        $loader->load('resolver.xml');
         $loader->load('controller.xml');
         $loader->load('implementation.xml');
         $loader->load('repository.xml');

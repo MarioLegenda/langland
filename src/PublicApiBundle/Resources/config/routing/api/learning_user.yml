@@ -1,4 +1,4 @@
 register_learning_user:
     path: /register-learning-user
     defaults: { _controller: langland.public_api.controller.learning_user:registerLearningUser }
-    methods: [POST]
+    methods: [POST, PUT]

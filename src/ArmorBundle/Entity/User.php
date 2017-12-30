@@ -3,6 +3,7 @@
 namespace ArmorBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface
@@ -27,7 +28,9 @@ class User implements UserInterface
      * @var string $password
      */
     private $password;
-
+    /**
+     * @var string $plainPassword
+     */
     private $plainPassword;
     /**
      * @var bool $enabled
@@ -37,6 +40,10 @@ class User implements UserInterface
      * @var ArrayCollection $roles
      */
     private $roles;
+    /**
+     * @var LearningUser $currentLearningUser
+     */
+    private $currentLearningUser;
     /**
      * @var string $confirmHash
      */
@@ -232,6 +239,23 @@ class User implements UserInterface
                 $this->addRole($role);
             }
         }
+    }
+    /**
+     * @return LearningUser
+     */
+    public function getCurrentLearningUser(): LearningUser
+    {
+        return $this->currentLearningUser;
+    }
+    /**
+     * @param LearningUser $currentLearningUser
+     * @return User
+     */
+    public function setCurrentLearningUser(LearningUser $currentLearningUser): User
+    {
+        $this->currentLearningUser = $currentLearningUser;
+
+        return $this;
     }
     /**
      * @return mixed

@@ -51,4 +51,11 @@ class UserDataProvider implements DefaultDataProviderInterface
     {
         return $this->userRepository->persistAndFlush($this->createDefault($faker));
     }
+    /**
+     * @return UserRepository
+     */
+    public function getRepository(): UserRepository
+    {
+        return $this->userRepository;
+    }
 }

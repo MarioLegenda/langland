@@ -92,6 +92,13 @@ class LanglandAdminTestCase extends WebTestCase
         static::$inst->client->getCookieJar()->set($cookie);
     }
     /**
+     * @void
+     */
+    protected function manualReset(): void
+    {
+        exec('/usr/bin/php /var/www/bin/console langland:reset');
+    }
+    /**
      * @param Crawler $crawler
      * @param array $fields
      * @param string $button

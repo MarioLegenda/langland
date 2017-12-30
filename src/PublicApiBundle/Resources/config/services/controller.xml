@@ -25,7 +25,6 @@
                 class="PublicApi\LearningUser\Business\Controller\LearningUserController" public="true">
 
             <argument type="service" id="langland.public_api.business.implementation.learning_user" />
-            <argument type="service" id="security.token_storage" />
         </service>
 
         <service

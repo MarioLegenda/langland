@@ -8,8 +8,6 @@ use PublicApi\LearningUser\Business\Implementation\LearningUserImplementation;
 use PublicApiBundle\Entity\LearningUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class LearningUserController
 {
@@ -18,20 +16,13 @@ class LearningUserController
      */
     private $learningUserImplementation;
     /**
-     * @var TokenStorage $tokenStorage
-     */
-    private $tokenStorage;
-    /**
      * LearningUserController constructor.
      * @param LearningUserImplementation $learningUserImplementation
-     * @param TokenStorage $tokenStorage
      */
     public function __construct(
-        LearningUserImplementation $learningUserImplementation,
-        TokenStorage $tokenStorage
+        LearningUserImplementation $learningUserImplementation
     ) {
         $this->learningUserImplementation = $learningUserImplementation;
-        $this->tokenStorage = $tokenStorage;
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -45,7 +36,12 @@ class LearningUserController
         $learningUser = $this->learningUserImplementation->findExact($language, $user);
 
         if ($learningUser instanceof LearningUser) {
-            return new JsonResponse([], 205);
+            $this->learningUserImplementation->updateLearningUser(
+                $learningUser,
+                $user
+            );
+
+            return new JsonResponse('Resource already exists', 204);
         }
 
         $this->learningUserImplementation->registerLearningUser(

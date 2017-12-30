@@ -4,6 +4,7 @@ namespace PublicApi\LearningUser\Business\Implementation;
 
 use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
+use ArmorBundle\Repository\UserRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
@@ -19,16 +20,23 @@ class LearningUserImplementation
      */
     private $languageRepository;
     /**
+     * @var UserRepository $userRepository
+     */
+    private $userRepository;
+    /**
      * LearningUserImplementation constructor.
      * @param LearningUserRepository $learningUserRepository
      * @param LanguageRepository $languageRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(
         LearningUserRepository $learningUserRepository,
-        LanguageRepository $languageRepository
+        LanguageRepository $languageRepository,
+        UserRepository $userRepository
     ) {
         $this->learningUserRepository = $learningUserRepository;
         $this->languageRepository = $languageRepository;
+        $this->userRepository = $userRepository;
     }
     /**
      * @param int $id
@@ -89,6 +97,26 @@ class LearningUserImplementation
         $learningUser->setLanguage($language);
         $learningUser->setUser($user);
 
-        return $this->learningUserRepository->persistAndFlush($learningUser);
+        $user->setCurrentLearningUser($learningUser);
+
+        $this->learningUserRepository->persistAndFlush($learningUser);
+
+        $this->userRepository->persistAndFlush($user);
+
+        return $learningUser;
+    }
+    /**
+     * @param LearningUser $learningUser
+     * @param User $user
+     * @return LearningUser
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function updateLearningUser(LearningUser $learningUser, User $user): LearningUser
+    {
+        $this->userRepository->persistAndFlush($user);
+
+        $user->setCurrentLearningUser($learningUser);
+
+        return $learningUser;
     }
 }

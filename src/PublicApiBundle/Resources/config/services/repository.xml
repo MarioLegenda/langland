@@ -9,8 +9,8 @@
                 id="langland.public_api.repository.lesson"
                 class="PublicApi\Lesson\Repository\LessonRepository" public="true">
 
-            <argument type="service" id="langland.common.blue_dot" />
-            <argument>public_api_lesson</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\Lesson</argument>
         </service>
 
         <service

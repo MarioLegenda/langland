@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningUser\Business\Infrastructure\Resolver;
+namespace PublicApi\Infrastructure\Resolver;
 
 use ArmorBundle\Entity\User;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
 
 class UserValueResolver implements ArgumentValueResolverInterface
 {

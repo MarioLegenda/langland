@@ -2,8 +2,8 @@
 
 namespace PublicApi\Lesson\Repository;
 
-use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
+use Library\Infrastructure\Repository\CommonRepository;
 
-class LessonRepository extends BaseBlueDotRepository
+class LessonRepository extends CommonRepository
 {
 }

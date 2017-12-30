@@ -38,13 +38,13 @@ class LessonImplementation
     public function find(int $id): Lesson
     {
         /** @var PromiseInterface $promise */
-        $promise = $this->lessonRepository->find($id, 'simple.select.find_lesson_by_id');
+        $lesson = $this->lessonRepository->find($id);
 
-        return $promise->success(function(PromiseInterface $promise) {
-            return $promise->getResult();
-        })->failure(function() {
-            throw new NotFoundHttpException();
-        })->getResult();
+        if (!$lesson instanceof Lesson) {
+            throw new \RuntimeException('Lesson not found');
+        }
+
+        return $lesson;
     }
     /**
      * @param int $id
@@ -53,21 +53,28 @@ class LessonImplementation
     public function tryFind(int $id): ?Lesson
     {
         /** @var Lesson $lesson */
-        $lesson = $this->lessonRepository->find($id, 'simple.select.find_lesson_by_id');
+        $lesson = $this->lessonRepository->find($id);
 
         return $lesson;
     }
     /**
-     * @param int $id
+     * @param Lesson|int $lesson
      * @param array $groups
      * @param string $type
+     * @throws \RuntimeException
      * @return string
      */
-    public function findAndSerialize(int $id, array $groups, string $type): string
+    public function findAndSerialize($lesson, array $groups, string $type): string
     {
-        $lesson = $this->find($id);
+        if ($lesson instanceof Lesson) {
+            return $this->serialize($lesson, $groups, $type);
+        }
 
-        return $this->commonSerializer->serialize($lesson, $groups, $type);
+        if (is_int($lesson)) {
+            return $this->serialize($this->find($lesson), $groups, $type);
+        }
+
+        throw new \RuntimeException('Lesson not found');
     }
     /**
      * @param int $id
@@ -79,6 +86,11 @@ class LessonImplementation
     {
         $lesson = $this->tryFind($id);
 
+        return $this->commonSerializer->serialize($lesson, $groups, $type);
+    }
+
+    private function serialize(Lesson $lesson, array $groups, string $type): string
+    {
         return $this->commonSerializer->serialize($lesson, $groups, $type);
     }
 }

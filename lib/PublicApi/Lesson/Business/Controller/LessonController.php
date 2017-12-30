@@ -24,14 +24,14 @@ class LessonController
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     * @param int $id
+     * @param Lesson $lesson
      * @return Response
      */
-    public function getLessonById(int $id)
+    public function getLessonById(Lesson $lesson)
     {
         /** @var Lesson $lesson */
         return new Response($this->lessonImplementation->findAndSerialize(
-            $id,
+            $lesson,
             ['public_api'],
             'json'
         ), 200);

@@ -26,17 +26,20 @@ security:
 
         admin:
             pattern: ^/admin
+            logout_on_user_change: true
             anonymous: ~
             http_basic: ~
 
         langland:
             pattern: ^/langland
+            logout_on_user_change: true
             http_basic: ~
             provider: armor_user_provider
             user_checker: armor.user.user_checker
 
         public_api:
             pattern: ^/api
+            logout_on_user_change: true
             stateless: true
             provider: armor_public_api_user_provider
             simple_preauth:
@@ -45,6 +48,7 @@ security:
 
         app:
             pattern: ^/
+            logout_on_user_change: true
             anonymous: true
 
     role_hierarchy:

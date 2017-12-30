@@ -16,9 +16,18 @@
 
         <service
                 id="langland.public_api.user_value_resolver"
-                class="PublicApi\LearningUser\Business\Infrastructure\Resolver\UserValueResolver" public="true">
+                class="PublicApi\Infrastructure\Resolver\UserValueResolver" public="true">
 
             <argument type="service" id="security.token_storage" />
+
+            <tag name="controller.argument_value_resolver" priority="50" />
+        </service>
+
+        <service
+                id="langland.public_api.lesson_value_resolver"
+                class="PublicApi\Lesson\Business\Infrastructure\Resolver\LessonValueResolver" public="true">
+
+            <argument type="service" id="langland.public_api.repository.lesson" />
 
             <tag name="controller.argument_value_resolver" priority="50" />
         </service>

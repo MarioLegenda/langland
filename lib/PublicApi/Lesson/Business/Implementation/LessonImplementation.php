@@ -88,7 +88,12 @@ class LessonImplementation
 
         return $this->commonSerializer->serialize($lesson, $groups, $type);
     }
-
+    /**
+     * @param Lesson $lesson
+     * @param array $groups
+     * @param string $type
+     * @return string
+     */
     private function serialize(Lesson $lesson, array $groups, string $type): string
     {
         return $this->commonSerializer->serialize($lesson, $groups, $type);

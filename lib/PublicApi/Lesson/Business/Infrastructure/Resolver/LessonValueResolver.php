@@ -44,17 +44,23 @@ class LessonValueResolver implements ArgumentValueResolverInterface
             $lessonId = $request->query->get('lessonId');
 
             if (is_null($lessonId)) {
-                return false;
+                $lessonId = $request->get('lessonId');
+
+                if (is_null($lessonId)) {
+                    return false;
+                }
             }
         }
 
-        $lesson = $this->lessonRepository->find($lessonId);
+        $lesson = $this->lessonRepository->find((int) $lessonId);
 
         if (!$lesson instanceof Lesson) {
             return false;
         }
 
         $this->lesson = $lesson;
+
+        return true;
     }
     /**
      * @param Request $request

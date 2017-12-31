@@ -30,7 +30,7 @@ class SeedCommand extends ContainerAwareCommand
 
         $faker = \Faker\Factory::create();
 
-        $languages = array('french', 'spanish', 'italian');
+        $languages = array('French', 'Spanish', 'Italian');
         $categories = array('nature', 'body', 'soul', 'love');
 
 

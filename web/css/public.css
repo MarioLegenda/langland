@@ -253,6 +253,15 @@ body {
       width: 100%;
       float: left;
       margin: 50px 0 0 0; }
+      #main_content .languages-wrapper .language .button-wrapper i {
+        display: block;
+        float: right;
+        width: 25px;
+        height: 25px;
+        font-size: 20px;
+        color: red;
+        margin-right: 50px;
+        margin-bottom: 7px; }
       #main_content .languages-wrapper .language .button-wrapper button {
         display: block;
         border: none;

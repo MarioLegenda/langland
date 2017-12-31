@@ -1,7 +1,0 @@
-AdminBundle\Entity\Game\WordGameUnit:
-    exclusion_policy: ALL
-    properties:
-        word:
-            expose: true
-            type: AdminBundle\Entity\Word
-            groups: [game]

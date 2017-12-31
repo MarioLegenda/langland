@@ -211,7 +211,10 @@ body {
     float: left;
     margin-top: 80px;
     margin-left: 80px; }
+    #main_content .languages-wrapper .language .already-learning {
+      border: 1px solid #4fc926 !important; }
     #main_content .languages-wrapper .language .title-wrapper {
+      position: relative;
       margin-bottom: 35px;
       border: 1px solid #F16C20;
       border-radius: 20px;
@@ -220,6 +223,12 @@ body {
         font-size: 18px;
         color: #706464;
         text-align: center; }
+      #main_content .languages-wrapper .language .title-wrapper i {
+        display: block;
+        position: absolute;
+        right: 10px;
+        bottom: 11px;
+        color: #4fc926; }
     #main_content .languages-wrapper .language .image-wrapper {
       margin-bottom: 35px; }
       #main_content .languages-wrapper .language .image-wrapper img {

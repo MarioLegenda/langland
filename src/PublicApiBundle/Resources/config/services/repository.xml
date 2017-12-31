@@ -28,5 +28,13 @@
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>PublicApiBundle\Entity\LearningUser</argument>
         </service>
+
+        <service
+                id="langland.public_api.repository.repository_communicator"
+                class="PublicApi\Infrastructure\Communication\RepositoryCommunicator" public="true">
+
+            <argument type="service" id="langland.public_api.repository.language" />
+            <argument type="service" id="langland.public_api.repository.learning_user" />
+        </service>
     </services>
 </container>

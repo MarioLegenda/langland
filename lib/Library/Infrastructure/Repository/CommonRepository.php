@@ -4,6 +4,7 @@ namespace Library\Infrastructure\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Ramsey\Uuid\Uuid;
+use Doctrine\ORM\QueryBuilder;
 
 class CommonRepository implements RepositoryInterface
 {
@@ -75,5 +76,24 @@ class CommonRepository implements RepositoryInterface
     public function findAll()
     {
         return $this->findBy(array());
+    }
+    /**
+     * @param string $alias
+     * @param null $indexBy
+     * @return QueryBuilder
+     */
+    public function createQueryBuilderFromClass(string $alias, $indexBy = null): QueryBuilder
+    {
+        return $this->em->createQueryBuilder()
+            ->select($alias)
+            ->from($this->class, $alias, $indexBy);
+    }
+    /**
+     * @param string $alias
+     * @return QueryBuilder
+     */
+    public function createQueryBuilder(string $alias): QueryBuilder
+    {
+        return $this->em->createQueryBuilder()->select($alias);
     }
 }

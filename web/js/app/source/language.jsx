@@ -18,12 +18,17 @@ class Item extends React.Component {
 
     render() {
         const language = this.props.language;
-
-        console.log(language);
+        const alreadyLearning = language.alreadyLearning;
+        const alreadyLearningClass = (alreadyLearning) ? 'already-learning': '';
+        const alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning';
 
         return <div className="language">
-                <div className="title-wrapper">
+                <div className={"title-wrapper " + alreadyLearningClass}>
                     <h1>{language.name}</h1>
+                    {alreadyLearning &&
+                        <i className="fa fa-check"></i>
+
+                    }
                 </div>
 
                 <div className="image-wrapper">
@@ -35,7 +40,7 @@ class Item extends React.Component {
                 </div>
 
                 <div className="button-wrapper">
-                    <button onClick={this.registerLanguage}>Start learning</button>
+                    <button onClick={this.registerLanguage}>{alreadyLearningButtonText}</button>
                 </div>
             </div>
     }
@@ -65,7 +70,8 @@ export class List extends React.Component{
                 images: {
                     cover: images.cover_image.relativePath + '/' + images.cover_image.originalName,
                     icon: images.icon.relativePath + '/' + images.icon.originalName
-                }
+                },
+                alreadyLearning: lang.alreadyLearning
             };
 
             languages.push(<Item key={i} language={language}/>)

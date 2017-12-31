@@ -6,5 +6,4 @@ use Library\Infrastructure\Repository\CommonRepository;
 
 class LanguageRepository extends CommonRepository
 {
-
 }

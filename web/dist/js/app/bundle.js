@@ -25548,20 +25548,22 @@ var Item = function (_React$Component) {
         key: 'render',
         value: function render() {
             var language = this.props.language;
-
-            console.log(language);
+            var alreadyLearning = language.alreadyLearning;
+            var alreadyLearningClass = alreadyLearning ? 'already-learning' : '';
+            var alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning';
 
             return _react2.default.createElement(
                 'div',
                 { className: 'language' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'title-wrapper' },
+                    { className: "title-wrapper " + alreadyLearningClass },
                     _react2.default.createElement(
                         'h1',
                         null,
                         language.name
-                    )
+                    ),
+                    alreadyLearning && _react2.default.createElement('i', { className: 'fa fa-check' })
                 ),
                 _react2.default.createElement(
                     'div',
@@ -25583,7 +25585,7 @@ var Item = function (_React$Component) {
                     _react2.default.createElement(
                         'button',
                         { onClick: this.registerLanguage },
-                        'Start learning'
+                        alreadyLearningButtonText
                     )
                 )
             );
@@ -25624,7 +25626,8 @@ var List = exports.List = function (_React$Component2) {
                     images: {
                         cover: images.cover_image.relativePath + '/' + images.cover_image.originalName,
                         icon: images.icon.relativePath + '/' + images.icon.originalName
-                    }
+                    },
+                    alreadyLearning: lang.alreadyLearning
                 };
 
                 languages.push(_react2.default.createElement(Item, { key: i, language: language }));

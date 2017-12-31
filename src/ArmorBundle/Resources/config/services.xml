@@ -43,5 +43,17 @@
             <argument type="service" id="templating" />
             <argument>%email_config%</argument>
         </service>
+
+<!--        <service id="armor.admin.access_denied_handler" class="LanglandAccessDeniedHandler" public="true">
+            <argument type="service" id="router" />
+        </service>
+
+        <service id="armor.public_api.access_denied_handler" class="LanglandAccessDeniedHandler" public="true">
+            <argument type="service" id="router" />
+        </service>-->
+
+        <service id="armor.langland.access_denied_handler" class="ArmorBundle\Handler\LanglandAccessDeniedHandler" public="true">
+            <argument type="service" id="router" />
+        </service>
     </services>
 </container>

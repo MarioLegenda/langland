@@ -46,7 +46,7 @@ class Item extends React.Component {
     }
 }
 
-export class List extends React.Component{
+export class LanguageList extends React.Component{
     constructor(props) {
         super(props);
 

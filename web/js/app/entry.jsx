@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {env, user} from "../global/constants.js";
-import {List} from "./source/language.jsx";
+import {LanguageList} from "./source/language.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
 
 function App() {
 
-    const langList = (match) => <List/>;
+    const langList = () => <LanguageList/>;
 
     return (
         <Router>

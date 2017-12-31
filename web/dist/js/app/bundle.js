@@ -11071,8 +11071,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function App() {
 
-    var langList = function langList(match) {
-        return _react2.default.createElement(_language.List, null);
+    var langList = function langList() {
+        return _react2.default.createElement(_language.LanguageList, null);
     };
 
     return _react2.default.createElement(
@@ -25505,7 +25505,7 @@ NavLink.defaultProps = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.List = undefined;
+exports.LanguageList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -25595,13 +25595,13 @@ var Item = function (_React$Component) {
     return Item;
 }(_react2.default.Component);
 
-var List = exports.List = function (_React$Component2) {
-    _inherits(List, _React$Component2);
+var LanguageList = exports.LanguageList = function (_React$Component2) {
+    _inherits(LanguageList, _React$Component2);
 
-    function List(props) {
-        _classCallCheck(this, List);
+    function LanguageList(props) {
+        _classCallCheck(this, LanguageList);
 
-        var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
 
         _this2.languageRepository = (0, _factory.factory)('language');
 
@@ -25611,7 +25611,7 @@ var List = exports.List = function (_React$Component2) {
         return _this2;
     }
 
-    _createClass(List, [{
+    _createClass(LanguageList, [{
         key: '_processLanguageData',
         value: function _processLanguageData(data) {
             var languages = [];
@@ -25661,7 +25661,7 @@ var List = exports.List = function (_React$Component2) {
         }
     }]);
 
-    return List;
+    return LanguageList;
 }(_react2.default.Component);
 
 /***/ }),

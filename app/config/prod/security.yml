@@ -26,6 +26,7 @@ security:
             anonymous: ~
 
         langland:
+            access_denied_handler: armor.langland.access_denied_handler
             pattern: ^/langland
             logout_on_user_change: true
             provider: armor_user_provider
@@ -37,6 +38,7 @@ security:
             anonymous: ~
 
         public_api:
+            access_denied_handler: armor.langland.access_denied_handler
             pattern: ^/api
             logout_on_user_change: true
             stateless: true

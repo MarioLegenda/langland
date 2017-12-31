@@ -4,11 +4,13 @@ namespace Library\Listener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\Routing\Router;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -17,13 +19,20 @@ class ExceptionSubscriber implements EventSubscriberInterface
      */
     private $logger;
     /**
+     * @var Router $router
+     */
+    private $router;
+    /**
      * ExceptionSubscriber constructor.
      * @param LoggerInterface $logger
+     * @param Router $router
      */
     public function __construct(
+        Router $router,
         LoggerInterface $logger
     ) {
         $this->logger = $logger;
+        $this->router = $router;
     }
     /**
      * @return array
@@ -43,6 +52,14 @@ class ExceptionSubscriber implements EventSubscriberInterface
     public function logException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
+
+        if ($exception instanceof AccessDeniedException) {
+            $response = new RedirectResponse($this->router->generate('armor_user_login'));
+
+            $event->setResponse($response);
+
+            return;
+        }
 
         if ($exception instanceof HttpExceptionInterface) {
             $response = new Response();

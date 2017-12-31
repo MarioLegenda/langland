@@ -208,6 +208,7 @@ body {
   margin-top: 35px; }
   #main_content .languages-wrapper .language {
     width: 480px;
+    height: 615px;
     float: left;
     margin-top: 80px;
     margin-left: 80px; }

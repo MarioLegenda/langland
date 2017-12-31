@@ -41,7 +41,11 @@ class PostMethodLanguageValueResolver implements ArgumentValueResolverInterface
         $languageId = $request->request->get('languageId');
 
         if (is_null($languageId)) {
-            return false;
+            $languageId = $request->query->get('languageId');
+
+            if (is_null($languageId)) {
+                $languageId = $request->get('languageId');
+            }
         }
 
         $language = $this->languageRepository->find($languageId);

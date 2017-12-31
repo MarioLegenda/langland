@@ -11065,14 +11065,19 @@ var _constants = __webpack_require__(38);
 
 var _language = __webpack_require__(224);
 
+var _app = __webpack_require__(228);
+
 var _factory = __webpack_require__(95);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function App() {
+function InitApp() {
 
     var langList = function langList() {
         return _react2.default.createElement(_language.LanguageList, null);
+    };
+    var app = function app(match) {
+        return _react2.default.createElement(_app.App, { match: match.match });
     };
 
     return _react2.default.createElement(
@@ -11084,17 +11089,18 @@ function App() {
             _react2.default.createElement(
                 _reactRouterDom.Switch,
                 null,
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList })
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: app })
             )
         )
     );
 }
 
-var react_language_list = document.getElementById('react_language_list');
+var react_app = document.getElementById('react_app');
 
-if (react_language_list !== null) {
+if (react_app !== null) {
     (0, _factory.factory)('user').getLoggedInUser($.proxy(function () {
-        _reactDom2.default.render(_react2.default.createElement(App, null), react_language_list);
+        _reactDom2.default.render(_react2.default.createElement(InitApp, null), react_app);
     }));
 }
 
@@ -25515,6 +25521,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _factory = __webpack_require__(95);
 
+var _reactRouterDom = __webpack_require__(196);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25547,10 +25555,11 @@ var Item = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var language = this.props.language;
-            var alreadyLearning = language.alreadyLearning;
-            var alreadyLearningClass = alreadyLearning ? 'already-learning' : '';
-            var alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning';
+            var language = this.props.language,
+                alreadyLearning = language.alreadyLearning,
+                alreadyLearningClass = alreadyLearning ? 'already-learning' : '',
+                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning',
+                url = language.name + "/" + language.id;
 
             return _react2.default.createElement(
                 'div',
@@ -25583,8 +25592,8 @@ var Item = function (_React$Component) {
                     'div',
                     { className: 'button-wrapper' },
                     _react2.default.createElement(
-                        'button',
-                        { onClick: this.registerLanguage },
+                        _reactRouterDom.Link,
+                        { className: 'language-link', onClick: this.registerLanguage, to: url },
                         alreadyLearningButtonText
                     )
                 )
@@ -25759,6 +25768,53 @@ class LearningUserRepository {
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = LearningUserRepository;
 
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.App = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _factory = __webpack_require__(95);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var App = exports.App = function (_React$Component) {
+    _inherits(App, _React$Component);
+
+    function App(props) {
+        _classCallCheck(this, App);
+
+        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+    }
+
+    _createClass(App, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement("div", null);
+        }
+    }]);
+
+    return App;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

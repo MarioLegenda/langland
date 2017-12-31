@@ -246,7 +246,7 @@ body {
         text-align: center;
         color: #706464;
         line-height: 1.4em; }
-    #main_content .languages-wrapper .language .button-wrapper button {
+    #main_content .languages-wrapper .language .button-wrapper .language-link {
       display: block;
       width: 200px;
       margin: 0 auto;
@@ -255,8 +255,9 @@ body {
       border-bottom: 1px solid #F16C20;
       background: none;
       font-family: "Playfair Display", serif;
-      font-size: 18px; }
-      #main_content .languages-wrapper .language .button-wrapper button:hover {
+      font-size: 18px;
+      text-align: center; }
+      #main_content .languages-wrapper .language .button-wrapper .language-link:hover {
         cursor: pointer; }
 
 #header {

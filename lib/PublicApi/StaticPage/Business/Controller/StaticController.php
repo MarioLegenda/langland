@@ -28,7 +28,18 @@ class StaticController
      */
     public function languageIndexAction(): Response
     {
-        $template = $this->templateWrapper->getTemplate('::App/Static/Language/index.html.twig');
+        $template = $this->templateWrapper->getTemplate('::App/Static/index.html.twig');
+
+        return new Response($template);
+    }
+    /**
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @return Response
+     */
+    public function appAction(): Response
+    {
+        $template = $this->templateWrapper->getTemplate('::App/Static/app.html.twig');
 
         return new Response($template);
     }

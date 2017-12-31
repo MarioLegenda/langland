@@ -4,30 +4,33 @@ import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {env, user} from "../global/constants.js";
 import {LanguageList} from "./source/language.jsx";
+import {App} from "./source/app.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
 
-function App() {
+function InitApp() {
 
     const langList = () => <LanguageList/>;
+    const app = (match) => <App match={match.match}/>;
 
     return (
         <Router>
             <div>
                 <Switch>
                     <Route exact path={env.current + "langland"} render={langList} />
+                    <Route path={env.current + "langland/:language/:languageId"} render={app}/>
                 </Switch>
             </div>
         </Router>
     );
 }
 
-const react_language_list = document.getElementById('react_language_list');
+const react_app = document.getElementById('react_app');
 
-if (react_language_list !== null) {
+if (react_app !== null) {
     repoFactory('user').getLoggedInUser($.proxy(function() {
         ReactDOM.render(
-            <App/>,
-            react_language_list
+            <InitApp/>,
+            react_app
         );
     }));
 }

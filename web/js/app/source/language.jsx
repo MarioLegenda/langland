@@ -1,5 +1,6 @@
 import React from 'react';
 import {factory as repoFactory} from "./repository/factory.js";
+import {Link} from 'react-router-dom';
 
 class Item extends React.Component {
     constructor(props) {
@@ -17,10 +18,11 @@ class Item extends React.Component {
     }
 
     render() {
-        const language = this.props.language;
-        const alreadyLearning = language.alreadyLearning;
-        const alreadyLearningClass = (alreadyLearning) ? 'already-learning': '';
-        const alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning';
+        const language = this.props.language,
+              alreadyLearning = language.alreadyLearning,
+              alreadyLearningClass = (alreadyLearning) ? 'already-learning': '',
+              alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning',
+              url = language.name + "/" + language.id;
 
         return <div className="language">
                 <div className={"title-wrapper " + alreadyLearningClass}>
@@ -40,7 +42,7 @@ class Item extends React.Component {
                 </div>
 
                 <div className="button-wrapper">
-                    <button onClick={this.registerLanguage}>{alreadyLearningButtonText}</button>
+                    <Link className="language-link" onClick={this.registerLanguage} to={url}>{alreadyLearningButtonText}</Link>
                 </div>
             </div>
     }

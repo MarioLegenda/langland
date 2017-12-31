@@ -19,25 +19,24 @@ class Item extends React.Component {
     render() {
         const language = this.props.language;
 
+        console.log(language);
+
         return <div className="language">
-                    <div className="title-wrapper">
-                        <div className="icon-wrapper">
-                            <img src={language.images.icon} />
-                        </div>
-                        <h1>{language.name}</h1>
-                    </div>
+                <div className="title-wrapper">
+                    <h1>{language.name}</h1>
+                </div>
 
-                    <div className="description-wrapper">
-                        <p>{language.desc}</p>
-                    </div>
+                <div className="image-wrapper">
+                    <img src={language.images.cover} />
+                </div>
 
-                    <div className="image-wrapper">
-                        <img src={language.images.cover} />
-                    </div>
+                <div className="description-wrapper">
+                    <p>{language.desc}</p>
+                </div>
 
-                    <div className="button-wrapper">
-                        <button onClick={this.registerLanguage}>Start learning</button>
-                    </div>
+                <div className="button-wrapper">
+                    <button onClick={this.registerLanguage}>Start learning</button>
+                </div>
             </div>
     }
 }

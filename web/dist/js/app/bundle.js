@@ -25549,6 +25549,8 @@ var Item = function (_React$Component) {
         value: function render() {
             var language = this.props.language;
 
+            console.log(language);
+
             return _react2.default.createElement(
                 'div',
                 { className: 'language' },
@@ -25556,15 +25558,15 @@ var Item = function (_React$Component) {
                     'div',
                     { className: 'title-wrapper' },
                     _react2.default.createElement(
-                        'div',
-                        { className: 'icon-wrapper' },
-                        _react2.default.createElement('img', { src: language.images.icon })
-                    ),
-                    _react2.default.createElement(
                         'h1',
                         null,
                         language.name
                     )
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'image-wrapper' },
+                    _react2.default.createElement('img', { src: language.images.cover })
                 ),
                 _react2.default.createElement(
                     'div',
@@ -25574,11 +25576,6 @@ var Item = function (_React$Component) {
                         null,
                         language.desc
                     )
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'image-wrapper' },
-                    _react2.default.createElement('img', { src: language.images.cover })
                 ),
                 _react2.default.createElement(
                     'div',

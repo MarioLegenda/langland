@@ -9,15 +9,27 @@ class Item extends React.Component {
         this.registerLanguage = this.registerLanguage.bind(this);
 
         this.learningUserRepository = repoFactory('learning-user');
+
+        this.state = {
+            registerLoading: false
+        };
     }
 
     registerLanguage(e) {
         e.preventDefault();
 
+        this.setState(function(prevState) {
+            prevState.registerLoading = true;
+        });
+
         const language = this.props.language;
         const url = language.name + "/" + language.id;
 
         this.learningUserRepository.registerLearningUser(language.id, $.proxy(function() {
+            this.setState(function(prevState) {
+                prevState.registerLoading = false;
+            });
+
             this.props.history.push(url);
         }, this));
 
@@ -28,7 +40,8 @@ class Item extends React.Component {
         const language = this.props.language,
               alreadyLearning = language.alreadyLearning,
               alreadyLearningClass = (alreadyLearning) ? 'already-learning': '',
-              alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning';
+              alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning',
+              registerLoading = this.state.registerLoading;
 
         return <div className="language">
                 <div className={"title-wrapper " + alreadyLearningClass}>
@@ -48,7 +61,7 @@ class Item extends React.Component {
                 </div>
 
                 <div className="button-wrapper">
-                    <Link className="language-link" onClick={this.registerLanguage} to={""}>{alreadyLearningButtonText}</Link>
+                    <Link className="language-link" onClick={this.registerLanguage} to={""}>{registerLoading && <i className="fa fa-circle-o-notch fa-spin fa-fw"></i>}{alreadyLearningButtonText}</Link>
                 </div>
             </div>
     }

@@ -25649,6 +25649,10 @@ var Item = function (_React$Component) {
         _this.registerLanguage = _this.registerLanguage.bind(_this);
 
         _this.learningUserRepository = (0, _factory.factory)('learning-user');
+
+        _this.state = {
+            registerLoading: false
+        };
         return _this;
     }
 
@@ -25657,10 +25661,18 @@ var Item = function (_React$Component) {
         value: function registerLanguage(e) {
             e.preventDefault();
 
+            this.setState(function (prevState) {
+                prevState.registerLoading = true;
+            });
+
             var language = this.props.language;
             var url = language.name + "/" + language.id;
 
             this.learningUserRepository.registerLearningUser(language.id, $.proxy(function () {
+                this.setState(function (prevState) {
+                    prevState.registerLoading = false;
+                });
+
                 this.props.history.push(url);
             }, this));
 
@@ -25672,7 +25684,8 @@ var Item = function (_React$Component) {
             var language = this.props.language,
                 alreadyLearning = language.alreadyLearning,
                 alreadyLearningClass = alreadyLearning ? 'already-learning' : '',
-                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning';
+                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning',
+                registerLoading = this.state.registerLoading;
 
             return _react2.default.createElement(
                 'div',
@@ -25707,6 +25720,7 @@ var Item = function (_React$Component) {
                     _react2.default.createElement(
                         _reactRouterDom.Link,
                         { className: 'language-link', onClick: this.registerLanguage, to: "" },
+                        registerLoading && _react2.default.createElement('i', { className: 'fa fa-circle-o-notch fa-spin fa-fw' }),
                         alreadyLearningButtonText
                     )
                 )

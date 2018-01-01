@@ -244,11 +244,14 @@ body {
     width: 480px;
     height: 615px;
     float: left;
+    position: relative;
     margin-left: 90px;
     margin-bottom: 70px; }
     #main_content .languages-wrapper .language .already-learning {
       border: 1px solid #4fc926 !important; }
     #main_content .languages-wrapper .language .title-wrapper {
+      width: 100%;
+      float: left;
       position: relative;
       margin-bottom: 35px;
       border: 1px solid #F16C20;
@@ -282,19 +285,28 @@ body {
         font-size: 18px;
         color: #594f4f;
         line-height: 1.4em; }
-    #main_content .languages-wrapper .language .button-wrapper .language-link {
-      display: block;
-      width: 200px;
-      margin: 0 auto;
-      color: #F16C20;
-      border: none;
-      border-bottom: 1px solid #F16C20;
-      background: none;
-      font-family: "Alegreya Sans", sans-serif;
-      font-size: 20px;
-      text-align: center; }
-      #main_content .languages-wrapper .language .button-wrapper .language-link:hover {
-        cursor: pointer; }
+    #main_content .languages-wrapper .language .button-wrapper {
+      width: 100%;
+      position: absolute;
+      bottom: 0; }
+      #main_content .languages-wrapper .language .button-wrapper .language-link {
+        position: relative;
+        display: block;
+        width: 200px;
+        margin: 0 auto;
+        color: #F16C20;
+        border: none;
+        border-bottom: 1px solid #F16C20;
+        background: none;
+        font-family: "Alegreya Sans", sans-serif;
+        font-size: 20px;
+        text-align: center; }
+        #main_content .languages-wrapper .language .button-wrapper .language-link:hover {
+          cursor: pointer; }
+        #main_content .languages-wrapper .language .button-wrapper .language-link i {
+          position: absolute;
+          left: -3px;
+          color: red; }
 
 .main-wrapper {
   width: 100%;

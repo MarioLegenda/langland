@@ -10,7 +10,7 @@ import {factory as repoFactory} from "./source/repository/factory.js";
 
 function InitApp() {
 
-    const langList = () => <LanguageList/>;
+    const langList = (match) => <LanguageList history={match.history}/>;
     const app = (match) => <App match={match.match}/>;
     const header = <Header/>;
 

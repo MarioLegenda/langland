@@ -7395,7 +7395,7 @@ const cache = new __WEBPACK_IMPORTED_MODULE_3__cache_js__["a" /* Cache */]();
 function factory(repository) {
     switch (repository) {
         case 'language':
-            return new __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__["a" /* LanguageRepository */](cache);
+            return new __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__["a" /* LanguageRepository */]();
         case 'user':
             return new __WEBPACK_IMPORTED_MODULE_1__userRepository_js__["a" /* UserRepository */]();
         case 'learning-user':
@@ -11138,8 +11138,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function InitApp() {
 
-    var langList = function langList() {
-        return _react2.default.createElement(_language.LanguageList, null);
+    var langList = function langList(match) {
+        return _react2.default.createElement(_language.LanguageList, { history: match.history });
     };
     var app = function app(match) {
         return _react2.default.createElement(_app.App, { match: match.match });
@@ -25654,10 +25654,17 @@ var Item = function (_React$Component) {
 
     _createClass(Item, [{
         key: 'registerLanguage',
-        value: function registerLanguage() {
-            var language = this.props.language;
+        value: function registerLanguage(e) {
+            e.preventDefault();
 
-            this.learningUserRepository.registerLearningUser(language.id);
+            var language = this.props.language;
+            var url = language.name + "/" + language.id;
+
+            this.learningUserRepository.registerLearningUser(language.id, $.proxy(function () {
+                this.props.history.push(url);
+            }, this));
+
+            return false;
         }
     }, {
         key: 'render',
@@ -25665,8 +25672,7 @@ var Item = function (_React$Component) {
             var language = this.props.language,
                 alreadyLearning = language.alreadyLearning,
                 alreadyLearningClass = alreadyLearning ? 'already-learning' : '',
-                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning',
-                url = language.name + "/" + language.id;
+                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning';
 
             return _react2.default.createElement(
                 'div',
@@ -25700,7 +25706,7 @@ var Item = function (_React$Component) {
                     { className: 'button-wrapper' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { className: 'language-link', onClick: this.registerLanguage, to: url },
+                        { className: 'language-link', onClick: this.registerLanguage, to: "" },
                         alreadyLearningButtonText
                     )
                 )
@@ -25746,7 +25752,7 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
                     alreadyLearning: lang.alreadyLearning
                 };
 
-                languages.push(_react2.default.createElement(Item, { key: i, language: language }));
+                languages.push(_react2.default.createElement(Item, { key: i, language: language, history: this.props.history }));
             }
 
             return languages;
@@ -25789,24 +25795,13 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
 
 
 class LanguageRepository {
-    constructor(cache) {
+    constructor() {
         this.routes = {
             get_all_languages: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language'
         };
-
-        this.cache = cache;
     }
 
     getAllAlreadyLearning(success, failure) {
-        const cacheKey = 'LanguageRepository-getAllAlreadyLearning';
-
-        if (this.cache.has(cacheKey)) {
-            const cacheValue = this.cache.get(cacheKey);
-
-            success(cacheValue.data, cacheValue.success, cacheValue.xhr);
-
-            return null;
-        }
 
         $.ajax({
             url: this.routes.get_all_languages,
@@ -25815,15 +25810,7 @@ class LanguageRepository {
             headers: {
                 'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
             }
-        }).done(success).fail(failure).then($.proxy(function (data, success, xhr) {
-            if (typeof data !== 'undefined' && data !== null) {
-                this.cache.add(cacheKey, {
-                    data: data,
-                    success: success,
-                    xhr: xhr
-                });
-            }
-        }, this));
+        }).done(success).fail(failure);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = LanguageRepository;

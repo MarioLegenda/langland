@@ -8,7 +8,7 @@ const cache = new Cache();
 export function factory(repository) {
     switch (repository) {
         case 'language':
-            return new LanguageRepository(cache);
+            return new LanguageRepository();
         case 'user':
             return new UserRepository();
         case 'learning-user':

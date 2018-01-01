@@ -11,18 +11,24 @@ class Item extends React.Component {
         this.learningUserRepository = repoFactory('learning-user');
     }
 
-    registerLanguage() {
-        const language = this.props.language;
+    registerLanguage(e) {
+        e.preventDefault();
 
-        this.learningUserRepository.registerLearningUser(language.id);
+        const language = this.props.language;
+        const url = language.name + "/" + language.id;
+
+        this.learningUserRepository.registerLearningUser(language.id, $.proxy(function() {
+            this.props.history.push(url);
+        }, this));
+
+        return false;
     }
 
     render() {
         const language = this.props.language,
               alreadyLearning = language.alreadyLearning,
               alreadyLearningClass = (alreadyLearning) ? 'already-learning': '',
-              alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning',
-              url = language.name + "/" + language.id;
+              alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning';
 
         return <div className="language">
                 <div className={"title-wrapper " + alreadyLearningClass}>
@@ -42,7 +48,7 @@ class Item extends React.Component {
                 </div>
 
                 <div className="button-wrapper">
-                    <Link className="language-link" onClick={this.registerLanguage} to={url}>{alreadyLearningButtonText}</Link>
+                    <Link className="language-link" onClick={this.registerLanguage} to={""}>{alreadyLearningButtonText}</Link>
                 </div>
             </div>
     }
@@ -76,7 +82,7 @@ export class LanguageList extends React.Component{
                 alreadyLearning: lang.alreadyLearning
             };
 
-            languages.push(<Item key={i} language={language}/>)
+            languages.push(<Item key={i} language={language} history={this.props.history}/>)
         }
 
         return languages;

@@ -7384,14 +7384,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__ = __webpack_require__(226);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__userRepository_js__ = __webpack_require__(227);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cache_js__ = __webpack_require__(230);
 
 
 
+
+
+const cache = new __WEBPACK_IMPORTED_MODULE_3__cache_js__["a" /* Cache */]();
 
 function factory(repository) {
     switch (repository) {
         case 'language':
-            return new __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__["a" /* LanguageRepository */]();
+            return new __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__["a" /* LanguageRepository */](cache);
         case 'user':
             return new __WEBPACK_IMPORTED_MODULE_1__userRepository_js__["a" /* UserRepository */]();
         case 'learning-user':
@@ -25750,7 +25754,7 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.languageRepository.getAll($.proxy(function (data) {
+            this.languageRepository.getAllAlreadyLearning($.proxy(function (data) {
                 this.setState(function (prevState) {
                     prevState.items = this._processLanguageData(data);
                 });
@@ -25785,13 +25789,25 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
 
 
 class LanguageRepository {
-    constructor() {
+    constructor(cache) {
         this.routes = {
             get_all_languages: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language'
         };
+
+        this.cache = cache;
     }
 
-    getAll(success, failure) {
+    getAllAlreadyLearning(success, failure) {
+        const cacheKey = 'LanguageRepository-getAllAlreadyLearning';
+
+        if (this.cache.has(cacheKey)) {
+            const cacheValue = this.cache.get(cacheKey);
+
+            success(cacheValue.data, cacheValue.success, cacheValue.xhr);
+
+            return null;
+        }
+
         $.ajax({
             url: this.routes.get_all_languages,
             method: 'GET',
@@ -25799,7 +25815,15 @@ class LanguageRepository {
             headers: {
                 'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
             }
-        }).done(success).fail(failure);
+        }).done(success).fail(failure).then($.proxy(function (data, success, xhr) {
+            if (typeof data !== 'undefined' && data !== null) {
+                this.cache.add(cacheKey, {
+                    data: data,
+                    success: success,
+                    xhr: xhr
+                });
+            }
+        }, this));
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = LanguageRepository;
@@ -25918,6 +25942,47 @@ var App = exports.App = function (_React$Component) {
 
     return App;
 }(_react2.default.Component);
+
+/***/ }),
+/* 230 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Cache {
+    constructor() {
+        this.cache = {};
+    }
+
+    has(key) {
+        return this.cache.hasOwnProperty(key);
+    }
+
+    get(key) {
+        if (this.has(key)) {
+            return this.cache[key];
+        }
+
+        return null;
+    }
+
+    add(key, value) {
+        this.cache[key] = value;
+    }
+
+    remove(key) {
+        if (!this.has(key)) {
+            throw new Error('Cannot remove cache key. Key ' + key + ' does not exist');
+        }
+
+        delete this.cache[key];
+    }
+
+    clear() {
+        this.cache = {};
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Cache;
+
 
 /***/ })
 /******/ ]);

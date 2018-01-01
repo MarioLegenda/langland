@@ -83,7 +83,7 @@ export class LanguageList extends React.Component{
     }
 
     componentDidMount() {
-        this.languageRepository.getAll($.proxy(function(data) {
+        this.languageRepository.getAllAlreadyLearning($.proxy(function(data) {
             this.setState(function(prevState) {
                 prevState.items = this._processLanguageData(data);
             });

@@ -25811,14 +25811,49 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
 class LanguageRepository {
     constructor() {
         this.routes = {
-            get_all_languages: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language'
+            get_all_languages: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language',
+            get_language_info: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language/language-info/',
+            mark_language_info_looked: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language/language-info/mark-language-info-looked',
+            is_language_info_looked: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language/language-info/is-language-info-looked'
         };
     }
 
     getAllAlreadyLearning(success, failure) {
-
         $.ajax({
             url: this.routes.get_all_languages,
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    getLanguageInfo(languageId, success, failure) {
+        $.ajax({
+            url: this.routes.get_language_info + languageId,
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    markLanguageInfoLooked(success, failure) {
+        $.ajax({
+            url: this.routes.mark_language_info_looked,
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    isLanguageInfoLooked(success, failure) {
+        $.ajax({
+            url: this.routes.is_language_info_looked,
             method: 'GET',
             contentType: 'application/json',
             headers: {
@@ -25917,6 +25952,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _factory = __webpack_require__(62);
 
+var _languageInfo = __webpack_require__(231);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25937,7 +25974,13 @@ var App = exports.App = function (_React$Component) {
     _createClass(App, [{
         key: "render",
         value: function render() {
-            return _react2.default.createElement("div", null);
+            var languageId = parseInt(this.props.match.params.languageId);
+
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(_languageInfo.LanguageInfo, { languageId: languageId })
+            );
         }
     }]);
 
@@ -25984,6 +26027,216 @@ class Cache {
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = Cache;
 
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LanguageInfo = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(7);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _factory = __webpack_require__(62);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Item = function (_React$Component) {
+    _inherits(Item, _React$Component);
+
+    function Item(props) {
+        _classCallCheck(this, Item);
+
+        var _this = _possibleConstructorReturn(this, (Item.__proto__ || Object.getPrototypeOf(Item)).call(this, props));
+
+        _this.next = _this.next.bind(_this);
+        _this.prev = _this.prev.bind(_this);
+        return _this;
+    }
+
+    _createClass(Item, [{
+        key: 'next',
+        value: function next() {
+            this.props.nextItem();
+        }
+    }, {
+        key: 'prev',
+        value: function prev() {
+            this.props.prevItem();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (typeof this.props.item === 'undefined') {
+                return null;
+            }
+
+            var name = this.props.item.name;
+            var text = this.props.item.text;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'animated fadeInDown language-info-item' },
+                _react2.default.createElement(
+                    'h1',
+                    { className: 'animated animated-field' },
+                    name
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { className: 'animated animated-field text' },
+                    text
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'button-wrapper' },
+                    this.props.firstItem !== true && _react2.default.createElement(
+                        'a',
+                        { onClick: this.prev, className: 'previous-button' },
+                        _react2.default.createElement('i', { className: 'fa fa-arrow-left' })
+                    ),
+                    _react2.default.createElement(
+                        'a',
+                        { onClick: this.next },
+                        _react2.default.createElement('i', { className: 'fa fa-thumbs-o-up fa-2x' })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Item;
+}(_react2.default.Component);
+
+var LanguageInfo = exports.LanguageInfo = function (_React$Component2) {
+    _inherits(LanguageInfo, _React$Component2);
+
+    function LanguageInfo(props) {
+        _classCallCheck(this, LanguageInfo);
+
+        var _this2 = _possibleConstructorReturn(this, (LanguageInfo.__proto__ || Object.getPrototypeOf(LanguageInfo)).call(this, props));
+
+        _this2.languageRepository = (0, _factory.factory)('language');
+        _this2.languageId = _this2.props.languageId;
+
+        _this2.state = {
+            texts: null,
+            counter: 0
+        };
+
+        _this2.inNextClick = false;
+        _this2.inPrevClick = false;
+
+        _this2.next = _this2.next.bind(_this2);
+        _this2.prev = _this2.prev.bind(_this2);
+        return _this2;
+    }
+
+    _createClass(LanguageInfo, [{
+        key: '_fetchLanguageInfos',
+        value: function _fetchLanguageInfos() {
+            this.languageRepository.getLanguageInfo(this.languageId, $.proxy(function (data) {
+                this.setState(function (prevState) {
+                    prevState.texts = data.texts;
+                });
+            }, this));
+        }
+    }, {
+        key: '_moveSlide',
+        value: function _moveSlide(clickType) {
+            if (this.state.counter === this.state.texts.length - 1) {
+                console.log('ulazak');
+            }
+
+            this[clickType] = true;
+
+            var infoElem = jQuery('.language-info-item');
+
+            infoElem.removeClass('fadeInDown').addClass('fadeOutUp');
+
+            infoElem.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', jQuery.proxy(function (event) {
+                if (event.originalEvent.animationName === 'fadeOutUp' && this[clickType] === true) {
+                    switch (clickType) {
+                        case 'onNextClick':
+                            this.setState(function (prevState) {
+                                return {
+                                    counter: ++prevState.counter
+                                };
+                            });
+
+                            break;
+                        case 'onPrevClick':
+                            this.setState(function (prevState) {
+                                return {
+                                    counter: --prevState.counter
+                                };
+                            });
+
+                            break;
+                    }
+
+                    jQuery('.language-info-item').removeClass('fadeOutUp').addClass('fadeInDown');
+
+                    this[clickType] = false;
+                }
+            }, this));
+        }
+    }, {
+        key: 'next',
+        value: function next() {
+            this._moveSlide('onNextClick');
+        }
+    }, {
+        key: 'prev',
+        value: function prev() {
+            this._moveSlide('onPrevClick');
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchLanguageInfos();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.state.texts === null) {
+                return null;
+            }
+
+            var counter = this.state.counter;
+            var item = this.state.texts[counter];
+            var firstItem = counter === 0;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'language-info-wrapper' },
+                _react2.default.createElement(Item, {
+                    item: item,
+                    nextItem: this.next,
+                    prevItem: this.prev,
+                    firstItem: firstItem
+                })
+            );
+        }
+    }]);
+
+    return LanguageInfo;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

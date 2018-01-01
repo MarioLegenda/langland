@@ -27,10 +27,6 @@ class LanguageInfo implements ContainsLanguageInterface
      */
     private $updatedAt;
     /**
-     * @var bool $isLooked
-     */
-    private $isLooked;
-    /**
      * @var Language $language
      */
     private $language;

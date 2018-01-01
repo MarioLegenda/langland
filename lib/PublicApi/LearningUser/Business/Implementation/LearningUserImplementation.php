@@ -119,4 +119,17 @@ class LearningUserImplementation
 
         return $learningUser;
     }
+    /**
+     * @param LearningUser $learningUser
+     */
+    public function markLanguageInfoLooked(LearningUser $learningUser)
+    {
+        if ($learningUser->getIsLanguageInfoLooked() === true) {
+            return;
+        }
+
+        $learningUser->setIsLanguageInfoLooked(true);
+
+        $this->learningUserRepository->persistAndFlush($learningUser);
+    }
 }

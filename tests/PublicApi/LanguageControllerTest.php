@@ -5,6 +5,7 @@ namespace Tests\PublicApi;
 use AdminBundle\Command\Helper\FakerTrait;
 use PublicApi\Language\Business\Controller\LanguageController;
 use Symfony\Component\HttpFoundation\Response;
+use TestLibrary\DataProvider\LanguageInfoDataProvider;
 use TestLibrary\DataProvider\UserDataProvider;
 use TestLibrary\LanglandAdminTestCase;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
@@ -25,6 +26,10 @@ class LanguageControllerTest extends LanglandAdminTestCase
      */
     private $userDataProvider;
     /**
+     * @var LanguageInfoDataProvider $languageInfoDataProvider
+     */
+    private $languageInfoDataProvider;
+    /**
      * @inheritdoc
      */
     public function setUp()
@@ -34,6 +39,7 @@ class LanguageControllerTest extends LanglandAdminTestCase
         $this->languageController = $this->container->get('langland.public_api.controller.language');
         $this->languageDataProvider = $this->container->get('langland.data_provider.language');
         $this->userDataProvider = $this->container->get('langland.data_provider.user');
+        $this->languageInfoDataProvider = $this->container->get('langland.data_provider.language_info');
     }
 
     public function test_find_all_languages()
@@ -62,5 +68,30 @@ class LanguageControllerTest extends LanglandAdminTestCase
             static::assertArrayHasKey('images', $language);
             static::assertCount(2, $language['images']);
         }
+    }
+
+    public function test_find_language_info()
+    {
+        $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
+
+        $this->languageInfoDataProvider->createDefaultDb($this->getFaker(), $language, 10);
+
+        $response = $this->languageController->getLanguageInfo($language);
+
+        static::assertInstanceOf(Response::class, $response);
+
+        $content = $response->getContent();
+
+        static::assertNotEmpty($content);
+
+        $content = json_decode($content, true);
+
+        static::assertInternalType('array', $content);
+        static::assertNotEmpty($content);
+
+        static::assertArrayHasKey('name', $content);
+        static::assertArrayHasKey('texts', $content);
+
+        static::assertEquals(10, count($content['texts']));
     }
 }

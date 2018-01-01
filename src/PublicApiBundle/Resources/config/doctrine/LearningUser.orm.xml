@@ -11,6 +11,7 @@
 
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
+    <field name="isLanguageInfoLooked" type="boolean" column="is_language_info_looked"/>
 
     <many-to-one field="user" target-entity="ArmorBundle\Entity\User" />
 

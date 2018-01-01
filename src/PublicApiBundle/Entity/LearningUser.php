@@ -14,6 +14,18 @@ class LearningUser
      */
     private $id;
     /**
+     * @var UserInterface $user
+     */
+    private $user;
+    /**
+     * @var Language $language
+     */
+    private $language;
+    /**
+     * @var bool $isLanguageInfoLooked
+     */
+    private $isLanguageInfoLooked;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -22,13 +34,12 @@ class LearningUser
      */
     private $updatedAt;
     /**
-     * @var UserInterface $user
+     * LearningUser constructor.
      */
-    private $user;
-    /**
-     * @var Language $language
-     */
-    private $language;
+    public function __construct()
+    {
+        $this->isLanguageInfoLooked = false;
+    }
     /**
      * Get id
      *
@@ -71,6 +82,20 @@ class LearningUser
         $this->language = $language;
 
         return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function getIsLanguageInfoLooked(): bool
+    {
+        return $this->isLanguageInfoLooked;
+    }
+    /**
+     * @param bool $isLanguageInfoLooked
+     */
+    public function setIsLanguageInfoLooked(bool $isLanguageInfoLooked): void
+    {
+        $this->isLanguageInfoLooked = $isLanguageInfoLooked;
     }
     /**
      * Set createdAt

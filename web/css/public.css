@@ -1,3 +1,44 @@
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+.fadeIn {
+  animation-name: fadeIn; }
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0); }
+  to {
+    opacity: 1;
+    transform: none; } }
+.fadeInDown {
+  animation-name: fadeInDown; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0); }
+  to {
+    opacity: 1;
+    transform: none; } }
+.fadeInUp {
+  animation-name: fadeInUp; }
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0); } }
+.fadeOutUp {
+  animation-name: fadeOutUp; }
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -307,6 +348,45 @@ body {
           position: absolute;
           left: -3px;
           color: red; }
+
+#main_content .language-info-wrapper {
+  width: 100%;
+  float: left; }
+  #main_content .language-info-wrapper .language-info-item {
+    width: 480px;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-top: 100px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #F16C20; }
+    #main_content .language-info-wrapper .language-info-item h1 {
+      width: 100%;
+      float: left;
+      padding: 10px;
+      border: 1px solid #F16C20;
+      color: #594f4f;
+      text-align: center;
+      -webkit-border-radius: 15px;
+      -moz-border-radius: 15px;
+      border-radius: 15px; }
+    #main_content .language-info-wrapper .language-info-item .text {
+      width: 100%;
+      float: left;
+      margin: 20px 0 10px 0;
+      color: black;
+      line-height: 1.5em; }
+    #main_content .language-info-wrapper .language-info-item .button-wrapper {
+      width: 100%;
+      float: left; }
+      #main_content .language-info-wrapper .language-info-item .button-wrapper a {
+        color: #F16C20;
+        display: block;
+        float: right; }
+        #main_content .language-info-wrapper .language-info-item .button-wrapper a:hover {
+          cursor: pointer; }
+      #main_content .language-info-wrapper .language-info-item .button-wrapper .previous-button {
+        margin-top: 7px;
+        float: left; }
 
 .main-wrapper {
   width: 100%;

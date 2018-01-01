@@ -19,6 +19,7 @@
 
             <argument type="service" id="langland.public_api.repository.language" />
             <argument type="service" id="langland.public_api.repository.repository_communicator" />
+            <argument type="service" id="langland.public_api.repository.language_info" />
         </service>
 
         <service

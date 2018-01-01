@@ -2,6 +2,8 @@
 
 namespace PublicApi\Language\Business\Controller;
 
+use AdminBundle\Entity\Language;
+use AdminBundle\Entity\LanguageInfo;
 use ArmorBundle\Entity\User;
 use Library\Infrastructure\Helper\CommonSerializer;
 use PublicApi\Language\Business\Implementation\LanguageImplementation;
@@ -42,6 +44,22 @@ class LanguageController
         $data = $this->languageImplementation->findAllWithAlreadyLearning($user);
 
         return new JsonResponse($data, 200, [
+            'Content-Type' => 'application/json',
+        ]);
+    }
+    /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
+     * @param Language $language
+     * @return Response
+     */
+    public function getLanguageInfo(Language $language): Response
+    {
+        $languageInfo = $this->languageImplementation->findLanguageInfo($language);
+
+        $serialized = $this->commonSerializer->serialize($languageInfo, ['language_info'], 'json');
+
+        return new Response($serialized, 200, [
             'Content-Type' => 'application/json',
         ]);
     }

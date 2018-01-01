@@ -4,3 +4,10 @@ get_all_languages:
     methods: [GET]
     requirements:
         _format: json
+
+get_language_info:
+    path: /language-info/{languageId}
+    defaults: { _controller: langland.public_api.controller.language:getLanguageInfo }
+    methods: [GET]
+    requirements:
+        _format: json

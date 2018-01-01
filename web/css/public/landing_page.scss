@@ -1,4 +1,6 @@
 #landing-page {
+  font-family: $primarySerif;
+
   .greeting-wrapper {
     width: 480px;
     margin: 17% auto;
@@ -39,6 +41,7 @@
       color: $orange1;
 
       border-bottom: 1px solid $orange1;
+      font-size: 18px;
 
       -webkit-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
       -moz-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {env, user} from "../global/constants.js";
+import {Header} from "./source/header.jsx";
 import {LanguageList} from "./source/language.jsx";
 import {App} from "./source/app.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
@@ -11,10 +12,12 @@ function InitApp() {
 
     const langList = () => <LanguageList/>;
     const app = (match) => <App match={match.match}/>;
+    const header = <Header/>;
 
     return (
         <Router>
-            <div>
+            <div className="main-wrapper">
+                {header}
                 <Switch>
                     <Route exact path={env.current + "langland"} render={langList} />
                     <Route path={env.current + "langland/:language/:languageId"} render={app}/>

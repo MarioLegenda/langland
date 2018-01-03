@@ -11,3 +11,4 @@ get_language_info:
     methods: [GET]
     requirements:
         _format: json
+        languageId: \d+

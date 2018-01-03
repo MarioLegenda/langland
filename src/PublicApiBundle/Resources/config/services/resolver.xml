@@ -7,7 +7,7 @@
     <services>
         <service
                 id="langland.public_api.language_value_resolver"
-                class="PublicApi\LearningUser\Business\Infrastructure\Resolver\PostMethodLanguageValueResolver" public="true">
+                class="PublicApi\Infrastructure\Resolver\LanguageValueResolver" public="true">
 
             <argument type="service" id="langland.public_api.repository.language" />
 

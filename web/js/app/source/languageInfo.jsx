@@ -48,6 +48,7 @@ export class LanguageInfo extends React.Component {
         super(props);
 
         this.languageRepository = factory('language');
+        this.learningUserRepository = factory('learning-user');
         this.languageId = this.props.languageId;
 
         this.state = {
@@ -62,17 +63,21 @@ export class LanguageInfo extends React.Component {
         this.prev = this.prev.bind(this);
     }
 
-    _fetchLanguageInfos() {
+    _fetchLanguageInfo() {
         this.languageRepository.getLanguageInfo(this.languageId, $.proxy(function(data) {
             this.setState(function(prevState) {
                 prevState.texts = data.texts;
-            })
+            });
         }, this));
+    }
+
+    _markLanguageInfoLooked() {
+        this.learningUserRepository.markLanguageInfoLooked();
     }
 
     _moveSlide(clickType) {
         if (this.state.counter === this.state.texts.length - 1) {
-            console.log('ulazak');
+            this._markLanguageInfoLooked();
         }
 
         this[clickType] = true;
@@ -114,7 +119,7 @@ export class LanguageInfo extends React.Component {
     }
 
     componentDidMount() {
-        this._fetchLanguageInfos();
+        this._fetchLanguageInfo();
     }
 
     render() {

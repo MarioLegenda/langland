@@ -235,6 +235,13 @@ body {
     float: right;
     margin-top: 8px;
     margin-right: 3px; }
+    #main_content header .profile-wrapper .center-loading {
+      display: none;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      color: red;
+      right: 30px; }
     #main_content header .profile-wrapper .profile-pop {
       display: none;
       position: absolute;
@@ -387,6 +394,12 @@ body {
       #main_content .language-info-wrapper .language-info-item .button-wrapper .previous-button {
         margin-top: 7px;
         float: left; }
+
+#main_content .app-wrapper {
+  width: 1280px;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-top: 100px; }
 
 .main-wrapper {
   width: 100%;

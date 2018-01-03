@@ -14,4 +14,6 @@ export function factory(repository) {
         case 'learning-user':
             return new LearningUserRepository();
     }
+
+    throw new Error('Repository ' + repository + ' not found');
 }

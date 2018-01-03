@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningUser\Business\Infrastructure\Resolver;
+namespace PublicApi\Infrastructure\Resolver;
 
 use AdminBundle\Entity\Language;
 use PublicApi\Language\Repository\LanguageRepository;
@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-class PostMethodLanguageValueResolver implements ArgumentValueResolverInterface
+class LanguageValueResolver implements ArgumentValueResolverInterface
 {
     /**
      * @var LanguageRepository $languageRepository
@@ -46,6 +46,10 @@ class PostMethodLanguageValueResolver implements ArgumentValueResolverInterface
             if (is_null($languageId)) {
                 $languageId = $request->get('languageId');
             }
+        }
+
+        if (is_numeric($languageId)) {
+            $languageId = (int) $languageId;
         }
 
         $language = $this->languageRepository->find($languageId);

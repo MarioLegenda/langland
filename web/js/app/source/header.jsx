@@ -1,5 +1,6 @@
 import {user, env} from "../../global/constants.js";
 import React from 'react';
+import {CenterLoading} from "./util.jsx";
 
 export class Header extends React.Component {
     constructor(props) {
@@ -22,6 +23,8 @@ export class Header extends React.Component {
             </div>
 
             <div className="profile-wrapper">
+                <CenterLoading/>
+
                 <div className="fa fa-user-o fa-lg hoverable"></div>
 
                 <div className="profile-pop">

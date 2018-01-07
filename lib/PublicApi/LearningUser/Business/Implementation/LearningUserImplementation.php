@@ -109,19 +109,18 @@ class LearningUserImplementation
         $learningUser->setUser($user);
 
         $user->setCurrentLearningUser($learningUser);
-
         $learningUser = $this->learningUserRepository->persistAndFlush($learningUser);
 
         $this->userRepository->persistAndFlush($user);
 
         $data = [
-            'learningUser' => [
-                'id' => $learningUser->getId()
-            ],
+            'id' => $learningUser->getId(),
             'language' => [
                 'id' => $learningUser->getLanguage()->getId(),
                 'name' => $learningUser->getLanguage()->getName(),
-            ]
+            ],
+            'createdAt' => $learningUser->getCreatedAt()->format('Y-m-d H-m-s'),
+            'updatedAt' => $learningUser->getUpdatedAt()->format('Y-m-d H-m-s'),
         ];
 
         return $this->apiSdk
@@ -134,23 +133,27 @@ class LearningUserImplementation
     /**
      * @param LearningUser $learningUser
      * @param User $user
+     * @param Language $language
      * @return array
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function updateLearningUser(LearningUser $learningUser, User $user): array
-    {
-        $this->userRepository->persistAndFlush($user);
-
+    public function updateLearningUser(
+        LearningUser $learningUser,
+        Language $language,
+        User $user
+    ): array {
         $user->setCurrentLearningUser($learningUser);
 
+        $this->userRepository->persistAndFlush($user);
+
         $data = [
-            'learningUser' => [
-                'id' => $learningUser->getId()
-            ],
+            'id' => $learningUser->getId(),
             'language' => [
                 'id' => $learningUser->getLanguage()->getId(),
                 'name' => $learningUser->getLanguage()->getName(),
-            ]
+            ],
+            'createdAt' => $learningUser->getCreatedAt()->format('Y-m-d H-m-s'),
+            'updatedAt' => $learningUser->getUpdatedAt()->format('Y-m-d H-m-s'),
         ];
 
         return $this->apiSdk
@@ -184,7 +187,7 @@ class LearningUserImplementation
 
         return $this->apiSdk
             ->create($data)
-            ->setStatusCode(200)
+            ->setStatusCode(201)
             ->isResource()
             ->method('POST')
             ->build();
@@ -196,7 +199,39 @@ class LearningUserImplementation
     public function getIsLanguageInfoLooked(LearningUser $learningUser): array
     {
         $response = $this->apiSdk
-            ->create(['isLanguageInfoLooked' => $learningUser->getIsLanguageInfoLooked()])
+            ->create([
+                'isLanguageInfoLooked' => $learningUser->getIsLanguageInfoLooked(),
+                'language' => [
+                    'id' => $learningUser->getLanguage()->getId(),
+                    'name' => $learningUser->getLanguage()->getName(),
+                ]
+            ])
+            ->setStatusCode(200)
+            ->isResource()
+            ->method('GET')
+            ->build();
+
+        return $response;
+    }
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getCurrentLearningUser(User $user): array
+    {
+        $learningUser = $user->getCurrentLearningUser();
+
+        $response = $this->apiSdk
+            ->create([
+                'id' => $learningUser->getId(),
+                'isLanguageInfoLooked' => $learningUser->getIsLanguageInfoLooked(),
+                'language' => [
+                    'id' => $learningUser->getLanguage()->getId(),
+                    'name' => $learningUser->getLanguage()->getName(),
+                ],
+                'createdAt' => $learningUser->getCreatedAt()->format('Y-m-d H-m-s'),
+                'updatedAt' => $learningUser->getUpdatedAt()->format('Y-m-d H-m-s'),
+            ])
             ->setStatusCode(200)
             ->isResource()
             ->method('GET')

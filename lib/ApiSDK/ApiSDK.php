@@ -30,8 +30,8 @@ class ApiSDK
      * @var array $metadata
      */
     private $metadata = [
-        'isCollection' => null,
-        'isResource' => null,
+        'isCollection' => false,
+        'isResource' => false,
     ];
     /**
      * @var bool $createCalledFlag
@@ -87,7 +87,7 @@ class ApiSDK
         $this->createCalled();
 
         if ($this->metadata['isResource'] === true) {
-            $message = 'This api builder is already a resource. A api response cannot be a resource and a collection at the same time';
+            $message = 'This api builder is already a resource. An api response cannot be a resource and a collection at the same time';
             throw new \RuntimeException($message);
         }
 
@@ -130,6 +130,11 @@ class ApiSDK
     {
         $this->data = null;
         $this->config = [];
+
+        $this->metadata = [
+            'isCollection' => false,
+            'isResource' => false,
+        ];
 
         return $this;
     }

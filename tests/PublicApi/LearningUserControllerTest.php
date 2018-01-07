@@ -5,10 +5,14 @@ namespace Tests\PublicApi;
 use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
+use ArmorBundle\Repository\UserRepository;
+use PublicApi\Language\Business\Controller\LanguageController;
+use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Business\Controller\LearningUserController;
 use PublicApi\LearningUser\Business\Implementation\LearningUserImplementation;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use TestLibrary\DataProvider\UserDataProvider;
 use TestLibrary\LanglandAdminTestCase;
@@ -42,6 +46,18 @@ class LearningUserControllerTest extends LanglandAdminTestCase
      * @var LearningUserDataProvider $learningUserDataProvider
      */
     private $learningUserDataProvider;
+    /**
+     * @var UserRepository $userRepository
+     */
+    private $userRepository;
+    /**
+     * @var LanguageController $languageController
+     */
+    private $languageController;
+    /**
+     * @var LanguageRepository $languageRepository
+     */
+    private $languageRepository;
 
     public function setUp()
     {
@@ -53,6 +69,9 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $this->learningUserRepository = $this->container->get('langland.public_api.repository.learning_user');
         $this->learningUserController = $this->container->get('langland.public_api.controller.learning_user');
         $this->learningUserDataProvider = $this->container->get('langland.data_provider.learning_user');
+        $this->userRepository = $this->container->get('armor.repository.user');
+        $this->languageRepository = $this->container->get('langland.public_api.repository.language');
+        $this->languageController = $this->container->get('langland.public_api.controller.language');
     }
 
     public function test_register_learning_user()
@@ -164,78 +183,307 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         static::assertEquals(2, count($this->learningUserRepository->findAll()));
     }
 
-    public function test_mark_language_info_looked_and_is_looked()
+    public function test_language_choosing_data_flow()
     {
-        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
-        $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
-        $learningUser = $this->learningUserDataProvider->createDefaultDb(
-            $this->getFaker(),
-            $language
-        );
+        $this->manualReset();
 
-        $user->setCurrentLearningUser($learningUser);
-        $learningUser->setUser($user);
+        $user1 = $this->userDataProvider->createDefaultDb($this->getFaker());
+        $user2 = $this->userDataProvider->createDefaultDb($this->getFaker());
+        $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $language2 = $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $language3 = $this->languageDataProvider->createDefaultDb($this->getFaker());
+
+        $this->assertLanguageRegistration($language1, $user1);
+        $this->assertCurrentLearningUser($language1, $user1);
+
+        $this->assertAlreadyLearningLanguages([
+            $language1
+        ], $user1);
+
+        $this->assertLanguageRegistration($language2, $user1);
+        $this->assertCurrentLearningUser($language2, $user1);
+
+        $this->assertAlreadyLearningLanguages([
+            $language1,
+            $language2
+        ], $user1);
+
+        $this->assertLanguageInfoNotLooked($user1);
+
+        $this->assertLanguageRegistrationUpdate($language2, $user1);
+
+        $this->assertLanguageInfoNotLooked($user1);
+
+        $this->assertLanguageRegistrationUpdate($language1, $user1);
+
+        $this->assertLanguageInfoNotLooked($user1);
+
+        $this->assertMarkLanguageInfo($user1);
+
+        $this->assertLanguageInfoLooked($user1);
+
+        $this->assertLanguageRegistration($language3, $user1);
+        $this->assertCurrentLearningUser($language3, $user1);
+
+        $this->assertLanguageInfoNotLooked($user1);
+
+        $this->assertAlreadyLearningLanguages([
+            $language1,
+            $language2,
+            $language3,
+        ], $user1);
+
+        $this->assertLanguageRegistration($language1, $user2);
+        $this->assertCurrentLearningUser($language1, $user2);
+
+        $this->assertLanguageInfoNotLooked($user2);
+
+        $this->assertAlreadyLearningLanguages([
+            $language1
+        ], $user2);
+
+        $this->assertLanguageRegistration($language2, $user2);
+        $this->assertCurrentLearningUser($language2, $user2);
+
+        $this->assertLanguageInfoNotLooked($user2);
+
+        $this->assertAlreadyLearningLanguages([
+            $language1,
+            $language2
+        ], $user2);
+
+        $this->assertMarkLanguageInfo($user2);
+
+        $this->assertLanguageInfoLooked($user2);
+
+        $this->assertMarkLanguageInfo($user1);
+
+        $this->assertLanguageInfoLooked($user1);
+
+        $this->assertLanguageRegistrationUpdate($language2, $user1);
+
+        $this->assertMarkLanguageInfo($user1);
+
+        $this->assertLanguageInfoLooked($user1);
+    }
+
+    private function assertAlreadyLearningLanguages(array $languages, User $user)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
+
+        $response = $this->languageController->getAll($user);
+        $content = json_decode($response->getContent(), true);
+        $collection = $content['collection']['data'];
+
+        $collectionMetadata = [];
+        foreach ($collection as $item) {
+            if ($item['alreadyLearning'] === true) {
+                $collectionMetadata[] = $item['id'];
+            }
+        }
+
+        static::assertEquals(count($collectionMetadata), count($languages));
+
+    }
+    /**
+     * @param User $user
+     */
+    private function assertLanguageInfoNotLooked(User $user)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
 
         $response = $this->learningUserController->isLanguageInfoLooked($user);
 
-        static::assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(200, $response->getStatusCode());
 
-        $content = $response->getContent();
+        $response = json_decode($response->getContent(), true);
 
-        static::assertNotEmpty($content);
+        static::assertNotEmpty($response);
+        static::assertInternalType('array', $response);
 
-        $content = json_decode($content, true);
+        static::assertEquals('GET', $response['method']);
 
-        static::assertInternalType('array', $content);
-        static::assertNotEmpty($content);
+        $resource = $response['resource']['data'];
 
-        $data = $content['resource']['data'];
+        static::assertFalse($resource['isLanguageInfoLooked']);
 
-        static::assertArrayHasKey('isLanguageInfoLooked', $data);
-        static::assertFalse($data['isLanguageInfoLooked']);
+        $learningUserLanguage = $resource['language'];
+        $currentLearningUser = $user->getCurrentLearningUser();
 
-        $this->learningUserController->isLanguageInfoLooked($user);
+        static::assertEquals($learningUserLanguage['id'], $currentLearningUser->getLanguage()->getId());
+        static::assertEquals($learningUserLanguage['name'], $currentLearningUser->getLanguage()->getName());
+    }
 
+    private function assertLanguageInfoLooked(User $user)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
+
+        $response = $this->learningUserController->isLanguageInfoLooked($user);
+
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $response = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($response);
+        static::assertInternalType('array', $response);
+
+        static::assertEquals('GET', $response['method']);
+
+        $resource = $response['resource']['data'];
+
+        static::assertTrue($resource['isLanguageInfoLooked']);
+
+        $learningUserLanguage = $resource['language'];
+        $currentLearningUser = $user->getCurrentLearningUser();
+
+        static::assertEquals($learningUserLanguage['id'], $currentLearningUser->getLanguage()->getId());
+        static::assertEquals($learningUserLanguage['name'], $currentLearningUser->getLanguage()->getName());
+    }
+    /**
+     * @param User $user
+     */
+    private function assertMarkLanguageInfo(User $user)
+    {
         $response = $this->learningUserController->markLanguageInfoLooked($user);
 
-        static::assertInstanceOf(Response::class, $response);
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
+
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertEquals(201, $response->getStatusCode());
+
+        $response = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($response);
+        static::assertInternalType('array', $response);
+
+        static::assertEquals('POST', $response['method']);
+
+        $resource = $response['resource']['data'];
+        $currentLearningUser = $user->getCurrentLearningUser();
+
+        static::assertTrue($resource['isLanguageInfoLooked']);
+        static::assertEquals($resource['isLanguageInfoLooked'], $currentLearningUser->getIsLanguageInfoLooked());
+
+        $language = $resource['language'];
+
+        static::assertEquals($language['id'], $currentLearningUser->getLanguage()->getId());
+        static::assertEquals($language['name'], $currentLearningUser->getLanguage()->getName());
+    }
+    /**
+     * @param Language $language
+     * @param User $user
+     */
+    private function assertLanguageRegistration(Language $language, User $user)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
+
+        $response = $this->learningUserController->registerLearningUser($language, $user);
+
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertEquals(201, $response->getStatusCode());
+
+        $response = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($response);
+        static::assertInternalType('array', $response);
+
+        static::assertEquals('POST', $response['method']);
+
+        $resource = $response['resource']['data'];
+
+        /** @var User $refreshedUser */
+        $refreshedUser = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
+
+        static::assertEquals($resource['id'], $refreshedUser->getCurrentLearningUser()->getId());
+
+        static::assertEquals($resource['language']['id'], $language->getId());
+        static::assertEquals($resource['language']['name'], $language->getName());
+    }
+    /**
+     * @param Language $language
+     * @param User $user
+     */
+    public function assertLanguageRegistrationUpdate(Language $language, User $user)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
+
+        $response = $this->learningUserController->registerLearningUser($language, $user);
+
+        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(200, $response->getStatusCode());
 
-        $content = $response->getContent();
+        $response = json_decode($response->getContent(), true);
 
-        static::assertNotEmpty($content);
+        static::assertNotEmpty($response);
+        static::assertInternalType('array', $response);
 
-        $content = json_decode($content, true);
+        static::assertEquals('POST', $response['method']);
 
-        static::assertNotEmpty($content);
-        static::assertInternalType('array', $content);
-        static::assertEquals(200, $content['statusCode']);
+        $resource = $response['resource']['data'];
+        /** @var User $refreshedUser */
+        $refreshedUser = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
 
-        $data = $content['resource']['data'];
+        static::assertEquals($resource['id'], $refreshedUser->getCurrentLearningUser()->getId());
 
-        static::assertTrue($data['isLanguageInfoLooked']);
+        static::assertEquals($resource['language']['id'], $language->getId());
+        static::assertEquals($resource['language']['name'], $language->getName());
+    }
+    /**
+     * @param Language $language
+     * @param User $user
+     */
+    private function assertCurrentLearningUser(Language $language, User $user)
+    {
+        /** @var User $user */
+        $user = $this->userRepository->findOneBy([
+            'username' => $user->getUsername(),
+        ]);
 
-        static::assertEquals($language->getId(), $data['language']['id']);
-        static::assertEquals($language->getName(), $data['language']['name']);
+        $response = $this->learningUserController->getCurrentLearningUser($user);
 
-        $response = $this->learningUserController->isLanguageInfoLooked($user);
-
-        static::assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(200, $response->getStatusCode());
 
-        $content = $response->getContent();
+        $response = json_decode($response->getContent(), true);
 
-        static::assertNotEmpty($content);
+        static::assertNotEmpty($response);
+        static::assertInternalType('array', $response);
 
-        $content = json_decode($content, true);
+        static::assertEquals('GET', $response['method']);
 
-        static::assertInternalType('array', $content);
-        static::assertNotEmpty($content);
+        $resource = $response['resource']['data'];
+        $currentLearningUser = $user->getCurrentLearningUser();
 
-        $data = $content['resource']['data'];
+        static::assertEquals($resource['id'], $currentLearningUser->getId());
+        static::assertEquals($resource['isLanguageInfoLooked'], $currentLearningUser->getIsLanguageInfoLooked());
 
-        static::assertArrayHasKey('isLanguageInfoLooked', $data);
-        static::assertTrue($data['isLanguageInfoLooked']);
+        $learningUserLanguage = $resource['language'];
+
+        static::assertEquals($language->getId(), $learningUserLanguage['id']);
+        static::assertEquals($language->getName(), $learningUserLanguage['name']);
     }
 }

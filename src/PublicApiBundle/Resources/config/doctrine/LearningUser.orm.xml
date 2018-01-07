@@ -15,7 +15,7 @@
 
     <many-to-one field="user" target-entity="ArmorBundle\Entity\User" />
 
-    <one-to-one field="language" target-entity="AdminBundle\Entity\Language" />
+    <many-to-one field="language" target-entity="AdminBundle\Entity\Language" />
 
     <lifecycle-callbacks>
       <lifecycle-callback type="prePersist" method="updateTimestamps" />

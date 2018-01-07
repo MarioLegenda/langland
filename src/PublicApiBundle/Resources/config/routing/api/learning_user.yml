@@ -3,6 +3,11 @@ register_learning_user:
     defaults: { _controller: langland.public_api.controller.learning_user:registerLearningUser }
     methods: [POST, PUT]
 
+get_current_learning_user:
+    path: /get-current-learning-user
+    defaults: { _controller: langland.public_api.controller.learning_user:getCurrentLearningUser }
+    methods: [GET]
+
 mark_language_info_looked:
     path: /language-info/mark-language-info-looked
     defaults: { _controller: langland.public_api.controller.learning_user:markLanguageInfoLooked }

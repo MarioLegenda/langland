@@ -67,7 +67,7 @@ class LearningUser
         return $this;
     }
     /**
-     * @return mixed
+     * @return Language
      */
     public function getLanguage()
     {

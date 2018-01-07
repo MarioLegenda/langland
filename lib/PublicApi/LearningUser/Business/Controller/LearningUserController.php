@@ -39,6 +39,7 @@ class LearningUserController
         if ($learningUser instanceof LearningUser) {
             $data = $this->learningUserImplementation->updateLearningUser(
                 $learningUser,
+                $language,
                 $user
             );
 
@@ -60,7 +61,7 @@ class LearningUserController
     {
         return new JsonResponse(
             $this->learningUserImplementation->markLanguageInfoLooked($user->getCurrentLearningUser()),
-            200
+            201
         );
     }
     /**
@@ -73,6 +74,19 @@ class LearningUserController
     {
         return new JsonResponse(
             $this->learningUserImplementation->getIsLanguageInfoLooked($user->getCurrentLearningUser()),
+            200
+        );
+    }
+    /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
+     * @param User $user
+     * @return Response
+     */
+    public function getCurrentLearningUser(User $user): Response
+    {
+        return new JsonResponse(
+            $this->learningUserImplementation->getCurrentLearningUser($user),
             200
         );
     }

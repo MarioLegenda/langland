@@ -1,12 +1,28 @@
-import {user, env} from "../../global/constants.js";
 import React from 'react';
+import {Link} from 'react-router-dom';
+
+import {user, env} from "../../global/constants.js";
 import {CenterLoading} from "./util.jsx";
+import {store} from "./events/events.js";
+
 
 export class Header extends React.Component {
     constructor(props) {
         super(props);
 
         this.logout = this.logout.bind(this);
+
+        this.state = {
+            areLanguagesFetched: false
+        };
+
+        store.subscribe(() => {
+            const isFetchingAllLanguages = store.getState().language.isFetchingAll;
+
+            this.setState((prevState) => {
+                prevState.areLanguagesFetched = isFetchingAllLanguages;
+            });
+        });
     }
 
     logout(e) {
@@ -14,16 +30,20 @@ export class Header extends React.Component {
 
         location.href = env.current + 'langland/logout';
 
-        return false;}
+        return false;
+    }
 
     render() {
+        const areLanguageFetched = this.state.areLanguagesFetched;
+
         return <header className="full-width align-left">
             <div className="title-wrapper">
-                <h1>Langland</h1>
+                <Link to={ env.current + 'langland' }>Langland</Link>
+
+                {areLanguageFetched && <CenterLoading/>}
             </div>
 
             <div className="profile-wrapper">
-                <CenterLoading/>
 
                 <div className="fa fa-user-o fa-lg hoverable"></div>
 

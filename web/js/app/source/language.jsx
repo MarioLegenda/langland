@@ -1,6 +1,9 @@
 import React from 'react';
-import {factory as repoFactory} from "./repository/factory.js";
 import {Link} from 'react-router-dom';
+
+import {factory as repoFactory} from "./repository/factory.js";
+import {store, fetAllLanguagesCompleted, fetchAllLanguagesInProgress, languagesFetched} from "./events/events.js";
+
 
 class Item extends React.Component {
     constructor(props) {
@@ -66,6 +69,7 @@ export class LanguageList extends React.Component{
     }
 
     registerLanguage(language) {
+
         const url = language.name + "/" + language.id;
 
         this.learningUserRepository.registerLearningUser(language.id, $.proxy(function() {
@@ -74,7 +78,7 @@ export class LanguageList extends React.Component{
     }
 
     _createItems(data) {
-        return data.map((language, i) => {
+        const languages = data.map((language, i) => {
             return <Item
                 key={i}
                 language={language}
@@ -82,9 +86,18 @@ export class LanguageList extends React.Component{
                 registerLanguage={this.registerLanguage}
             />;
         });
+
+        console.log(store);
+
+        store.dispatch(fetAllLanguagesCompleted());
+        store.dispatch(languagesFetched(data));
+
+        return languages;
     }
 
     _getLanguages() {
+        store.dispatch(fetchAllLanguagesInProgress());
+
         this.languageRepository.getAllAlreadyLearning($.proxy(function(data) {
             this.setState(function(prevState) {
                 prevState.items = this._createItems(data);

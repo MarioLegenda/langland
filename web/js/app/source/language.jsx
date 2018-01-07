@@ -143,7 +143,7 @@ export class LanguageList extends React.Component{
         store.dispatch(fetchAllLanguagesInProgress(true));
 
         this.languageRepository.getAllAlreadyLearning($.proxy(function(data) {
-            this._createItems(data);
+            this._createItems(data.collection.data);
         }, this), $.proxy(function(data) {
             // TODO: error handling, POPUP?
         }, this));

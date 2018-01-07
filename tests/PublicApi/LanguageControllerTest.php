@@ -62,9 +62,12 @@ class LanguageControllerTest extends LanglandAdminTestCase
         static::assertNotEmpty($content);
         static::assertInternalType('array', $content);
 
-        static::assertEquals(3, count($content));
+        static::assertEquals(3, $content['collection']['totalItems']);
+        static::assertNotEmpty($content['collection']['data']);
 
-        foreach ($content as $language) {
+        $languages = $content['collection']['data'];
+
+        foreach ($languages as $language) {
             static::assertArrayHasKey('images', $language);
             static::assertCount(2, $language['images']);
         }

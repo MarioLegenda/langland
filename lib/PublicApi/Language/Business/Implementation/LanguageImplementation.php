@@ -4,6 +4,7 @@ namespace PublicApi\Language\Business\Implementation;
 
 use AdminBundle\Entity\Language;
 use AdminBundle\Entity\LanguageInfo;
+use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
 use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
 use PublicApi\Language\Repository\LanguageInfoRepository;
@@ -24,19 +25,26 @@ class LanguageImplementation
      */
     private $repositoryCommunicator;
     /**
+     * @var ApiSDK $apiSDK
+     */
+    private $apiSDK;
+    /**
      * LanguageImplementation constructor.
      * @param LanguageRepository $languageRepository
      * @param RepositoryCommunicator $repositoryCommunicator
      * @param LanguageInfoRepository $languageInfoRepository
+     * @param ApiSDK $apiSDK
      */
     public function __construct(
         LanguageRepository $languageRepository,
         RepositoryCommunicator $repositoryCommunicator,
-        LanguageInfoRepository $languageInfoRepository
+        LanguageInfoRepository $languageInfoRepository,
+        ApiSDK $apiSDK
     ) {
         $this->languageRepository = $languageRepository;
         $this->repositoryCommunicator = $repositoryCommunicator;
         $this->languageInfoRepository = $languageInfoRepository;
+        $this->apiSDK = $apiSDK;
     }
     /**
      * @return array
@@ -51,7 +59,16 @@ class LanguageImplementation
      */
     public function findAllWithAlreadyLearning(User $user): array
     {
-        return $this->repositoryCommunicator->getAllAlreadyLearningLanguages($user);
+        $languages = $this->repositoryCommunicator->getAllAlreadyLearningLanguages($user);
+
+        $response = $this->apiSDK
+            ->create($languages)
+            ->isCollection()
+            ->setStatusCode(200)
+            ->method('GET')
+            ->build();
+
+        return $response;
     }
     /**
      * @param Language $language

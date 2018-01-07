@@ -34,7 +34,6 @@ class ApiSDKTest extends ContainerAwareTest
             ->setStatusCode(200)
             ->build();
     }
-
     /**
      * @expectedException \RuntimeException
      */

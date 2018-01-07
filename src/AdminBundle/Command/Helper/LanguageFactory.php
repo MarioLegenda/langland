@@ -37,7 +37,7 @@ class LanguageFactory
             $language = new Language();
             $language->setName($lang);
             $language->setShowOnPage(true);
-            $language->setListDescription($this->getFaker()->sentence(60));
+            $language->setListDescription($this->getFaker()->sentence(30));
             $language->setImages($this->createImages());
 
             $this->em->persist($language);

@@ -3,6 +3,7 @@
 namespace PublicApi\LearningUser\Business\Implementation;
 
 use AdminBundle\Entity\Language;
+use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Repository\UserRepository;
 use PublicApi\Language\Repository\LanguageRepository;
@@ -69,9 +70,9 @@ class LearningUserImplementation
     /**
      * @param int|Language $language
      * @param User $user
-     * @return null|object
+     * @return null|LearningUser
      */
-    public function findExact($language, User $user)
+    public function findExact($language, User $user): ?LearningUser
     {
         if (is_int($language)) {
             $language = $this->languageRepository->find($language);
@@ -81,10 +82,13 @@ class LearningUserImplementation
             throw new \RuntimeException('Not a valid language');
         }
 
-        return $this->learningUserRepository->findOneBy([
+        /** @var LearningUser $learningUser */
+        $learningUser = $this->learningUserRepository->findOneBy([
             'language' => $language,
             'user' => $user,
         ]);
+
+        return $learningUser;
     }
     /**
      * @param Language $language
@@ -118,5 +122,18 @@ class LearningUserImplementation
         $user->setCurrentLearningUser($learningUser);
 
         return $learningUser;
+    }
+    /**
+     * @param LearningUser $learningUser
+     */
+    public function markLanguageInfoLooked(LearningUser $learningUser)
+    {
+        if ($learningUser->getIsLanguageInfoLooked() === true) {
+            return;
+        }
+
+        $learningUser->setIsLanguageInfoLooked(true);
+
+        $this->learningUserRepository->persistAndFlush($learningUser);
     }
 }

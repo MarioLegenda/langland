@@ -8,4 +8,4 @@ AdminBundle\Entity\LanguageInfo:
             expose: true
             groups: [language_info]
             type: AdminBundle\Entity\LanguageInfoText
-            serialized_name: languageInfoTexts
+            serialized_name: texts

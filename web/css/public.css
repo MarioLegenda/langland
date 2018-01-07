@@ -1,3 +1,44 @@
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+.fadeIn {
+  animation-name: fadeIn; }
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0); }
+  to {
+    opacity: 1;
+    transform: none; } }
+.fadeInDown {
+  animation-name: fadeInDown; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0); }
+  to {
+    opacity: 1;
+    transform: none; } }
+.fadeInUp {
+  animation-name: fadeInUp; }
+
+@keyframes fadeOutUp {
+  from {
+    opacity: 1; }
+  to {
+    opacity: 0;
+    transform: translate3d(0, -10%, 0); } }
+.fadeOutUp {
+  animation-name: fadeOutUp; }
+
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
@@ -171,59 +212,106 @@ body {
   -moz-box-sizing: border-box; }
 
 body {
-  font-family: "Playfair Display", serif;
+  font-family: "Alegreya Sans", sans-serif;
   font-size: 16px;
   background-color: white; }
 
 #main_content header {
   width: 100%;
-  float: left; }
+  border-bottom: 1px solid #F16C20; }
   #main_content header .title-wrapper {
-    width: 480px;
-    margin: 0 auto;
-    margin-top: 35px; }
-    #main_content header .title-wrapper .decorate-border {
+    width: 100px;
+    float: left;
+    margin-top: 8px;
+    margin-left: 5px;
+    position: relative; }
+    #main_content header .title-wrapper a {
       display: block;
-      width: 70px;
+      font-size: 16px;
+      color: #F16C20; }
+    #main_content header .title-wrapper .center-loading {
+      display: block;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      color: red;
+      top: 1px;
+      right: 15px; }
+  #main_content header .profile-wrapper {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    float: right;
+    margin-top: 8px;
+    margin-right: 3px; }
+    #main_content header .profile-wrapper .profile-pop {
+      display: none;
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      right: -3px;
+      top: 25px;
+      background-color: white;
       border: 1px solid #F16C20;
-      margin-top: 28px; }
-    #main_content header .title-wrapper .decorate-border-left {
-      float: left;
-      margin-left: 70px; }
-    #main_content header .title-wrapper .decorate-border-right {
-      float: right;
-      margin-right: 70px; }
-    #main_content header .title-wrapper h1 {
-      width: 170px;
-      float: left;
-      margin-left: 12px;
-      text-align: center;
-      font-size: 40px;
-      color: #F16C20;
-      padding: 5px; }
+      border-top: 1px solid white;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px; }
+      #main_content header .profile-wrapper .profile-pop h3 {
+        padding: 10px 10px 10px 5px;
+        color: #706464;
+        border-bottom: 1px solid #F16C20; }
+      #main_content header .profile-wrapper .profile-pop a {
+        width: 100%;
+        position: relative;
+        display: block;
+        color: #F16C20;
+        padding: 10px 10px 10px 30px; }
+        #main_content header .profile-wrapper .profile-pop a:hover {
+          color: white;
+          background: #F16C20; }
+        #main_content header .profile-wrapper .profile-pop a:hover i {
+          color: white; }
+        #main_content header .profile-wrapper .profile-pop a i {
+          position: absolute;
+          left: 5px;
+          bottom: 10px;
+          color: #F16C20; }
+    #main_content header .profile-wrapper:hover .profile-pop {
+      cursor: default;
+      display: block; }
+    #main_content header .profile-wrapper .hoverable {
+      display: block;
+      color: #F16C20; }
+      #main_content header .profile-wrapper .hoverable:hover {
+        cursor: pointer; }
 
 #main_content .languages-wrapper {
   width: 1280px;
   margin: 0 auto;
-  margin-top: 35px; }
+  overflow: hidden;
+  margin-top: 100px; }
   #main_content .languages-wrapper .language {
     width: 480px;
     height: 615px;
     float: left;
-    margin-top: 80px;
-    margin-left: 80px; }
+    position: relative;
+    margin-left: 90px;
+    margin-bottom: 70px; }
     #main_content .languages-wrapper .language .already-learning {
       border: 1px solid #4fc926 !important; }
     #main_content .languages-wrapper .language .title-wrapper {
+      width: 100%;
+      float: left;
       position: relative;
       margin-bottom: 35px;
       border: 1px solid #F16C20;
       border-radius: 20px;
       padding: 10px; }
       #main_content .languages-wrapper .language .title-wrapper h1 {
-        font-size: 18px;
-        color: #706464;
-        text-align: center; }
+        font-size: 20px;
+        color: #594f4f;
+        text-align: center;
+        font-weight: 600; }
       #main_content .languages-wrapper .language .title-wrapper i {
         display: block;
         position: absolute;
@@ -244,20 +332,89 @@ body {
         margin: 0 auto;
         width: 200px;
         text-align: center;
-        color: #706464;
+        font-size: 18px;
+        color: #594f4f;
         line-height: 1.4em; }
-    #main_content .languages-wrapper .language .button-wrapper button {
-      display: block;
-      width: 200px;
-      margin: 0 auto;
-      color: #F16C20;
-      border: none;
-      border-bottom: 1px solid #F16C20;
-      background: none;
-      font-family: "Playfair Display", serif;
-      font-size: 18px; }
-      #main_content .languages-wrapper .language .button-wrapper button:hover {
-        cursor: pointer; }
+    #main_content .languages-wrapper .language .button-wrapper {
+      width: 100%;
+      position: absolute;
+      bottom: 0; }
+      #main_content .languages-wrapper .language .button-wrapper .center-loading {
+        display: block;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        color: red;
+        bottom: 1px;
+        left: 235px; }
+      #main_content .languages-wrapper .language .button-wrapper .language-link {
+        position: relative;
+        display: block;
+        width: 200px;
+        margin: 0 auto;
+        color: #F16C20;
+        border: none;
+        border-bottom: 1px solid #F16C20;
+        background: none;
+        font-family: "Alegreya Sans", sans-serif;
+        font-size: 20px;
+        text-align: center; }
+        #main_content .languages-wrapper .language .button-wrapper .language-link:hover {
+          cursor: pointer; }
+        #main_content .languages-wrapper .language .button-wrapper .language-link i {
+          position: absolute;
+          left: -3px;
+          color: red; }
+
+#main_content .language-info-wrapper {
+  width: 100%;
+  float: left; }
+  #main_content .language-info-wrapper .language-info-item {
+    width: 480px;
+    margin: 0 auto;
+    overflow: hidden;
+    margin-top: 100px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #F16C20; }
+    #main_content .language-info-wrapper .language-info-item h1 {
+      width: 100%;
+      float: left;
+      padding: 10px;
+      border: 1px solid #F16C20;
+      color: #594f4f;
+      text-align: center;
+      -webkit-border-radius: 15px;
+      -moz-border-radius: 15px;
+      border-radius: 15px; }
+    #main_content .language-info-wrapper .language-info-item .text {
+      width: 100%;
+      float: left;
+      margin: 20px 0 10px 0;
+      color: black;
+      line-height: 1.5em; }
+    #main_content .language-info-wrapper .language-info-item .button-wrapper {
+      width: 100%;
+      float: left; }
+      #main_content .language-info-wrapper .language-info-item .button-wrapper a {
+        color: #F16C20;
+        display: block;
+        float: right; }
+        #main_content .language-info-wrapper .language-info-item .button-wrapper a:hover {
+          cursor: pointer; }
+      #main_content .language-info-wrapper .language-info-item .button-wrapper .previous-button {
+        margin-top: 7px;
+        float: left; }
+
+#main_content .app-wrapper {
+  width: 1280px;
+  margin: 0 auto;
+  overflow: hidden;
+  margin-top: 100px; }
+
+.main-wrapper {
+  width: 100%;
+  overflow: hidden;
+  margin: 0 auto; }
 
 #header {
   border-bottom: 1px solid #F16C20;
@@ -272,38 +429,41 @@ body {
       color: #F16C20;
       text-align: right; }
 
-#landing-page .greeting-wrapper {
-  width: 480px;
-  margin: 17% auto;
-  float: left; }
-#landing-page .greeting .main-title-1 {
-  color: #F16C20;
-  font-size: 40px; }
-#landing-page .greeting .main-title-2 {
-  color: #C2561A;
-  font-size: 20px;
-  margin-left: 199px; }
-  #landing-page .greeting .main-title-2 span {
-    margin-right: 15px;
-    font-size: 15px; }
-#landing-page .actions a {
-  width: 100%;
-  display: block;
-  float: right;
-  text-align: right;
-  margin-top: 50px;
-  margin-right: 90px;
-  padding-bottom: 5px;
-  color: #F16C20;
-  border-bottom: 1px solid #F16C20;
-  -webkit-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
-  -moz-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
-  -o-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
-  transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s; }
-  #landing-page .actions a:hover {
-    padding-right: 10px;
+#landing-page {
+  font-family: "Old Standard TT", serif; }
+  #landing-page .greeting-wrapper {
+    width: 480px;
+    margin: 17% auto;
+    float: left; }
+  #landing-page .greeting .main-title-1 {
+    color: #F16C20;
+    font-size: 40px; }
+  #landing-page .greeting .main-title-2 {
     color: #C2561A;
-    border-bottom: 1px solid #C2561A; }
+    font-size: 20px;
+    margin-left: 199px; }
+    #landing-page .greeting .main-title-2 span {
+      margin-right: 15px;
+      font-size: 15px; }
+  #landing-page .actions a {
+    width: 100%;
+    display: block;
+    float: right;
+    text-align: right;
+    margin-top: 50px;
+    margin-right: 90px;
+    padding-bottom: 5px;
+    color: #F16C20;
+    border-bottom: 1px solid #F16C20;
+    font-size: 18px;
+    -webkit-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+    -moz-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+    -o-transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;
+    transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s; }
+    #landing-page .actions a:hover {
+      padding-right: 10px;
+      color: #C2561A;
+      border-bottom: 1px solid #C2561A; }
 
 .login-and-registration-generic, .user-action {
   width: 480px;
@@ -315,7 +475,7 @@ body {
   border: none;
   border-bottom: 1px solid #F16C20;
   padding: 5px 5px 1px 0;
-  font-family: "Playfair Display", serif;
+  font-family: "Alegreya Sans", sans-serif;
   font-size: 16px;
   color: #C2561A; }
 
@@ -354,7 +514,7 @@ body {
     border: none;
     background: none;
     padding: 0 0 5px 0;
-    font-family: "Playfair Display", serif;
+    font-family: "Alegreya Sans", sans-serif;
     font-size: 16px;
     float: right;
     transition: padding-right 0.5s, color 0.5s, border-bottom 0.5s;

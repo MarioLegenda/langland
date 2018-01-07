@@ -60,7 +60,7 @@ class RepositoryCommunicator
             $temp['id'] = $language->getId();
             $temp['name'] = $language->getName();
             $temp['desc'] = $language->getListDescription();
-            $temp['images'] = $language->getImages();
+            $temp['images'] = $this->parseImages($language->getImages());
             $temp['alreadyLearning'] = false;
 
             foreach ($learningUsers as $learningUser) {
@@ -82,5 +82,26 @@ class RepositoryCommunicator
     private function equalsLanguage(Language $language1, Language $language2): bool
     {
         return (int) $language1->getId() === (int) $language2->getId();
+    }
+    /**
+     * @param array $images
+     * @return array
+     */
+    private function parseImages(array $images): array
+    {
+        $parsed = [];
+        $parsed['cover'] = sprintf(
+            '%s/%s',
+            $images['cover_image']['relativePath'],
+            $images['cover_image']['originalName']
+        );
+
+        $parsed['icon'] = sprintf(
+            '%s/%s',
+            $images['icon']['relativePath'],
+            $images['icon']['originalName']
+        );
+
+        return $parsed;
     }
 }

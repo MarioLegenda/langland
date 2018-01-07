@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use TestLibrary\DataProvider\UserDataProvider;
 use TestLibrary\LanglandAdminTestCase;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
+use TestLibrary\DataProvider\LearningUserDataProvider;
 
 class LearningUserControllerTest extends LanglandAdminTestCase
 {
@@ -37,6 +38,10 @@ class LearningUserControllerTest extends LanglandAdminTestCase
      * @var LearningUserRepository $learningUserRepository
      */
     private $learningUserRepository;
+    /**
+     * @var LearningUserDataProvider $learningUserDataProvider
+     */
+    private $learningUserDataProvider;
 
     public function setUp()
     {
@@ -47,6 +52,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $this->userDataProvider = $this->container->get('langland.data_provider.user');
         $this->learningUserRepository = $this->container->get('langland.public_api.repository.learning_user');
         $this->learningUserController = $this->container->get('langland.public_api.controller.learning_user');
+        $this->learningUserDataProvider = $this->container->get('langland.data_provider.learning_user');
     }
 
     public function test_register_learning_user()
@@ -156,5 +162,65 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         static::assertEquals(204, $response->getStatusCode());
         static::assertEquals($learningUser->getId(), $user->getCurrentLearningUser()->getId());
         static::assertEquals(2, count($this->learningUserRepository->findAll()));
+    }
+
+    public function test_mark_language_info_looked_and_is_looked()
+    {
+        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
+        $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $learningUser = $this->learningUserDataProvider->createDefaultDb(
+            $this->getFaker(),
+            $language
+        );
+
+        $user->setCurrentLearningUser($learningUser);
+        $learningUser->setUser($user);
+
+        $response = $this->learningUserController->isLanguageInfoLooked($user);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $content = $response->getContent();
+
+        static::assertNotEmpty($content);
+
+        $content = json_decode($content, true);
+
+        static::assertInternalType('array', $content);
+        static::assertNotEmpty($content);
+        static::assertArrayHasKey('looked', $content);
+        static::assertFalse($content['looked']);
+
+        $this->learningUserController->isLanguageInfoLooked($user);
+
+        $response = $this->learningUserController->markLanguageInfoLooked($user);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(204, $response->getStatusCode());
+
+        $content = $response->getContent();
+
+        static::assertNotEmpty($content);
+
+        $content = json_decode($content, true);
+
+        static::assertEquals('Language info marked looked', $content);
+
+        $response = $this->learningUserController->isLanguageInfoLooked($user);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $content = $response->getContent();
+
+        static::assertNotEmpty($content);
+
+        $content = json_decode($content, true);
+
+        static::assertInternalType('array', $content);
+        static::assertNotEmpty($content);
+        static::assertArrayHasKey('looked', $content);
+        static::assertTrue($content['looked']);
     }
 }

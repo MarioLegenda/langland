@@ -2,3 +2,17 @@ register_learning_user:
     path: /register-learning-user
     defaults: { _controller: langland.public_api.controller.learning_user:registerLearningUser }
     methods: [POST, PUT]
+
+mark_language_info_looked:
+    path: /language-info/mark-language-info-looked
+    defaults: { _controller: langland.public_api.controller.learning_user:markLanguageInfoLooked }
+    methods: [POST]
+    requirements:
+        _format: json
+
+is_language_info_looked:
+    path: /language-info/is-language-info-looked
+    defaults: { _controller: langland.public_api.controller.learning_user:isLanguageInfoLooked }
+    methods: [GET]
+    requirements:
+        _format: json

@@ -1,46 +1,20 @@
 /*
-Error: Undefined variable: "$orange1".
-        on line 10 of landing_page.scss
+Error: Undefined variable: "$primarySerif".
+        on line 2 of landing_page.scss
 
-5:     float:left;
-6:   }
-7: 
-8:   .greeting {
-9:     .main-title-1 {
-10:       color: $orange1;
-11:       font-size: 40px;
-12:     }
-13: 
-14:     .main-title-2 {
-15:       color: $orange2;
+1: #landing-page {
+2:   font-family: $primarySerif;
+3: 
+4:   .greeting-wrapper {
+5:     width: 480px;
+6:     margin: 17% auto;
+7:     float:left;
 
 Backtrace:
-landing_page.scss:10
+landing_page.scss:2
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/variable.rb:49:in `_perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/script/tree/node.rb:58:in `perform'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:397:in `visit_prop'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/base.rb:36:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `block in with_base'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:115:in `with_frame'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `with_base'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block (2 levels) in visit_rule'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `map'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block in visit_rule'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:181:in `with_environment'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:431:in `visit_rule'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/base.rb:36:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `block in with_base'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:115:in `with_frame'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `with_base'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `visit'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block (2 levels) in visit_rule'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `map'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:433:in `block in visit_rule'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:181:in `with_environment'
-/var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:431:in `visit_rule'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/base.rb:36:in `visit'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/tree/visitors/perform.rb:160:in `block in visit'
 /var/lib/gems/1.9.1/gems/sass-3.4.24/lib/sass/stack.rb:79:in `block in with_base'
@@ -89,4 +63,4 @@ landing_page.scss:10
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Undefined variable: \"$orange1\".\A         on line 10 of landing_page.scss\A \A 5:     float:left;\A 6:   }\A 7: \A 8:   .greeting {\A 9:     .main-title-1 {\A 10:       color: $orange1;\A 11:       font-size: 40px;\A 12:     }\A 13: \A 14:     .main-title-2 {\A 15:       color: $orange2;"; }
+  content: "Error: Undefined variable: \"$primarySerif\".\A         on line 2 of landing_page.scss\A \A 1: #landing-page {\A 2:   font-family: $primarySerif;\A 3: \A 4:   .greeting-wrapper {\A 5:     width: 480px;\A 6:     margin: 17% auto;\A 7:     float:left;"; }

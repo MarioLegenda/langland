@@ -4963,9 +4963,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__ = __webpack_require__(250);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__userRepository_js__ = __webpack_require__(251);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cache_js__ = __webpack_require__(253);
 
 
 
+
+
+const cache = new __WEBPACK_IMPORTED_MODULE_3__cache_js__["a" /* Cache */]();
 
 function factory(repository) {
     switch (repository) {
@@ -4976,6 +4980,8 @@ function factory(repository) {
         case 'learning-user':
             return new __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__["a" /* LearningUserRepository */]();
     }
+
+    throw new Error('Repository ' + repository + ' not found');
 }
 
 /***/ }),
@@ -11104,14 +11110,552 @@ Link.contextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Link);
 
 /***/ }),
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.CenterLoading = CenterLoading;
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function CenterLoading() {
+    return _react2.default.createElement(
+        "div",
+        { className: "center-loading" },
+        _react2.default.createElement("i", { className: "fa fa-circle-o-notch fa-spin fa-fw" })
+    );
+}
+
+/***/ }),
+/* 98 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["fetchAllLanguagesInProgress"] = fetchAllLanguagesInProgress;
+/* harmony export (immutable) */ __webpack_exports__["languagesFetched"] = languagesFetched;
+/* harmony export (immutable) */ __webpack_exports__["registeringLanguage"] = registeringLanguage;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(233);
+
+
+const LanguageActions = {
+    FETCH_ALL_IN_PROGRESS: 'FETCH_IN_PROGRESS',
+    REGISTER_LANGUAGE_IN_PROGRESS: 'REGISTER_LANGUAGE_IN_PROGRESS',
+    LANGUAGES_FETCHED: 'LANGUAGES_FETCHED',
+    UPDATE_LANGUAGE: 'UPDATE_LANGUAGE'
+};
+/* harmony export (immutable) */ __webpack_exports__["LanguageActions"] = LanguageActions;
+
+
+let appModel = {
+    language: {
+        isFetchingAll: false,
+        languages: [],
+        isRegistering: false
+    }
+};
+
+function fetchAllLanguagesInProgress(isFetchingAll) {
+    return {
+        type: LanguageActions.FETCH_ALL_IN_PROGRESS,
+        isFetchingAll: isFetchingAll
+    };
+}
+
+function languagesFetched(languages) {
+    return {
+        type: LanguageActions.LANGUAGES_FETCHED,
+        languages: languages
+    };
+}
+
+function registeringLanguage(isRegistering) {
+    return {
+        type: LanguageActions.REGISTER_LANGUAGE_IN_PROGRESS,
+        isRegistering: isRegistering
+    };
+}
+
+function language(state = appModel, action) {
+    switch (action.type) {
+        case LanguageActions.FETCH_ALL_IN_PROGRESS:
+            return Object.assign({}, state.language, {
+                isFetchingAll: true
+            });
+        case LanguageActions.FETCH_ALL_COMPLETED:
+            return Object.assign({}, state.language, {
+                isFetchingAll: false
+            });
+        case LanguageActions.LANGUAGES_FETCHED:
+            return Object.assign({}, state.language, {
+                languages: action.languages
+            });
+        case LanguageActions.REGISTER_LANGUAGE_IN_PROGRESS:
+            return Object.assign({}, state.language, {
+                isRegistering: action.isRegistering
+            });
+        default:
+            return state;
+    }
+}
+
+const reduxApp = Object(__WEBPACK_IMPORTED_MODULE_0_redux__["a" /* combineReducers */])({
+    language
+});
+
+const store = Object(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /* createStore */])(reduxApp);
+/* harmony export (immutable) */ __webpack_exports__["store"] = store;
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActionTypes; });
+/* harmony export (immutable) */ __webpack_exports__["b"] = createStore;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_symbol_observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_symbol_observable__);
+
+
+
+/**
+ * These are private action types reserved by Redux.
+ * For any unknown actions, you must return the current state.
+ * If the current state is undefined, you must return the initial state.
+ * Do not reference these action types directly in your code.
+ */
+var ActionTypes = {
+  INIT: '@@redux/INIT'
+
+  /**
+   * Creates a Redux store that holds the state tree.
+   * The only way to change the data in the store is to call `dispatch()` on it.
+   *
+   * There should only be a single store in your app. To specify how different
+   * parts of the state tree respond to actions, you may combine several reducers
+   * into a single reducer function by using `combineReducers`.
+   *
+   * @param {Function} reducer A function that returns the next state tree, given
+   * the current state tree and the action to handle.
+   *
+   * @param {any} [preloadedState] The initial state. You may optionally specify it
+   * to hydrate the state from the server in universal apps, or to restore a
+   * previously serialized user session.
+   * If you use `combineReducers` to produce the root reducer function, this must be
+   * an object with the same shape as `combineReducers` keys.
+   *
+   * @param {Function} [enhancer] The store enhancer. You may optionally specify it
+   * to enhance the store with third-party capabilities such as middleware,
+   * time travel, persistence, etc. The only store enhancer that ships with Redux
+   * is `applyMiddleware()`.
+   *
+   * @returns {Store} A Redux store that lets you read the state, dispatch actions
+   * and subscribe to changes.
+   */
+};function createStore(reducer, preloadedState, enhancer) {
+  var _ref2;
+
+  if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
+    enhancer = preloadedState;
+    preloadedState = undefined;
+  }
+
+  if (typeof enhancer !== 'undefined') {
+    if (typeof enhancer !== 'function') {
+      throw new Error('Expected the enhancer to be a function.');
+    }
+
+    return enhancer(createStore)(reducer, preloadedState);
+  }
+
+  if (typeof reducer !== 'function') {
+    throw new Error('Expected the reducer to be a function.');
+  }
+
+  var currentReducer = reducer;
+  var currentState = preloadedState;
+  var currentListeners = [];
+  var nextListeners = currentListeners;
+  var isDispatching = false;
+
+  function ensureCanMutateNextListeners() {
+    if (nextListeners === currentListeners) {
+      nextListeners = currentListeners.slice();
+    }
+  }
+
+  /**
+   * Reads the state tree managed by the store.
+   *
+   * @returns {any} The current state tree of your application.
+   */
+  function getState() {
+    return currentState;
+  }
+
+  /**
+   * Adds a change listener. It will be called any time an action is dispatched,
+   * and some part of the state tree may potentially have changed. You may then
+   * call `getState()` to read the current state tree inside the callback.
+   *
+   * You may call `dispatch()` from a change listener, with the following
+   * caveats:
+   *
+   * 1. The subscriptions are snapshotted just before every `dispatch()` call.
+   * If you subscribe or unsubscribe while the listeners are being invoked, this
+   * will not have any effect on the `dispatch()` that is currently in progress.
+   * However, the next `dispatch()` call, whether nested or not, will use a more
+   * recent snapshot of the subscription list.
+   *
+   * 2. The listener should not expect to see all state changes, as the state
+   * might have been updated multiple times during a nested `dispatch()` before
+   * the listener is called. It is, however, guaranteed that all subscribers
+   * registered before the `dispatch()` started will be called with the latest
+   * state by the time it exits.
+   *
+   * @param {Function} listener A callback to be invoked on every dispatch.
+   * @returns {Function} A function to remove this change listener.
+   */
+  function subscribe(listener) {
+    if (typeof listener !== 'function') {
+      throw new Error('Expected listener to be a function.');
+    }
+
+    var isSubscribed = true;
+
+    ensureCanMutateNextListeners();
+    nextListeners.push(listener);
+
+    return function unsubscribe() {
+      if (!isSubscribed) {
+        return;
+      }
+
+      isSubscribed = false;
+
+      ensureCanMutateNextListeners();
+      var index = nextListeners.indexOf(listener);
+      nextListeners.splice(index, 1);
+    };
+  }
+
+  /**
+   * Dispatches an action. It is the only way to trigger a state change.
+   *
+   * The `reducer` function, used to create the store, will be called with the
+   * current state tree and the given `action`. Its return value will
+   * be considered the **next** state of the tree, and the change listeners
+   * will be notified.
+   *
+   * The base implementation only supports plain object actions. If you want to
+   * dispatch a Promise, an Observable, a thunk, or something else, you need to
+   * wrap your store creating function into the corresponding middleware. For
+   * example, see the documentation for the `redux-thunk` package. Even the
+   * middleware will eventually dispatch plain object actions using this method.
+   *
+   * @param {Object} action A plain object representing “what changed”. It is
+   * a good idea to keep actions serializable so you can record and replay user
+   * sessions, or use the time travelling `redux-devtools`. An action must have
+   * a `type` property which may not be `undefined`. It is a good idea to use
+   * string constants for action types.
+   *
+   * @returns {Object} For convenience, the same action object you dispatched.
+   *
+   * Note that, if you use a custom middleware, it may wrap `dispatch()` to
+   * return something else (for example, a Promise you can await).
+   */
+  function dispatch(action) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__["a" /* default */])(action)) {
+      throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
+    }
+
+    if (typeof action.type === 'undefined') {
+      throw new Error('Actions may not have an undefined "type" property. ' + 'Have you misspelled a constant?');
+    }
+
+    if (isDispatching) {
+      throw new Error('Reducers may not dispatch actions.');
+    }
+
+    try {
+      isDispatching = true;
+      currentState = currentReducer(currentState, action);
+    } finally {
+      isDispatching = false;
+    }
+
+    var listeners = currentListeners = nextListeners;
+    for (var i = 0; i < listeners.length; i++) {
+      var listener = listeners[i];
+      listener();
+    }
+
+    return action;
+  }
+
+  /**
+   * Replaces the reducer currently used by the store to calculate the state.
+   *
+   * You might need this if your app implements code splitting and you want to
+   * load some of the reducers dynamically. You might also need this if you
+   * implement a hot reloading mechanism for Redux.
+   *
+   * @param {Function} nextReducer The reducer for the store to use instead.
+   * @returns {void}
+   */
+  function replaceReducer(nextReducer) {
+    if (typeof nextReducer !== 'function') {
+      throw new Error('Expected the nextReducer to be a function.');
+    }
+
+    currentReducer = nextReducer;
+    dispatch({ type: ActionTypes.INIT });
+  }
+
+  /**
+   * Interoperability point for observable/reactive libraries.
+   * @returns {observable} A minimal observable of state changes.
+   * For more information, see the observable proposal:
+   * https://github.com/tc39/proposal-observable
+   */
+  function observable() {
+    var _ref;
+
+    var outerSubscribe = subscribe;
+    return _ref = {
+      /**
+       * The minimal observable subscription method.
+       * @param {Object} observer Any object that can be used as an observer.
+       * The observer object should have a `next` method.
+       * @returns {subscription} An object with an `unsubscribe` method that can
+       * be used to unsubscribe the observable from the store, and prevent further
+       * emission of values from the observable.
+       */
+      subscribe: function subscribe(observer) {
+        if (typeof observer !== 'object') {
+          throw new TypeError('Expected the observer to be an object.');
+        }
+
+        function observeState() {
+          if (observer.next) {
+            observer.next(getState());
+          }
+        }
+
+        observeState();
+        var unsubscribe = outerSubscribe(observeState);
+        return { unsubscribe: unsubscribe };
+      }
+    }, _ref[__WEBPACK_IMPORTED_MODULE_1_symbol_observable___default.a] = function () {
+      return this;
+    }, _ref;
+  }
+
+  // When a store is created, an "INIT" action is dispatched so that every
+  // reducer returns their initial state. This effectively populates
+  // the initial state tree.
+  dispatch({ type: ActionTypes.INIT });
+
+  return _ref2 = {
+    dispatch: dispatch,
+    subscribe: subscribe,
+    getState: getState,
+    replaceReducer: replaceReducer
+  }, _ref2[__WEBPACK_IMPORTED_MODULE_1_symbol_observable___default.a] = observable, _ref2;
+}
+
+/***/ }),
+/* 100 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getPrototype_js__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__ = __webpack_require__(241);
+
+
+
+
+/** `Object#toString` result references. */
+var objectTag = '[object Object]';
+
+/** Used for built-in method references. */
+var funcProto = Function.prototype,
+    objectProto = Object.prototype;
+
+/** Used to resolve the decompiled source of functions. */
+var funcToString = funcProto.toString;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/** Used to infer the `Object` constructor. */
+var objectCtorString = funcToString.call(Object);
+
+/**
+ * Checks if `value` is a plain object, that is, an object created by the
+ * `Object` constructor or one with a `[[Prototype]]` of `null`.
+ *
+ * @static
+ * @memberOf _
+ * @since 0.8.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+ * @example
+ *
+ * function Foo() {
+ *   this.a = 1;
+ * }
+ *
+ * _.isPlainObject(new Foo);
+ * // => false
+ *
+ * _.isPlainObject([1, 2, 3]);
+ * // => false
+ *
+ * _.isPlainObject({ 'x': 0, 'y': 0 });
+ * // => true
+ *
+ * _.isPlainObject(Object.create(null));
+ * // => true
+ */
+function isPlainObject(value) {
+  if (!Object(__WEBPACK_IMPORTED_MODULE_2__isObjectLike_js__["a" /* default */])(value) || Object(__WEBPACK_IMPORTED_MODULE_0__baseGetTag_js__["a" /* default */])(value) != objectTag) {
+    return false;
+  }
+  var proto = Object(__WEBPACK_IMPORTED_MODULE_1__getPrototype_js__["a" /* default */])(value);
+  if (proto === null) {
+    return true;
+  }
+  var Ctor = hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+  return typeof Ctor == 'function' && Ctor instanceof Ctor &&
+    funcToString.call(Ctor) == objectCtorString;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (isPlainObject);
+
+
+/***/ }),
+/* 101 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__root_js__ = __webpack_require__(235);
+
+
+/** Built-in value references. */
+var Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
+
+/* harmony default export */ __webpack_exports__["a"] = (Symbol);
+
+
+/***/ }),
+/* 102 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = warning;
+/**
+ * Prints a warning in the console if it exists.
+ *
+ * @param {String} message The warning message.
+ * @returns {void}
+ */
+function warning(message) {
+  /* eslint-disable no-console */
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+    console.error(message);
+  }
+  /* eslint-enable no-console */
+  try {
+    // This error was thrown as a convenience so that if you enable
+    // "break on all exceptions" in your console,
+    // it would pause the execution at this line.
+    throw new Error(message);
+    /* eslint-disable no-empty */
+  } catch (e) {}
+  /* eslint-enable no-empty */
+}
+
+/***/ }),
+/* 104 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = compose;
+/**
+ * Composes single-argument functions from right to left. The rightmost
+ * function can take multiple arguments as it provides the signature for
+ * the resulting composite function.
+ *
+ * @param {...Function} funcs The functions to compose.
+ * @returns {Function} A function obtained by composing the argument functions
+ * from right to left. For example, compose(f, g, h) is identical to doing
+ * (...args) => f(g(h(...args))).
+ */
+
+function compose() {
+  for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
+    funcs[_key] = arguments[_key];
+  }
+
+  if (funcs.length === 0) {
+    return function (arg) {
+      return arg;
+    };
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0];
+  }
+
+  return funcs.reduce(function (a, b) {
+    return function () {
+      return a(b.apply(undefined, arguments));
+    };
+  });
+}
+
+/***/ }),
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11130,38 +11674,48 @@ var _reactRouterDom = __webpack_require__(59);
 
 var _constants = __webpack_require__(30);
 
+var _header = __webpack_require__(232);
+
 var _language = __webpack_require__(249);
+
+var _app = __webpack_require__(254);
 
 var _factory = __webpack_require__(39);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function App() {
+function InitApp() {
 
     var langList = function langList(match) {
-        return _react2.default.createElement(_language.List, null);
+        return _react2.default.createElement(_language.LanguageList, { history: match.history });
     };
+    var app = function app(match) {
+        return _react2.default.createElement(_app.App, { match: match.match });
+    };
+    var header = _react2.default.createElement(_header.Header, null);
 
     return _react2.default.createElement(
         _reactRouterDom.BrowserRouter,
         null,
         _react2.default.createElement(
             'div',
-            null,
+            { className: 'main-wrapper' },
+            header,
             _react2.default.createElement(
                 _reactRouterDom.Switch,
                 null,
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList })
+                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList }),
+                _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: app })
             )
         )
     );
 }
 
-var react_language_list = document.getElementById('react_language_list');
+var react_app = document.getElementById('react_app');
 
-if (react_language_list !== null) {
+if (react_app !== null) {
     (0, _factory.factory)('user').getLoggedInUser($.proxy(function () {
-        _reactDom2.default.render(_react2.default.createElement(App, null), react_language_list);
+        _reactDom2.default.render(_react2.default.createElement(InitApp, null), react_app);
     }));
 }
 
@@ -25504,23 +26058,735 @@ NavLink.defaultProps = {
 
 
 /***/ }),
-/* 232 */,
-/* 233 */,
-/* 234 */,
-/* 235 */,
-/* 236 */,
-/* 237 */,
-/* 238 */,
-/* 239 */,
-/* 240 */,
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Header = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouterDom = __webpack_require__(59);
+
+var _constants = __webpack_require__(30);
+
+var _util = __webpack_require__(97);
+
+var _events = __webpack_require__(98);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Header = exports.Header = function (_React$Component) {
+    _inherits(Header, _React$Component);
+
+    function Header(props) {
+        _classCallCheck(this, Header);
+
+        var _this = _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).call(this, props));
+
+        _this.logout = _this.logout.bind(_this);
+
+        _this.state = {
+            areLanguagesFetched: false
+        };
+
+        _events.store.subscribe(function () {
+            var isFetchingAllLanguages = _events.store.getState().language.isFetchingAll;
+
+            _this.setState(function (prevState) {
+                prevState.areLanguagesFetched = isFetchingAllLanguages;
+            });
+        });
+        return _this;
+    }
+
+    _createClass(Header, [{
+        key: 'logout',
+        value: function logout(e) {
+            e.preventDefault();
+
+            location.href = _constants.env.current + 'langland/logout';
+
+            return false;
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var areLanguageFetched = this.state.areLanguagesFetched;
+
+            return _react2.default.createElement(
+                'header',
+                { className: 'full-width align-left' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'title-wrapper' },
+                    _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { to: _constants.env.current + 'langland/' },
+                        'Langland'
+                    ),
+                    areLanguageFetched && _react2.default.createElement(_util.CenterLoading, null)
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'profile-wrapper' },
+                    _react2.default.createElement('div', { className: 'fa fa-user-o fa-lg hoverable' }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'profile-pop' },
+                        _react2.default.createElement(
+                            'h3',
+                            null,
+                            _constants.user.current.name,
+                            ' ',
+                            _constants.user.current.lastname
+                        ),
+                        _react2.default.createElement(
+                            'a',
+                            { href: '' },
+                            'Progress ',
+                            _react2.default.createElement('i', { className: 'fa fa-mortar-board' })
+                        ),
+                        _react2.default.createElement(
+                            'a',
+                            { href: '', onClick: this.logout },
+                            'Logout ',
+                            _react2.default.createElement('i', { className: 'fa fa-hand-o-left' })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Header;
+}(_react2.default.Component);
+
+/***/ }),
+/* 233 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(103);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["b"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
+/* unused harmony reexport bindActionCreators */
+/* unused harmony reexport applyMiddleware */
+/* unused harmony reexport compose */
+
+
+
+
+
+
+
+/*
+* This is a dummy function to check if the function name has been altered by minification.
+* If the function has been minified and NODE_ENV !== 'production', warn the user.
+*/
+function isCrushed() {}
+
+if (process.env.NODE_ENV !== 'production' && typeof isCrushed.name === 'string' && isCrushed.name !== 'isCrushed') {
+  Object(__WEBPACK_IMPORTED_MODULE_5__utils_warning__["a" /* default */])('You are currently using minified code outside of NODE_ENV === \'production\'. ' + 'This means that you are running a slower development build of Redux. ' + 'You can use loose-envify (https://github.com/zertosh/loose-envify) for browserify ' + 'or DefinePlugin for webpack (http://stackoverflow.com/questions/30030031) ' + 'to ensure you have the correct code for your production build.');
+}
+
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
+
+/***/ }),
+/* 234 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(237);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(238);
+
+
+
+
+/** `Object#toString` result references. */
+var nullTag = '[object Null]',
+    undefinedTag = '[object Undefined]';
+
+/** Built-in value references. */
+var symToStringTag = __WEBPACK_IMPORTED_MODULE_0__Symbol_js__["a" /* default */] ? __WEBPACK_IMPORTED_MODULE_0__Symbol_js__["a" /* default */].toStringTag : undefined;
+
+/**
+ * The base implementation of `getTag` without fallbacks for buggy environments.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the `toStringTag`.
+ */
+function baseGetTag(value) {
+  if (value == null) {
+    return value === undefined ? undefinedTag : nullTag;
+  }
+  return (symToStringTag && symToStringTag in Object(value))
+    ? Object(__WEBPACK_IMPORTED_MODULE_1__getRawTag_js__["a" /* default */])(value)
+    : Object(__WEBPACK_IMPORTED_MODULE_2__objectToString_js__["a" /* default */])(value);
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (baseGetTag);
+
+
+/***/ }),
+/* 235 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__ = __webpack_require__(236);
+
+
+/** Detect free variable `self`. */
+var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
+
+/** Used as a reference to the global object. */
+var root = __WEBPACK_IMPORTED_MODULE_0__freeGlobal_js__["a" /* default */] || freeSelf || Function('return this')();
+
+/* harmony default export */ __webpack_exports__["a"] = (root);
+
+
+/***/ }),
+/* 236 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/** Detect free variable `global` from Node.js. */
+var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
+
+/* harmony default export */ __webpack_exports__["a"] = (freeGlobal);
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(102)))
+
+/***/ }),
+/* 237 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(101);
+
+
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/** Used to check objects for own properties. */
+var hasOwnProperty = objectProto.hasOwnProperty;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/** Built-in value references. */
+var symToStringTag = __WEBPACK_IMPORTED_MODULE_0__Symbol_js__["a" /* default */] ? __WEBPACK_IMPORTED_MODULE_0__Symbol_js__["a" /* default */].toStringTag : undefined;
+
+/**
+ * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
+ *
+ * @private
+ * @param {*} value The value to query.
+ * @returns {string} Returns the raw `toStringTag`.
+ */
+function getRawTag(value) {
+  var isOwn = hasOwnProperty.call(value, symToStringTag),
+      tag = value[symToStringTag];
+
+  try {
+    value[symToStringTag] = undefined;
+    var unmasked = true;
+  } catch (e) {}
+
+  var result = nativeObjectToString.call(value);
+  if (unmasked) {
+    if (isOwn) {
+      value[symToStringTag] = tag;
+    } else {
+      delete value[symToStringTag];
+    }
+  }
+  return result;
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (getRawTag);
+
+
+/***/ }),
+/* 238 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/** Used for built-in method references. */
+var objectProto = Object.prototype;
+
+/**
+ * Used to resolve the
+ * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
+ * of values.
+ */
+var nativeObjectToString = objectProto.toString;
+
+/**
+ * Converts `value` to a string using `Object.prototype.toString`.
+ *
+ * @private
+ * @param {*} value The value to convert.
+ * @returns {string} Returns the converted string.
+ */
+function objectToString(value) {
+  return nativeObjectToString.call(value);
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (objectToString);
+
+
+/***/ }),
+/* 239 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__overArg_js__ = __webpack_require__(240);
+
+
+/** Built-in value references. */
+var getPrototype = Object(__WEBPACK_IMPORTED_MODULE_0__overArg_js__["a" /* default */])(Object.getPrototypeOf, Object);
+
+/* harmony default export */ __webpack_exports__["a"] = (getPrototype);
+
+
+/***/ }),
+/* 240 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Creates a unary function that invokes `func` with its argument transformed.
+ *
+ * @private
+ * @param {Function} func The function to wrap.
+ * @param {Function} transform The argument transform.
+ * @returns {Function} Returns the new function.
+ */
+function overArg(func, transform) {
+  return function(arg) {
+    return func(transform(arg));
+  };
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (overArg);
+
+
+/***/ }),
+/* 241 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Checks if `value` is object-like. A value is object-like if it's not `null`
+ * and has a `typeof` result of "object".
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+ * @example
+ *
+ * _.isObjectLike({});
+ * // => true
+ *
+ * _.isObjectLike([1, 2, 3]);
+ * // => true
+ *
+ * _.isObjectLike(_.noop);
+ * // => false
+ *
+ * _.isObjectLike(null);
+ * // => false
+ */
+function isObjectLike(value) {
+  return value != null && typeof value == 'object';
+}
+
+/* harmony default export */ __webpack_exports__["a"] = (isObjectLike);
+
+
+/***/ }),
+/* 242 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(243);
+
+
+/***/ }),
+/* 243 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global, module) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _ponyfill = __webpack_require__(245);
+
+var _ponyfill2 = _interopRequireDefault(_ponyfill);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var root; /* global window */
+
+
+if (typeof self !== 'undefined') {
+  root = self;
+} else if (typeof window !== 'undefined') {
+  root = window;
+} else if (typeof global !== 'undefined') {
+  root = global;
+} else if (true) {
+  root = module;
+} else {
+  root = Function('return this')();
+}
+
+var result = (0, _ponyfill2['default'])(root);
+exports['default'] = result;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(102), __webpack_require__(244)(module)))
+
+/***/ }),
+/* 244 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 245 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports['default'] = symbolObservablePonyfill;
+function symbolObservablePonyfill(root) {
+	var result;
+	var _Symbol = root.Symbol;
+
+	if (typeof _Symbol === 'function') {
+		if (_Symbol.observable) {
+			result = _Symbol.observable;
+		} else {
+			result = _Symbol('observable');
+			_Symbol.observable = result;
+		}
+	} else {
+		result = '@@observable';
+	}
+
+	return result;
+};
+
+/***/ }),
+/* 246 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(103);
+
+
+
+
+function getUndefinedStateErrorMessage(key, action) {
+  var actionType = action && action.type;
+  var actionName = actionType && '"' + actionType.toString() + '"' || 'an action';
+
+  return 'Given action ' + actionName + ', reducer "' + key + '" returned undefined. ' + 'To ignore an action, you must explicitly return the previous state. ' + 'If you want this reducer to hold no value, you can return null instead of undefined.';
+}
+
+function getUnexpectedStateShapeWarningMessage(inputState, reducers, action, unexpectedKeyCache) {
+  var reducerKeys = Object.keys(reducers);
+  var argumentName = action && action.type === __WEBPACK_IMPORTED_MODULE_0__createStore__["a" /* ActionTypes */].INIT ? 'preloadedState argument passed to createStore' : 'previous state received by the reducer';
+
+  if (reducerKeys.length === 0) {
+    return 'Store does not have a valid reducer. Make sure the argument passed ' + 'to combineReducers is an object whose values are reducers.';
+  }
+
+  if (!Object(__WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__["a" /* default */])(inputState)) {
+    return 'The ' + argumentName + ' has unexpected type of "' + {}.toString.call(inputState).match(/\s([a-z|A-Z]+)/)[1] + '". Expected argument to be an object with the following ' + ('keys: "' + reducerKeys.join('", "') + '"');
+  }
+
+  var unexpectedKeys = Object.keys(inputState).filter(function (key) {
+    return !reducers.hasOwnProperty(key) && !unexpectedKeyCache[key];
+  });
+
+  unexpectedKeys.forEach(function (key) {
+    unexpectedKeyCache[key] = true;
+  });
+
+  if (unexpectedKeys.length > 0) {
+    return 'Unexpected ' + (unexpectedKeys.length > 1 ? 'keys' : 'key') + ' ' + ('"' + unexpectedKeys.join('", "') + '" found in ' + argumentName + '. ') + 'Expected to find one of the known reducer keys instead: ' + ('"' + reducerKeys.join('", "') + '". Unexpected keys will be ignored.');
+  }
+}
+
+function assertReducerShape(reducers) {
+  Object.keys(reducers).forEach(function (key) {
+    var reducer = reducers[key];
+    var initialState = reducer(undefined, { type: __WEBPACK_IMPORTED_MODULE_0__createStore__["a" /* ActionTypes */].INIT });
+
+    if (typeof initialState === 'undefined') {
+      throw new Error('Reducer "' + key + '" returned undefined during initialization. ' + 'If the state passed to the reducer is undefined, you must ' + 'explicitly return the initial state. The initial state may ' + 'not be undefined. If you don\'t want to set a value for this reducer, ' + 'you can use null instead of undefined.');
+    }
+
+    var type = '@@redux/PROBE_UNKNOWN_ACTION_' + Math.random().toString(36).substring(7).split('').join('.');
+    if (typeof reducer(undefined, { type: type }) === 'undefined') {
+      throw new Error('Reducer "' + key + '" returned undefined when probed with a random type. ' + ('Don\'t try to handle ' + __WEBPACK_IMPORTED_MODULE_0__createStore__["a" /* ActionTypes */].INIT + ' or other actions in "redux/*" ') + 'namespace. They are considered private. Instead, you must return the ' + 'current state for any unknown actions, unless it is undefined, ' + 'in which case you must return the initial state, regardless of the ' + 'action type. The initial state may not be undefined, but can be null.');
+    }
+  });
+}
+
+/**
+ * Turns an object whose values are different reducer functions, into a single
+ * reducer function. It will call every child reducer, and gather their results
+ * into a single state object, whose keys correspond to the keys of the passed
+ * reducer functions.
+ *
+ * @param {Object} reducers An object whose values correspond to different
+ * reducer functions that need to be combined into one. One handy way to obtain
+ * it is to use ES6 `import * as reducers` syntax. The reducers may never return
+ * undefined for any action. Instead, they should return their initial state
+ * if the state passed to them was undefined, and the current state for any
+ * unrecognized action.
+ *
+ * @returns {Function} A reducer function that invokes every reducer inside the
+ * passed object, and builds a state object with the same shape.
+ */
+function combineReducers(reducers) {
+  var reducerKeys = Object.keys(reducers);
+  var finalReducers = {};
+  for (var i = 0; i < reducerKeys.length; i++) {
+    var key = reducerKeys[i];
+
+    if (process.env.NODE_ENV !== 'production') {
+      if (typeof reducers[key] === 'undefined') {
+        Object(__WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */])('No reducer provided for key "' + key + '"');
+      }
+    }
+
+    if (typeof reducers[key] === 'function') {
+      finalReducers[key] = reducers[key];
+    }
+  }
+  var finalReducerKeys = Object.keys(finalReducers);
+
+  var unexpectedKeyCache = void 0;
+  if (process.env.NODE_ENV !== 'production') {
+    unexpectedKeyCache = {};
+  }
+
+  var shapeAssertionError = void 0;
+  try {
+    assertReducerShape(finalReducers);
+  } catch (e) {
+    shapeAssertionError = e;
+  }
+
+  return function combination() {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var action = arguments[1];
+
+    if (shapeAssertionError) {
+      throw shapeAssertionError;
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+      var warningMessage = getUnexpectedStateShapeWarningMessage(state, finalReducers, action, unexpectedKeyCache);
+      if (warningMessage) {
+        Object(__WEBPACK_IMPORTED_MODULE_2__utils_warning__["a" /* default */])(warningMessage);
+      }
+    }
+
+    var hasChanged = false;
+    var nextState = {};
+    for (var _i = 0; _i < finalReducerKeys.length; _i++) {
+      var _key = finalReducerKeys[_i];
+      var reducer = finalReducers[_key];
+      var previousStateForKey = state[_key];
+      var nextStateForKey = reducer(previousStateForKey, action);
+      if (typeof nextStateForKey === 'undefined') {
+        var errorMessage = getUndefinedStateErrorMessage(_key, action);
+        throw new Error(errorMessage);
+      }
+      nextState[_key] = nextStateForKey;
+      hasChanged = hasChanged || nextStateForKey !== previousStateForKey;
+    }
+    return hasChanged ? nextState : state;
+  };
+}
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(0)))
+
+/***/ }),
+/* 247 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+function bindActionCreator(actionCreator, dispatch) {
+  return function () {
+    return dispatch(actionCreator.apply(undefined, arguments));
+  };
+}
+
+/**
+ * Turns an object whose values are action creators, into an object with the
+ * same keys, but with every function wrapped into a `dispatch` call so they
+ * may be invoked directly. This is just a convenience method, as you can call
+ * `store.dispatch(MyActionCreators.doSomething())` yourself just fine.
+ *
+ * For convenience, you can also pass a single function as the first argument,
+ * and get a function in return.
+ *
+ * @param {Function|Object} actionCreators An object whose values are action
+ * creator functions. One handy way to obtain it is to use ES6 `import * as`
+ * syntax. You may also pass a single function.
+ *
+ * @param {Function} dispatch The `dispatch` function available on your Redux
+ * store.
+ *
+ * @returns {Function|Object} The object mimicking the original object, but with
+ * every action creator wrapped into the `dispatch` call. If you passed a
+ * function as `actionCreators`, the return value will also be a single
+ * function.
+ */
+function bindActionCreators(actionCreators, dispatch) {
+  if (typeof actionCreators === 'function') {
+    return bindActionCreator(actionCreators, dispatch);
+  }
+
+  if (typeof actionCreators !== 'object' || actionCreators === null) {
+    throw new Error('bindActionCreators expected an object or a function, instead received ' + (actionCreators === null ? 'null' : typeof actionCreators) + '. ' + 'Did you write "import ActionCreators from" instead of "import * as ActionCreators from"?');
+  }
+
+  var keys = Object.keys(actionCreators);
+  var boundActionCreators = {};
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    var actionCreator = actionCreators[key];
+    if (typeof actionCreator === 'function') {
+      boundActionCreators[key] = bindActionCreator(actionCreator, dispatch);
+    }
+  }
+  return boundActionCreators;
+}
+
+/***/ }),
+/* 248 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export default */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(104);
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
+
+/**
+ * Creates a store enhancer that applies middleware to the dispatch method
+ * of the Redux store. This is handy for a variety of tasks, such as expressing
+ * asynchronous actions in a concise manner, or logging every action payload.
+ *
+ * See `redux-thunk` package as an example of the Redux middleware.
+ *
+ * Because middleware is potentially asynchronous, this should be the first
+ * store enhancer in the composition chain.
+ *
+ * Note that each middleware will be given the `dispatch` and `getState` functions
+ * as named arguments.
+ *
+ * @param {...Function} middlewares The middleware chain to be applied.
+ * @returns {Function} A store enhancer applying the middleware.
+ */
+function applyMiddleware() {
+  for (var _len = arguments.length, middlewares = Array(_len), _key = 0; _key < _len; _key++) {
+    middlewares[_key] = arguments[_key];
+  }
+
+  return function (createStore) {
+    return function (reducer, preloadedState, enhancer) {
+      var store = createStore(reducer, preloadedState, enhancer);
+      var _dispatch = store.dispatch;
+      var chain = [];
+
+      var middlewareAPI = {
+        getState: store.getState,
+        dispatch: function dispatch(action) {
+          return _dispatch(action);
+        }
+      };
+      chain = middlewares.map(function (middleware) {
+        return middleware(middlewareAPI);
+      });
+      _dispatch = __WEBPACK_IMPORTED_MODULE_0__compose__["a" /* default */].apply(undefined, chain)(store.dispatch);
+
+      return _extends({}, store, {
+        dispatch: _dispatch
+      });
+    };
+  };
+}
+
+/***/ }),
 /* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25530,7 +26796,7 @@ NavLink.defaultProps = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.List = undefined;
+exports.LanguageList = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -25538,7 +26804,13 @@ var _react = __webpack_require__(6);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(59);
+
 var _factory = __webpack_require__(39);
+
+var _events = __webpack_require__(98);
+
+var _util = __webpack_require__(97);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25557,25 +26829,26 @@ var Item = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Item.__proto__ || Object.getPrototypeOf(Item)).call(this, props));
 
         _this.registerLanguage = _this.registerLanguage.bind(_this);
-
-        _this.learningUserRepository = (0, _factory.factory)('learning-user');
         return _this;
     }
 
     _createClass(Item, [{
         key: 'registerLanguage',
-        value: function registerLanguage() {
-            var language = this.props.language;
+        value: function registerLanguage(e) {
+            e.preventDefault();
 
-            this.learningUserRepository.registerLearningUser(language.id);
+            this.props.registerLanguage(this.props.language);
+
+            return false;
         }
     }, {
         key: 'render',
         value: function render() {
-            var language = this.props.language;
-            var alreadyLearning = language.alreadyLearning;
-            var alreadyLearningClass = alreadyLearning ? 'already-learning' : '';
-            var alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning';
+            var language = this.props.language,
+                alreadyLearning = language.alreadyLearning,
+                alreadyLearningClass = alreadyLearning ? 'already-learning' : '',
+                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning',
+                isInsideRegistration = this.props.isInsideRegistration;
 
             return _react2.default.createElement(
                 'div',
@@ -25607,9 +26880,10 @@ var Item = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'button-wrapper' },
-                    _react2.default.createElement(
-                        'button',
-                        { onClick: this.registerLanguage },
+                    isInsideRegistration && _react2.default.createElement(_util.CenterLoading, null),
+                    !isInsideRegistration && _react2.default.createElement(
+                        _reactRouterDom.Link,
+                        { className: 'language-link', onClick: this.registerLanguage, to: "" },
                         alreadyLearningButtonText
                     )
                 )
@@ -25620,54 +26894,111 @@ var Item = function (_React$Component) {
     return Item;
 }(_react2.default.Component);
 
-var List = exports.List = function (_React$Component2) {
-    _inherits(List, _React$Component2);
+var LanguageList = exports.LanguageList = function (_React$Component2) {
+    _inherits(LanguageList, _React$Component2);
 
-    function List(props) {
-        _classCallCheck(this, List);
+    function LanguageList(props) {
+        _classCallCheck(this, LanguageList);
 
-        var _this2 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
+        var _this2 = _possibleConstructorReturn(this, (LanguageList.__proto__ || Object.getPrototypeOf(LanguageList)).call(this, props));
 
         _this2.languageRepository = (0, _factory.factory)('language');
+        _this2.learningUserRepository = (0, _factory.factory)('learning-user');
+
+        _this2.registerLanguage = _this2.registerLanguage.bind(_this2);
 
         _this2.state = {
-            items: null
+            items: null,
+            itemsData: null
         };
         return _this2;
     }
 
-    _createClass(List, [{
-        key: '_processLanguageData',
-        value: function _processLanguageData(data) {
-            var languages = [];
-
-            for (var i = 0; i < data.length; i++) {
-                var lang = data[i];
-                var images = lang.images;
-                var language = {
-                    id: parseInt(lang.id),
-                    name: lang.name,
-                    desc: lang.desc,
-                    images: {
-                        cover: images.cover_image.relativePath + '/' + images.cover_image.originalName,
-                        icon: images.icon.relativePath + '/' + images.icon.originalName
-                    },
-                    alreadyLearning: lang.alreadyLearning
-                };
-
-                languages.push(_react2.default.createElement(Item, { key: i, language: language }));
-            }
-
-            return languages;
-        }
-    }, {
+    _createClass(LanguageList, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            this.languageRepository.getAll($.proxy(function (data) {
-                this.setState(function (prevState) {
-                    prevState.items = this._processLanguageData(data);
+            this._getLanguages();
+        }
+    }, {
+        key: 'registerLanguage',
+        value: function registerLanguage(language) {
+
+            var url = language.name + "/" + language.id;
+
+            this._updateItems(language.id);
+            this.learningUserRepository.registerLearningUser(language.id, $.proxy(function () {
+                this.props.history.push(url);
+            }, this));
+        }
+    }, {
+        key: '_createItems',
+        value: function _createItems(data) {
+            var _this3 = this;
+
+            this.setState(function (prevState) {
+                var languages = data.map(function (language, i) {
+                    return _react2.default.createElement(Item, {
+                        key: i,
+                        language: language,
+                        history: _this3.props.history,
+                        registerLanguage: _this3.registerLanguage
+                    });
                 });
-            }, this), $.proxy(function (data) {}, this));
+
+                _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(false));
+                _events.store.dispatch((0, _events.languagesFetched)(data));
+
+                prevState.items = languages;
+                prevState.itemsData = data;
+            });
+        }
+    }, {
+        key: '_updateItems',
+        value: function _updateItems(languageId) {
+            var _this4 = this;
+
+            var data = this.state.itemsData;
+
+            this.setState(function (prevState) {
+                var languages = data.map(function (language, i) {
+                    if (language.id === languageId) {
+                        language.alreadyLearning = true;
+
+                        return _react2.default.createElement(Item, {
+                            key: i,
+                            language: language,
+                            isInsideRegistration: true,
+                            history: _this4.props.history,
+                            registerLanguage: _this4.registerLanguage
+                        });
+                    }
+
+                    return _react2.default.createElement(Item, {
+                        key: i,
+                        language: language,
+                        isInsideRegistration: false,
+                        history: _this4.props.history,
+                        registerLanguage: _this4.registerLanguage
+                    });
+                });
+
+                _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(false));
+                _events.store.dispatch((0, _events.languagesFetched)(data));
+
+                prevState.items = languages;
+                prevState.itemsData = data;
+            });
+        }
+    }, {
+        key: '_getLanguages',
+        value: function _getLanguages() {
+            _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(true));
+
+            this.languageRepository.getAllAlreadyLearning($.proxy(function (data) {
+                this._createItems(data.collection.data);
+            }, this), $.proxy(function (data) {
+                // TODO: error handling, POPUP?
+            }, this));
         }
     }, {
         key: 'render',
@@ -25686,7 +27017,7 @@ var List = exports.List = function (_React$Component2) {
         }
     }]);
 
-    return List;
+    return LanguageList;
 }(_react2.default.Component);
 
 /***/ }),
@@ -25700,13 +27031,25 @@ var List = exports.List = function (_React$Component2) {
 class LanguageRepository {
     constructor() {
         this.routes = {
-            get_all_languages: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language'
+            get_all_languages: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language',
+            get_language_info: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/language/language-info/'
         };
     }
 
-    getAll(success, failure) {
+    getAllAlreadyLearning(success, failure) {
         $.ajax({
             url: this.routes.get_all_languages,
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    getLanguageInfo(languageId, success, failure) {
+        $.ajax({
+            url: this.routes.get_language_info + languageId,
             method: 'GET',
             contentType: 'application/json',
             headers: {
@@ -25729,7 +27072,7 @@ class LanguageRepository {
 class UserRepository {
     constructor() {
         this.routes = {
-            armor_get_logged_in_user: '/app_dev.php/langland/get-logged-in-user'
+            armor_get_logged_in_user: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["env"].current + 'langland/get-logged-in-user'
         };
 
         this.loggedInUser = null;
@@ -25765,7 +27108,9 @@ class UserRepository {
 class LearningUserRepository {
     constructor() {
         this.routes = {
-            register_learning_user: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/register-learning-user'
+            register_learning_user: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/register-learning-user',
+            mark_language_info_looked: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/language-info/mark-language-info-looked',
+            is_language_info_looked: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/language-info/is-language-info-looked'
         };
     }
 
@@ -25781,9 +27126,423 @@ class LearningUserRepository {
             }
         }).done(success).fail(failure);
     }
+
+    markLanguageInfoLooked(success, failure) {
+        $.ajax({
+            url: this.routes.mark_language_info_looked,
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    isLanguageInfoLooked(success, failure) {
+        $.ajax({
+            url: this.routes.is_language_info_looked,
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = LearningUserRepository;
 
+
+/***/ }),
+/* 253 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class Cache {
+    constructor() {
+        this.cache = {};
+    }
+
+    has(key) {
+        return this.cache.hasOwnProperty(key);
+    }
+
+    get(key) {
+        if (this.has(key)) {
+            return this.cache[key];
+        }
+
+        return null;
+    }
+
+    add(key, value) {
+        this.cache[key] = value;
+    }
+
+    remove(key) {
+        if (!this.has(key)) {
+            throw new Error('Cannot remove cache key. Key ' + key + ' does not exist');
+        }
+
+        delete this.cache[key];
+    }
+
+    clear() {
+        this.cache = {};
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Cache;
+
+
+/***/ }),
+/* 254 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.App = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _componentFactory = __webpack_require__(255);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var App = exports.App = function (_React$Component) {
+    _inherits(App, _React$Component);
+
+    function App(props) {
+        _classCallCheck(this, App);
+
+        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+        _this.state = {
+            componentChange: false
+        };
+
+        _this.componentChange = _this.componentChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(App, [{
+        key: "componentChange",
+        value: function componentChange() {}
+    }, {
+        key: "render",
+        value: function render() {
+            var languageId = this.props.match.params.languageId;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "app-wrapper" },
+                _react2.default.createElement(_componentFactory.ComponentFactory, { languageId: languageId, componentChange: this.componentChange })
+            );
+        }
+    }]);
+
+    return App;
+}(_react2.default.Component);
+
+/***/ }),
+/* 255 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ComponentFactory = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _factory = __webpack_require__(39);
+
+var _languageInfo = __webpack_require__(256);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ComponentFactory = exports.ComponentFactory = function (_React$Component) {
+    _inherits(ComponentFactory, _React$Component);
+
+    function ComponentFactory(props) {
+        _classCallCheck(this, ComponentFactory);
+
+        var _this = _possibleConstructorReturn(this, (ComponentFactory.__proto__ || Object.getPrototypeOf(ComponentFactory)).call(this, props));
+
+        _this.learningUserRepository = (0, _factory.factory)('learning-user');
+
+        _this.state = {
+            component: null,
+            languageInfoPass: false
+        };
+        return _this;
+    }
+
+    _createClass(ComponentFactory, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            $('.center-loading').show();
+            this.learningUserRepository.isLanguageInfoLooked($.proxy(function (data) {
+                if (data['looked'] === false) {
+                    this.setState(function (prevState) {
+                        prevState.languageInfoPass = true;
+                        prevState.component = _react2.default.createElement(_languageInfo.LanguageInfo, { languageId: this.props.languageId });
+                    });
+
+                    $('.center-loading').hide();
+                } else if (data['looked'] === true) {}
+            }, this));
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return this.state.component;
+        }
+    }]);
+
+    return ComponentFactory;
+}(_react2.default.Component);
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LanguageInfo = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(6);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _factory = __webpack_require__(39);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Item = function (_React$Component) {
+    _inherits(Item, _React$Component);
+
+    function Item(props) {
+        _classCallCheck(this, Item);
+
+        var _this = _possibleConstructorReturn(this, (Item.__proto__ || Object.getPrototypeOf(Item)).call(this, props));
+
+        _this.next = _this.next.bind(_this);
+        _this.prev = _this.prev.bind(_this);
+        return _this;
+    }
+
+    _createClass(Item, [{
+        key: 'next',
+        value: function next() {
+            this.props.nextItem();
+        }
+    }, {
+        key: 'prev',
+        value: function prev() {
+            this.props.prevItem();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (typeof this.props.item === 'undefined') {
+                return null;
+            }
+
+            var name = this.props.item.name;
+            var text = this.props.item.text;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'animated fadeInDown language-info-item' },
+                _react2.default.createElement(
+                    'h1',
+                    { className: 'animated animated-field' },
+                    name
+                ),
+                _react2.default.createElement(
+                    'p',
+                    { className: 'animated animated-field text' },
+                    text
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: 'button-wrapper' },
+                    this.props.firstItem !== true && _react2.default.createElement(
+                        'a',
+                        { onClick: this.prev, className: 'previous-button' },
+                        _react2.default.createElement('i', { className: 'fa fa-arrow-left' })
+                    ),
+                    _react2.default.createElement(
+                        'a',
+                        { onClick: this.next },
+                        _react2.default.createElement('i', { className: 'fa fa-thumbs-o-up fa-2x' })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Item;
+}(_react2.default.Component);
+
+var LanguageInfo = exports.LanguageInfo = function (_React$Component2) {
+    _inherits(LanguageInfo, _React$Component2);
+
+    function LanguageInfo(props) {
+        _classCallCheck(this, LanguageInfo);
+
+        var _this2 = _possibleConstructorReturn(this, (LanguageInfo.__proto__ || Object.getPrototypeOf(LanguageInfo)).call(this, props));
+
+        _this2.languageRepository = (0, _factory.factory)('language');
+        _this2.learningUserRepository = (0, _factory.factory)('learning-user');
+        _this2.languageId = _this2.props.languageId;
+
+        _this2.state = {
+            texts: null,
+            counter: 0
+        };
+
+        _this2.inNextClick = false;
+        _this2.inPrevClick = false;
+
+        _this2.next = _this2.next.bind(_this2);
+        _this2.prev = _this2.prev.bind(_this2);
+        return _this2;
+    }
+
+    _createClass(LanguageInfo, [{
+        key: '_fetchLanguageInfo',
+        value: function _fetchLanguageInfo() {
+            this.languageRepository.getLanguageInfo(this.languageId, $.proxy(function (data) {
+                this.setState(function (prevState) {
+                    prevState.texts = data.resource.data.texts;
+                });
+            }, this));
+        }
+    }, {
+        key: '_markLanguageInfoLooked',
+        value: function _markLanguageInfoLooked() {
+            this.learningUserRepository.markLanguageInfoLooked();
+        }
+    }, {
+        key: '_moveSlide',
+        value: function _moveSlide(clickType) {
+            if (this.state.counter === this.state.texts.length - 1) {
+                this._markLanguageInfoLooked();
+            }
+
+            this[clickType] = true;
+
+            var infoElem = jQuery('.language-info-item');
+
+            infoElem.removeClass('fadeInDown').addClass('fadeOutUp');
+
+            infoElem.on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', jQuery.proxy(function (event) {
+                if (event.originalEvent.animationName === 'fadeOutUp' && this[clickType] === true) {
+                    switch (clickType) {
+                        case 'onNextClick':
+                            this.setState(function (prevState) {
+                                return {
+                                    counter: ++prevState.counter
+                                };
+                            });
+
+                            break;
+                        case 'onPrevClick':
+                            this.setState(function (prevState) {
+                                return {
+                                    counter: --prevState.counter
+                                };
+                            });
+
+                            break;
+                    }
+
+                    jQuery('.language-info-item').removeClass('fadeOutUp').addClass('fadeInDown');
+
+                    this[clickType] = false;
+                }
+            }, this));
+        }
+    }, {
+        key: 'next',
+        value: function next() {
+            this._moveSlide('onNextClick');
+        }
+    }, {
+        key: 'prev',
+        value: function prev() {
+            this._moveSlide('onPrevClick');
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            this._fetchLanguageInfo();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.state.texts === null) {
+                return null;
+            }
+
+            var counter = this.state.counter;
+            var item = this.state.texts[counter];
+            var firstItem = counter === 0;
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'language-info-wrapper' },
+                _react2.default.createElement(Item, {
+                    item: item,
+                    nextItem: this.next,
+                    prevItem: this.prev,
+                    firstItem: firstItem
+                })
+            );
+        }
+    }]);
+
+    return LanguageInfo;
+}(_react2.default.Component);
 
 /***/ })
 /******/ ]);

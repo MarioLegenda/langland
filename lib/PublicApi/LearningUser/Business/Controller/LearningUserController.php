@@ -8,6 +8,7 @@ use PublicApi\LearningUser\Business\Implementation\LearningUserImplementation;
 use PublicApiBundle\Entity\LearningUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class LearningUserController
 {
@@ -50,5 +51,33 @@ class LearningUserController
         );
 
         return new JsonResponse([], 201);
+    }
+    /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
+     * @param User $user
+     * @return Response
+     */
+    public function markLanguageInfoLooked(User $user): Response
+    {
+        $learningUser = $user->getCurrentLearningUser();
+
+        $this->learningUserImplementation->markLanguageInfoLooked($learningUser);
+
+        return new JsonResponse('Language info marked looked', 204);
+    }
+    /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
+     * @param User $user
+     * @return Response
+     */
+    public function isLanguageInfoLooked(User $user): Response
+    {
+        $learningUser = $user->getCurrentLearningUser();
+
+        $looked = $learningUser->getIsLanguageInfoLooked();
+
+        return new JsonResponse(['looked' => $looked], 200);
     }
 }

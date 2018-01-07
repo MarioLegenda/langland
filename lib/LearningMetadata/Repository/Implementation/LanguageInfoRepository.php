@@ -10,11 +10,14 @@ class LanguageInfoRepository extends EntityRepository
 {
     /**
      * @param LanguageInfo $languageInfo
+     * @return LanguageInfo
      */
     public function persistAndFlush(LanguageInfo $languageInfo)
     {
         $this->getEntityManager()->persist($languageInfo);
         $this->getEntityManager()->flush();
+
+        return $languageInfo;
     }
     /**
      * @param LanguageInfo $languageInfo

@@ -12,7 +12,6 @@
     <field name="name" type="string" column="name" length="255"/>
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>
-    <field name="isLooked" type="boolean" column="isLooked"/>
 
     <many-to-one target-entity="AdminBundle\Entity\Language" field="language">
     </many-to-one>

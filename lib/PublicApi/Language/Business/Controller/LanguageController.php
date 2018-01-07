@@ -2,6 +2,8 @@
 
 namespace PublicApi\Language\Business\Controller;
 
+use AdminBundle\Entity\Language;
+use AdminBundle\Entity\LanguageInfo;
 use ArmorBundle\Entity\User;
 use Library\Infrastructure\Helper\CommonSerializer;
 use PublicApi\Language\Business\Implementation\LanguageImplementation;
@@ -16,20 +18,13 @@ class LanguageController
      */
     private $languageImplementation;
     /**
-     * @var CommonSerializer $commonSerializer
-     */
-    private $commonSerializer;
-    /**
      * LanguageController constructor.
      * @param LanguageImplementation $languageImplementation
-     * @param CommonSerializer $commonSerializer
      */
     public function __construct(
-        LanguageImplementation $languageImplementation,
-        CommonSerializer $commonSerializer
+        LanguageImplementation $languageImplementation
     ) {
         $this->languageImplementation = $languageImplementation;
-        $this->commonSerializer = $commonSerializer;
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -44,5 +39,17 @@ class LanguageController
         return new JsonResponse($data, 200, [
             'Content-Type' => 'application/json',
         ]);
+    }
+    /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
+     * @param Language $language
+     * @return Response
+     */
+    public function getLanguageInfo(Language $language): Response
+    {
+        $response = $this->languageImplementation->findLanguageInfo($language);
+
+        return new JsonResponse($response, 200);
     }
 }

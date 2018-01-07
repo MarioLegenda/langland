@@ -39,6 +39,22 @@
         </service>
 
         <service
+                id="langland.data_provider.language_info"
+                class="TestLibrary\DataProvider\LanguageInfoDataProvider" public="true">
+
+            <argument type="service" id="langland.learning_metadata.repository.language_info" />
+
+        </service>
+
+        <service
+                id="langland.data_provider.learning_user"
+                class="TestLibrary\DataProvider\LearningUserDataProvider" public="true">
+
+            <argument type="service" id="langland.public_api.repository.learning_user" />
+
+        </service>
+
+        <service
                 id="langland.data_provider.image"
                 class="Tests\TestLibrary\DataProvider\ImageDataProvider" public="true">
 

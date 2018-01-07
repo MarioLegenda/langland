@@ -1,33 +1,43 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+
 import {factory as repoFactory} from "./repository/factory.js";
+import {
+    store,
+    fetchAllLanguagesInProgress,
+    languagesFetched,
+    registeringLanguage}
+from "./events/events.js";
+import {CenterLoading} from "./util.jsx";
+
 
 class Item extends React.Component {
     constructor(props) {
         super(props);
 
         this.registerLanguage = this.registerLanguage.bind(this);
-
-        this.learningUserRepository = repoFactory('learning-user');
     }
 
-    registerLanguage() {
-        const language = this.props.language;
+    registerLanguage(e) {
+        e.preventDefault();
 
-        this.learningUserRepository.registerLearningUser(language.id);
+        this.props.registerLanguage(this.props.language);
+
+        return false;
     }
 
     render() {
-        const language = this.props.language;
-        const alreadyLearning = language.alreadyLearning;
-        const alreadyLearningClass = (alreadyLearning) ? 'already-learning': '';
-        const alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning';
+        const language = this.props.language,
+              alreadyLearning = language.alreadyLearning,
+              alreadyLearningClass = (alreadyLearning) ? 'already-learning': '',
+              alreadyLearningButtonText = (alreadyLearning) ? 'Continue': 'Start learning',
+              isInsideRegistration = this.props.isInsideRegistration;
 
         return <div className="language">
                 <div className={"title-wrapper " + alreadyLearningClass}>
                     <h1>{language.name}</h1>
                     {alreadyLearning &&
                         <i className="fa fa-check"></i>
-
                     }
                 </div>
 
@@ -40,52 +50,102 @@ class Item extends React.Component {
                 </div>
 
                 <div className="button-wrapper">
-                    <button onClick={this.registerLanguage}>{alreadyLearningButtonText}</button>
+                    {isInsideRegistration && <CenterLoading/>}
+                    {!isInsideRegistration && <Link className="language-link" onClick={this.registerLanguage} to={""}>{alreadyLearningButtonText}</Link>}
                 </div>
             </div>
     }
 }
 
-export class List extends React.Component{
+export class LanguageList extends React.Component{
     constructor(props) {
         super(props);
 
         this.languageRepository = repoFactory('language');
+        this.learningUserRepository = repoFactory('learning-user');
+
+        this.registerLanguage = this.registerLanguage.bind(this);
 
         this.state = {
-            items: null
+            items: null,
+            itemsData: null
         };
     }
 
-    _processLanguageData(data) {
-        let languages = [];
-
-        for (let i = 0; i < data.length; i++) {
-            const lang = data[i];
-            const images = lang.images;
-            const language = {
-                id: parseInt(lang.id),
-                name: lang.name,
-                desc: lang.desc,
-                images: {
-                    cover: images.cover_image.relativePath + '/' + images.cover_image.originalName,
-                    icon: images.icon.relativePath + '/' + images.icon.originalName
-                },
-                alreadyLearning: lang.alreadyLearning
-            };
-
-            languages.push(<Item key={i} language={language}/>)
-        }
-
-        return languages;
+    componentDidMount() {
+        this._getLanguages();
     }
 
-    componentDidMount() {
-        this.languageRepository.getAll($.proxy(function(data) {
-            this.setState(function(prevState) {
-                prevState.items = this._processLanguageData(data);
+    registerLanguage(language) {
+
+        const url = language.name + "/" + language.id;
+
+        this._updateItems(language.id);
+        this.learningUserRepository.registerLearningUser(language.id, $.proxy(function() {
+            this.props.history.push(url);
+        }, this));
+    }
+
+    _createItems(data) {
+        this.setState((prevState) => {
+            const languages = data.map((language, i) => {
+                return <Item
+                    key={i}
+                    language={language}
+                    history={this.props.history}
+                    registerLanguage={this.registerLanguage}
+                />;
             });
+
+            store.dispatch(fetchAllLanguagesInProgress(false));
+            store.dispatch(languagesFetched(data));
+
+            prevState.items = languages;
+            prevState.itemsData = data;
+        });
+    }
+
+    _updateItems(languageId) {
+        let data = this.state.itemsData;
+
+        this.setState((prevState) => {
+            const languages = data.map((language, i) => {
+                if (language.id === languageId) {
+                    language.alreadyLearning = true;
+
+                    return <Item
+                        key={i}
+                        language={language}
+                        isInsideRegistration={true}
+                        history={this.props.history}
+                        registerLanguage={this.registerLanguage}
+                    />;
+                }
+
+                return <Item
+                    key={i}
+                    language={language}
+                    isInsideRegistration={false}
+                    history={this.props.history}
+                    registerLanguage={this.registerLanguage}
+                />;
+            });
+
+            store.dispatch(fetchAllLanguagesInProgress(false));
+            store.dispatch(languagesFetched(data));
+
+            prevState.items = languages;
+            prevState.itemsData = data;
+        });
+    }
+
+    _getLanguages() {
+        store.dispatch(fetchAllLanguagesInProgress(true));
+
+        this.languageRepository.getAllAlreadyLearning($.proxy(function(data) {
+            this._createItems(data.collection.data);
         }, this), $.proxy(function(data) {
+            // TODO: error handling, POPUP?
         }, this));
     }
 

@@ -18,16 +18,14 @@
     "jquery": "^3.2.1",
     "path": "^0.12.7",
     "react": "^15.5.4",
-    "react-addons-css-transition-group": "^15.5.2",
     "react-components-form": "^2.3.4",
     "react-dom": "^15.5.4",
     "react-popup": "^0.8.0",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.4",
     "react-transition-group": "^1.1.2",
+    "redux": "^3.7.2",
     "select2": "^4.0.3",
-    "sequelize": "^3.30.4",
-    "socket.io": "^2.0.2",
     "utf-8-validate": "^3.0.2",
     "webpack": "^2.4.1"
   }

@@ -30,6 +30,14 @@
         </service>
 
         <service
+                id="langland.public_api.repository.language_info"
+                class="PublicApi\Language\Repository\LanguageInfoRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\LanguageInfo</argument>
+        </service>
+
+        <service
                 id="langland.public_api.repository.repository_communicator"
                 class="PublicApi\Infrastructure\Communication\RepositoryCommunicator" public="true">
 

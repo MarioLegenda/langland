@@ -1,9 +1,9 @@
-import {user} from "../../../global/constants.js";
+import {user, env} from "../../../global/constants.js";
 
 export class UserRepository {
     constructor() {
         this.routes = {
-            armor_get_logged_in_user: '/app_dev.php/langland/get-logged-in-user',
+            armor_get_logged_in_user: env.current + 'langland/get-logged-in-user',
         };
 
         this.loggedInUser = null;

@@ -339,6 +339,14 @@ body {
       width: 100%;
       position: absolute;
       bottom: 0; }
+      #main_content .languages-wrapper .language .button-wrapper .center-loading {
+        display: block;
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        color: red;
+        bottom: 1px;
+        left: 235px; }
       #main_content .languages-wrapper .language .button-wrapper .language-link {
         position: relative;
         display: block;

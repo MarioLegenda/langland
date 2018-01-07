@@ -11116,14 +11116,13 @@ Link.contextTypes = {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["fetchAllLanguagesInProgress"] = fetchAllLanguagesInProgress;
-/* harmony export (immutable) */ __webpack_exports__["fetAllLanguagesCompleted"] = fetAllLanguagesCompleted;
 /* harmony export (immutable) */ __webpack_exports__["languagesFetched"] = languagesFetched;
+/* harmony export (immutable) */ __webpack_exports__["registeringLanguage"] = registeringLanguage;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(233);
 
 
 const LanguageActions = {
     FETCH_ALL_IN_PROGRESS: 'FETCH_IN_PROGRESS',
-    FETCH_ALL_COMPLETED: 'FETCH_COMPLETED',
     REGISTER_LANGUAGE_IN_PROGRESS: 'REGISTER_LANGUAGE_IN_PROGRESS',
     LANGUAGES_FETCHED: 'LANGUAGES_FETCHED',
     UPDATE_LANGUAGE: 'UPDATE_LANGUAGE'
@@ -11134,21 +11133,15 @@ const LanguageActions = {
 let appModel = {
     language: {
         isFetchingAll: false,
-        languages: []
+        languages: [],
+        isRegistering: false
     }
 };
 
-function fetchAllLanguagesInProgress() {
+function fetchAllLanguagesInProgress(isFetchingAll) {
     return {
         type: LanguageActions.FETCH_ALL_IN_PROGRESS,
-        isFetchingAll: true
-    };
-}
-
-function fetAllLanguagesCompleted() {
-    return {
-        type: LanguageActions.FETCH_ALL_COMPLETED,
-        isFetchingAll: false
+        isFetchingAll: isFetchingAll
     };
 }
 
@@ -11156,6 +11149,13 @@ function languagesFetched(languages) {
     return {
         type: LanguageActions.LANGUAGES_FETCHED,
         languages: languages
+    };
+}
+
+function registeringLanguage(isRegistering) {
+    return {
+        type: LanguageActions.REGISTER_LANGUAGE_IN_PROGRESS,
+        isRegistering: isRegistering
     };
 }
 
@@ -11173,8 +11173,10 @@ function language(state = appModel, action) {
             return Object.assign({}, state.language, {
                 languages: action.languages
             });
-        case LanguageActions.UPDATE_LANGUAGE:
-
+        case LanguageActions.REGISTER_LANGUAGE_IN_PROGRESS:
+            return Object.assign({}, state.language, {
+                isRegistering: action.isRegistering
+            });
         default:
             return state;
     }
@@ -26109,7 +26111,7 @@ var Header = exports.Header = function (_React$Component) {
                     { className: 'title-wrapper' },
                     _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: _constants.env.current + 'langland' },
+                        { to: _constants.env.current + 'langland/' },
                         'Langland'
                     ),
                     areLanguageFetched && _react2.default.createElement(_util.CenterLoading, null)
@@ -26808,6 +26810,8 @@ var _factory = __webpack_require__(39);
 
 var _events = __webpack_require__(97);
 
+var _util = __webpack_require__(232);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -26843,7 +26847,8 @@ var Item = function (_React$Component) {
             var language = this.props.language,
                 alreadyLearning = language.alreadyLearning,
                 alreadyLearningClass = alreadyLearning ? 'already-learning' : '',
-                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning';
+                alreadyLearningButtonText = alreadyLearning ? 'Continue' : 'Start learning',
+                isInsideRegistration = this.props.isInsideRegistration;
 
             return _react2.default.createElement(
                 'div',
@@ -26875,7 +26880,8 @@ var Item = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'button-wrapper' },
-                    _react2.default.createElement(
+                    isInsideRegistration && _react2.default.createElement(_util.CenterLoading, null),
+                    !isInsideRegistration && _react2.default.createElement(
                         _reactRouterDom.Link,
                         { className: 'language-link', onClick: this.registerLanguage, to: "" },
                         alreadyLearningButtonText
@@ -26902,7 +26908,8 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
         _this2.registerLanguage = _this2.registerLanguage.bind(_this2);
 
         _this2.state = {
-            items: null
+            items: null,
+            itemsData: null
         };
         return _this2;
     }
@@ -26918,6 +26925,7 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
 
             var url = language.name + "/" + language.id;
 
+            this._updateItems(language.id);
             this.learningUserRepository.registerLearningUser(language.id, $.proxy(function () {
                 this.props.history.push(url);
             }, this));
@@ -26927,31 +26935,67 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
         value: function _createItems(data) {
             var _this3 = this;
 
-            var languages = data.map(function (language, i) {
-                return _react2.default.createElement(Item, {
-                    key: i,
-                    language: language,
-                    history: _this3.props.history,
-                    registerLanguage: _this3.registerLanguage
+            this.setState(function (prevState) {
+                var languages = data.map(function (language, i) {
+                    return _react2.default.createElement(Item, {
+                        key: i,
+                        language: language,
+                        history: _this3.props.history,
+                        registerLanguage: _this3.registerLanguage
+                    });
                 });
+
+                _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(false));
+                _events.store.dispatch((0, _events.languagesFetched)(data));
+
+                prevState.items = languages;
+                prevState.itemsData = data;
             });
+        }
+    }, {
+        key: '_updateItems',
+        value: function _updateItems(languageId) {
+            var _this4 = this;
 
-            console.log(_events.store);
+            var data = this.state.itemsData;
 
-            _events.store.dispatch((0, _events.fetAllLanguagesCompleted)());
-            _events.store.dispatch((0, _events.languagesFetched)(data));
+            this.setState(function (prevState) {
+                var languages = data.map(function (language, i) {
+                    if (language.id === languageId) {
+                        language.alreadyLearning = true;
 
-            return languages;
+                        return _react2.default.createElement(Item, {
+                            key: i,
+                            language: language,
+                            isInsideRegistration: true,
+                            history: _this4.props.history,
+                            registerLanguage: _this4.registerLanguage
+                        });
+                    }
+
+                    return _react2.default.createElement(Item, {
+                        key: i,
+                        language: language,
+                        isInsideRegistration: false,
+                        history: _this4.props.history,
+                        registerLanguage: _this4.registerLanguage
+                    });
+                });
+
+                _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(false));
+                _events.store.dispatch((0, _events.languagesFetched)(data));
+
+                prevState.items = languages;
+                prevState.itemsData = data;
+            });
         }
     }, {
         key: '_getLanguages',
         value: function _getLanguages() {
-            _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)());
+            _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(true));
 
             this.languageRepository.getAllAlreadyLearning($.proxy(function (data) {
-                this.setState(function (prevState) {
-                    prevState.items = this._createItems(data);
-                });
+                this._createItems(data);
             }, this), $.proxy(function (data) {
                 // TODO: error handling, POPUP?
             }, this));

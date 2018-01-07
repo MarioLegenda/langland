@@ -2,7 +2,6 @@ import { createStore, combineReducers } from 'redux';
 
 export const LanguageActions = {
     FETCH_ALL_IN_PROGRESS: 'FETCH_IN_PROGRESS',
-    FETCH_ALL_COMPLETED: 'FETCH_COMPLETED',
     REGISTER_LANGUAGE_IN_PROGRESS: 'REGISTER_LANGUAGE_IN_PROGRESS',
     LANGUAGES_FETCHED: 'LANGUAGES_FETCHED',
     UPDATE_LANGUAGE: 'UPDATE_LANGUAGE'
@@ -11,21 +10,15 @@ export const LanguageActions = {
 let appModel = {
     language: {
         isFetchingAll: false,
-        languages: []
+        languages: [],
+        isRegistering: false
     }
 };
 
-export function fetchAllLanguagesInProgress() {
+export function fetchAllLanguagesInProgress(isFetchingAll) {
     return {
         type: LanguageActions.FETCH_ALL_IN_PROGRESS,
-        isFetchingAll: true
-    }
-}
-
-export function fetAllLanguagesCompleted() {
-    return {
-        type: LanguageActions.FETCH_ALL_COMPLETED,
-        isFetchingAll: false
+        isFetchingAll: isFetchingAll
     }
 }
 
@@ -33,6 +26,13 @@ export function languagesFetched(languages) {
     return {
         type: LanguageActions.LANGUAGES_FETCHED,
         languages: languages
+    }
+}
+
+export function registeringLanguage(isRegistering) {
+    return {
+        type: LanguageActions.REGISTER_LANGUAGE_IN_PROGRESS,
+        isRegistering: isRegistering
     }
 }
 
@@ -50,8 +50,10 @@ function language(state = appModel, action) {
             return Object.assign({}, state.language, {
                 languages: action.languages
             });
-        case LanguageActions.UPDATE_LANGUAGE:
-
+        case LanguageActions.REGISTER_LANGUAGE_IN_PROGRESS:
+            return Object.assign({}, state.language, {
+                isRegistering: action.isRegistering
+            });
         default:
             return state;
     }

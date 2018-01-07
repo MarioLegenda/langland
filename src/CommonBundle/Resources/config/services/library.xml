@@ -56,5 +56,10 @@
             <argument type="service" id="jms_serializer" />
         </service>
 
+        <service
+                id="library.api_sdk"
+                class="ApiSDK\ApiSDK" public="true">
+        </service>
+
     </services>
 </container>

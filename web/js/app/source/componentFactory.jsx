@@ -15,16 +15,15 @@ export class ComponentFactory extends React.Component {
     }
 
     componentDidMount() {
-        $('.center-loading').show();
         this.learningUserRepository.isLanguageInfoLooked($.proxy(function(data) {
-            if (data['looked'] === false) {
+            const isLanguageInfoLooked = data.resource.data.isLanguageInfoLooked;
+            if (isLanguageInfoLooked === false) {
                 this.setState(function(prevState) {
                     prevState.languageInfoPass = true;
                     prevState.component = <LanguageInfo languageId={this.props.languageId}/>
                 });
-
-                $('.center-loading').hide();
-            } else if (data['looked'] === true) {
+            }
+            else if (isLanguageInfoLooked === true) {
 
             }
         }, this));

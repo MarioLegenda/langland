@@ -34,11 +34,10 @@ class LanguageController
      */
     public function getAll(User $user): Response
     {
-        $data = $this->languageImplementation->findAllWithAlreadyLearning($user);
-
-        return new JsonResponse($data, 200, [
-            'Content-Type' => 'application/json',
-        ]);
+        return new JsonResponse(
+            $this->languageImplementation->findAllWithAlreadyLearning($user),
+            200
+        );
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -48,8 +47,9 @@ class LanguageController
      */
     public function getLanguageInfo(Language $language): Response
     {
-        $response = $this->languageImplementation->findLanguageInfo($language);
-
-        return new JsonResponse($response, 200);
+        return new JsonResponse(
+            $this->languageImplementation->findLanguageInfo($language),
+            200
+        );
     }
 }

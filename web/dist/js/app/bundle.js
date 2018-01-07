@@ -26922,7 +26922,6 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
     }, {
         key: 'registerLanguage',
         value: function registerLanguage(language) {
-
             var url = language.name + "/" + language.id;
 
             this._updateItems(language.id);
@@ -27306,16 +27305,14 @@ var ComponentFactory = exports.ComponentFactory = function (_React$Component) {
     _createClass(ComponentFactory, [{
         key: "componentDidMount",
         value: function componentDidMount() {
-            $('.center-loading').show();
             this.learningUserRepository.isLanguageInfoLooked($.proxy(function (data) {
-                if (data['looked'] === false) {
+                var isLanguageInfoLooked = data.resource.data.isLanguageInfoLooked;
+                if (isLanguageInfoLooked === false) {
                     this.setState(function (prevState) {
                         prevState.languageInfoPass = true;
                         prevState.component = _react2.default.createElement(_languageInfo.LanguageInfo, { languageId: this.props.languageId });
                     });
-
-                    $('.center-loading').hide();
-                } else if (data['looked'] === true) {}
+                } else if (isLanguageInfoLooked === true) {}
             }, this));
         }
     }, {

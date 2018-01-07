@@ -25,19 +25,26 @@ class LearningUserImplementation
      */
     private $userRepository;
     /**
+     * @var ApiSDK $apiSdk
+     */
+    private $apiSdk;
+    /**
      * LearningUserImplementation constructor.
      * @param LearningUserRepository $learningUserRepository
      * @param LanguageRepository $languageRepository
      * @param UserRepository $userRepository
+     * @param ApiSDK $apiSDK
      */
     public function __construct(
         LearningUserRepository $learningUserRepository,
         LanguageRepository $languageRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ApiSDK $apiSDK
     ) {
         $this->learningUserRepository = $learningUserRepository;
         $this->languageRepository = $languageRepository;
         $this->userRepository = $userRepository;
+        $this->apiSdk = $apiSDK;
     }
     /**
      * @param int $id
@@ -93,9 +100,9 @@ class LearningUserImplementation
     /**
      * @param Language $language
      * @param User $user
-     * @return LearningUser
+     * @return array
      */
-    public function registerLearningUser(Language $language, User $user): LearningUser
+    public function registerLearningUser(Language $language, User $user): array
     {
         $learningUser = new LearningUser();
         $learningUser->setLanguage($language);
@@ -103,37 +110,98 @@ class LearningUserImplementation
 
         $user->setCurrentLearningUser($learningUser);
 
-        $this->learningUserRepository->persistAndFlush($learningUser);
+        $learningUser = $this->learningUserRepository->persistAndFlush($learningUser);
 
         $this->userRepository->persistAndFlush($user);
 
-        return $learningUser;
+        $data = [
+            'learningUser' => [
+                'id' => $learningUser->getId()
+            ],
+            'language' => [
+                'id' => $learningUser->getLanguage()->getId(),
+                'name' => $learningUser->getLanguage()->getName(),
+            ]
+        ];
+
+        return $this->apiSdk
+            ->create($data)
+            ->isResource()
+            ->method('POST')
+            ->setStatusCode(201)
+            ->build();
     }
     /**
      * @param LearningUser $learningUser
      * @param User $user
-     * @return LearningUser
+     * @return array
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function updateLearningUser(LearningUser $learningUser, User $user): LearningUser
+    public function updateLearningUser(LearningUser $learningUser, User $user): array
     {
         $this->userRepository->persistAndFlush($user);
 
         $user->setCurrentLearningUser($learningUser);
 
-        return $learningUser;
+        $data = [
+            'learningUser' => [
+                'id' => $learningUser->getId()
+            ],
+            'language' => [
+                'id' => $learningUser->getLanguage()->getId(),
+                'name' => $learningUser->getLanguage()->getName(),
+            ]
+        ];
+
+        return $this->apiSdk
+            ->create($data)
+            ->setStatusCode(200)
+            ->isResource()
+            ->method('POST')
+            ->build();
     }
     /**
      * @param LearningUser $learningUser
+     * @return array
      */
-    public function markLanguageInfoLooked(LearningUser $learningUser)
+    public function markLanguageInfoLooked(LearningUser $learningUser): array
     {
-        if ($learningUser->getIsLanguageInfoLooked() === true) {
-            return;
+        $data = [
+            'isLanguageInfoLooked' => $learningUser->getIsLanguageInfoLooked(),
+            'language' => [
+                'id' => $learningUser->getLanguage()->getId(),
+                'name' => $learningUser->getLanguage()->getName(),
+            ]
+        ];
+
+        if ($learningUser->getIsLanguageInfoLooked() === false) {
+            $learningUser->setIsLanguageInfoLooked(true);
+
+            $data['isLanguageInfoLooked'] = $learningUser->getIsLanguageInfoLooked();
+
+            $this->learningUserRepository->persistAndFlush($learningUser);
         }
 
-        $learningUser->setIsLanguageInfoLooked(true);
+        return $this->apiSdk
+            ->create($data)
+            ->setStatusCode(200)
+            ->isResource()
+            ->method('POST')
+            ->build();
+    }
+    /**
+     * @param LearningUser $learningUser
+     * @return array
+     */
+    public function getIsLanguageInfoLooked(LearningUser $learningUser): array
+    {
+        $response = $this->apiSdk
+            ->create(['isLanguageInfoLooked' => $learningUser->getIsLanguageInfoLooked()])
+            ->setStatusCode(200)
+            ->isResource()
+            ->method('GET')
+            ->build();
 
-        $this->learningUserRepository->persistAndFlush($learningUser);
+        return $response;
     }
 }

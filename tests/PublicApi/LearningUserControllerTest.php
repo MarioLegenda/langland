@@ -149,7 +149,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $user = $this->userDataProvider->getRepository()->find($user->getId());
         $learningUser = $this->learningUserImplementation->findExact($language, $user);
 
-        static::assertEquals(204, $response->getStatusCode());
+        static::assertEquals(200, $response->getStatusCode());
         static::assertEquals($learningUser->getId(), $user->getCurrentLearningUser()->getId());
         static::assertEquals(2, count($this->learningUserRepository->findAll()));
 
@@ -159,7 +159,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $user = $this->userDataProvider->getRepository()->find($user->getId());
         $learningUser = $this->learningUserImplementation->findExact($language, $user);
 
-        static::assertEquals(204, $response->getStatusCode());
+        static::assertEquals(200, $response->getStatusCode());
         static::assertEquals($learningUser->getId(), $user->getCurrentLearningUser()->getId());
         static::assertEquals(2, count($this->learningUserRepository->findAll()));
     }
@@ -189,15 +189,18 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         static::assertInternalType('array', $content);
         static::assertNotEmpty($content);
-        static::assertArrayHasKey('looked', $content);
-        static::assertFalse($content['looked']);
+
+        $data = $content['resource']['data'];
+
+        static::assertArrayHasKey('isLanguageInfoLooked', $data);
+        static::assertFalse($data['isLanguageInfoLooked']);
 
         $this->learningUserController->isLanguageInfoLooked($user);
 
         $response = $this->learningUserController->markLanguageInfoLooked($user);
 
         static::assertInstanceOf(Response::class, $response);
-        static::assertEquals(204, $response->getStatusCode());
+        static::assertEquals(200, $response->getStatusCode());
 
         $content = $response->getContent();
 
@@ -205,7 +208,16 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         $content = json_decode($content, true);
 
-        static::assertEquals('Language info marked looked', $content);
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+        static::assertEquals(200, $content['statusCode']);
+
+        $data = $content['resource']['data'];
+
+        static::assertTrue($data['isLanguageInfoLooked']);
+
+        static::assertEquals($language->getId(), $data['language']['id']);
+        static::assertEquals($language->getName(), $data['language']['name']);
 
         $response = $this->learningUserController->isLanguageInfoLooked($user);
 
@@ -220,7 +232,10 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         static::assertInternalType('array', $content);
         static::assertNotEmpty($content);
-        static::assertArrayHasKey('looked', $content);
-        static::assertTrue($content['looked']);
+
+        $data = $content['resource']['data'];
+
+        static::assertArrayHasKey('isLanguageInfoLooked', $data);
+        static::assertTrue($data['isLanguageInfoLooked']);
     }
 }

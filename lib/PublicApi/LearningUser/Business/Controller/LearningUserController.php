@@ -37,20 +37,18 @@ class LearningUserController
         $learningUser = $this->learningUserImplementation->findExact($language, $user);
 
         if ($learningUser instanceof LearningUser) {
-            $this->learningUserImplementation->updateLearningUser(
+            $data = $this->learningUserImplementation->updateLearningUser(
                 $learningUser,
                 $user
             );
 
-            return new JsonResponse('Resource already exists', 204);
+            return new JsonResponse($data, 200);
         }
 
-        $this->learningUserImplementation->registerLearningUser(
-            $language,
-            $user
+        return new JsonResponse(
+            $this->learningUserImplementation->registerLearningUser($language, $user)
+            ,201
         );
-
-        return new JsonResponse([], 201);
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -60,11 +58,10 @@ class LearningUserController
      */
     public function markLanguageInfoLooked(User $user): Response
     {
-        $learningUser = $user->getCurrentLearningUser();
-
-        $this->learningUserImplementation->markLanguageInfoLooked($learningUser);
-
-        return new JsonResponse('Language info marked looked', 204);
+        return new JsonResponse(
+            $this->learningUserImplementation->markLanguageInfoLooked($user->getCurrentLearningUser()),
+            200
+        );
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -74,10 +71,9 @@ class LearningUserController
      */
     public function isLanguageInfoLooked(User $user): Response
     {
-        $learningUser = $user->getCurrentLearningUser();
-
-        $looked = $learningUser->getIsLanguageInfoLooked();
-
-        return new JsonResponse(['looked' => $looked], 200);
+        return new JsonResponse(
+            $this->learningUserImplementation->getIsLanguageInfoLooked($user->getCurrentLearningUser()),
+            200
+        );
     }
 }

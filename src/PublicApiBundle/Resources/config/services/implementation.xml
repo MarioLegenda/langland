@@ -31,6 +31,7 @@
             <argument type="service" id="langland.public_api.repository.learning_user" />
             <argument type="service" id="langland.public_api.repository.language" />
             <argument type="service" id="armor.repository.user" />
+            <argument type="service" id="library.api_sdk" />
         </service>
     </services>
 </container>

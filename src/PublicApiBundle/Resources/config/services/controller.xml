@@ -17,7 +17,6 @@
                 class="PublicApi\Language\Business\Controller\LanguageController" public="true">
 
             <argument type="service" id="langland.public_api.business.implementation.language" />
-            <argument type="service" id="library.common_serializer" />
         </service>
 
         <service

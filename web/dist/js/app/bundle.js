@@ -27072,7 +27072,7 @@ class LanguageRepository {
 class UserRepository {
     constructor() {
         this.routes = {
-            armor_get_logged_in_user: '/app_dev.php/langland/get-logged-in-user'
+            armor_get_logged_in_user: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["env"].current + 'langland/get-logged-in-user'
         };
 
         this.loggedInUser = null;
@@ -27453,7 +27453,7 @@ var LanguageInfo = exports.LanguageInfo = function (_React$Component2) {
         value: function _fetchLanguageInfo() {
             this.languageRepository.getLanguageInfo(this.languageId, $.proxy(function (data) {
                 this.setState(function (prevState) {
-                    prevState.texts = data.texts;
+                    prevState.texts = data.resource.data.texts;
                 });
             }, this));
         }

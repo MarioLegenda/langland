@@ -18,20 +18,13 @@ class LanguageController
      */
     private $languageImplementation;
     /**
-     * @var CommonSerializer $commonSerializer
-     */
-    private $commonSerializer;
-    /**
      * LanguageController constructor.
      * @param LanguageImplementation $languageImplementation
-     * @param CommonSerializer $commonSerializer
      */
     public function __construct(
-        LanguageImplementation $languageImplementation,
-        CommonSerializer $commonSerializer
+        LanguageImplementation $languageImplementation
     ) {
         $this->languageImplementation = $languageImplementation;
-        $this->commonSerializer = $commonSerializer;
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -55,12 +48,8 @@ class LanguageController
      */
     public function getLanguageInfo(Language $language): Response
     {
-        $languageInfo = $this->languageImplementation->findLanguageInfo($language);
+        $response = $this->languageImplementation->findLanguageInfo($language);
 
-        $serialized = $this->commonSerializer->serialize($languageInfo, ['language_info'], 'json');
-
-        return new Response($serialized, 200, [
-            'Content-Type' => 'application/json',
-        ]);
+        return new JsonResponse($response, 200);
     }
 }

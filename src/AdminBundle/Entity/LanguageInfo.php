@@ -38,12 +38,8 @@ class LanguageInfo implements ContainsLanguageInterface
     public function __construct()
     {
         $this->languageInfoTexts = new ArrayCollection();
-        $this->isLooked = false;
     }
-
     /**
-     * Get id
-     *
      * @return int
      */
     public function getId()
@@ -51,8 +47,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this->id;
     }
     /**
-     * Set name
-     *
      * @param string $name
      *
      * @return LanguageInfo
@@ -64,8 +58,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this;
     }
     /**
-     * Get name
-     *
      * @return string
      */
     public function getName()
@@ -73,8 +65,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this->name;
     }
     /**
-     * Set createdAt
-     *
      * @param \DateTime $createdAt
      *
      * @return LanguageInfo
@@ -86,8 +76,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this;
     }
     /**
-     * Get createdAt
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -95,8 +83,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this->createdAt;
     }
     /**
-     * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      *
      * @return LanguageInfo
@@ -108,8 +94,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this;
     }
     /**
-     * Get updatedAt
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -117,8 +101,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this->updatedAt;
     }
     /**
-     * Set isLooked
-     *
      * @param boolean $isLooked
      *
      * @return LanguageInfo
@@ -130,8 +112,6 @@ class LanguageInfo implements ContainsLanguageInterface
         return $this;
     }
     /**
-     * Get isLooked
-     *
      * @return bool
      */
     public function getIsLooked()

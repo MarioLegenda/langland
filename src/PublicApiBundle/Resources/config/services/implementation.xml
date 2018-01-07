@@ -20,6 +20,7 @@
             <argument type="service" id="langland.public_api.repository.language" />
             <argument type="service" id="langland.public_api.repository.repository_communicator" />
             <argument type="service" id="langland.public_api.repository.language_info" />
+            <argument type="service" id="library.common_serializer" />
             <argument type="service" id="library.api_sdk" />
         </service>
 

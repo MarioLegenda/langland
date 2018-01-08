@@ -204,7 +204,7 @@ class LearningUserImplementation
                 'language' => [
                     'id' => $learningUser->getLanguage()->getId(),
                     'name' => $learningUser->getLanguage()->getName(),
-                ]
+                ],
             ])
             ->setStatusCode(200)
             ->isResource()
@@ -238,5 +238,23 @@ class LearningUserImplementation
             ->build();
 
         return $response;
+    }
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getDynamicComponentsStatus(User $user): array
+    {
+        $learningUser = $user->getCurrentLearningUser();
+
+        return $this->apiSdk
+            ->create([
+                'isLanguageInfoLooked' => $learningUser->getIsLanguageInfoLooked(),
+                'areQuestionsLooked' => $learningUser->getAreQuestionsLooked(),
+            ])
+            ->setStatusCode(200)
+            ->isResource()
+            ->method('GET')
+            ->build();
     }
 }

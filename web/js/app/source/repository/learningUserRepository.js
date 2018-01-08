@@ -5,7 +5,8 @@ export class LearningUserRepository {
         this.routes = {
             register_learning_user: global.base_url + 'api/v1/learning-user/register-learning-user',
             mark_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/mark-language-info-looked',
-            is_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/is-language-info-looked'
+            is_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/is-language-info-looked',
+            get_dynamic_components_status: global.base_url + 'api/v1/learning-user/get-dynamic-components-status'
         }
     }
 
@@ -36,6 +37,17 @@ export class LearningUserRepository {
     isLanguageInfoLooked(success, failure) {
         $.ajax({
             url: this.routes.is_language_info_looked,
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': user.current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    getDynamicComponentsStatus(success, failure) {
+        $.ajax({
+            url: this.routes.get_dynamic_components_status,
             method: 'GET',
             contentType: 'application/json',
             headers: {

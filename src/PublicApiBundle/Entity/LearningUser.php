@@ -26,6 +26,10 @@ class LearningUser
      */
     private $isLanguageInfoLooked;
     /**
+     * @var bool $areQuestionsLooked
+     */
+    private $areQuestionsLooked;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -39,10 +43,9 @@ class LearningUser
     public function __construct()
     {
         $this->isLanguageInfoLooked = false;
+        $this->areQuestionsLooked = false;
     }
     /**
-     * Get id
-     *
      * @return int
      */
     public function getId()
@@ -98,8 +101,24 @@ class LearningUser
         $this->isLanguageInfoLooked = $isLanguageInfoLooked;
     }
     /**
-     * Set createdAt
-     *
+     * @return bool
+     */
+    public function getAreQuestionsLooked(): bool
+    {
+        return $this->areQuestionsLooked;
+    }
+
+    /**
+     * @param bool $areQuestionsLooked
+     * @return LearningUser
+     */
+    public function setAreQuestionsLooked(bool $areQuestionsLooked): LearningUser
+    {
+        $this->areQuestionsLooked = $areQuestionsLooked;
+
+        return $this;
+    }
+    /**
      * @param \DateTime $createdAt
      *
      * @return LearningUser
@@ -111,8 +130,6 @@ class LearningUser
         return $this;
     }
     /**
-     * Get createdAt
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -120,8 +137,6 @@ class LearningUser
         return $this->createdAt;
     }
     /**
-     * Set updatedAt
-     *
      * @param \DateTime $updatedAt
      *
      * @return LearningUser
@@ -133,8 +148,6 @@ class LearningUser
         return $this;
     }
     /**
-     * Get updatedAt
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()

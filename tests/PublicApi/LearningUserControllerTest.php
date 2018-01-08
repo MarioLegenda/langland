@@ -267,6 +267,57 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $this->assertLanguageInfoLooked($user1);
     }
 
+    public function test_dynamic_components_status()
+    {
+        $this->manualReset();
+
+        $user1 = $this->userDataProvider->createDefaultDb($this->getFaker());
+        $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $language2 = $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $language3 = $this->languageDataProvider->createDefaultDb($this->getFaker());
+
+        $this->assertLanguageRegistration($language1, $user1);
+        $this->assertCurrentLearningUser($language1, $user1);
+
+        $response = $this->learningUserController->getDynamicComponentsStatus($user1);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $content = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+
+        $data = $content['resource']['data'];
+
+        static::assertArrayHasKey('isLanguageInfoLooked', $data);
+        static::assertArrayHasKey('areQuestionsLooked', $data);
+
+        static::assertFalse($data['isLanguageInfoLooked']);
+        static::assertFalse($data['areQuestionsLooked']);
+
+        $this->assertMarkLanguageInfo($user1);
+
+        $response = $this->learningUserController->getDynamicComponentsStatus($user1);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $content = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+
+        $data = $content['resource']['data'];
+
+        static::assertArrayHasKey('isLanguageInfoLooked', $data);
+        static::assertArrayHasKey('areQuestionsLooked', $data);
+
+        static::assertTrue($data['isLanguageInfoLooked']);
+        static::assertFalse($data['areQuestionsLooked']);
+    }
+
     private function assertAlreadyLearningLanguages(array $languages, User $user)
     {
         /** @var User $user */

@@ -90,4 +90,15 @@ class LearningUserController
             200
         );
     }
+    /**
+     * @param User $user
+     * @return Response
+     */
+    public function getDynamicComponentsStatus(User $user): Response
+    {
+        return new JsonResponse(
+            $this->learningUserImplementation->getDynamicComponentsStatus($user),
+            200
+        );
+    }
 }

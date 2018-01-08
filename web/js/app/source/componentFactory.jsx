@@ -8,28 +8,21 @@ export class ComponentFactory extends React.Component {
 
         this.learningUserRepository = repoFactory('learning-user');
 
-        this.state = {
-            component: null,
-            languageInfoPass: false
-        }
+        this.componentChange = this.componentChange.bind(this);
     }
 
-    componentDidMount() {
-        this.learningUserRepository.isLanguageInfoLooked($.proxy(function(data) {
-            const isLanguageInfoLooked = data.resource.data.isLanguageInfoLooked;
-            if (isLanguageInfoLooked === false) {
-                this.setState(function(prevState) {
-                    prevState.languageInfoPass = true;
-                    prevState.component = <LanguageInfo languageId={this.props.languageId}/>
-                });
-            }
-            else if (isLanguageInfoLooked === true) {
-
-            }
-        }, this));
+    componentChange() {
+        this.props.componentChange();
     }
 
     render() {
-        return this.state.component;
+        const comp = this.props.currentComponent;
+
+        switch (comp) {
+            case 'isLanguageInfoLooked':
+                return <LanguageInfo languageId={this.props.languageId} componentChange={this.componentChange}/>
+            case 'areQuestionsLooked':
+                return <div></div>
+        }
     }
 }

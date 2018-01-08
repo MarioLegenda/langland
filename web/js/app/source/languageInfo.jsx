@@ -72,7 +72,9 @@ export class LanguageInfo extends React.Component {
     }
 
     _markLanguageInfoLooked() {
-        this.learningUserRepository.markLanguageInfoLooked();
+        this.learningUserRepository.markLanguageInfoLooked($.proxy(function(data) {
+            this.props.componentChange();
+        }, this));
     }
 
     _moveSlide(clickType) {

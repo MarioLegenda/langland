@@ -85,6 +85,10 @@ class ResetCommand extends ContainerAwareCommand
             ->create('marioskrlec@outlook.com', 'root', [
                 new Role('ROLE_PUBLIC_API_USER'),
                 new Role('ROLE_USER'),
+            ])
+            ->create('mile@gmail.com', 'root', [
+                new Role('ROLE_PUBLIC_API_USER'),
+                new Role('ROLE_USER'),
             ]);
 
         $output->writeln('<info>Users created</info>');

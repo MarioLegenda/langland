@@ -120,7 +120,6 @@ class LearningUser
     }
     /**
      * @param \DateTime $createdAt
-     *
      * @return LearningUser
      */
     public function setCreatedAt(\DateTime $createdAt) : LearningUser
@@ -138,7 +137,6 @@ class LearningUser
     }
     /**
      * @param \DateTime $updatedAt
-     *
      * @return LearningUser
      */
     public function setUpdatedAt(\DateTime $updatedAt) : LearningUser

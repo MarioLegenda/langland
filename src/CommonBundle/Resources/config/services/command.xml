@@ -11,5 +11,12 @@
 
             <tag name="console.command" />
         </service>
+
+        <service
+                id="common.command.create_questions"
+                class="PublicApiBundle\Command\QuestionsCreateCommand" public="true">
+
+            <tag name="console.command" />
+        </service>
     </services>
 </container>

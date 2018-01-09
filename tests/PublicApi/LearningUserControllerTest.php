@@ -14,6 +14,7 @@ use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use TestLibrary\DataProvider\QuestionsDataProvider;
 use TestLibrary\DataProvider\UserDataProvider;
 use TestLibrary\LanglandAdminTestCase;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
@@ -42,6 +43,10 @@ class LearningUserControllerTest extends LanglandAdminTestCase
      * @var LearningUserRepository $learningUserRepository
      */
     private $learningUserRepository;
+    /**
+     * @var QuestionsDataProvider $questionsDataProvider
+     */
+    private $questionsDataProvider;
     /**
      * @var LearningUserDataProvider $learningUserDataProvider
      */
@@ -72,6 +77,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $this->userRepository = $this->container->get('armor.repository.user');
         $this->languageRepository = $this->container->get('langland.public_api.repository.language');
         $this->languageController = $this->container->get('langland.public_api.controller.language');
+        $this->questionsDataProvider = $this->container->get('langland.data_provider.questions');
     }
 
     public function test_register_learning_user()
@@ -274,7 +280,6 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $user1 = $this->userDataProvider->createDefaultDb($this->getFaker());
         $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
         $language2 = $this->languageDataProvider->createDefaultDb($this->getFaker());
-        $language3 = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
         $this->assertLanguageRegistration($language1, $user1);
         $this->assertCurrentLearningUser($language1, $user1);
@@ -316,6 +321,71 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         static::assertTrue($data['isLanguageInfoLooked']);
         static::assertFalse($data['areQuestionsLooked']);
+
+
+        /** $language2 assertions */
+        $this->assertLanguageRegistration($language2, $user1);
+        $this->assertCurrentLearningUser($language2, $user1);
+
+        $response = $this->learningUserController->getDynamicComponentsStatus($user1);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $content = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+
+        $data = $content['resource']['data'];
+
+        static::assertArrayHasKey('isLanguageInfoLooked', $data);
+        static::assertArrayHasKey('areQuestionsLooked', $data);
+
+        static::assertFalse($data['isLanguageInfoLooked']);
+        static::assertFalse($data['areQuestionsLooked']);
+
+        $this->assertMarkLanguageInfo($user1);
+
+        $response = $this->learningUserController->getDynamicComponentsStatus($user1);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $content = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+
+        $data = $content['resource']['data'];
+
+        static::assertArrayHasKey('isLanguageInfoLooked', $data);
+        static::assertArrayHasKey('areQuestionsLooked', $data);
+
+        static::assertTrue($data['isLanguageInfoLooked']);
+        static::assertFalse($data['areQuestionsLooked']);
+    }
+
+    public function test_questions()
+    {
+        $this->questionsDataProvider->createDefaultDb($this->getFaker());
+
+        $response = $this->learningUserController->getQuestions();
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $content = json_decode($response->getContent(), true);
+
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+
+        static::assertNotEmpty($content['collection']);
+        static::assertNotEmpty($content['collection']['data']);
+
+        static::assertInternalType('array', $content['collection']['data']);
+
+        $this->manualReset();
     }
 
     private function assertAlreadyLearningLanguages(array $languages, User $user)

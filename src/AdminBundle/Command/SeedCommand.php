@@ -7,6 +7,7 @@ use AdminBundle\Command\Helper\CourseFactory;
 use AdminBundle\Command\Helper\LanguageFactory;
 use AdminBundle\Command\Helper\LanguageInfoFactory;
 use AdminBundle\Command\Helper\LessonFactory;
+use AdminBundle\Command\Helper\QuestionFactory;
 use AdminBundle\Command\Helper\WordFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -33,7 +34,6 @@ class SeedCommand extends ContainerAwareCommand
         $languages = array('French', 'Spanish', 'Italian');
         $categories = array('nature', 'body', 'soul', 'love');
 
-
         $languageFactory = new LanguageFactory($em);
         $categoryFactory = new CategoryFactory($em);
         $wordTranslationFactory = new WordTranslationFactory();
@@ -41,7 +41,9 @@ class SeedCommand extends ContainerAwareCommand
         $languageInfoFactory = new LanguageInfoFactory($em);
         $courseFactory = new CourseFactory($em);
         $lessonFactory = new LessonFactory($em);
+        $questionsFactory = new QuestionFactory($em);
 
+        $questionsFactory->create();
         $categoryFactory->create($categories, true);
         $languageObjects = $languageFactory->create($languages, true);
 

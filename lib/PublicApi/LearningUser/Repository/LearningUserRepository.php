@@ -4,6 +4,7 @@ namespace PublicApi\LearningUser\Repository;
 
 use Library\Infrastructure\Repository\CommonRepository;
 use PublicApiBundle\Entity\LearningUser;
+use PublicApiBundle\Entity\Question;
 
 class LearningUserRepository extends CommonRepository
 {
@@ -17,5 +18,12 @@ class LearningUserRepository extends CommonRepository
         $this->em->flush();
 
         return $learningUser;
+    }
+    /**
+     * @return Question[]
+     */
+    public function getQuestions(): array
+    {
+        return $this->em->getRepository(Question::class)->findAll();
     }
 }

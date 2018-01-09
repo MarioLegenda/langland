@@ -13,6 +13,11 @@ get_dynamic_components_status:
     defaults: { _controller: langland.public_api.controller.learning_user:getDynamicComponentsStatus }
     methods: [GET]
 
+get_questions:
+    path: /get-questions
+    defaults: { _controller: langland.public_api.controller.learning_user:getQuestions }
+    methods: [GET]
+
 mark_language_info_looked:
     path: /language-info/mark-language-info-looked
     defaults: { _controller: langland.public_api.controller.learning_user:markLanguageInfoLooked }

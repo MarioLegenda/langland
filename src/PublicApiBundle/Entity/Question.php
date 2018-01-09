@@ -120,6 +120,18 @@ class Question
     {
         return $this->updatedAt;
     }
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'question' => $this->getQuestion(),
+            'answers' => $this->getAnswers(),
+        ];
+    }
 
     public function updateTimestamps()
     {
@@ -128,5 +140,24 @@ class Question
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
         }
+    }
+    /**
+     * @param array $questions
+     * @return array
+     */
+    public static function fromCollectionToArray(array $questions): array
+    {
+        $collection = [];
+        /** @var Question $question */
+        foreach ($questions as $question) {
+            if (!$question instanceof Question) {
+                $message = sprintf('Question::fromCollection must receive an array of %s objects', Question::class);
+                throw new \RuntimeException($message);
+            }
+
+            $collection[] = $question->toArray();
+        }
+
+        return $collection;
     }
 }

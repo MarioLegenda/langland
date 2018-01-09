@@ -9,6 +9,7 @@ use ArmorBundle\Repository\UserRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
+use PublicApiBundle\Entity\Question;
 
 class LearningUserImplementation
 {
@@ -254,6 +255,20 @@ class LearningUserImplementation
             ])
             ->setStatusCode(200)
             ->isResource()
+            ->method('GET')
+            ->build();
+    }
+    /**
+     * @return array
+     */
+    public function getQuestions(): array
+    {
+        $questions = $this->learningUserRepository->getQuestions();
+
+        return $this->apiSdk
+            ->create(Question::fromCollectionToArray($questions))
+            ->setStatusCode(200)
+            ->isCollection()
             ->method('GET')
             ->build();
     }

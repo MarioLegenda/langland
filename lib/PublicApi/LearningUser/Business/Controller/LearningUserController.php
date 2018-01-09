@@ -91,6 +91,8 @@ class LearningUserController
         );
     }
     /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
      * @param User $user
      * @return Response
      */
@@ -98,6 +100,18 @@ class LearningUserController
     {
         return new JsonResponse(
             $this->learningUserImplementation->getDynamicComponentsStatus($user),
+            200
+        );
+    }
+    /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
+     * @return Response
+     */
+    public function getQuestions(): Response
+    {
+        return new JsonResponse(
+            $this->learningUserImplementation->getQuestions(),
             200
         );
     }

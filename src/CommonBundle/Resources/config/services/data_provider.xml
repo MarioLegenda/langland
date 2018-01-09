@@ -27,7 +27,6 @@
 
             <argument type="service" id="langland.learning_metadata.repository.lesson" />
             <argument type="service" id="langland.data_provider.course" />
-
         </service>
 
         <service
@@ -35,7 +34,6 @@
                 class="TestLibrary\DataProvider\UserDataProvider" public="true">
 
             <argument type="service" id="armor.repository.user" />
-
         </service>
 
         <service
@@ -43,7 +41,6 @@
                 class="TestLibrary\DataProvider\LanguageInfoDataProvider" public="true">
 
             <argument type="service" id="langland.learning_metadata.repository.language_info" />
-
         </service>
 
         <service
@@ -51,13 +48,18 @@
                 class="TestLibrary\DataProvider\LearningUserDataProvider" public="true">
 
             <argument type="service" id="langland.public_api.repository.learning_user" />
-
         </service>
 
         <service
                 id="langland.data_provider.image"
                 class="Tests\TestLibrary\DataProvider\ImageDataProvider" public="true">
+        </service>
 
+        <service
+                id="langland.data_provider.questions"
+                class="TestLibrary\DataProvider\QuestionsDataProvider" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
 
     </services>

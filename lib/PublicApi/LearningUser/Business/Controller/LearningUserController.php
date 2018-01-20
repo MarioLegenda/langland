@@ -3,8 +3,10 @@
 namespace PublicApi\LearningUser\Business\Controller;
 
 use AdminBundle\Entity\Language;
+use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
 use PublicApi\LearningUser\Business\Implementation\LearningUserImplementation;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use PublicApiBundle\Entity\LearningUser;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -113,6 +115,35 @@ class LearningUserController
         return new JsonResponse(
             $this->learningUserImplementation->getQuestions(),
             200
+        );
+    }
+    /**
+     * @param QuestionAnswers $questionAnswers
+     * @return Response
+     */
+    public function validateQuestions(QuestionAnswers $questionAnswers): Response
+    {
+        $response = $this->learningUserImplementation->validateQuestionAnswers($questionAnswers);
+
+        return new JsonResponse(
+            $response,
+            $response['statusCode']
+        );
+    }
+    /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
+     * @param User $user
+     * @return Response
+     */
+    public function markQuestionsAnswered(User $user): Response
+    {
+        /** @var ApiSDK $response */
+        $response = $this->learningUserImplementation->markQuestionsAnswered($user);
+
+        return new JsonResponse(
+            $response,
+            $response['statusCode']
         );
     }
 }

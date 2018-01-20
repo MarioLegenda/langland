@@ -388,6 +388,39 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $this->manualReset();
     }
 
+    public function test_mark_questions_answered()
+    {
+        $this->manualReset();
+
+        $user1 = $this->userDataProvider->createDefaultDb($this->getFaker());
+        $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
+
+        $this->assertLanguageRegistration($language1, $user1);
+
+        $response = $this->learningUserController->markQuestionsAnswered($user1);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(403, $response->getStatusCode());
+
+        $data = json_decode($response->getContent(), true);
+
+        static::assertFalse($data['resource']['data']['areQuestionsLooked']);
+
+        $this->assertMarkLanguageInfo($user1);
+
+        $response = $this->learningUserController->markQuestionsAnswered($user1);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertEquals(201, $response->getStatusCode());
+
+        static::assertFalse($data['resource']['data']['areQuestionsLooked']);
+    }
+
+    public function test_validate_question_answers()
+    {
+
+    }
+
     private function assertAlreadyLearningLanguages(array $languages, User $user)
     {
         /** @var User $user */

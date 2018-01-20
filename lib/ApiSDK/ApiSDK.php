@@ -9,6 +9,10 @@ class ApiSDK
      */
     private $data;
     /**
+     * @var array $messages
+     */
+    private $messages = [];
+    /**
      * @var array $config
      */
     private $config = [
@@ -46,6 +50,16 @@ class ApiSDK
         $this->createCalledFlag = true;
 
         $this->data = $data;
+
+        return $this;
+    }
+    /**
+     * @param string $message
+     * @return ApiSDK
+     */
+    public function addMessage(string $message): ApiSDK
+    {
+        $this->messages[] = $message;
 
         return $this;
     }
@@ -108,6 +122,13 @@ class ApiSDK
         return $this;
     }
     /**
+     * @return int
+     */
+    public function getStatusCode(): int
+    {
+        return $this->config['metadata']['statusCode'];
+    }
+    /**
      * @return array
      */
     public function build(): array
@@ -160,6 +181,7 @@ class ApiSDK
             'method' => $method,
             'type' => $type,
             'statusCode' => $statusCode,
+            'messages' => $this->messages,
         ];
     }
     /**

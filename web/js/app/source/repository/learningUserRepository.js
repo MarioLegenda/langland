@@ -6,7 +6,9 @@ export class LearningUserRepository {
             register_learning_user: global.base_url + 'api/v1/learning-user/register-learning-user',
             mark_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/mark-language-info-looked',
             is_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/is-language-info-looked',
-            get_dynamic_components_status: global.base_url + 'api/v1/learning-user/get-dynamic-components-status'
+            get_dynamic_components_status: global.base_url + 'api/v1/learning-user/get-dynamic-components-status',
+            get_questions: global.base_url + 'api/v1/learning-user/questions/get-questions',
+            mark_questions_answered: global.base_url + 'api/v1/learning-user/questions/mark-questions-answered'
         }
     }
 
@@ -48,6 +50,28 @@ export class LearningUserRepository {
     getDynamicComponentsStatus(success, failure) {
         $.ajax({
             url: this.routes.get_dynamic_components_status,
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': user.current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    getQuestions(success, failure) {
+        $.ajax({
+            url: this.routes.get_questions,
+            method: 'GET',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': user.current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    markQuestionsAnswered(success, failure) {
+        $.ajax({
+            url: this.routes.mark_questions_answered,
             method: 'GET',
             contentType: 'application/json',
             headers: {

@@ -7,6 +7,8 @@ use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Repository\UserRepository;
 use PublicApi\Language\Repository\LanguageRepository;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswersValidator;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
 use PublicApiBundle\Entity\Question;
@@ -194,6 +196,53 @@ class LearningUserImplementation
             ->build();
     }
     /**
+     * @param User $user
+     * @return array
+     */
+    public function markQuestionsAnswered(User $user)
+    {
+        $learningUser = $user->getCurrentLearningUser();
+
+        $data = [
+            'areQuestionsLooked' => $learningUser->getAreQuestionsLooked(),
+            'language' => [
+                'id' => $learningUser->getLanguage()->getId(),
+                'name' => $learningUser->getLanguage()->getName(),
+            ]
+        ];
+
+        if ($learningUser->getIsLanguageInfoLooked() === false) {
+            return $this->apiSdk
+                ->create($data)
+                ->setStatusCode(403)
+                ->isResource()
+                ->addMessage('Language info is not looked')
+                ->method('POST')
+                ->build();
+        }
+
+        if ($learningUser->getAreQuestionsLooked() === false) {
+            $learningUser->setAreQuestionsLooked(true);
+
+            $this->learningUserRepository->persistAndFlush($learningUser);
+        }
+
+        $data = [
+            'areQuestionsLooked' => $learningUser->getAreQuestionsLooked(),
+            'language' => [
+                'id' => $learningUser->getLanguage()->getId(),
+                'name' => $learningUser->getLanguage()->getName(),
+            ]
+        ];
+
+        return $this->apiSdk
+            ->create($data)
+            ->setStatusCode(201)
+            ->isResource()
+            ->method('POST')
+            ->build();
+    }
+    /**
      * @param LearningUser $learningUser
      * @return array
      */
@@ -270,6 +319,23 @@ class LearningUserImplementation
             ->setStatusCode(200)
             ->isCollection()
             ->method('GET')
+            ->build();
+    }
+    /**
+     * @param QuestionAnswers $questionAnswers
+     * @return array
+     */
+    public function validateQuestionAnswers(QuestionAnswers $questionAnswers): array
+    {
+        $validator = new QuestionAnswersValidator($questionAnswers);
+
+        $validator->validate();
+
+        return $this->apiSdk
+            ->create([])
+            ->setStatusCode(200)
+            ->isResource()
+            ->method('POST')
             ->build();
     }
 }

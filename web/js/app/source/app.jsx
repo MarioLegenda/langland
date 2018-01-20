@@ -2,7 +2,6 @@ import React from 'react';
 import {ComponentFactory} from "./componentFactory.jsx";
 import {factory} from "./repository/factory.js";
 
-
 export class App extends React.Component {
     constructor(props) {
         super(props);

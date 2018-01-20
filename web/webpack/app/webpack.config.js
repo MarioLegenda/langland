@@ -7,6 +7,9 @@ module.exports = {
         path: path.resolve('../../dist/js/app'),
         filename: 'bundle.js'
     },
+    watchOptions: {
+        poll: true
+    },
     module: {
         loaders: [
             { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },

@@ -32,6 +32,13 @@ mark_questions_answered:
     requirements:
         _format: json
 
+validate_question_answers:
+    path: /questions/validate
+    defaults: { _controller: langland.public_api.controller.learning_user:validateQuestions }
+    methods: [POST]
+    requirements:
+        _format: json
+
 is_language_info_looked:
     path: /language-info/is-language-info-looked
     defaults: { _controller: langland.public_api.controller.learning_user:isLanguageInfoLooked }

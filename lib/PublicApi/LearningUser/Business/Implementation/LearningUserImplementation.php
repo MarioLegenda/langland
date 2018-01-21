@@ -6,6 +6,7 @@ use AdminBundle\Entity\Language;
 use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Repository\UserRepository;
+use LearningSystem\Infrastructure\Questions;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswersValidator;
@@ -327,9 +328,18 @@ class LearningUserImplementation
      */
     public function validateQuestionAnswers(QuestionAnswers $questionAnswers): array
     {
-        $validator = new QuestionAnswersValidator($questionAnswers);
+        $validator = new QuestionAnswersValidator($questionAnswers, new Questions());
 
-        $validator->validate();
+        try {
+            $validator->validate();
+        } catch (\RuntimeException $e) {
+            return $this->apiSdk
+                ->create([])
+                ->setStatusCode(403)
+                ->isResource()
+                ->method('POST')
+                ->build();
+        }
 
         return $this->apiSdk
             ->create([])

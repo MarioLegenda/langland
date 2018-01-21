@@ -27,7 +27,12 @@ class QuestionAnswersResolver implements ArgumentValueResolverInterface
         $questionAnswers = $request->request->get('questionAnswers');
 
         if (is_null($questionAnswers)) {
-            return false;
+
+            $questionAnswers = $request->get('questionAnswers');
+
+            if (is_null($questionAnswers)) {
+                return false;
+            }
         }
 
         $this->questionAnswers = new QuestionAnswers($questionAnswers);

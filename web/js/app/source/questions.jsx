@@ -1,9 +1,9 @@
 import React from 'react';
 import {factory} from "./repository/factory.js";
 
-const Error = () => {
+const Error = (props) => {
     return <div className="error">
-        <p>You have to provide an answer for this question</p>
+        <p>{props.message}</p>
     </div>
 };
 
@@ -117,6 +117,7 @@ class Item extends React.Component {
 
         const item = this.props.item,
               showError = this.state.error.showError,
+              somethingWentWrongMessage = this.props.somethingWentWrongMessage,
               question = item.question,
               answers = (item.answers.length === 0) ? null : Object.entries(item.answers).map((answers, index) => {
                   const answerType = answers[0];
@@ -135,7 +136,8 @@ class Item extends React.Component {
             <div className="animated fadeInDown question-item">
                 <h1 className="animated animated-field">{question}</h1>
 
-                {showError && <Error/>}
+                {showError && <Error message={"You have to provide an answer for this question"}/>}
+                {somethingWentWrongMessage && <Error message={somethingWentWrongMessage}/>}
 
                 <div className="animated animated-field text">
                     {answers === null &&
@@ -165,7 +167,11 @@ export class QuestionsContainer extends React.Component {
 
         this.state = {
             items: null,
-            counter: 0
+            counter: 0,
+            stopRendering: false,
+            error: {
+                message: null
+            }
         };
 
         this.answers = {};
@@ -198,15 +204,7 @@ export class QuestionsContainer extends React.Component {
         this._moveSlide('onPrevClick');
     }
 
-    _markQuestionsAnswered() {
-        this.learningUserRepository.markQuestionsAnswered();
-    }
-
     _moveSlide(clickType) {
-        if (this.state.counter === this.state.items.length - 1) {
-            this._markQuestionsAnswered();
-        }
-
         this[clickType] = true;
 
         const infoElem = jQuery('.question-item');
@@ -217,9 +215,23 @@ export class QuestionsContainer extends React.Component {
             if (event.originalEvent.animationName === 'fadeOutUp' && this[clickType] === true) {
                 switch(clickType) {
                     case 'onNextClick':
-                        this.setState((prevState) => ({
-                            counter: ++prevState.counter
-                        }));
+                        if (this.state.counter === this.state.items.length - 1) {
+                                this.learningUserRepository.validateQuestions(this.answers, $.proxy(function() {
+                                    this.learningUserRepository.markQuestionsAnswered();
+                                    this.props.componentChange();
+
+                                    this.setState((prevState) => prevState.stopRendering = true);
+                                }, this), $.proxy(function() {
+                                    this.setState((prevState) => prevState.error.message = 'Na error occurred. Please, fill in the questions again. We apologize for this mistake');
+                                    this.setState((prevState) => ({
+                                        counter: 0
+                                    }));
+                                }, this));
+                        } else {
+                            this.setState((prevState) => ({
+                                counter: ++prevState.counter
+                            }));
+                        }
 
                         break;
                     case 'onPrevClick':
@@ -242,13 +254,23 @@ export class QuestionsContainer extends React.Component {
             return null;
         }
 
+        if (this.state.stopRendering === true) {
+            return null;
+        }
+
+        let somethingWentWrongMessage = this.state.error.message;
         const counter = this.state.counter;
         const item = this.state.items[counter];
         const firstItem = counter === 0;
 
+        if (counter > 0) {
+            somethingWentWrongMessage = null;
+        }
+
         return (
             <div className="questions-wrapper">
                 <Item
+                    somethingWentWrongMessage={somethingWentWrongMessage}
                     item={item}
                     nextItem={this.next}
                     prevItem={this.prev}

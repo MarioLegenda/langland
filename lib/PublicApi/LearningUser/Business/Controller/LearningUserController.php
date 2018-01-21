@@ -118,6 +118,8 @@ class LearningUserController
         );
     }
     /**
+     * @Security("has_role('ROLE_PUBLIC_API_USER')")
+     *
      * @param QuestionAnswers $questionAnswers
      * @return Response
      */

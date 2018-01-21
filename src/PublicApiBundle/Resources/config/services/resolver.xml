@@ -31,5 +31,12 @@
 
             <tag name="controller.argument_value_resolver" priority="50" />
         </service>
+
+        <service
+                id="langland.public_api.question_answers_resolver"
+                class="PublicApi\Infrastructure\Resolver\QuestionAnswersResolver" public="true">
+
+            <tag name="controller.argument_value_resolver" priority="50" />
+        </service>
     </services>
 </container>

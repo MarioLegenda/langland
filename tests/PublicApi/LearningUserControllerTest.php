@@ -6,10 +6,13 @@ use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Repository\UserRepository;
+use LearningSystem\Infrastructure\Questions;
 use PublicApi\Language\Business\Controller\LanguageController;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Business\Controller\LearningUserController;
 use PublicApi\LearningUser\Business\Implementation\LearningUserImplementation;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswersValidator;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -416,9 +419,106 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         static::assertFalse($data['resource']['data']['areQuestionsLooked']);
     }
 
-    public function test_validate_question_answers()
+    public function test_validate_success_question_answers()
     {
+        $answers = [
+            'speaking_languages' => 2,
+            'profession' => 'arts_and_entertainment',
+            'person_type' => 'risk_taker',
+            'learning_time' => 'morning',
+            'free_time' => '30_minutes',
+            'memory' => 'short_term',
+            'challenges' => 'likes_challenges',
+            'stressful_job' => 'stressful_job'
+        ];
 
+        $questionAnswers = new QuestionAnswers($answers);
+        $questionAnswersValidator = new QuestionAnswersValidator($questionAnswers, new Questions());
+
+        $questionAnswersValidator->validate();
+    }
+
+    public function test_validate_failed_question_answers()
+    {
+        $answers = [
+            'speaking_languages' => "invalid",
+            'profession' => 'arts_and_entertainment',
+            'person_type' => 'risk_taker',
+            'learning_time' => 'morning',
+            'free_time' => '30_minutes',
+            'memory' => 'short_term',
+            'challenges' => 'likes_challenges',
+            'stressful_job' => 'stressful_job'
+        ];
+
+        $questionAnswers = new QuestionAnswers($answers);
+        $questionAnswersValidator = new QuestionAnswersValidator($questionAnswers, new Questions());
+
+        $enteredCustomValidationException = false;
+        $enteredTypeException = false;
+        $enteredAnswerException = false;
+
+        try {
+            $questionAnswersValidator->validate();
+        } catch (\RuntimeException $e) {
+            $enteredCustomValidationException = true;
+
+            $message = $e->getMessage();
+
+            static::assertEquals('Answer for type \'speaking_languages\' has to be an integer', $message);
+        }
+
+        $answers = [
+            'speaking_languages' => 2,
+            'profession' => 'invalid',
+            'person_type' => 'risk_taker',
+            'learning_time' => 'morning',
+            'free_time' => '30_minutes',
+            'memory' => 'short_term',
+            'challenges' => 'likes_challenges',
+            'stressful_job' => 'stressful_job'
+        ];
+
+        $questionAnswers = new QuestionAnswers($answers);
+        $questionAnswersValidator = new QuestionAnswersValidator($questionAnswers, new Questions());
+
+        try {
+            $questionAnswersValidator->validate();
+        } catch (\RuntimeException $e) {
+            $enteredAnswerException = true;
+
+            $message = $e->getMessage();
+
+            static::assertEquals('Invalid question answer \'invalid\' for type \'profession\'', $message);
+        }
+
+        $answers = [
+            'speaking_languages' => 2,
+            'professionr' => 'arts_and_entertainment',
+            'person_type' => 'risk_taker',
+            'learning_time' => 'morning',
+            'free_time' => '30_minutes',
+            'memory' => 'short_term',
+            'challenges' => 'likes_challenges',
+            'stressful_job' => 'stressful_job'
+        ];
+
+        $questionAnswers = new QuestionAnswers($answers);
+        $questionAnswersValidator = new QuestionAnswersValidator($questionAnswers, new Questions());
+
+        try {
+            $questionAnswersValidator->validate();
+        } catch (\RuntimeException $e) {
+            $enteredTypeException = true;
+
+            $message = $e->getMessage();
+
+            static::assertEquals('Invalid question type \'professionr\' given', $message);
+        }
+
+        static::assertTrue($enteredCustomValidationException);
+        static::assertTrue($enteredAnswerException);
+        static::assertTrue($enteredTypeException);
     }
 
     private function assertAlreadyLearningLanguages(array $languages, User $user)

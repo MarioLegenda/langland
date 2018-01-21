@@ -17,23 +17,29 @@ export class App extends React.Component {
         this.componentChange = this.componentChange.bind(this);
     }
 
-    _createDynamicComponentData() {
-        this.learningUserRepository.getDynamicComponentsStatus($.proxy(function(data) {
-            const components = data.resource.data;
+    _createDynamicComponentData(manualComponent = null) {
+        if (manualComponent === null) {
+            this.learningUserRepository.getDynamicComponentsStatus($.proxy(function(data) {
+                const components = data.resource.data;
 
-            for (let i = 0; i < this.componentOrder.length; i++) {
-                let comp = this.componentOrder[i];
-                if (components.hasOwnProperty(comp)) {
-                    if (components[comp] === false) {
-                        this.setState((prevState) => {
-                            prevState.currentComponent = comp;
-                        });
+                for (let i = 0; i < this.componentOrder.length; i++) {
+                    let comp = this.componentOrder[i];
+                    if (components.hasOwnProperty(comp)) {
+                        if (components[comp] === false) {
+                            this.setState((prevState) => {
+                                prevState.currentComponent = comp;
+                            });
 
-                        break;
+                            break;
+                        }
                     }
                 }
-            }
-        }, this));
+            }, this));
+        } else {
+            this.setState((prevState) => {
+                prevState.currentComponent = manualComponent;
+            });
+        }
     }
 
     componentDidMount() {

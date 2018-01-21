@@ -89,4 +89,80 @@ class Questions
     {
         return $this->questions;
     }
+    /**
+     * @param string $type
+     * @return array|null
+     */
+    public function getQuestion(string $type): ?array
+    {
+        if (!$this->hasQuestion($type)) {
+            return null;
+        }
+
+        return $this->questions[$type];
+    }
+    /**
+     * @param string $type
+     * @return bool
+     */
+    public function hasQuestion(string $type): bool
+    {
+        return array_key_exists($type, $this->questions);
+    }
+    /**
+     * @param string $type
+     * @throws \RuntimeException
+     */
+    public function checkValidQuestion(string $type)
+    {
+        if (!$this->hasQuestion($type)) {
+            $message = sprintf('Invalid question type \'%s\'', $type);
+            throw new \RuntimeException($message);
+        }
+    }
+    /**
+     * @param string $type
+     * @param string $answer
+     * @param array|\Closure[] $customValidators
+     * @throws \RuntimeException
+     */
+    public function checkValidAnswer(string $type, string $answer, array $customValidators = [])
+    {
+        $this->checkValidQuestion($type);
+
+        $answers = $this->getQuestion($type)['answers'];
+
+        if (array_key_exists($type, $customValidators)) {
+            $customValidators[$type]->__invoke($type, $answer);
+
+            return;
+        }
+
+        if (!array_key_exists($answer, $answers)) {
+            $message = sprintf('Invalid question answer \'%s\' for type \'%s\'', $answer, $type);
+            throw new \RuntimeException($message);
+        }
+    }
+    /**
+     * @param array $types
+     * @throws \RuntimeException
+     */
+    public function areTypesValid(array $types)
+    {
+        foreach ($types as $type => $value) {
+            if (!$this->hasQuestion($type)) {
+                $message = sprintf('Invalid question type \'%s\' given', $type);
+                throw new \RuntimeException($message);
+            }
+        }
+    }
+    /**
+     * @return array
+     */
+    public function getValidTypes(): array
+    {
+        return array_keys($this->questions);
+    }
+
+
 }

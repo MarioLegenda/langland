@@ -8,7 +8,8 @@ export class LearningUserRepository {
             is_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/is-language-info-looked',
             get_dynamic_components_status: global.base_url + 'api/v1/learning-user/get-dynamic-components-status',
             get_questions: global.base_url + 'api/v1/learning-user/questions/get-questions',
-            mark_questions_answered: global.base_url + 'api/v1/learning-user/questions/mark-questions-answered'
+            mark_questions_answered: global.base_url + 'api/v1/learning-user/questions/mark-questions-answered',
+            validate_question_answers: global.base_url + 'api/v1/learning-user/questions/validate',
         }
     }
 
@@ -74,6 +75,19 @@ export class LearningUserRepository {
             url: this.routes.mark_questions_answered,
             method: 'GET',
             contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': user.current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    validateQuestions(data, success, failure) {
+        return $.ajax({
+            url: this.routes.validate_question_answers,
+            method: 'POST',
+            data: {
+                questionAnswers: data
+            },
             headers: {
                 'X-LANGLAND-PUBLIC-API': user.current.username
             }

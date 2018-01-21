@@ -12,8 +12,8 @@ export class ComponentFactory extends React.Component {
         this.componentChange = this.componentChange.bind(this);
     }
 
-    componentChange() {
-        this.props.componentChange();
+    componentChange(manualComponent = null) {
+        this.props.componentChange(manualComponent);
     }
 
     render() {
@@ -23,7 +23,7 @@ export class ComponentFactory extends React.Component {
             case 'isLanguageInfoLooked':
                 return <LanguageInfo languageId={this.props.languageId} componentChange={this.componentChange}/>
             case 'areQuestionsLooked':
-                return <QuestionsContainer/>
+                return <QuestionsContainer componentChange={this.componentChange}/>
         }
     }
 }

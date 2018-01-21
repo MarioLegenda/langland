@@ -27112,7 +27112,8 @@ class LearningUserRepository {
             is_language_info_looked: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/language-info/is-language-info-looked',
             get_dynamic_components_status: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/get-dynamic-components-status',
             get_questions: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/questions/get-questions',
-            mark_questions_answered: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/questions/mark-questions-answered'
+            mark_questions_answered: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/questions/mark-questions-answered',
+            validate_question_answers: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/questions/validate'
         };
     }
 
@@ -27178,6 +27179,19 @@ class LearningUserRepository {
             url: this.routes.mark_questions_answered,
             method: 'GET',
             contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
+
+    validateQuestions(data, success, failure) {
+        return $.ajax({
+            url: this.routes.validate_question_answers,
+            method: 'POST',
+            data: {
+                questionAnswers: data
+            },
             headers: {
                 'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
             }
@@ -27281,30 +27295,38 @@ var App = exports.App = function (_React$Component) {
     _createClass(App, [{
         key: "_createDynamicComponentData",
         value: function _createDynamicComponentData() {
-            this.learningUserRepository.getDynamicComponentsStatus($.proxy(function (data) {
-                var _this2 = this;
+            var manualComponent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
-                var components = data.resource.data;
+            if (manualComponent === null) {
+                this.learningUserRepository.getDynamicComponentsStatus($.proxy(function (data) {
+                    var _this2 = this;
 
-                var _loop = function _loop(i) {
-                    var comp = _this2.componentOrder[i];
-                    if (components.hasOwnProperty(comp)) {
-                        if (components[comp] === false) {
-                            _this2.setState(function (prevState) {
-                                prevState.currentComponent = comp;
-                            });
+                    var components = data.resource.data;
 
-                            return "break";
+                    var _loop = function _loop(i) {
+                        var comp = _this2.componentOrder[i];
+                        if (components.hasOwnProperty(comp)) {
+                            if (components[comp] === false) {
+                                _this2.setState(function (prevState) {
+                                    prevState.currentComponent = comp;
+                                });
+
+                                return "break";
+                            }
                         }
+                    };
+
+                    for (var i = 0; i < this.componentOrder.length; i++) {
+                        var _ret = _loop(i);
+
+                        if (_ret === "break") break;
                     }
-                };
-
-                for (var i = 0; i < this.componentOrder.length; i++) {
-                    var _ret = _loop(i);
-
-                    if (_ret === "break") break;
-                }
-            }, this));
+                }, this));
+            } else {
+                this.setState(function (prevState) {
+                    prevState.currentComponent = manualComponent;
+                });
+            }
         }
     }, {
         key: "componentDidMount",
@@ -27390,7 +27412,9 @@ var ComponentFactory = exports.ComponentFactory = function (_React$Component) {
     _createClass(ComponentFactory, [{
         key: "componentChange",
         value: function componentChange() {
-            this.props.componentChange();
+            var manualComponent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+            this.props.componentChange(manualComponent);
         }
     }, {
         key: "render",
@@ -27401,7 +27425,7 @@ var ComponentFactory = exports.ComponentFactory = function (_React$Component) {
                 case 'isLanguageInfoLooked':
                     return _react2.default.createElement(_languageInfo.LanguageInfo, { languageId: this.props.languageId, componentChange: this.componentChange });
                 case 'areQuestionsLooked':
-                    return _react2.default.createElement(_questions.QuestionsContainer, null);
+                    return _react2.default.createElement(_questions.QuestionsContainer, { componentChange: this.componentChange });
             }
         }
     }]);
@@ -27655,14 +27679,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Error = function Error() {
+var Error = function Error(props) {
     return _react2.default.createElement(
         "div",
         { className: "error" },
         _react2.default.createElement(
             "p",
             null,
-            "You have to provide an answer for this question"
+            props.message
         )
     );
 };
@@ -27801,6 +27825,7 @@ var Item = function (_React$Component) {
 
             var item = this.props.item,
                 showError = this.state.error.showError,
+                somethingWentWrongMessage = this.props.somethingWentWrongMessage,
                 question = item.question,
                 answers = item.answers.length === 0 ? null : Object.entries(item.answers).map(function (answers, index) {
                 var answerType = answers[0];
@@ -27829,7 +27854,8 @@ var Item = function (_React$Component) {
                     { className: "animated animated-field" },
                     question
                 ),
-                showError && _react2.default.createElement(Error, null),
+                showError && _react2.default.createElement(Error, { message: "You have to provide an answer for this question" }),
+                somethingWentWrongMessage && _react2.default.createElement(Error, { message: somethingWentWrongMessage }),
                 _react2.default.createElement(
                     "div",
                     { className: "animated animated-field text" },
@@ -27873,7 +27899,11 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
 
         _this4.state = {
             items: null,
-            counter: 0
+            counter: 0,
+            stopRendering: false,
+            error: {
+                message: null
+            }
         };
 
         _this4.answers = {};
@@ -27912,17 +27942,8 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
             this._moveSlide('onPrevClick');
         }
     }, {
-        key: "_markQuestionsAnswered",
-        value: function _markQuestionsAnswered() {
-            this.learningUserRepository.markQuestionsAnswered();
-        }
-    }, {
         key: "_moveSlide",
         value: function _moveSlide(clickType) {
-            if (this.state.counter === this.state.items.length - 1) {
-                this._markQuestionsAnswered();
-            }
-
             this[clickType] = true;
 
             var infoElem = jQuery('.question-item');
@@ -27933,11 +27954,31 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
                 if (event.originalEvent.animationName === 'fadeOutUp' && this[clickType] === true) {
                     switch (clickType) {
                         case 'onNextClick':
-                            this.setState(function (prevState) {
-                                return {
-                                    counter: ++prevState.counter
-                                };
-                            });
+                            if (this.state.counter === this.state.items.length - 1) {
+                                this.learningUserRepository.validateQuestions(this.answers, $.proxy(function () {
+                                    this.learningUserRepository.markQuestionsAnswered();
+                                    this.props.componentChange();
+
+                                    this.setState(function (prevState) {
+                                        return prevState.stopRendering = true;
+                                    });
+                                }, this), $.proxy(function () {
+                                    this.setState(function (prevState) {
+                                        return prevState.error.message = 'Na error occurred. Please, fill in the questions again. We apologize for this mistake';
+                                    });
+                                    this.setState(function (prevState) {
+                                        return {
+                                            counter: 0
+                                        };
+                                    });
+                                }, this));
+                            } else {
+                                this.setState(function (prevState) {
+                                    return {
+                                        counter: ++prevState.counter
+                                    };
+                                });
+                            }
 
                             break;
                         case 'onPrevClick':
@@ -27963,14 +28004,24 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
                 return null;
             }
 
+            if (this.state.stopRendering === true) {
+                return null;
+            }
+
+            var somethingWentWrongMessage = this.state.error.message;
             var counter = this.state.counter;
             var item = this.state.items[counter];
             var firstItem = counter === 0;
+
+            if (counter > 0) {
+                somethingWentWrongMessage = null;
+            }
 
             return _react2.default.createElement(
                 "div",
                 { className: "questions-wrapper" },
                 _react2.default.createElement(Item, {
+                    somethingWentWrongMessage: somethingWentWrongMessage,
                     item: item,
                     nextItem: this.next,
                     prevItem: this.prev,

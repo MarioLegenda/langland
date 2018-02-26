@@ -24,7 +24,7 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
     public function userLoginAction()
     {
         $doRedirect = $this->tryRedirectIfAuthorized();
-        if ($doRedirect !== null) {
+        if ($doRedirect instanceof RedirectResponse) {
             return $doRedirect;
         }
 
@@ -163,16 +163,18 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
     /**
      * @return null|RedirectResponse
      */
-    private function tryRedirectIfAuthorized()
+    private function tryRedirectIfAuthorized(): ?RedirectResponse
     {
         $securityContext = $this->get('security.authorization_checker');
         if ($securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            if ($this->getUser()->hasRole('ROLE_PUBLIC_API_USER')) {
+            if (!$this->getUser()->hasRole('ROLE_PUBLIC_API_USER')) {
                 return $this->redirectToRoute('armor_user_login');
             }
 
-            return null;
+            return $this->redirectToRoute('app_language_index');
         }
+
+        return null;
     }
     /**
      * @param User $user

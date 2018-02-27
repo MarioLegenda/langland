@@ -30,6 +30,10 @@ class LearningUser
      */
     private $areQuestionsLooked;
     /**
+     * @var array $answeredQuestions
+     */
+    private $answeredQuestions;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -117,6 +121,20 @@ class LearningUser
         $this->areQuestionsLooked = $areQuestionsLooked;
 
         return $this;
+    }
+    /**
+     * @return array
+     */
+    public function getAnsweredQuestions(): array
+    {
+        return $this->answeredQuestions;
+    }
+    /**
+     * @param array $answeredQuestions
+     */
+    public function setAnsweredQuestions(array $answeredQuestions): void
+    {
+        $this->answeredQuestions = $answeredQuestions;
     }
     /**
      * @param \DateTime $createdAt

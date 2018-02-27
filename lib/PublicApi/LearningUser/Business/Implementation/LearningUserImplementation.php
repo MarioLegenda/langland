@@ -198,9 +198,10 @@ class LearningUserImplementation
     }
     /**
      * @param User $user
+     * @param QuestionAnswers $questionAnswers
      * @return array
      */
-    public function markQuestionsAnswered(User $user)
+    public function markQuestionsAnswered(User $user, QuestionAnswers $questionAnswers)
     {
         $learningUser = $user->getCurrentLearningUser();
 
@@ -224,6 +225,7 @@ class LearningUserImplementation
 
         if ($learningUser->getAreQuestionsLooked() === false) {
             $learningUser->setAreQuestionsLooked(true);
+            $learningUser->setAnsweredQuestions($questionAnswers->getAnswers());
 
             $this->learningUserRepository->persistAndFlush($learningUser);
         }

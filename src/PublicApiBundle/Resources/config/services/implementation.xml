@@ -33,5 +33,13 @@
             <argument type="service" id="armor.repository.user" />
             <argument type="service" id="library.api_sdk" />
         </service>
+
+        <service
+                id="langland.public_api.business.implementation.initial_system_creation"
+                class="PublicApi\LearningSystem\Business\Implementation\InitialSystemCreationImplementation" public="true">
+
+            <argument type="service" id="library.api_sdk" />
+        </service>
+
     </services>
 </container>

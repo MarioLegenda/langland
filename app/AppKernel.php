@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new PublicBundle\PublicBundle(),
             new PublicApiBundle\PublicApiBundle(),
             new CommonBundle\CommonBundle(),
+            new LearningSystemBundle\LearningSystemBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

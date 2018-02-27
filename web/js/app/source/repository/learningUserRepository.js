@@ -70,11 +70,13 @@ export class LearningUserRepository {
         }).done(success).fail(failure);
     }
 
-    markQuestionsAnswered(success, failure) {
+    markQuestionsAnswered(data, success, failure) {
         $.ajax({
             url: this.routes.mark_questions_answered,
-            method: 'GET',
-            contentType: 'application/json',
+            method: 'POST',
+            data: {
+                questionAnswers: data
+            },
             headers: {
                 'X-LANGLAND-PUBLIC-API': user.current.username
             }

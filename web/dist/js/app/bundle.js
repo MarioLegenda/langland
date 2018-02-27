@@ -2643,14 +2643,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["factory"] = factory;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__ = __webpack_require__(250);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__userRepository_js__ = __webpack_require__(251);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__ = __webpack_require__(252);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cache_js__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository_js__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__learningSystemRepository_js__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__cache_js__ = __webpack_require__(253);
 
 
 
 
 
-const cache = new __WEBPACK_IMPORTED_MODULE_3__cache_js__["a" /* Cache */]();
+
+const cache = new __WEBPACK_IMPORTED_MODULE_4__cache_js__["a" /* Cache */]();
 
 function factory(repository) {
     switch (repository) {
@@ -2659,7 +2661,9 @@ function factory(repository) {
         case 'user':
             return new __WEBPACK_IMPORTED_MODULE_1__userRepository_js__["a" /* UserRepository */]();
         case 'learning-user':
-            return new __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__["a" /* LearningUserRepository */]();
+            return new __WEBPACK_IMPORTED_MODULE_2__learningUserRepository_js__["a" /* LearningUserRepository */]();
+        case 'learning-system':
+            return new __WEBPACK_IMPORTED_MODULE_3__learningSystemRepository_js__["a" /* LearningSystemRepository */]();
     }
 
     throw new Error('Repository ' + repository + ' not found');
@@ -27174,11 +27178,13 @@ class LearningUserRepository {
         }).done(success).fail(failure);
     }
 
-    markQuestionsAnswered(success, failure) {
+    markQuestionsAnswered(data, success, failure) {
         $.ajax({
             url: this.routes.mark_questions_answered,
-            method: 'GET',
-            contentType: 'application/json',
+            method: 'POST',
+            data: {
+                questionAnswers: data
+            },
             headers: {
                 'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
             }
@@ -27963,7 +27969,7 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
                         case 'onNextClick':
                             if (this.state.counter === this.state.items.length - 1) {
                                 this.learningUserRepository.validateQuestions(this.answers, $.proxy(function () {
-                                    this.learningUserRepository.markQuestionsAnswered($.proxy(function () {
+                                    this.learningUserRepository.markQuestionsAnswered(this.answers, $.proxy(function () {
                                         this.props.componentChange();
                                     }, this));
 
@@ -28077,12 +28083,17 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
     function MainAppContainer(props) {
         _classCallCheck(this, MainAppContainer);
 
-        return _possibleConstructorReturn(this, (MainAppContainer.__proto__ || Object.getPrototypeOf(MainAppContainer)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (MainAppContainer.__proto__ || Object.getPrototypeOf(MainAppContainer)).call(this, props));
+
+        _this.learningSystemRepository = (0, _factory.factory)('learning-system');
+        return _this;
     }
 
     _createClass(MainAppContainer, [{
         key: "componentDidMount",
-        value: function componentDidMount() {}
+        value: function componentDidMount() {
+            this.learningSystemRepository.makeInitialDataCreation($.proxy(function (data) {}, this));
+        }
     }, {
         key: "render",
         value: function render() {
@@ -28141,6 +28152,35 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
 
     return MainAppContainer;
 }(_react2.default.Component);
+
+/***/ }),
+/* 259 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__global_constants_js__ = __webpack_require__(31);
+
+
+class LearningSystemRepository {
+    constructor() {
+        this.routes = {
+            initial_data_creation: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-system/initial-data-creation'
+        };
+    }
+
+    makeInitialDataCreation(success, failure) {
+        $.ajax({
+            url: this.routes.initial_data_creation,
+            method: 'POST',
+            contentType: 'application/json',
+            headers: {
+                'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
+            }
+        }).done(success).fail(failure);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = LearningSystemRepository;
+
 
 /***/ })
 /******/ ]);

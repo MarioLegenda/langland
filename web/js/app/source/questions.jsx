@@ -217,10 +217,10 @@ export class QuestionsContainer extends React.Component {
                     case 'onNextClick':
                         if (this.state.counter === this.state.items.length - 1) {
                                 this.learningUserRepository.validateQuestions(this.answers, $.proxy(function() {
-                                    this.learningUserRepository.markQuestionsAnswered($.proxy(function() {
+                                    this.learningUserRepository.markQuestionsAnswered(this.answers, $.proxy(function() {
                                         this.props.componentChange();
                                     }, this));
-                                    
+
                                     this.setState((prevState) => prevState.stopRendering = true);
                                 }, this), $.proxy(function() {
                                     this.setState((prevState) => prevState.error.message = 'An error occurred. Please, fill in the questions again. We apologize for this mistake');

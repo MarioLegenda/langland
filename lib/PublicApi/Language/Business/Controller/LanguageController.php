@@ -3,9 +3,7 @@
 namespace PublicApi\Language\Business\Controller;
 
 use AdminBundle\Entity\Language;
-use AdminBundle\Entity\LanguageInfo;
 use ArmorBundle\Entity\User;
-use Library\Infrastructure\Helper\CommonSerializer;
 use PublicApi\Language\Business\Implementation\LanguageImplementation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;

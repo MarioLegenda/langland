@@ -136,12 +136,13 @@ class LearningUserController
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
      *
      * @param User $user
+     * @param QuestionAnswers $questionAnswers
      * @return Response
      */
-    public function markQuestionsAnswered(User $user): Response
+    public function markQuestionsAnswered(User $user, QuestionAnswers $questionAnswers): Response
     {
         /** @var ApiSDK $response */
-        $response = $this->learningUserImplementation->markQuestionsAnswered($user);
+        $response = $this->learningUserImplementation->markQuestionsAnswered($user, $questionAnswers);
 
         return new JsonResponse(
             $response,

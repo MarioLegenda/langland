@@ -536,7 +536,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 "use strict";
 
 
-module.exports = __webpack_require__(21);
+module.exports = __webpack_require__(22);
 
 
 /***/ }),
@@ -1333,7 +1333,7 @@ var _prodInvariant = __webpack_require__(3),
 var CallbackQueue = __webpack_require__(74);
 var PooledClass = __webpack_require__(19);
 var ReactFeatureFlags = __webpack_require__(75);
-var ReactReconciler = __webpack_require__(22);
+var ReactReconciler = __webpack_require__(23);
 var Transaction = __webpack_require__(34);
 
 var invariant = __webpack_require__(1);
@@ -2636,6 +2636,37 @@ module.exports = warning;
 
 /***/ }),
 /* 21 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["factory"] = factory;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__userRepository_js__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cache_js__ = __webpack_require__(253);
+
+
+
+
+
+const cache = new __WEBPACK_IMPORTED_MODULE_3__cache_js__["a" /* Cache */]();
+
+function factory(repository) {
+    switch (repository) {
+        case 'language':
+            return new __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__["a" /* LanguageRepository */]();
+        case 'user':
+            return new __WEBPACK_IMPORTED_MODULE_1__userRepository_js__["a" /* UserRepository */]();
+        case 'learning-user':
+            return new __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__["a" /* LearningUserRepository */]();
+    }
+
+    throw new Error('Repository ' + repository + ' not found');
+}
+
+/***/ }),
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2745,7 +2776,7 @@ module.exports = React;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2919,7 +2950,7 @@ module.exports = ReactReconciler;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3040,37 +3071,6 @@ DOMLazyTree.queueHTML = queueHTML;
 DOMLazyTree.queueText = queueText;
 
 module.exports = DOMLazyTree;
-
-/***/ }),
-/* 24 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (immutable) */ __webpack_exports__["factory"] = factory;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__ = __webpack_require__(250);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__userRepository_js__ = __webpack_require__(251);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__ = __webpack_require__(252);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__cache_js__ = __webpack_require__(253);
-
-
-
-
-
-const cache = new __WEBPACK_IMPORTED_MODULE_3__cache_js__["a" /* Cache */]();
-
-function factory(repository) {
-    switch (repository) {
-        case 'language':
-            return new __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__["a" /* LanguageRepository */]();
-        case 'user':
-            return new __WEBPACK_IMPORTED_MODULE_1__userRepository_js__["a" /* UserRepository */]();
-        case 'learning-user':
-            return new __WEBPACK_IMPORTED_MODULE_2__learningUserRepository__["a" /* LearningUserRepository */]();
-    }
-
-    throw new Error('Repository ' + repository + ' not found');
-}
 
 /***/ }),
 /* 25 */
@@ -5715,7 +5715,7 @@ module.exports = getEventModifierState;
 
 
 
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(24);
 var Danger = __webpack_require__(139);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInstrumentation = __webpack_require__(10);
@@ -6013,7 +6013,7 @@ var _prodInvariant = __webpack_require__(3);
 var ReactPropTypesSecret = __webpack_require__(82);
 var propTypesFactory = __webpack_require__(68);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(22);
 var PropTypes = propTypesFactory(React.isValidElement);
 
 var invariant = __webpack_require__(1);
@@ -9642,7 +9642,7 @@ module.exports = instantiateReactComponent;
 
 var _prodInvariant = __webpack_require__(3);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(22);
 
 var invariant = __webpack_require__(1);
 
@@ -10241,9 +10241,9 @@ module.exports = getActiveElement;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(24);
 var DOMProperty = __webpack_require__(16);
-var React = __webpack_require__(21);
+var React = __webpack_require__(22);
 var ReactBrowserEventEmitter = __webpack_require__(38);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactDOMComponentTree = __webpack_require__(6);
@@ -10253,7 +10253,7 @@ var ReactFeatureFlags = __webpack_require__(75);
 var ReactInstanceMap = __webpack_require__(29);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactMarkupChecksum = __webpack_require__(197);
-var ReactReconciler = __webpack_require__(22);
+var ReactReconciler = __webpack_require__(23);
 var ReactUpdateQueue = __webpack_require__(56);
 var ReactUpdates = __webpack_require__(14);
 
@@ -11680,7 +11680,7 @@ var _language = __webpack_require__(249);
 
 var _app = __webpack_require__(254);
 
-var _factory = __webpack_require__(24);
+var _factory = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -13575,7 +13575,7 @@ module.exports = __webpack_require__(120);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDefaultInjection = __webpack_require__(121);
 var ReactMount = __webpack_require__(92);
-var ReactReconciler = __webpack_require__(22);
+var ReactReconciler = __webpack_require__(23);
 var ReactUpdates = __webpack_require__(14);
 var ReactVersion = __webpack_require__(199);
 
@@ -15903,7 +15903,7 @@ module.exports = ReactComponentBrowserEnvironment;
 
 var _prodInvariant = __webpack_require__(3);
 
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(24);
 var ExecutionEnvironment = __webpack_require__(7);
 
 var createNodesFromMarkup = __webpack_require__(140);
@@ -16325,7 +16325,7 @@ var _prodInvariant = __webpack_require__(3),
 
 var AutoFocusUtils = __webpack_require__(145);
 var CSSPropertyOperations = __webpack_require__(146);
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(24);
 var DOMNamespaces = __webpack_require__(49);
 var DOMProperty = __webpack_require__(16);
 var DOMPropertyOperations = __webpack_require__(81);
@@ -18321,7 +18321,7 @@ module.exports = ReactDOMInput;
 
 var _assign = __webpack_require__(4);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(22);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDOMSelect = __webpack_require__(83);
 
@@ -18621,7 +18621,7 @@ var ReactInstanceMap = __webpack_require__(29);
 var ReactInstrumentation = __webpack_require__(10);
 
 var ReactCurrentOwner = __webpack_require__(13);
-var ReactReconciler = __webpack_require__(22);
+var ReactReconciler = __webpack_require__(23);
 var ReactChildReconciler = __webpack_require__(160);
 
 var emptyFunction = __webpack_require__(9);
@@ -19070,7 +19070,7 @@ module.exports = ReactMultiChild;
 
 
 
-var ReactReconciler = __webpack_require__(22);
+var ReactReconciler = __webpack_require__(23);
 
 var instantiateReactComponent = __webpack_require__(84);
 var KeyEscapeUtils = __webpack_require__(55);
@@ -19233,14 +19233,14 @@ module.exports = ReactChildReconciler;
 var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
-var React = __webpack_require__(21);
+var React = __webpack_require__(22);
 var ReactComponentEnvironment = __webpack_require__(52);
 var ReactCurrentOwner = __webpack_require__(13);
 var ReactErrorUtils = __webpack_require__(44);
 var ReactInstanceMap = __webpack_require__(29);
 var ReactInstrumentation = __webpack_require__(10);
 var ReactNodeTypes = __webpack_require__(85);
-var ReactReconciler = __webpack_require__(22);
+var ReactReconciler = __webpack_require__(23);
 
 if (process.env.NODE_ENV !== 'production') {
   var checkReactTypeSpec = __webpack_require__(162);
@@ -20684,7 +20684,7 @@ module.exports = ReactServerUpdateQueue;
 
 var _assign = __webpack_require__(4);
 
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(24);
 var ReactDOMComponentTree = __webpack_require__(6);
 
 var ReactDOMEmptyComponent = function (instantiate) {
@@ -20893,7 +20893,7 @@ var _prodInvariant = __webpack_require__(3),
     _assign = __webpack_require__(4);
 
 var DOMChildrenOperations = __webpack_require__(48);
-var DOMLazyTree = __webpack_require__(23);
+var DOMLazyTree = __webpack_require__(24);
 var ReactDOMComponentTree = __webpack_require__(6);
 
 var escapeTextContentForBrowser = __webpack_require__(37);
@@ -26806,7 +26806,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouterDom = __webpack_require__(59);
 
-var _factory = __webpack_require__(24);
+var _factory = __webpack_require__(21);
 
 var _events = __webpack_require__(98);
 
@@ -27262,7 +27262,7 @@ var _react2 = _interopRequireDefault(_react);
 
 var _componentFactory = __webpack_require__(255);
 
-var _factory = __webpack_require__(24);
+var _factory = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27286,7 +27286,7 @@ var App = exports.App = function (_React$Component) {
             currentComponent: null
         };
 
-        _this.componentOrder = ['isLanguageInfoLooked', 'areQuestionsLooked'];
+        _this.componentOrder = ['isMainAppReady', 'isLanguageInfoLooked', 'areQuestionsLooked'];
 
         _this.componentChange = _this.componentChange.bind(_this);
         return _this;
@@ -27381,11 +27381,13 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _factory = __webpack_require__(24);
+var _factory = __webpack_require__(21);
 
 var _languageInfo = __webpack_require__(256);
 
 var _questions = __webpack_require__(257);
+
+var _mainAppContainer = __webpack_require__(258);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27423,9 +27425,14 @@ var ComponentFactory = exports.ComponentFactory = function (_React$Component) {
 
             switch (comp) {
                 case 'isLanguageInfoLooked':
+                    console.log('Component decision: Decision is on language info');
                     return _react2.default.createElement(_languageInfo.LanguageInfo, { languageId: this.props.languageId, componentChange: this.componentChange });
                 case 'areQuestionsLooked':
+                    console.log('Component decision: Decision is on question');
                     return _react2.default.createElement(_questions.QuestionsContainer, { componentChange: this.componentChange });
+                case 'isMainAppReady':
+                    console.log('Component decision: Decision is on main app');
+                    return _react2.default.createElement(_mainAppContainer.MainAppContainer, null);
             }
         }
     }]);
@@ -27451,7 +27458,7 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _factory = __webpack_require__(24);
+var _factory = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27669,7 +27676,7 @@ var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _factory = __webpack_require__(24);
+var _factory = __webpack_require__(21);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27956,15 +27963,16 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
                         case 'onNextClick':
                             if (this.state.counter === this.state.items.length - 1) {
                                 this.learningUserRepository.validateQuestions(this.answers, $.proxy(function () {
-                                    this.learningUserRepository.markQuestionsAnswered();
-                                    this.props.componentChange();
+                                    this.learningUserRepository.markQuestionsAnswered($.proxy(function () {
+                                        this.props.componentChange();
+                                    }, this));
 
                                     this.setState(function (prevState) {
                                         return prevState.stopRendering = true;
                                     });
                                 }, this), $.proxy(function () {
                                     this.setState(function (prevState) {
-                                        return prevState.error.message = 'Na error occurred. Please, fill in the questions again. We apologize for this mistake';
+                                        return prevState.error.message = 'An error occurred. Please, fill in the questions again. We apologize for this mistake';
                                     });
                                     this.setState(function (prevState) {
                                         return {
@@ -28033,6 +28041,105 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
     }]);
 
     return QuestionsContainer;
+}(_react2.default.Component);
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MainAppContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _factory = __webpack_require__(21);
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
+    _inherits(MainAppContainer, _React$Component);
+
+    function MainAppContainer(props) {
+        _classCallCheck(this, MainAppContainer);
+
+        return _possibleConstructorReturn(this, (MainAppContainer.__proto__ || Object.getPrototypeOf(MainAppContainer)).call(this, props));
+    }
+
+    _createClass(MainAppContainer, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {}
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { className: "app-console-wrapper" },
+                _react2.default.createElement(
+                    "div",
+                    { className: "app-menu" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "menu-item" },
+                        _react2.default.createElement(
+                            "button",
+                            { className: "circle-wrapper" },
+                            _react2.default.createElement(
+                                "span",
+                                { className: "circle-wrapper-text lesson-text-wrapper" },
+                                "Lessons"
+                            ),
+                            _react2.default.createElement("i", { className: "menu-icon fa fa-mortar-board fa-lg" })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "menu-item" },
+                        _react2.default.createElement(
+                            "button",
+                            { className: "circle-wrapper" },
+                            _react2.default.createElement(
+                                "span",
+                                { className: "circle-wrapper-text games-text-wrapper" },
+                                "Games"
+                            ),
+                            _react2.default.createElement("i", { className: "menu-icon fa fa-gamepad fa-lg" })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "menu-item" },
+                        _react2.default.createElement(
+                            "button",
+                            { className: "circle-wrapper" },
+                            _react2.default.createElement(
+                                "span",
+                                { className: "circle-wrapper-text trophies-text-wrapper" },
+                                "Trophies"
+                            ),
+                            _react2.default.createElement("i", { className: "menu-icon fa fa-trophy fa-lg" })
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return MainAppContainer;
 }(_react2.default.Component);
 
 /***/ })

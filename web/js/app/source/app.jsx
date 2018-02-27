@@ -12,7 +12,7 @@ export class App extends React.Component {
             currentComponent: null
         };
 
-        this.componentOrder = ['isLanguageInfoLooked', 'areQuestionsLooked'];
+        this.componentOrder = ['isMainAppReady', 'isLanguageInfoLooked', 'areQuestionsLooked'];
 
         this.componentChange = this.componentChange.bind(this);
     }

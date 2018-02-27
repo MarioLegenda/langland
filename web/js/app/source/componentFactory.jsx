@@ -2,6 +2,7 @@ import React from 'react';
 import {factory as repoFactory} from "./repository/factory.js";
 import {LanguageInfo} from "./languageInfo.jsx";
 import {QuestionsContainer} from "./questions.jsx";
+import {MainAppContainer} from "./mainAppContainer.jsx";
 
 export class ComponentFactory extends React.Component {
     constructor(props) {
@@ -21,9 +22,14 @@ export class ComponentFactory extends React.Component {
 
         switch (comp) {
             case 'isLanguageInfoLooked':
-                return <LanguageInfo languageId={this.props.languageId} componentChange={this.componentChange}/>
+                console.log('Component decision: Decision is on language info');
+                return <LanguageInfo languageId={this.props.languageId} componentChange={this.componentChange}/>;
             case 'areQuestionsLooked':
-                return <QuestionsContainer componentChange={this.componentChange}/>
+                console.log('Component decision: Decision is on question');
+                return <QuestionsContainer componentChange={this.componentChange}/>;
+            case 'isMainAppReady':
+                console.log('Component decision: Decision is on main app');
+                return <MainAppContainer/>;
         }
     }
 }

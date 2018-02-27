@@ -298,10 +298,14 @@ class LearningUserImplementation
     {
         $learningUser = $user->getCurrentLearningUser();
 
+        $languageInfoLooked = $learningUser->getIsLanguageInfoLooked();
+        $questionsAnswered = $learningUser->getAreQuestionsLooked();
+
         return $this->apiSdk
             ->create([
-                'isLanguageInfoLooked' => $learningUser->getIsLanguageInfoLooked(),
-                'areQuestionsLooked' => $learningUser->getAreQuestionsLooked(),
+                'isLanguageInfoLooked' => $languageInfoLooked,
+                'areQuestionsLooked' => $questionsAnswered,
+                'isMainAppReady' => ($languageInfoLooked && $questionsAnswered) ? false: true,
             ])
             ->setStatusCode(200)
             ->isResource()

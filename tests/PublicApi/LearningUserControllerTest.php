@@ -395,12 +395,25 @@ class LearningUserControllerTest extends LanglandAdminTestCase
     {
         $this->manualReset();
 
+        $answers = [
+            'speaking_languages' => 2,
+            'profession' => 'arts_and_entertainment',
+            'person_type' => 'risk_taker',
+            'learning_time' => 'morning',
+            'free_time' => '30_minutes',
+            'memory' => 'short_term',
+            'challenges' => 'likes_challenges',
+            'stressful_job' => 'stressful_job'
+        ];
+
+        $questionAnswers = new QuestionAnswers($answers);
+
         $user1 = $this->userDataProvider->createDefaultDb($this->getFaker());
         $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
         $this->assertLanguageRegistration($language1, $user1);
 
-        $response = $this->learningUserController->markQuestionsAnswered($user1);
+        $response = $this->learningUserController->markQuestionsAnswered($user1, $questionAnswers);
 
         static::assertInstanceOf(Response::class, $response);
         static::assertEquals(403, $response->getStatusCode());
@@ -411,7 +424,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         $this->assertMarkLanguageInfo($user1);
 
-        $response = $this->learningUserController->markQuestionsAnswered($user1);
+        $response = $this->learningUserController->markQuestionsAnswered($user1, $questionAnswers);
 
         static::assertInstanceOf(Response::class, $response);
         static::assertEquals(201, $response->getStatusCode());

@@ -1,9 +1,10 @@
 <?php
 
-namespace PublicApi\LearningSystem\Business\Controller;
+namespace LearningSystem\Business\Controller;
 
 use ArmorBundle\Entity\User;
-use PublicApi\LearningSystem\Business\Implementation\InitialSystemCreationImplementation;
+use LearningSystem\Business\Implementation\InitialSystemCreationImplementation;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,8 +29,14 @@ class InitialSystemCreationController
      */
     public function createInitialDataAction(User $user): Response
     {
+        $learningUser = $user->getCurrentLearningUser();
+        $answeredQuestions = new QuestionAnswers($learningUser->getAnsweredQuestions());
+
         return new JsonResponse(
-            $this->initialSystemCreationImplementation->createInitialSystem($user->getCurrentLearningUser()),
+            $this->initialSystemCreationImplementation->createInitialSystem(
+                $user->getCurrentLearningUser(),
+                $answeredQuestions
+            ),
             201
         );
     }

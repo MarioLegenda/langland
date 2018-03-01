@@ -1,3 +1,7 @@
+learning_system:
+    resource: "@LearningSystemBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@PublicApiBundle/Resources/config/routing.yml"
     prefix:   /

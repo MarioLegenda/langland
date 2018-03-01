@@ -48,6 +48,7 @@
                 class="TestLibrary\DataProvider\LearningUserDataProvider" public="true">
 
             <argument type="service" id="langland.public_api.repository.learning_user" />
+            <argument type="service" id="langland.data_provider.language" />
         </service>
 
         <service

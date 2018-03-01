@@ -6,6 +6,7 @@ use ArmorBundle\Entity\Role;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Repository\UserRepository;
 use Faker\Generator;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use Tests\TestLibrary\DataProvider\DefaultDataProviderInterface;
 
 class UserDataProvider implements DefaultDataProviderInterface

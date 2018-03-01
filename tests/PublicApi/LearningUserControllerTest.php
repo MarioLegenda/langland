@@ -7,6 +7,14 @@ use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Repository\UserRepository;
 use LearningSystem\Infrastructure\Questions;
+use LearningSystem\Infrastructure\Type\ChallengesType;
+use LearningSystem\Infrastructure\Type\FreeTimeType;
+use LearningSystem\Infrastructure\Type\LearningTimeType;
+use LearningSystem\Infrastructure\Type\MemoryType;
+use LearningSystem\Infrastructure\Type\PersonType;
+use LearningSystem\Infrastructure\Type\ProfessionType;
+use LearningSystem\Infrastructure\Type\SpeakingLanguagesType;
+use LearningSystem\Infrastructure\Type\StressfulJobType;
 use PublicApi\Language\Business\Controller\LanguageController;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Business\Controller\LearningUserController;
@@ -396,14 +404,14 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $this->manualReset();
 
         $answers = [
-            'speaking_languages' => 2,
-            'profession' => 'arts_and_entertainment',
-            'person_type' => 'risk_taker',
-            'learning_time' => 'morning',
-            'free_time' => '30_minutes',
-            'memory' => 'short_term',
-            'challenges' => 'likes_challenges',
-            'stressful_job' => 'stressful_job'
+            SpeakingLanguagesType::getName() => 2,
+            ProfessionType::getName() => 'arts_and_entertainment',
+            PersonType::getName() => 'risk_taker',
+            LearningTimeType::getName() => 'morning',
+            FreeTimeType::getName() => '30_minutes',
+            MemoryType::getName() => 'short_term',
+            ChallengesType::getName() => 'likes_challenges',
+            StressfulJobType::getName() => 'stressful_job'
         ];
 
         $questionAnswers = new QuestionAnswers($answers);
@@ -435,14 +443,14 @@ class LearningUserControllerTest extends LanglandAdminTestCase
     public function test_validate_success_question_answers()
     {
         $answers = [
-            'speaking_languages' => 2,
-            'profession' => 'arts_and_entertainment',
-            'person_type' => 'risk_taker',
-            'learning_time' => 'morning',
-            'free_time' => '30_minutes',
-            'memory' => 'short_term',
-            'challenges' => 'likes_challenges',
-            'stressful_job' => 'stressful_job'
+            SpeakingLanguagesType::getName() => 2,
+            ProfessionType::getName() => 'arts_and_entertainment',
+            PersonType::getName() => 'risk_taker',
+            LearningTimeType::getName() => 'morning',
+            FreeTimeType::getName() => '30_minutes',
+            MemoryType::getName() => 'short_term',
+            ChallengesType::getName() => 'likes_challenges',
+            StressfulJobType::getName() => 'stressful_job'
         ];
 
         $questionAnswers = new QuestionAnswers($answers);
@@ -454,14 +462,14 @@ class LearningUserControllerTest extends LanglandAdminTestCase
     public function test_validate_failed_question_answers()
     {
         $answers = [
-            'speaking_languages' => "invalid",
-            'profession' => 'arts_and_entertainment',
-            'person_type' => 'risk_taker',
-            'learning_time' => 'morning',
-            'free_time' => '30_minutes',
-            'memory' => 'short_term',
-            'challenges' => 'likes_challenges',
-            'stressful_job' => 'stressful_job'
+            SpeakingLanguagesType::getName() => "invalid",
+            ProfessionType::getName() => 'arts_and_entertainment',
+            PersonType::getName() => 'risk_taker',
+            LearningTimeType::getName() => 'morning',
+            FreeTimeType::getName() => '30_minutes',
+            MemoryType::getName() => 'short_term',
+            ChallengesType::getName() => 'likes_challenges',
+            StressfulJobType::getName() => 'stressful_job'
         ];
 
         $questionAnswers = new QuestionAnswers($answers);
@@ -482,14 +490,14 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         }
 
         $answers = [
-            'speaking_languages' => 2,
-            'profession' => 'invalid',
-            'person_type' => 'risk_taker',
-            'learning_time' => 'morning',
-            'free_time' => '30_minutes',
-            'memory' => 'short_term',
-            'challenges' => 'likes_challenges',
-            'stressful_job' => 'stressful_job'
+            SpeakingLanguagesType::getName() => 2,
+            ProfessionType::getName() => 'invalid',
+            PersonType::getName() => 'risk_taker',
+            LearningTimeType::getName() => 'morning',
+            FreeTimeType::getName() => '30_minutes',
+            MemoryType::getName() => 'short_term',
+            ChallengesType::getName() => 'likes_challenges',
+            StressfulJobType::getName() => 'stressful_job'
         ];
 
         $questionAnswers = new QuestionAnswers($answers);
@@ -506,14 +514,14 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         }
 
         $answers = [
-            'speaking_languages' => 2,
+            SpeakingLanguagesType::getName() => 2,
             'professionr' => 'arts_and_entertainment',
-            'person_type' => 'risk_taker',
-            'learning_time' => 'morning',
-            'free_time' => '30_minutes',
-            'memory' => 'short_term',
-            'challenges' => 'likes_challenges',
-            'stressful_job' => 'stressful_job'
+            PersonType::getName() => 'risk_taker',
+            LearningTimeType::getName() => 'morning',
+            FreeTimeType::getName() => '30_minutes',
+            MemoryType::getName() => 'short_term',
+            ChallengesType::getName() => 'likes_challenges',
+            StressfulJobType::getName() => 'stressful_job',
         ];
 
         $questionAnswers = new QuestionAnswers($answers);

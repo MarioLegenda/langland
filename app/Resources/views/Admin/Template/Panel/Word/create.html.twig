@@ -13,6 +13,8 @@
 
             {% include '::Admin/Template/Form/field.html.twig' with {'field': form.language, 'description': 'choose a language for this word' } only %}
 
+            {% include '::Admin/Template/Form/field.html.twig' with {'field': form.lesson, 'description': 'choose a lesson for this word. This is optional' } only %}
+
             {% include '::Admin/Template/Form/field.html.twig' with {'field': form.level, 'description': 'choose this words learning level' } only %}
 
             {% include '::Admin/Template/Form/field.html.twig' with {'field': form.name, 'description': 'the word to be translated' } only %}

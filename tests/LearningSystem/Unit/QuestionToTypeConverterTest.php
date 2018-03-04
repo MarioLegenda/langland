@@ -32,7 +32,7 @@ class QuestionToTypeConverterTest extends TestCase
 
         $converter = new QuestionToTypeConverter(FrontendTypeList::getList(), new QuestionAnswers($answers));
 
-        $converted = $converter->getConverted();
+        $converted = $converter->convert();
 
         foreach (FrontendTypeList::getList() as $typeName => $typeClass) {
             static::assertArrayHasKey($typeName, $converted);

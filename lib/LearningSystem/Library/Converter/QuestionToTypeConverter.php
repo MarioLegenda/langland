@@ -11,6 +11,10 @@ class QuestionToTypeConverter
      */
     private $typeConstructor;
     /**
+     * @var QuestionAnswers $questionAnswers
+     */
+    private $questionAnswers;
+    /**
      * @var array $converted
      */
     private $converted;
@@ -22,25 +26,30 @@ class QuestionToTypeConverter
     public function __construct(array $typeConstructor, QuestionAnswers $questionAnswers)
     {
         $this->typeConstructor = $typeConstructor;
-
-        $converted = [];
-        foreach ($questionAnswers->getAnswers() as $type => $answer) {
-            if (!array_key_exists($type, $typeConstructor)) {
-                $message = sprintf('Invalid type in type constructor. Type %s given', $type);
-                throw new \RuntimeException($message);
-            }
-
-            $typeClass = $typeConstructor[$type];
-            $converted[$type] = $typeClass::fromValue($answer);
-        }
-
-        $this->converted = $converted;
+        $this->questionAnswers = $questionAnswers;
     }
     /**
      * @return array
      */
-    public function getConverted(): array
+    public function convert(): array
     {
+        if (is_array($this->converted) and !empty($this->converted)) {
+            return $this->converted;
+        }
+
+        $converted = [];
+        foreach ($this->questionAnswers->getAnswers() as $type => $answer) {
+            if (!array_key_exists($type, $this->typeConstructor)) {
+                $message = sprintf('Invalid type in type constructor. Type %s given', $type);
+                throw new \RuntimeException($message);
+            }
+
+            $typeClass = $this->typeConstructor[$type];
+            $converted[$type] = $typeClass::fromValue($answer);
+        }
+
+        $this->converted = $converted;
+
         return $this->converted;
     }
 }

@@ -46,6 +46,10 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
      */
     private $translations;
     /**
+     * @var Lesson $lesson
+     */
+    private $lesson;
+    /**
      * @var Image $image
      */
     private $image;
@@ -253,6 +257,23 @@ class Word implements ContainsCategoriesInterface, ContainsLanguageInterface
     public function setPluralForm(string $pluralForm) : Word
     {
         $this->pluralForm = $pluralForm;
+
+        return $this;
+    }
+    /**
+     * @return Lesson|null
+     */
+    public function getLesson()
+    {
+        return $this->lesson;
+    }
+    /**
+     * @param Lesson|null $lesson
+     * @return Word
+     */
+    public function setLesson($lesson): Word
+    {
+        $this->lesson = $lesson;
 
         return $this;
     }

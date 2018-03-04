@@ -107,6 +107,11 @@ class EntityProcessorEventListener extends AbstractEntityManagerBaseListener
                 }
             }
         }
+
+        if ($word->getLesson() !== null) {
+            $lesson = $this->em->getRepository('AdminBundle:Lesson')->find($word->getLesson());
+            $word->setLesson($lesson);
+        }
     }
 
     private function handleLessonJob(Lesson $lesson, Course $course)

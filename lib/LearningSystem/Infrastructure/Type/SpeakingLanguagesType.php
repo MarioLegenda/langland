@@ -2,6 +2,8 @@
 
 namespace LearningSystem\Infrastructure\Type;
 
+use LearningSystem\Infrastructure\Type\ScalarType\NumberType;
+
 class SpeakingLanguagesType extends NumberType implements NamedTypeInterface
 {
     /**

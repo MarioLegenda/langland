@@ -4,8 +4,10 @@ namespace LearningSystem\Business\Implementation;
 
 use ApiSDK\ApiSDK;
 use LearningSystem\Infrastructure\Questions;
+use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
 use LearningSystem\Infrastructure\Type\TypeList\FrontendTypeList;
 use LearningSystem\Library\Converter\QuestionToTypeConverter;
+use LearningSystem\Library\Rule\RuleFactory;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswersValidator;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
@@ -34,11 +36,11 @@ class InitialSystemCreationImplementation
         $this->learningUserRepository = $learningUserRepository;
     }
     /**
-     * @param LearningUser $user
+     * @param LearningUser $learningUser
      * @param QuestionAnswers $questionAnswers
      * @return array
      */
-    public function createInitialSystem(LearningUser $user, QuestionAnswers $questionAnswers): array
+    public function createInitialSystem(LearningUser $learningUser, QuestionAnswers $questionAnswers): array
     {
         $outcome = $this->validateQuestionAnswers($questionAnswers);
 
@@ -46,9 +48,9 @@ class InitialSystemCreationImplementation
             return $outcome;
         }
 
-        $converter = new QuestionToTypeConverter($this->getTypes(), $questionAnswers);
+        $metadata = $this->convertAsTypes($questionAnswers);
 
-        $converted = $converter->getConverted();
+        $rule = RuleFactory::create(BasicGameType::getName(), $metadata);
     }
     /**
      * @param QuestionAnswers $questionAnswers
@@ -72,12 +74,13 @@ class InitialSystemCreationImplementation
         return true;
     }
     /**
+     * @param QuestionAnswers $questionAnswers
      * @return array
      */
-    private function getTypes(): array
+    private function convertAsTypes(QuestionAnswers $questionAnswers): array
     {
-        $answers = FrontendTypeList::getList();
+        $converter = new QuestionToTypeConverter(FrontendTypeList::getList(), $questionAnswers);
 
-        return $answers;
+        return $converter->convert();
     }
 }

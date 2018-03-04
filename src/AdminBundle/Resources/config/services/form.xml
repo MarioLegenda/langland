@@ -22,11 +22,20 @@
         </service>
 
         <service
+                id="langland.learning_metadata.form.lesson_choice"
+                class="Library\Infrastructure\Form\LessonChoiceFormService" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument type="service" id="request_stack" />
+        </service>
+
+        <service
                 id="langland.learning_metadata.form.word"
                 class="LearningMetadata\Infrastructure\Form\Type\WordType" public="true">
 
             <argument type="service" id="langland.learning_metadata.form.language_choice" />
             <argument type="service" id="langland.learning_metadata.form.category_choice"/>
+            <argument type="service" id="langland.learning_metadata.form.lesson_choice"/>
 
             <tag name="form.type" />
         </service>

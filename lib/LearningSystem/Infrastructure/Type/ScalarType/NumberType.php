@@ -1,6 +1,9 @@
 <?php
 
-namespace LearningSystem\Infrastructure\Type;
+namespace LearningSystem\Infrastructure\Type\ScalarType;
+
+use LearningSystem\Infrastructure\Type\BaseType;
+use LearningSystem\Infrastructure\Type\TypeInterface;
 
 class NumberType extends BaseType
 {

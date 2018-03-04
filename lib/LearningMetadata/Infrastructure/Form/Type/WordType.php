@@ -2,11 +2,11 @@
 
 namespace LearningMetadata\Infrastructure\Form\Type;
 
+use Library\Infrastructure\Form\LessonChoiceFormService;
 use Library\Infrastructure\Form\TraitType\ImageTypeTrait;
 use Library\Infrastructure\Form\CategoryChoiceFormService;
 use Library\Infrastructure\Form\TraitType\TextareaTypeTrait;
 use Library\Infrastructure\Form\TraitType\TextTypeTrait;
-use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -27,16 +27,23 @@ class WordType extends AbstractType
      */
     private $languageChoiceService;
     /**
+     * @var LessonChoiceFormService $lessonChoiceFormService
+     */
+    private $lessonChoiceFormService;
+    /**
      * WordType constructor.
      * @param LanguageChoiceFormService $languageChoiceFormService
      * @param CategoryChoiceFormService $categoryChoiceFormService
+     * @param LessonChoiceFormService $lessonChoiceFormService
      */
     public function __construct(
         LanguageChoiceFormService $languageChoiceFormService,
-        CategoryChoiceFormService $categoryChoiceFormService
+        CategoryChoiceFormService $categoryChoiceFormService,
+        LessonChoiceFormService $lessonChoiceFormService
     ) {
         $this->languageChoiceService = $languageChoiceFormService;
         $this->categoryChoiceFormService = $categoryChoiceFormService;
+        $this->lessonChoiceFormService = $lessonChoiceFormService;
     }
     /**
      * @param FormBuilderInterface $builder
@@ -57,6 +64,11 @@ class WordType extends AbstractType
         );
 
         $this->categoryChoiceFormService->addCategoryChoice(
+            'Word',
+            $builder
+        );
+
+        $this->lessonChoiceFormService->addLessonChoice(
             'Word',
             $builder
         );

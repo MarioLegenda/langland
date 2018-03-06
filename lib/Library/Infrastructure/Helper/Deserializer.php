@@ -3,6 +3,7 @@
 namespace Library\Infrastructure\Helper;
 
 use JMS\Serializer\Serializer;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -16,6 +17,18 @@ class Deserializer
      * @var Validation $validation
      */
     private $validation;
+    /**
+     * @var string $errorsString
+     */
+    private $errorsString;
+    /**
+     * @var array $errorsArray
+     */
+    private $errorsArray;
+    /**
+     * @var object|null $object
+     */
+    private $object;
     /**
      * Deserializer constructor.
      * @param Serializer $serializer
@@ -32,7 +45,7 @@ class Deserializer
      * @param string|array $data
      * @param string|object $type
      * @param string|null $format
-     * @return object
+     * @void
      */
     public function create($data, $type, string $format = null)
     {
@@ -56,12 +69,47 @@ class Deserializer
 
         $errors = $this->validation->validate($object);
 
+        $errorsArray = [];
+        $errorsString = null;
         if (count($errors) > 0) {
-            $errorsString = (string) $errors;
+            /** @var ConstraintViolation $error */
+            foreach ($errors as $error) {
+                $errorsArray[$error->getPropertyPath()] = $error->getMessage();
+            }
 
-            throw new \RuntimeException($errorsString);
+            $errorsString = (string) $errors;
         }
 
-        return $object;
+        $this->errorsArray = $errorsArray;
+        $this->errorsString = $errorsString;
+        $this->object = $object;
+    }
+    /**
+     * @return bool
+     */
+    public function hasErrors(): bool
+    {
+        return !empty($this->errorsString) or !empty($this->errorsArray);
+    }
+    /**
+     * @return string
+     */
+    public function getErrorsString(): ?string
+    {
+        return $this->errorsString;
+    }
+    /**
+     * @return array
+     */
+    public function getErrorsArray(): ?array
+    {
+        return $this->errorsArray;
+    }
+    /**
+     * @return null|object
+     */
+    public function getSerializedObject()
+    {
+        return $this->object;
     }
 }

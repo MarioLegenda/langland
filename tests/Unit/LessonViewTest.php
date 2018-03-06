@@ -30,6 +30,13 @@ class LessonViewTest extends ContainerAwareTest
         $deserializer = $this->container->get('library.deserializer');
 
         $deserializer->create($data, LessonView::class);
+
+        static::assertTrue($deserializer->hasErrors());
+        static::assertInternalType('object', $deserializer->getSerializedObject());
+
+        if ($errors = $deserializer->getErrorsString()) {
+            throw new \RuntimeException($errors);
+        }
     }
     /**
      * @expectedException \RuntimeException
@@ -54,6 +61,13 @@ class LessonViewTest extends ContainerAwareTest
         $deserializer = $this->container->get('library.deserializer');
 
         $deserializer->create($data, LessonView::class);
+
+        static::assertTrue($deserializer->hasErrors());
+        static::assertInternalType('object', $deserializer->getSerializedObject());
+
+        if ($errors = $deserializer->getErrorsString()) {
+            throw new \RuntimeException($errors);
+        }
     }
     /**
      * @expectedException \RuntimeException
@@ -74,6 +88,13 @@ class LessonViewTest extends ContainerAwareTest
         $deserializer = $this->container->get('library.deserializer');
 
         $deserializer->create($data, LessonView::class);
+
+        static::assertTrue($deserializer->hasErrors());
+        static::assertInternalType('object', $deserializer->getSerializedObject());
+
+        if ($errors = $deserializer->getErrorsString()) {
+            throw new \RuntimeException($errors);
+        }
     }
 
     public function test_lesson_view()
@@ -95,9 +116,11 @@ class LessonViewTest extends ContainerAwareTest
 
         $deserializer = $this->container->get('library.deserializer');
 
+        $deserializer->create($data, LessonView::class);
         /** @var LessonView $object */
-        $object = $deserializer->create($data, LessonView::class);
+        $object = $deserializer->getSerializedObject();
 
+        static::assertFalse($deserializer->hasErrors());
         static::assertEquals('Some name', $object->getName());
         static::assertInternalType('array', $object->getTips());
         static::assertInternalType('array', $object->getLessonTexts());

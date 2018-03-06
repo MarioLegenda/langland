@@ -36,11 +36,17 @@ class LessonMiddleware
             throw new \RuntimeException(sprintf('Course not found'));
         }
 
-        /** @var LessonView $lessonView */
-        $lessonView = $deserializer->create(
+        $deserializer->create(
             $data,
             LessonView::class
         );
+
+        if ($deserializer->hasErrors()) {
+            throw new \RuntimeException($deserializer->getErrorsString());
+        }
+
+        /** @var LessonView $lessonView */
+        $lessonView = $deserializer->getSerializedObject();
 
         $lesson = $lessonImplementation->tryFindByName($lessonView->getName());
 
@@ -75,10 +81,17 @@ class LessonMiddleware
         }
 
         /** @var LessonView $lessonView */
-        $lessonView = $deserializer->create(
+        $deserializer->create(
             $data,
             LessonView::class
         );
+
+        if ($deserializer->hasErrors()) {
+            throw new \RuntimeException($deserializer->getErrorsString());
+        }
+
+        /** @var LessonView $lessonView */
+        $lessonView = $deserializer->getSerializedObject();
 
         $existing = $lessonImplementation->tryFindByName($lessonView->getName());
 

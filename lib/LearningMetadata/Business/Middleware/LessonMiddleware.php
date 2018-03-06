@@ -19,7 +19,6 @@ class LessonMiddleware
      * @param LessonImplementation $lessonImplementation
      * @param Deserializer $deserializer
      * @throws \RuntimeException
-     * @throws RequestStatusException
      * @return array
      */
     public function createNewLessonMiddleware
@@ -59,7 +58,6 @@ class LessonMiddleware
      * @param LessonImplementation $lessonImplementation
      * @param Deserializer $deserializer
      * @throws \RuntimeException
-     * @throws RequestStatusException
      * @return array
      */
     public function createExistingLessonMiddleware
@@ -91,6 +89,7 @@ class LessonMiddleware
         }
 
         $lesson->setName($lessonView->getName());
+        $lesson->setLearningOrder($lessonView->getLearningOrder());
 
         return [
             'lesson' => $lesson,

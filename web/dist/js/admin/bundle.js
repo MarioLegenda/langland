@@ -22456,6 +22456,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
         _this.setName = _this.setName.bind(_this);
         _this.collectTips = _this.collectTips.bind(_this);
         _this.collectLessonTexts = _this.collectLessonTexts.bind(_this);
+        _this.setLearningOrder = _this.setLearningOrder.bind(_this);
         _this.submit = _this.submit.bind(_this);
 
         console.log(_this._getPageType());
@@ -22463,6 +22464,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
 
         _this.state.model = {
             name: "",
+            learningOrder: "",
             tips: [],
             lessonTexts: []
         };
@@ -22503,6 +22505,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
 
                     prevState.model.name = data.lesson.name;
                     prevState.model.tips = data.lesson.tips;
+                    prevState.model.learningOrder = data.lesson.learningOrder;
                     prevState.model.lessonTexts = data.lesson.lessonTexts;
                 });
             }, this), $.proxy(function (xhr) {}, this));
@@ -22519,6 +22522,13 @@ var Lesson = exports.Lesson = function (_React$Component) {
         value: function collectTips(tips) {
             this.setState(function (prevState) {
                 prevState.model.tips = tips;
+            });
+        }
+    }, {
+        key: 'setLearningOrder',
+        value: function setLearningOrder(value) {
+            this.setState(function (prevState) {
+                prevState.model.learningOrder = value;
             });
         }
     }, {
@@ -22641,11 +22651,15 @@ var Lesson = exports.Lesson = function (_React$Component) {
             var model = this.state.model;
 
             if (model.name.length === 0) {
-                errors.push(_react2.default.createElement(_fields.Notification, { key: 0, className: 'alert alert-danger', message: 'Name cannot be empty' }));
+                errors.push(_react2.default.createElement(_fields.Notification, { key: 1, className: 'alert alert-danger', message: 'Name cannot be empty' }));
+            }
+
+            if (Number.isInteger(parseInt(model.learningOrder)) === false) {
+                errors.push(_react2.default.createElement(_fields.Notification, { key: 0, className: 'alert alert-danger', message: 'Learning order cannot be empty and it has to be an integer' }));
             }
 
             if (model.lessonTexts.length === 0) {
-                errors.push(_react2.default.createElement(_fields.Notification, { key: 1, className: 'alert alert-danger', message: 'There has to be at least one lesson text associated with this lesson' }));
+                errors.push(_react2.default.createElement(_fields.Notification, { key: 2, className: 'alert alert-danger', message: 'There has to be at least one lesson text associated with this lesson' }));
             }
 
             return errors;
@@ -22656,6 +22670,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
             var model = {
                 name: this.state.model.name,
                 tips: this.state.model.tips,
+                learningOrder: this.state.model.learningOrder,
                 lessonTexts: this.state.model.lessonTexts
             };
 
@@ -22673,6 +22688,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
         key: 'render',
         value: function render() {
             var name = this.state.model.name;
+            var learningOrder = this.state.model.learningOrder;
             var tips = this.state.model.tips;
             var lessonTexts = this.state.model.lessonTexts;
             var internalError = this.state.form.internalError;
@@ -22700,6 +22716,17 @@ var Lesson = exports.Lesson = function (_React$Component) {
                         inputClass: "form-control",
                         dataCollector: this.setName,
                         inputValue: name
+                    })
+                ),
+                _react2.default.createElement(
+                    'div',
+                    { className: "margin-top-20" },
+                    _react2.default.createElement(_fields.Label, { labelText: "Learning order:" }),
+                    _react2.default.createElement(_fields.InputText, {
+                        labelText: "Learning order:",
+                        inputClass: "form-control",
+                        dataCollector: this.setLearningOrder,
+                        inputValue: learningOrder
                     })
                 ),
                 _react2.default.createElement(_tipControl.TipControl, { tipCollector: this.collectTips, tips: tips }),

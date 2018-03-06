@@ -11,7 +11,7 @@
     </id>
 
     <field name="name" type="string" nullable="false" unique="true" />
-    <field name="lessonOrder" type="integer" nullable="false" />
+    <field name="learningOrder" column="learning_order" type="integer" nullable="false" />
     <field name="uuid" type="string" nullable="false" unique="true"/>
     <field name="jsonLesson" type="json_array" nullable="false" />
 

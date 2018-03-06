@@ -20,6 +20,14 @@ class LessonView implements \JsonSerializable
      */
     protected $name;
     /**
+     * @var int $learningOrder
+     * @Serializer\Type("integer")
+     * @Serializer\SerializedName("learningOrder")
+     * @ValidationAssert\NotBlank(message="Learning order cannot be empty")
+     * @ValidationAssert\Type(type="integer", message="Learning order has to be an integer")
+     */
+    protected $learningOrder;
+    /**
      * @var array $tips
      * @Serializer\Type("array")
      * @Serializer\Accessor(setter="setTips")
@@ -37,16 +45,19 @@ class LessonView implements \JsonSerializable
      * LessonView constructor.
      * @param UuidInterface $uuid
      * @param string $name
+     * @param int $learningOrder
      * @param array $tips
      * @param array $lessonTexts
      */
     public function __construct(
         UuidInterface $uuid,
         string $name,
+        int $learningOrder,
         array $tips,
         array $lessonTexts
     ) {
         $this->uuid = $uuid;
+        $this->setLearningOrder($learningOrder);
         $this->setName($name);
         $this->setTips($tips);
         $this->setLessonTexts($lessonTexts);
@@ -64,6 +75,23 @@ class LessonView implements \JsonSerializable
     public function setName(string $name)
     {
         $this->name = $name;
+    }
+    /**
+     * @return int
+     */
+    public function getLearningOrder(): int
+    {
+        return $this->learningOrder;
+    }
+    /**
+     * @param int $learningOrder
+     * @return LessonView
+     */
+    public function setLearningOrder(int $learningOrder): LessonView
+    {
+        $this->learningOrder = $learningOrder;
+
+        return $this;
     }
     /**
      * @return UuidInterface
@@ -145,6 +173,7 @@ class LessonView implements \JsonSerializable
         $array = [
             'name' => $this->getName(),
             'tips' => [],
+            'learningOrder' => $this->getLearningOrder(),
             'lessonTexts' => [],
         ];
 

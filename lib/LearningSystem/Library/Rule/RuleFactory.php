@@ -38,11 +38,13 @@ class RuleFactory
     {
         $speakingLanguagesType = $metadata['speaking_languages'];
         $wordNumber = 20;
+        $wordLevel = 1;
 
         // rules go here
 
         $rule = Rule::createRule([
             'word_number' => $wordNumber,
+            'word_level' => $wordLevel,
         ]);
 
         return $rule;

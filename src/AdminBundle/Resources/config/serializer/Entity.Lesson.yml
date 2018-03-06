@@ -7,8 +7,8 @@ AdminBundle\Entity\Lesson:
         uuid:
             expose: true
             groups: [public_api]
-        lessonOrder:
-            serialized_name: order
+        learningOrder:
+            serialized_name: learningOrder
             expose: true
             groups: [public_api]
         jsonLesson:

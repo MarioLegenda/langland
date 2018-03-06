@@ -190,7 +190,7 @@ class LessonImplementation
         $lesson = new Lesson(
             $lessonView->getName(),
             $lessonView->getUuid(),
-            0,
+            $lessonView->getLearningOrder(),
             $lessonView->toArray(),
             $course
         );
@@ -211,6 +211,7 @@ class LessonImplementation
     public function updateLesson(LessonView $lessonView, Lesson $lesson)
     {
         $lesson->setJsonLesson($lessonView->toArray());
+        $lesson->setLearningOrder($lessonView->getLearningOrder());
 
         $this->lessonRepository->persistAndFlush($lesson);
 

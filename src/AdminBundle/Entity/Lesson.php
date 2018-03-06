@@ -21,9 +21,9 @@ class Lesson
      */
     private $uuid;
     /**
-     * @var int $order
+     * @var int $learningOrder
      */
-    private $lessonOrder;
+    private $learningOrder;
     /**
      * @var array $jsonLesson
      */
@@ -48,19 +48,19 @@ class Lesson
      * Lesson constructor.
      * @param string $name
      * @param UuidInterface $uuid
-     * @param int $order
+     * @param int $learningOrder
      * @param array $jsonLesson
      * @param Course $course
      */
     public function __construct(
         string $name,
         UuidInterface $uuid,
-        int $order,
+        int $learningOrder,
         array $jsonLesson,
         Course $course
     ) {
         $this->uuid = $uuid;
-        $this->lessonOrder = $order;
+        $this->learningOrder = $learningOrder;
         $this->jsonLesson = $jsonLesson;
         $this->course = $course;
         $this->name = $name;
@@ -99,6 +99,23 @@ class Lesson
         return $this;
     }
     /**
+     * @return int
+     */
+    public function getLearningOrder(): int
+    {
+        return $this->learningOrder;
+    }
+    /**
+     * @param int $learningOrder
+     * @return Lesson
+     */
+    public function setLearningOrder(int $learningOrder): Lesson
+    {
+        $this->learningOrder = $learningOrder;
+
+        return $this;
+    }
+    /**
      * @return UuidInterface
      */
     public function getUuid(): UuidInterface
@@ -112,23 +129,6 @@ class Lesson
     public function setUuid($uuid): Lesson
     {
         $this->uuid = $uuid;
-
-        return $this;
-    }
-    /**
-     * @return int
-     */
-    public function getLessonOrder(): int
-    {
-        return $this->lessonOrder;
-    }
-    /**
-     * @param int $order
-     * @return Lesson
-     */
-    public function setLessonOrder(int $order): Lesson
-    {
-        $this->lessonOrder = $order;
 
         return $this;
     }

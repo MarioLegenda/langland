@@ -9,6 +9,10 @@ class Rule implements RuleDataInterface
      */
     private $wordNumber;
     /**
+     * @var int $wordLevel
+     */
+    private $wordLevel;
+    /**
      * Rule constructor.
      *
      * Cannot be used. 'Rule' can only be constructed with Rule::createRule(array $metadata)
@@ -28,18 +32,34 @@ class Rule implements RuleDataInterface
     /**
      * @inheritdoc
      */
-    public function getWordNumber(): int
+    public function getWordNumber(): ?int
     {
         return $this->wordNumber;
     }
     /**
-     * @param array $metadata
-     * @return RuleDataInterface
+     * @inheritdoc
+     */
+    public function getWordLevel(): ?int
+    {
+        return $this->wordLevel;
+    }
+    /**
+     * @inheritdoc
+     */
+    public function setWordLevel(int $wordLevel): RuleDataInterface
+    {
+        $this->wordLevel = $wordLevel;
+
+        return $this;
+    }
+    /**
+     * @inheritdoc
      */
     public static function createRule(array $metadata): RuleDataInterface
     {
         $metadataSignatures = [
             'word_number' => 'setWordNumber',
+            'word_level' => 'setWordLevel',
         ];
 
         if (empty($metadata)) {

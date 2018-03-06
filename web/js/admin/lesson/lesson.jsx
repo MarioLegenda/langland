@@ -16,6 +16,7 @@ export class Lesson extends React.Component {
         this.setName = this.setName.bind(this);
         this.collectTips = this.collectTips.bind(this);
         this.collectLessonTexts = this.collectLessonTexts.bind(this);
+        this.setLearningOrder = this.setLearningOrder.bind(this);
         this.submit = this.submit.bind(this);
 
         console.log(this._getPageType());
@@ -23,6 +24,7 @@ export class Lesson extends React.Component {
 
         this.state.model = {
             name: "",
+            learningOrder: "",
             tips: [],
             lessonTexts: []
         };
@@ -59,6 +61,7 @@ export class Lesson extends React.Component {
 
                 prevState.model.name = data.lesson.name;
                 prevState.model.tips = data.lesson.tips;
+                prevState.model.learningOrder = data.lesson.learningOrder;
                 prevState.model.lessonTexts = data.lesson.lessonTexts;
             });
         }, this), $.proxy(function(xhr) {
@@ -75,6 +78,12 @@ export class Lesson extends React.Component {
     collectTips(tips) {
         this.setState(function(prevState) {
             prevState.model.tips = tips;
+        });
+    }
+
+    setLearningOrder(value) {
+        this.setState(function(prevState) {
+            prevState.model.learningOrder = value;
         });
     }
 
@@ -194,11 +203,15 @@ export class Lesson extends React.Component {
         const model = this.state.model;
 
         if (model.name.length === 0) {
-            errors.push(<Notification key={0} className={'alert alert-danger'} message={'Name cannot be empty'} />)
+            errors.push(<Notification key={1} className={'alert alert-danger'} message={'Name cannot be empty'} />)
+        }
+
+        if (Number.isInteger(parseInt(model.learningOrder)) === false) {
+            errors.push(<Notification key={0} className={'alert alert-danger'} message={'Learning order cannot be empty and it has to be an integer'} />)
         }
 
         if (model.lessonTexts.length === 0) {
-            errors.push(<Notification key={1} className={'alert alert-danger'} message={'There has to be at least one lesson text associated with this lesson'} />)
+            errors.push(<Notification key={2} className={'alert alert-danger'} message={'There has to be at least one lesson text associated with this lesson'} />)
         }
 
         return errors;
@@ -209,6 +222,7 @@ export class Lesson extends React.Component {
         const model = {
             name: this.state.model.name,
             tips: this.state.model.tips,
+            learningOrder: this.state.model.learningOrder,
             lessonTexts: this.state.model.lessonTexts
         };
 
@@ -225,6 +239,7 @@ export class Lesson extends React.Component {
 
     render() {
         const name = this.state.model.name;
+        const learningOrder = this.state.model.learningOrder;
         const tips = this.state.model.tips;
         const lessonTexts = this.state.model.lessonTexts;
         const internalError = this.state.form.internalError;
@@ -254,6 +269,16 @@ export class Lesson extends React.Component {
                             inputClass={"form-control"}
                             dataCollector={this.setName}
                             inputValue={name}
+                        />
+                    </div>
+
+                    <div className={"margin-top-20"}>
+                        <Label labelText={"Learning order:"}/>
+                        <InputText
+                            labelText={"Learning order:"}
+                            inputClass={"form-control"}
+                            dataCollector={this.setLearningOrder}
+                            inputValue={learningOrder}
                         />
                     </div>
 

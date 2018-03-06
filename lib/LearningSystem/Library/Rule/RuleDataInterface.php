@@ -10,7 +10,16 @@ interface RuleDataInterface
      */
     public function setWordNumber(int $wordNumber): RuleDataInterface;
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWordNumber(): int;
+    public function getWordNumber(): ?int;
+    /**
+     * @param int $wordLevel
+     * @return RuleDataInterface
+     */
+    public function setWordLevel(int $wordLevel): RuleDataInterface;
+    /**
+     * @return int|null
+     */
+    public function getWordLevel(): ?int;
 }

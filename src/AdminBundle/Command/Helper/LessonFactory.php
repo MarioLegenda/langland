@@ -50,6 +50,7 @@ class LessonFactory
             $lessonView = new LessonView(
                 Uuid::uuid4(),
                 $this->getFaker()->name,
+                $i,
                 $tips,
                 $lessonTexts
             );

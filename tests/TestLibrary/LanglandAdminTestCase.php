@@ -2,6 +2,7 @@
 
 namespace TestLibrary;
 
+use RDV\SymfonyContainerMocks\DependencyInjection\TestContainer;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\BrowserKit\Cookie;
@@ -18,7 +19,7 @@ class LanglandAdminTestCase extends WebTestCase
      */
     protected $client;
     /**
-     * @var ContainerInterface $container
+     * @var TestContainer $container
      */
     protected $container;
     /**
@@ -84,7 +85,7 @@ class LanglandAdminTestCase extends WebTestCase
         // the firewall context defaults to the firewall name
         $firewallContext = 'admin';
 
-        $token = new UsernamePasswordToken('root', 'root', $firewallContext, array('ROLE_ADMIN'));
+        $token = new UsernamePasswordToken('root', 'root', $firewallContext, array('ROLE_ADMIN', 'ROLE_USER', 'ROLE_PUBLIC_API_USER'));
         $session->set('_security_'.$firewallContext, serialize($token));
         $session->save();
 

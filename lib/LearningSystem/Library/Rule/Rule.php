@@ -19,7 +19,6 @@ class Rule implements RuleDataInterface
      * static method.
      */
     private function __construct() {}
-
     /**
      * @inheritdoc
      */

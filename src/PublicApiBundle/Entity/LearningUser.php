@@ -34,6 +34,10 @@ class LearningUser
      */
     private $answeredQuestions;
     /**
+     * @var LearningUserLesson $learningUserLesson
+     */
+    private $learningUserLesson;
+    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -135,6 +139,23 @@ class LearningUser
     public function setAnsweredQuestions(array $answeredQuestions): void
     {
         $this->answeredQuestions = $answeredQuestions;
+    }
+    /**
+     * @return LearningUserLesson
+     */
+    public function getLearningUserLesson(): LearningUserLesson
+    {
+        return $this->learningUserLesson;
+    }
+    /**
+     * @param LearningUserLesson $learningUserLesson
+     * @return LearningUser
+     */
+    public function setLearningUserLesson(LearningUserLesson $learningUserLesson): LearningUser
+    {
+        $this->learningUserLesson = $learningUserLesson;
+
+        return $this;
     }
     /**
      * @param \DateTime $createdAt

@@ -47,7 +47,7 @@ class LessonDataProvider implements DefaultDataProviderInterface
         return $this->createLesson(
             $course,
             Uuid::uuid4(),
-            0,
+            rand(0, 999),
             ['name' => $faker->name]
         );
     }

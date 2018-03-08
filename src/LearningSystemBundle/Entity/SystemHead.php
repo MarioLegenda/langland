@@ -2,7 +2,9 @@
 
 namespace LearningSystemBundle\Entity;
 
-class SystemHead
+use LearningSystem\Library\Repository\Contract\SystemHeadInterface;
+
+class SystemHead implements SystemHeadInterface
 {
     /**
      * @var int $id
@@ -13,24 +15,30 @@ class SystemHead
      */
     private $externalCorrelationId;
     /**
-     * @return int
+     * @inheritdoc
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
     /**
-     * @return int
+     * @inheritdoc
+     */
+    public function setId(int $id): SystemHeadInterface
+    {
+        $this->id = $id;
+    }
+    /**
+     * @inheritdoc
      */
     public function getExternalCorrelationId(): int
     {
         return $this->externalCorrelationId;
     }
     /**
-     * @param int $externalCorrelationId
-     * @return SystemHead
+     * @inheritdoc
      */
-    public function setExternalCorrelationId(int $externalCorrelationId): SystemHead
+    public function setExternalCorrelationId(int $externalCorrelationId): SystemHeadInterface
     {
         $this->externalCorrelationId = $externalCorrelationId;
     }

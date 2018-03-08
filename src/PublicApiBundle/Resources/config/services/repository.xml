@@ -38,6 +38,14 @@
         </service>
 
         <service
+                id="langland.public_api.repository.word"
+                class="PublicApi\Infrastructure\Repository\WordRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\Word</argument>
+        </service>
+
+        <service
                 id="langland.public_api.repository.repository_communicator"
                 class="PublicApi\Infrastructure\Communication\RepositoryCommunicator" public="true">
 

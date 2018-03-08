@@ -12,6 +12,8 @@
 
             <argument type="service" id="langland.public_api.repository.learning_user" />
             <argument type="service" id="library.api_sdk" />
+            <argument type="service" id="langland.public_api.infrastructure.rule_resolver" />
+
         </service>
 
     </services>

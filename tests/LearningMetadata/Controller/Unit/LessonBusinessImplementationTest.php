@@ -78,10 +78,16 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 3',
             ],
             'name' => 'name-'.Uuid::uuid4()->toString(),
+            'learningOrder' => rand(0, 999),
         ];
 
+        $this->deserializer->create($data, LessonView::class);
+
+        static::assertFalse($this->deserializer->hasErrors());
+
         /** @var LessonView $lessonView */
-        $lessonView = $this->deserializer->create($data, LessonView::class);
+        $lessonView = $this->deserializer->getSerializedObject();
+
         $lessonView->setUuid($uuid);
 
         $course = $this->courseImplementation->findCourse($course->getId());
@@ -123,6 +129,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 3',
             ],
             'name' => 'name-'.Uuid::uuid4()->toString(),
+            'learningOrder' => rand(0, 999),
         ];
 
         $lessonMiddleware = new LessonMiddleware();
@@ -177,6 +184,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 3',
             ],
             'name' => $name,
+            'learningOrder' => rand(0, 999),
         ];
 
         $lessonMiddleware = new LessonMiddleware();
@@ -210,6 +218,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 3',
             ],
             'name' => $name,
+            'learningOrder' => rand(0, 999),
         ];
 
         $lessonMiddleware = new LessonMiddleware();
@@ -253,6 +262,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
                 'Lesson text 3',
             ],
             'name' => $name,
+            'learningOrder' => rand(0, 999),
         ];
 
         $lessonMiddleware = new LessonMiddleware();

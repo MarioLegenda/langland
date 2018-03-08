@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e9f5b3eb83aace0f5c2347ac0e4a1d3",
+    "content-hash": "a9b492477e789932bf4b99c77207101e",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4863,6 +4863,53 @@
                 "response"
             ],
             "time": "2016-08-06T14:39:51+00:00"
+        },
+        {
+            "name": "ramunasd/symfony-container-mocks",
+            "version": "0.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ramunasd/symfony-container-mocks.git",
+                "reference": "e67b8fca1ce719af7a9492eabb19abb6470515a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ramunasd/symfony-container-mocks/zipball/e67b8fca1ce719af7a9492eabb19abb6470515a9",
+                "reference": "e67b8fca1ce719af7a9492eabb19abb6470515a9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "phpspec/prophecy": "~1.6",
+                "symfony/dependency-injection": ">=2.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.0",
+                "symfony/config": ">=2.3",
+                "symfony/framework-bundle": ">=2.3",
+                "symfony/http-kernel": ">=2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RDV\\SymfonyContainerMocks\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Provides extended Symfony dependency injection container enabling service mocking.",
+            "homepage": "https://github.com/ramunasd/symfony-container-mocks",
+            "keywords": [
+                "TDD",
+                "container",
+                "phpunit",
+                "prophecy",
+                "symfony",
+                "test"
+            ],
+            "time": "2017-11-30T21:03:20+00:00"
         },
         {
             "name": "sensio/generator-bundle",

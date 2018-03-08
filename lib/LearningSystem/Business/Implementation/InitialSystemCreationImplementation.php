@@ -8,10 +8,12 @@ use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
 use LearningSystem\Infrastructure\Type\TypeList\FrontendTypeList;
 use LearningSystem\Library\Converter\QuestionToTypeConverter;
 use LearningSystem\Library\Rule\RuleFactory;
+use PublicApi\LearningSystem\RuleResolver;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswersValidator;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
+use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 
 class InitialSystemCreationImplementation
 {
@@ -24,63 +26,31 @@ class InitialSystemCreationImplementation
      */
     private $apiSdk;
     /**
+     * @var RuleResolver $ruleResolver
+     */
+    private $ruleResolver;
+    /**
      * InitialSystemCreationImplementation constructor.
      * @param ApiSDK $apiSDK
      * @param LearningUserRepository $learningUserRepository
+     * @param RuleResolver $ruleResolver
      */
     public function __construct(
         LearningUserRepository $learningUserRepository,
-        ApiSDK $apiSDK
+        ApiSDK $apiSDK,
+        RuleResolver $ruleResolver
     ) {
         $this->apiSdk = $apiSDK;
         $this->learningUserRepository = $learningUserRepository;
+        $this->ruleResolver = $ruleResolver;
     }
     /**
      * @param LearningUser $learningUser
-     * @param QuestionAnswers $questionAnswers
      * @return array
      */
-    public function createInitialSystem(LearningUser $learningUser, QuestionAnswers $questionAnswers): array
-    {
-        $outcome = $this->validateQuestionAnswers($questionAnswers);
-
-        if (is_array($outcome)) {
-            return $outcome;
-        }
-
-        $metadata = $this->convertAsTypes($questionAnswers);
-
-        $rule = RuleFactory::create(BasicGameType::getName(), $metadata);
-    }
-    /**
-     * @param QuestionAnswers $questionAnswers
-     * @return array|bool
-     */
-    private function validateQuestionAnswers(QuestionAnswers $questionAnswers)
-    {
-        $validator = new QuestionAnswersValidator($questionAnswers, new Questions());
-
-        try {
-            $validator->validate();
-        } catch (\RuntimeException $e) {
-            return $this->apiSdk
-                ->create([])
-                ->setStatusCode(403)
-                ->isResource()
-                ->method('POST')
-                ->build();
-        }
-
-        return true;
-    }
-    /**
-     * @param QuestionAnswers $questionAnswers
-     * @return array
-     */
-    private function convertAsTypes(QuestionAnswers $questionAnswers): array
-    {
-        $converter = new QuestionToTypeConverter(FrontendTypeList::getList(), $questionAnswers);
-
-        return $converter->convert();
+    public function createInitialSystem(
+        LearningUser $learningUser
+    ): array {
+        return [];
     }
 }

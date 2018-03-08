@@ -24,5 +24,6 @@ class PublicApiExtension extends Extension
         $loader->load('controller.xml');
         $loader->load('implementation.xml');
         $loader->load('repository.xml');
+        $loader->load('infrastructure.xml');
     }
 }

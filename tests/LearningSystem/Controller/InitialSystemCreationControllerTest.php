@@ -2,8 +2,13 @@
 
 namespace Tests\LearningSystem\Controller;
 
+use ArmorBundle\Entity\User;
 use Faker\Factory;
+use Faker\Generator;
 use LearningSystem\Business\Controller\InitialSystemCreationController;
+use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TestLibrary\DataProvider\LearningUserDataProvider;
 use TestLibrary\DataProvider\UserDataProvider;
 use TestLibrary\LanglandAdminTestCase;
@@ -18,10 +23,6 @@ class InitialSystemCreationControllerTest extends LanglandAdminTestCase
      * @var UserDataProvider $userDataProvider
      */
     private $userDataProvider;
-    /**
-     * @var InitialSystemCreationController $initialSystemCreationController
-     */
-    private $initialSystemCreationController;
 
     public function setUp()
     {
@@ -29,7 +30,6 @@ class InitialSystemCreationControllerTest extends LanglandAdminTestCase
 
         $this->userDataProvider = $this->container->get('langland.data_provider.user');
         $this->learningUserDataProvider = $this->container->get('langland.data_provider.learning_user');
-        $this->initialSystemCreationController = $this->container->get('learning_system.business.controller.initial_system_creation');
     }
 
     public function test_createInitialSystem()
@@ -41,6 +41,24 @@ class InitialSystemCreationControllerTest extends LanglandAdminTestCase
 
         $user->setCurrentLearningUser($learningUser);
 
-        $this->initialSystemCreationController->createInitialDataAction($user);
+        $this->createQuestionAnswersProviderMock($user);
+
+        $initialSystemCreationController = $this->container->get('learning_system.business.controller.initial_system_creation');
+
+        $initialSystemCreationController->createInitialDataAction($user);
+    }
+    /**
+     * @param User $user
+     */
+    private function createQuestionAnswersProviderMock(User $user)
+    {
+        $token = new UsernamePasswordToken($user, null, 'admin', ['ROLE_PUBLIC_API_USER']);
+
+        $tokenStorage = new TokenStorage();
+        $tokenStorage->setToken($token);
+
+        $questionAnswersResolver = new QuestionAnswersApplicationProvider($tokenStorage);
+
+        $this->container->set('langland.public_api.question_answers_application_provider', $questionAnswersResolver);
     }
 }

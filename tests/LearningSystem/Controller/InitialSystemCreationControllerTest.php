@@ -7,6 +7,7 @@ use Faker\Factory;
 use Faker\Generator;
 use LearningSystem\Business\Controller\InitialSystemCreationController;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
+use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TestLibrary\DataProvider\LearningUserDataProvider;
@@ -57,7 +58,9 @@ class InitialSystemCreationControllerTest extends LanglandAdminTestCase
         $tokenStorage = new TokenStorage();
         $tokenStorage->setToken($token);
 
-        $questionAnswersResolver = new QuestionAnswersApplicationProvider($tokenStorage);
+        $learningUserProvider = new LearningUserProvider($tokenStorage);
+
+        $questionAnswersResolver = new QuestionAnswersApplicationProvider($learningUserProvider);
 
         $this->container->set('langland.public_api.question_answers_application_provider', $questionAnswersResolver);
     }

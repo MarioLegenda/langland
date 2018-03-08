@@ -3,6 +3,7 @@
 namespace PublicApi\LearningSystem;
 
 use LearningSystem\Infrastructure\Questions;
+use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswersValidator;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -15,15 +16,13 @@ class QuestionAnswersApplicationProvider
     private $questionAnswers;
     /**
      * QuestionAnswersApplicationResolver constructor.
-     * @param TokenStorage $tokenStorage
+     * @param LearningUserProvider $learningUserProvider
      */
     public function __construct(
-        TokenStorage $tokenStorage
+        LearningUserProvider $learningUserProvider
     ) {
-        $this->questionAnswers = $tokenStorage
-            ->getToken()
-            ->getUser()
-            ->getCurrentLearningUser()
+        $this->questionAnswers = $learningUserProvider
+            ->getLearningUser()
             ->getAnsweredQuestions();
     }
     /**

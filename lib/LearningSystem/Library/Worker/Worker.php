@@ -24,6 +24,6 @@ class Worker
     {
         $data = $this->dataCollector->getCollectedData();
 
-        
+
     }
 }

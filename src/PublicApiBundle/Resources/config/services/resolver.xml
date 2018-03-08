@@ -38,12 +38,5 @@
 
             <tag name="controller.argument_value_resolver" priority="50" />
         </service>
-
-        <service
-                id="langland.public_api.question_answers_application_provider"
-                class="PublicApi\LearningSystem\QuestionAnswersApplicationProvider">
-
-            <argument type="service" id="security.token_storage" />
-        </service>
     </services>
 </container>

@@ -11,10 +11,6 @@ class SystemHead implements SystemHeadInterface
      */
     private $id;
     /**
-     * @var int $externalCorrelationId
-     */
-    private $externalCorrelationId;
-    /**
      * @inheritdoc
      */
     public function getId(): int
@@ -28,20 +24,4 @@ class SystemHead implements SystemHeadInterface
     {
         $this->id = $id;
     }
-    /**
-     * @inheritdoc
-     */
-    public function getExternalCorrelationId(): int
-    {
-        return $this->externalCorrelationId;
-    }
-    /**
-     * @inheritdoc
-     */
-    public function setExternalCorrelationId(int $externalCorrelationId): SystemHeadInterface
-    {
-        $this->externalCorrelationId = $externalCorrelationId;
-    }
-
-
 }

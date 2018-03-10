@@ -1,0 +1,7 @@
+configuration:
+    scenario:
+        create_tables:
+            atomic: true
+            statements:
+                create_system_head:
+                    sql: "CREATE TABLE IF NOT EXISTS system_head (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"

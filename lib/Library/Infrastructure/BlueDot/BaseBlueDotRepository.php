@@ -18,7 +18,7 @@ class BaseBlueDotRepository
      */
     public function __construct(BlueDot $blueDot, string $apiName)
     {
-        $blueDot->useApi($apiName);
+        $blueDot->useRepository($apiName);
 
         $this->blueDot = $blueDot;
     }

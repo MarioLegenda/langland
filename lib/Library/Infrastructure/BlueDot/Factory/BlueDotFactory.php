@@ -9,9 +9,9 @@ use Doctrine\DBAL\Connection as DoctrineConnection;
 class BlueDotFactory
 {
     /**
-     * @var string $blueDotDir
+     * @var array $blueDotApis
      */
-    private $blueDotDir;
+    private $blueDotApis;
     /**
      * @var DoctrineConnection $doctrineConnection
      */
@@ -19,14 +19,14 @@ class BlueDotFactory
     /**
      * BlueDotFactory constructor.
      * @param DoctrineConnection $doctrineConnection
-     * @param string $blueDotDir
+     * @param array $blueDotApis
      */
     public function __construct(
         DoctrineConnection $doctrineConnection,
-        string $blueDotDir
+        array $blueDotApis
     ) {
         $this->doctrineConnection = $doctrineConnection;
-        $this->blueDotDir = $blueDotDir;
+        $this->blueDotApis = $blueDotApis;
     }
     /**
      * @return BlueDot
@@ -36,7 +36,12 @@ class BlueDotFactory
         $blueDotConnection = new Connection();
         $blueDotConnection->setPDO($this->doctrineConnection->getWrappedConnection());
 
-        $blueDot = new BlueDot($this->blueDotDir, $blueDotConnection);
+        $blueDot = new BlueDot();
+        $blueDot->setConnection($blueDotConnection);
+
+        foreach ($this->blueDotApis as $apiDir) {
+            $blueDot->repository()->putRepository($apiDir);
+        }
 
         return $blueDot;
     }

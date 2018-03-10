@@ -52,5 +52,14 @@
             <argument type="service" id="langland.public_api.repository.language" />
             <argument type="service" id="langland.public_api.repository.learning_user" />
         </service>
+
+        <service
+                id="langland.public_api.repository.blue_dot.learning_user_metadata"
+                class="PublicApi\LearningUser\Repository\LearningMetadataRepository" public="true">
+
+            <argument type="service" id="langland.common.blue_dot" />
+            <argument>learning_user_metadata</argument>
+        </service>
+
     </services>
 </container>

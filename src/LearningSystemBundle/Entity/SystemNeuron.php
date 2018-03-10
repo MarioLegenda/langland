@@ -13,6 +13,14 @@ class SystemNeuron
      */
     private $name;
     /**
+     * @var bool $hasCompleted
+     */
+    private $hasCompleted = false;
+    /**
+     * @var int $timeSpent
+     */
+    private $timeSpent = 0;
+    /**
      * @var int $accessedCount
      */
     private $accessedCount;

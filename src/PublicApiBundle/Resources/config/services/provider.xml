@@ -7,6 +7,7 @@
     <services>
         <service
                 id="langland.public_api.question_answers_application_provider"
+                public="true"
                 class="PublicApi\LearningSystem\QuestionAnswersApplicationProvider">
 
             <argument type="service" id="langland.public_api.learning_user_provider" />
@@ -14,6 +15,7 @@
 
         <service
                 id="langland.public_api.learning_user_provider"
+                public="true"
                 class="PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider">
 
             <argument type="service" id="security.token_storage" />

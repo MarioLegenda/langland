@@ -13,13 +13,4 @@ interface SystemHeadInterface
      * @return int
      */
     public function getId(): int;
-    /**
-     * @param int $externalCorrelationId
-     * @return SystemHeadInterface
-     */
-    public function setExternalCorrelationId(int $externalCorrelationId): SystemHeadInterface;
-    /**
-     * @return int
-     */
-    public function getExternalCorrelationId(): int;
 }

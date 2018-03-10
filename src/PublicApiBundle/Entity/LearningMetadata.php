@@ -7,11 +7,19 @@ use LearningSystemBundle\Entity\SystemHead;
 class LearningMetadata
 {
     /**
-     * @var SystemHead $lessonSystemHead
+     * @var SystemHead $learningLessonSystemHead
      */
-    private $lessonSystemHead;
+    private $learningLessonSystemHead;
     /**
-     * @var SystemHead $gamesSystemHeads
+     * @var bool $hasCompleted
      */
-    private $gamesSystemHeads;
+    private $hasCompleted = false;
+    /**
+     * @var bool $isCurrent
+     */
+    private $isCurrent = false;
+    /**
+     * @var int $learningUserId
+     */
+    private $learningUser;
 }

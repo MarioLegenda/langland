@@ -10,7 +10,7 @@
                 class="Library\Infrastructure\BlueDot\Factory\BlueDotFactory" public="true">
 
             <argument type="service" id="doctrine.dbal.default_connection" />
-            <argument>%blue_dot_dir%</argument>
+            <argument>%blue_dot_apis%</argument>
         </service>
 
         <service id="langland.common.blue_dot"

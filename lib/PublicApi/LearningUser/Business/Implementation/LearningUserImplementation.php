@@ -29,6 +29,10 @@ class LearningUserImplementation
      */
     private $userRepository;
     /**
+     * @var LearningMetadataImplementation $learningMetadataImplementation
+     */
+    private $learningMetadataImplementation;
+    /**
      * @var ApiSDK $apiSdk
      */
     private $apiSdk;
@@ -37,18 +41,21 @@ class LearningUserImplementation
      * @param LearningUserRepository $learningUserRepository
      * @param LanguageRepository $languageRepository
      * @param UserRepository $userRepository
+     * @param LearningMetadataImplementation $learningMetadataImplementation
      * @param ApiSDK $apiSDK
      */
     public function __construct(
         LearningUserRepository $learningUserRepository,
         LanguageRepository $languageRepository,
         UserRepository $userRepository,
+        LearningMetadataImplementation $learningMetadataImplementation,
         ApiSDK $apiSDK
     ) {
         $this->learningUserRepository = $learningUserRepository;
         $this->languageRepository = $languageRepository;
         $this->userRepository = $userRepository;
         $this->apiSdk = $apiSDK;
+        $this->learningMetadataImplementation = $learningMetadataImplementation;
     }
     /**
      * @param int $id
@@ -116,6 +123,8 @@ class LearningUserImplementation
         $learningUser = $this->learningUserRepository->persistAndFlush($learningUser);
 
         $this->userRepository->persistAndFlush($user);
+
+        $this->learningMetadataImplementation->createFirstLearningMetadata($learningUser);
 
         $data = [
             'id' => $learningUser->getId(),

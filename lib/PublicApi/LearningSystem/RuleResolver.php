@@ -31,6 +31,7 @@ class RuleResolver
     {
         $questionAnswers = $this->questionAnswersApplicationResolver->resolve();
 
+        // TODO: Decide which game type this is
         return RuleFactory::create(
                 BasicGameType::getName(),
                 $this->convertAsTypes($questionAnswers)

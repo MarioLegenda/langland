@@ -14,3 +14,8 @@ configuration:
                 parameters: [id]
                 model:
                     object: AdminBundle\Entity\Lesson
+
+            find_first_lesson:
+                sql: "SELECT * FROM lessons ORDER BY learning_order ASC LIMIT 1"
+                model:
+                    object: AdminBundle\Entity\Lesson

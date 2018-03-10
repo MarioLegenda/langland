@@ -1,0 +1,9 @@
+configuration:
+    scenario:
+        create_tables:
+            atomic: true
+            statements:
+                create_learning_metadata:
+                    sql: "CREATE TABLE IF NOT EXISTS learning_metadata (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, lesson_system_head INT, learning_user_id INT NOT NULL) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
+                create_learning_lesson:
+                    sql: "CREATE TABLE IF NOT EXISTS learning_lessons (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, system_head_id INT NOT NULL, lesson_id INT NOT NULL, has_passed TINYINT(1) NOT NULL DEFAULT 0) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"

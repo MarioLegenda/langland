@@ -11,7 +11,7 @@ use PublicApi\Lesson\Repository\LessonRepository;
 class DataCollector implements DataCollectorInterface
 {
     /**
-     * @var LessonRepository $lessonRepository;
+     * @var LessonRepository $lessonRepository
      */
     private $lessonRepository;
     /**

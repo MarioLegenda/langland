@@ -51,6 +51,8 @@ class InitialSystemCreationImplementation
     public function createInitialSystem(
         LearningUser $learningUser
     ): array {
+
+
         return [];
     }
 }

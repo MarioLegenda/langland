@@ -1,0 +1,5 @@
+create_learning_metadata:
+    find_lesson: "SELECT l.id AS id FROM lessons AS l INNER JOIN courses AS c ON l.course_id = c.id AND c.language_id = :language_id AND c.type = :course_type AND l.learning_order = :learning_order"
+    create_data_collector: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
+    create_learning_lesson: "INSERT INTO learning_lessons (data_collector_id, lesson_id, has_completed) VALUES (:data_collector_id, :lesson_id, 0)"
+    create_learning_metadata: "INSERT INTO learning_metadata (lesson_data_collector_id, learning_user_id) VALUES(:data_collector_id, :learning_user_id)"

@@ -1,15 +1,18 @@
 configuration:
+
+    sql_import: imports/learning_user_metadata.yml
+
     scenario:
         create_learning_metadata:
             atomic: true
             statements:
                 find_lesson:
-                    sql: "SELECT l.id AS id FROM lessons AS l INNER JOIN courses AS c ON l.course_id = c.id AND c.language_id = :language_id AND c.type = :course_type AND l.learning_order = :learning_order"
+                    sql: create_learning_metadata.find_lesson
                     parameters: [language_id, course_type, learning_order]
                 create_data_collector:
-                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
+                    sql: create_learning_metadata.create_data_collector
                 create_learning_lesson:
-                    sql: "INSERT INTO learning_lessons (data_collector_id, lesson_id, has_completed) VALUES (:data_collector_id, :lesson_id, 0)"
+                    sql: create_learning_metadata.create_learning_lesson
                     foreign_key:
                         statement_name: create_data_collector
                         bind_to: data_collector_id
@@ -17,7 +20,7 @@ configuration:
                         statement_name: find_lesson
                         values: { find_lesson.id : lesson_id }
                 create_learning_metadata:
-                    sql: "INSERT INTO learning_metadata (lesson_data_collector_id, learning_user_id) VALUES(:data_collector_id, :learning_user_id)"
+                    sql: create_learning_metadata.create_learning_metadata
                     parameters: [learning_user_id]
                     foreign_key:
                         statement_name: create_data_collector

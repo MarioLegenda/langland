@@ -38,8 +38,8 @@ class CourseFactory
             $course->setName($language->getName() . ' course ' . $i);
             $course->setWhatToLearn($this->getFaker()->sentence(30));
             $course->setLanguage($language);
-            $course->setType($courseTypes[rand(0, 2)]);
-            $course->setCourseOrder(rand(0, 10));
+            $course->setType($courseTypes[$i]);
+            $course->setCourseOrder($i);
             $course->setCourseUrl(\URLify::filter($course->getName()));
 
             $this->em->persist($course);

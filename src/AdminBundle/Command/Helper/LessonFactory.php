@@ -38,12 +38,12 @@ class LessonFactory
     {
         for ($i = 0; $i < $numberOfEntries; $i++) {
             $tips = [];
-            for ($i = 0; $i < 10; $i++) {
+            for ($a = 0; $a < 10; $a++) {
                 $tips[] = new Tip($this->getFaker()->name);
             }
 
             $lessonTexts = [];
-            for ($i = 0; $i < 10; $i++) {
+            for ($b = 0; $b < 10; $b++) {
                 $lessonTexts[] = new LessonText($this->getFaker()->text);
             }
 
@@ -58,7 +58,7 @@ class LessonFactory
             $lesson = new Lesson(
                 $lessonView->getName(),
                 $lessonView->getUuid(),
-                $i,
+                $i + 1,
                 $lessonView->toArray(),
                 $course
             );

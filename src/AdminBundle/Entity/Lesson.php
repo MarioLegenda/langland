@@ -33,10 +33,6 @@ class Lesson
      */
     private $course;
     /**
-     * @var ArrayCollection $basicWordGames
-     */
-    private $basicWordGames;
-    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -64,8 +60,6 @@ class Lesson
         $this->jsonLesson = $jsonLesson;
         $this->course = $course;
         $this->name = $name;
-
-        $this->basicWordGames = new ArrayCollection();
     }
     /**
      * @param int $id
@@ -171,21 +165,6 @@ class Lesson
     public function getCourse()
     {
         return $this->course;
-    }
-    /**
-     * @return ArrayCollection
-     */
-    public function getBasicWordGames()
-    {
-        return $this->basicWordGames;
-    }
-    /**
-     * @param array $basicWordGames
-     * @return Lesson
-     */
-    public function setBasicWordGames(array $basicWordGames): Lesson
-    {
-        $this->basicWordGames = $basicWordGames;
     }
     /**
      * @param \DateTime|string $createdAt

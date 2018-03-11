@@ -4,7 +4,7 @@ namespace PublicApiBundle\Entity;
 
 use AdminBundle\Entity\Lesson;
 use LearningSystem\Library\Repository\Contract\SystemHeadInterface;
-use LearningSystemBundle\Entity\SystemNeuron;
+use LearningSystemBundle\Entity\DataCollector;
 
 class LearningLesson
 {
@@ -13,9 +13,9 @@ class LearningLesson
      */
     private $id;
     /**
-     * @var SystemNeuron $systemNeuron
+     * @var DataCollector $systemNeuron
      */
-    private $systemNeuron;
+    private $dataCollector;
     /**
      * @var Lesson $lesson
      */
@@ -23,7 +23,7 @@ class LearningLesson
     /**
      * @var bool $hasPassed
      */
-    private $hasPassed = false;
+    private $hasCompleted = false;
     /**
      * @param int $id
      * @return LearningLesson
@@ -44,17 +44,17 @@ class LearningLesson
     /**
      * @return bool
      */
-    public function hasPassed(): bool
+    public function hasCompleted(): bool
     {
-        return $this->hasPassed;
+        return $this->hasCompleted;
     }
     /**
-     * @param bool $hasPassed
+     * @param bool $hasCompleted
      * @return LearningLesson
      */
-    public function setAsPassed(bool $hasPassed): LearningLesson
+    public function setAsCompleted(bool $hasCompleted): LearningLesson
     {
-        $this->hasPassed = $hasPassed;
+        $this->hasCompleted = $hasCompleted;
 
         return $this;
     }

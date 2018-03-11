@@ -6,6 +6,7 @@ use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Language;
 use Faker\Generator;
 use LearningMetadata\Repository\Implementation\CourseRepository;
+use PublicApi\Infrastructure\Type\CourseType;
 
 class CourseDataProvider implements DefaultDataProviderInterface
 {
@@ -31,11 +32,14 @@ class CourseDataProvider implements DefaultDataProviderInterface
     }
     /**
      * @param Generator $faker
+     * @param Language|null $language
      * @return Course
      */
-    public function createDefault(Generator $faker): Course
+    public function createDefault(Generator $faker, Language $language = null): Course
     {
-        $language = $this->languageDataProvider->createDefaultDb($faker);
+        if (!$language instanceof Language) {
+            $language = $this->languageDataProvider->createDefaultDb($faker);
+        }
 
         return $this->createCourse(
             $language,
@@ -45,11 +49,12 @@ class CourseDataProvider implements DefaultDataProviderInterface
     }
     /**
      * @param Generator $faker
+     * @param Language|null $language
      * @return Course
      */
-    public function createDefaultDb(Generator $faker): Course
+    public function createDefaultDb(Generator $faker, Language $language = null): Course
     {
-        return $this->courseRepository->persistAndFlush($this->createDefault($faker));
+        return $this->courseRepository->persistAndFlush($this->createDefault($faker, $language));
     }
     /**
      * @param Language $language
@@ -67,8 +72,9 @@ class CourseDataProvider implements DefaultDataProviderInterface
         $course = new Course();
         $course->setName($name);
         $course->setLanguage($language);
+        $course->setCourseOrder(1);
+        $course->setType((string) CourseType::fromValue('Beginner'));
         $course->setCourseUrl((is_string($courseUrl)) ? $courseUrl : \URLify::filter($name));
-        $course->setInitialCourse(true);
         $course->setWhatToLearn($whatToLearn);
 
         return $course;

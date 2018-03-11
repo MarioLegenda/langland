@@ -1,4 +1,0 @@
-learning_system_api:
-  resource: "@LearningSystemBundle/Resources/config/routing/api.yml"
-  prefix: /api/v1/learning-system
-  host: '%host%'

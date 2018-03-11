@@ -24,6 +24,7 @@
                 class="PublicApi\LearningUser\Business\Controller\LearningUserController" public="true">
 
             <argument type="service" id="langland.public_api.business.implementation.learning_user" />
+            <argument type="service" id="langland.public_api.business.implementation.learning_metadata" />
         </service>
 
         <service
@@ -31,13 +32,6 @@
                 class="PublicApi\StaticPage\Business\Controller\StaticController" public="true">
 
             <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
-        </service>
-
-        <service
-                id="langland.learning_system.controller.initial_system_creation"
-                class="PublicApi\LearningSystem\Business\Controller\InitialSystemCreationController" public="true">
-
-            <argument type="service" id="langland.public_api.business.implementation.initial_system_creation" />
         </service>
 
     </services>

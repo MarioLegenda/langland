@@ -5,6 +5,7 @@ namespace AdminBundle\Command\Helper;
 use AdminBundle\Entity\Language;
 use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\Course;
+use PublicApi\Infrastructure\Type\CourseType;
 
 class CourseFactory
 {
@@ -28,7 +29,7 @@ class CourseFactory
      */
     public function create(Language $language, int $numberOfEntries) : array
     {
-        $courseTypes = ['Beginner', 'Intermediate', 'Advanced'];
+        $courseTypes = CourseType::fromValue('Beginner')->toArray();
         $courseArray = array();
 
         for ($i = 0; $i < $numberOfEntries; $i++) {

@@ -35,10 +35,11 @@
         </service>
 
         <service
-                id="langland.public_api.business.implementation.initial_system_creation"
-                class="PublicApi\LearningSystem\Business\Implementation\InitialSystemCreationImplementation" public="true">
+                id="langland.public_api.business.implementation.learning_metadata"
+                class="PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation" public="true">
 
-            <argument type="service" id="library.api_sdk" />
+            <argument type="service" id="langland.public_api.repository.blue_dot.learning_metadata" />
+            <argument type="service" id="langland.public_api.repository.blue_dot.lesson" />
         </service>
 
     </services>

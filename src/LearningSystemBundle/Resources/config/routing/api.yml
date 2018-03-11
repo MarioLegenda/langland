@@ -1,6 +1,0 @@
-initial_data_creation:
-    path: /initial-data-creation
-    defaults: { _controller: learning_system.business.controller.initial_system_creation:createInitialDataAction }
-    methods: [POST]
-    requirements:
-        _format: json

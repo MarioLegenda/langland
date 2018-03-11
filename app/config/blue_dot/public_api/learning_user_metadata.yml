@@ -1,26 +1,24 @@
 configuration:
-
-    simple:
-        select:
-            check_that_exists:
-                sql: "SELECT id AS learning_metadata_exists FROM learning_user_metadata WHERE learning_user_id = :learning_user_id LIMIT 1"
-                parameters: [learning_user_id]
-
     scenario:
         create_learning_metadata:
             atomic: true
             statements:
-                create_system_head:
-                    sql: "INSERT INTO system_heads"
+                find_lesson:
+                    sql: "SELECT l.id AS id FROM lessons AS l INNER JOIN courses AS c ON l.course_id = c.id AND c.language_id = :language_id AND c.type = :course_type AND l.learning_order = :learning_order"
+                    parameters: [language_id, course_type, learning_order]
+                create_data_collector:
+                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
                 create_learning_lesson:
-                    sql: "INSERT INTO learning_lessons (system_head_id, lesson_id, has_passed) VALUES (:system_head_id, :lesson_id, 0)"
-                    parameters: [lesson_id]
+                    sql: "INSERT INTO learning_lessons (data_collector_id, lesson_id, has_completed) VALUES (:data_collector_id, :lesson_id, 0)"
                     foreign_key:
-                        statement_name: create_system_head
-                        bind_to: system_head_id
+                        statement_name: create_data_collector
+                        bind_to: data_collector_id
+                    use:
+                        statement_name: find_lesson
+                        values: { find_lesson.id : lesson_id }
                 create_learning_metadata:
-                    sql: "INSERT INTO learning_metadata (system_head_id, learning_user_id) VALUES(:system_head_id, :learning_user_id)"
+                    sql: "INSERT INTO learning_metadata (lesson_data_collector_id, learning_user_id) VALUES(:data_collector_id, :learning_user_id)"
                     parameters: [learning_user_id]
                     foreign_key:
-                        statement_name: create_system_head
-                        bind_to: system_head_id
+                        statement_name: create_data_collector
+                        bind_to: data_collector_id

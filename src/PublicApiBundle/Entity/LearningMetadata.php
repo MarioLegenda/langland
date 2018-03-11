@@ -2,14 +2,14 @@
 
 namespace PublicApiBundle\Entity;
 
-use LearningSystemBundle\Entity\SystemHead;
+use LearningSystemBundle\Entity\DataCollector;
 
 class LearningMetadata
 {
     /**
-     * @var SystemHead $learningLessonSystemHead
+     * @var DataCollector $dataCollector
      */
-    private $learningLessonSystemHead;
+    private $learningLessonDataCollector;
     /**
      * @var bool $hasCompleted
      */

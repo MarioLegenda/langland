@@ -42,30 +42,30 @@ class LessonDataProvider implements DefaultDataProviderInterface
             throw new \RuntimeException(sprintf('LessonDataProvider::createDefault() has to receive an %s object', Course::class));
         }
 
-        $course = $this->courseDataProvider->createDefault($faker);
-
         return $this->createLesson(
             $course,
             Uuid::uuid4(),
-            rand(0, 999),
+            1,
             ['name' => $faker->name]
         );
     }
     /**
      * @param Generator $faker
+     * @param Course|null $course
      * @return Lesson
      */
-    public function createDefaultDb(Generator $faker): Lesson
+    public function createDefaultDb(Generator $faker, Course $course = null): Lesson
     {
-        $course = $this->courseDataProvider->createDefaultDb($faker);
+        if (!$course instanceof Course) {
+            $course = $this->courseDataProvider->createDefaultDb($faker);
+        }
 
         $lesson = $this->lessonRepository->persistAndFlush(
             $this->createDefault($faker, $course)
         );
 
         $course->addLesson($lesson);
-
-        $this->courseDataProvider->getRepository()->persistAndFlush($course);
+        $lesson->setCourse($course);
 
         return $lesson;
     }
@@ -76,8 +76,7 @@ class LessonDataProvider implements DefaultDataProviderInterface
      * @param array $arrayLesson
      * @return Lesson
      */
-    public function createLesson
-    (
+    public function createLesson(
         Course $course,
         UuidInterface $lessonUuid,
         int $order,

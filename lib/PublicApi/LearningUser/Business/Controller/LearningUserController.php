@@ -5,6 +5,7 @@ namespace PublicApi\LearningUser\Business\Controller;
 use AdminBundle\Entity\Language;
 use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
+use PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation;
 use PublicApi\LearningUser\Business\Implementation\LearningUserImplementation;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use PublicApiBundle\Entity\LearningUser;
@@ -19,13 +20,20 @@ class LearningUserController
      */
     private $learningUserImplementation;
     /**
+     * @var LearningMetadataImplementation $learningMetadataImplementation
+     */
+    private $learningMetadataImplementation;
+    /**
      * LearningUserController constructor.
      * @param LearningUserImplementation $learningUserImplementation
+     * @param LearningMetadataImplementation $learningMetadataImplementation
      */
     public function __construct(
-        LearningUserImplementation $learningUserImplementation
+        LearningUserImplementation $learningUserImplementation,
+        LearningMetadataImplementation $learningMetadataImplementation
     ) {
         $this->learningUserImplementation = $learningUserImplementation;
+        $this->learningMetadataImplementation = $learningMetadataImplementation;
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -48,9 +56,13 @@ class LearningUserController
             return new JsonResponse($data, 200);
         }
 
+        $responseData = $this->learningUserImplementation->registerLearningUser($language, $user);
+
+        $this->learningMetadataImplementation->createFirstLearningMetadata($responseData['learningUser']);
+
         return new JsonResponse(
-            $this->learningUserImplementation->registerLearningUser($language, $user)
-            ,201
+            $responseData['response'],
+            201
         );
     }
     /**

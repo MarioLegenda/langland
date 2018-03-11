@@ -2,16 +2,12 @@
 
 namespace LearningSystemBundle\Entity;
 
-class SystemNeuron
+class DataCollector
 {
     /**
      * @var int $id
      */
     private $id;
-    /**
-     * @var string $name
-     */
-    private $name;
     /**
      * @var bool $hasCompleted
      */
@@ -19,7 +15,7 @@ class SystemNeuron
     /**
      * @var int $timeSpent
      */
-    private $timeSpent = 0;
+    private $timeSpent = null;
     /**
      * @var int $accessedCount
      */
@@ -41,26 +37,13 @@ class SystemNeuron
     }
     /**
      * @param int $id
-     * @return SystemNeuron
+     * @return DataCollector
      */
-    public function setId(int $id): SystemNeuron
+    public function setId(int $id): DataCollector
     {
         $this->id = $id;
-    }
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-    /**
-     * @param string $name
-     * @return SystemNeuron
-     */
-    public function setName(string $name): SystemNeuron
-    {
-        $this->name = $name;
+
+        return $this;
     }
     /**
      * @return int
@@ -71,11 +54,13 @@ class SystemNeuron
     }
     /**
      * @param int $accessedCount
-     * @return SystemNeuron
+     * @return DataCollector
      */
-    public function setAccessedCount(int $accessedCount): SystemNeuron
+    public function setAccessedCount(int $accessedCount): DataCollector
     {
         $this->accessedCount = $accessedCount;
+
+        return $this;
     }
     /**
      * @return int
@@ -86,11 +71,13 @@ class SystemNeuron
     }
     /**
      * @param int $completedCount
-     * @return SystemNeuron
+     * @return DataCollector
      */
-    public function setCompletedCount(int $completedCount): SystemNeuron
+    public function setCompletedCount(int $completedCount): DataCollector
     {
         $this->completedCount = $completedCount;
+
+        return $this;
     }
     /**
      * @return int
@@ -101,10 +88,48 @@ class SystemNeuron
     }
     /**
      * @param int $unCompletedCount
-     * @return SystemNeuron
+     * @return DataCollector
      */
-    public function setUnCompletedCount(int $unCompletedCount): SystemNeuron
+    public function setUnCompletedCount(int $unCompletedCount): DataCollector
     {
         $this->unCompletedCount = $unCompletedCount;
+
+        return $this;
+    }
+    /**
+     * @return bool
+     */
+    public function getHasCompleted(): bool
+    {
+        return $this->hasCompleted;
+    }
+
+    /**
+     * @param bool $hasCompleted
+     * @return DataCollector
+     */
+    public function setHasCompleted(bool $hasCompleted): DataCollector
+    {
+        $this->hasCompleted = $hasCompleted;
+
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getTimeSpent(): int
+    {
+        return $this->timeSpent;
+    }
+
+    /**
+     * @param int $timeSpent
+     * @return DataCollector
+     */
+    public function setTimeSpent(int $timeSpent): DataCollector
+    {
+        $this->timeSpent = $timeSpent;
+
+        return $this;
     }
 }

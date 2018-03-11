@@ -148,7 +148,7 @@
 
         <property name="type">
             <constraint name="NotBlank">
-                <option name="message">You have to specify a type. A type can be 'Beginner', 'Intermediate' or 'Advanced'</option>
+                <option name="message">You have to specify a type</option>
             </constraint>
         </property>
 

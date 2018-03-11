@@ -3,6 +3,7 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PublicApi\Infrastructure\Type\CourseType;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -265,10 +266,11 @@ class Course implements ContainsLanguageInterface
      */
     public function validate(ExecutionContextInterface $context)
     {
-        $validTypes = ['Beginner', 'Intermediate', 'Advanced'];
+        $validTypes = CourseType::fromValue('Beginner')->toArray();
 
         if (!in_array($this->getType(), $validTypes)) {
-            $context->buildViolation('A type can be \'Beginner\', \'Intermediate\' or \'Advanced\'')
+            $message = sprintf('\'A type can be %s', implode(', ', $validTypes));
+            $context->buildViolation($message)
                 ->atPath('type')
                 ->addViolation();
         }

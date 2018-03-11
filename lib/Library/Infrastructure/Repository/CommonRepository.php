@@ -21,8 +21,7 @@ class CommonRepository implements RepositoryInterface
      * @param EntityManagerInterface $em
      * @param string $class
      */
-    public function __construct
-    (
+    public function __construct (
         EntityManagerInterface $em,
         string $class
     ) {

@@ -6,12 +6,5 @@
 
     <services>
 
-        <service
-                id="learning_system.business.controller.initial_system_creation"
-                class="LearningSystem\Business\Controller\InitialSystemCreationController" public="true">
-
-            <argument type="service" id="learning_system.business.implementation.initial_system_creation" />
-        </service>
-
     </services>
 </container>

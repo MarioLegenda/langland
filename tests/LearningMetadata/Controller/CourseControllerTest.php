@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Controller;
 
+use PublicApi\Infrastructure\Type\CourseType;
 use TestLibrary\LanglandAdminTestCase;
 use Faker\Factory;
 use Symfony\Component\DomCrawler\Crawler;
@@ -61,7 +62,7 @@ class CourseControllerTest extends LanglandAdminTestCase
             'form[name]' => 'Course name',
             'form[whatToLearn]' => $faker->text(600),
             'form[courseOrder]' => 1,
-            'form[type]' => 'Beginner',
+            'form[type]' => (string) CourseType::fromValue('Beginner'),
         ));
 
         $form['form[language]']->select('1');
@@ -88,7 +89,7 @@ class CourseControllerTest extends LanglandAdminTestCase
                 'form[name]' => $course,
                 'form[whatToLearn]' => 'Description',
                 'form[courseOrder]' => 1,
-                'form[type]' => 'Beginner',
+                'form[type]' => (string) CourseType::fromValue('Beginner'),
             ));
 
             $form['form[language]']->select('1');
@@ -124,7 +125,7 @@ class CourseControllerTest extends LanglandAdminTestCase
                 'form[name]' => $newCourses[$count],
                 'form[whatToLearn]' => 'Description',
                 'form[courseOrder]' => 1,
-                'form[type]' => 'Beginner',
+                'form[type]' => (string) CourseType::fromValue('Beginner'),
             ));
 
             $form['form[language]']->select('1');
@@ -159,7 +160,7 @@ class CourseControllerTest extends LanglandAdminTestCase
                 'name' => 'form[listDescription]',
                 'value' => 'Text',
                 'form[courseOrder]' => 1,
-                'form[type]' => 'Beginner',
+                'form[type]' => (string) CourseType::fromValue('Beginner'),
             ),
             array(
                 'name' => 'form[showOnPage]',

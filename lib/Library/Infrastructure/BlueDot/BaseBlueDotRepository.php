@@ -8,6 +8,10 @@ use BlueDot\Entity\PromiseInterface;
 class BaseBlueDotRepository
 {
     /**
+     * @var string $apiName
+     */
+    protected $apiName;
+    /**
      * @var BlueDot $blueDot
      */
     protected $blueDot;
@@ -21,6 +25,7 @@ class BaseBlueDotRepository
         $blueDot->useRepository($apiName);
 
         $this->blueDot = $blueDot;
+        $this->apiName = $apiName;
     }
     /**
      * @param int $id

@@ -16,6 +16,7 @@ configuration:
                     object: AdminBundle\Entity\Lesson
 
             find_first_lesson:
-                sql: "SELECT * FROM lessons ORDER BY learning_order ASC LIMIT 1"
+                sql: "SELECT l.id AS id FROM lessons AS l INNER JOIN courses AS c INNER JOIN languages ON l.course_id = c.id AND c.language_id = :language_id WHERE c.type = 'Beginner' ORDER BY l.learning_order ASC LIMIT 1"
+                parameters: [language_id]
                 model:
                     object: AdminBundle\Entity\Lesson

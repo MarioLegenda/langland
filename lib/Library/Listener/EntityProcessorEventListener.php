@@ -53,16 +53,6 @@ class EntityProcessorEventListener extends AbstractEntityManagerBaseListener
     private function handleCourseJob(Course $course)
     {
         $course->setCourseUrl(\URLify::filter($course->getName()));
-
-        $initialCourses = $this->em->getRepository('AdminBundle:Course')->findBy(array(
-            'initialCourse' => true,
-        ));
-
-        foreach ($initialCourses as $course) {
-            $course->setInitialCourse(false);
-
-            $this->em->persist($course);
-        }
     }
 
     private function handleLanguageInfoJob(LanguageInfo $languageInfo)

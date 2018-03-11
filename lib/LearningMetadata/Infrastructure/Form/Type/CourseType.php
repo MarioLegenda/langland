@@ -34,8 +34,10 @@ class CourseType extends AbstractType
     {
         $this
             ->addTextType('Course name: ', 'name', $builder)
-            ->addTextareaType('Description: ', 'whatToLearn', $builder)
-            ->addCheckboxType('Is this the first course?', 'initialCourse', $builder);
+            ->addTextType('Course type: ', 'type', $builder)
+            ->addTextType('Course order: ', 'courseOrder', $builder)
+            ->addTextareaType('Description: ', 'whatToLearn', $builder);
+
 
         $this->languageChoiceService->getLanguageChoice('Course', $builder);
     }

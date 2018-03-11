@@ -10,8 +10,9 @@
     </id>
 
     <field name="name" type="string" column="name" length="255"/>
-    <field name="whatToLearn" type="text" column="what_to_learn" />
-    <field name="initialCourse" type="boolean" column="initial_course" />
+    <field name="whatToLearn" type="string" column="what_to_learn" length="255" />
+    <field name="type" type="string" column="type" />
+    <field name="courseOrder" type="smallint" column="course_order" />
     <field name="courseUrl" type="string" length="255" column="course_url" />
     <field name="createdAt" type="datetime" column="created_at"/>
     <field name="updatedAt" type="datetime" column="updated_at"/>

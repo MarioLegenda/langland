@@ -9,9 +9,11 @@
 
             {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.name, 'description': 'what is the course name?'} only %}
 
-            {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.whatToLearn, 'description': 'This field will be shown in course listing'} only %}
+            {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.type, 'description': 'choose a type. A type can be "Beginner", "Intermediate" or "Advanced"?'} only %}
 
-            {% include '::Admin/Template/Form/checkbox.html.twig' with {'field' : form.initialCourse, 'description': 'Is this the first course the user should learn?'} only %}
+            {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.courseOrder, 'description': 'choose course order'} only %}
+
+            {% include '::Admin/Template/Form/field.html.twig' with {'field' : form.whatToLearn, 'description': 'This field will be shown in course listing'} only %}
 
             {% include '::Admin/Template/Form/simpleButton.html.twig' with {'text': 'Edit'} %}
 

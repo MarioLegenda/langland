@@ -49,17 +49,19 @@ class CourseControllerTest extends LanglandAdminTestCase
         $this->doTestFailedValidation($createCrawler, array(
             array(
                 'name' => 'form[name]',
-                'value' => 'French'
+                'value' => 'French',
             ),
             array(
                 'name' => 'form[whatToLearn]',
-                'value' => 'description'
+                'value' => 'description',
             ),
         ));
 
         $form = $createCrawler->selectButton('Create')->form(array(
             'form[name]' => 'Course name',
             'form[whatToLearn]' => $faker->text(600),
+            'form[courseOrder]' => 1,
+            'form[type]' => 'Beginner',
         ));
 
         $form['form[language]']->select('1');
@@ -85,10 +87,11 @@ class CourseControllerTest extends LanglandAdminTestCase
             $form = $createCrawler->selectButton('Create')->form(array(
                 'form[name]' => $course,
                 'form[whatToLearn]' => 'Description',
+                'form[courseOrder]' => 1,
+                'form[type]' => 'Beginner',
             ));
 
             $form['form[language]']->select('1');
-            $form['form[initialCourse]']->tick();
 
             $this->client->submit($form);
 
@@ -120,10 +123,11 @@ class CourseControllerTest extends LanglandAdminTestCase
             $form = $editCrawler->selectButton('Edit')->form(array(
                 'form[name]' => $newCourses[$count],
                 'form[whatToLearn]' => 'Description',
+                'form[courseOrder]' => 1,
+                'form[type]' => 'Beginner',
             ));
 
             $form['form[language]']->select('1');
-            $form['form[initialCourse]']->tick();
 
             $this->client->submit($form);
 
@@ -148,14 +152,20 @@ class CourseControllerTest extends LanglandAdminTestCase
             array(
                 'name' => 'form[name]',
                 'value' => $language,
+                'form[courseOrder]' => 1,
+                'form[type]' => 'Beginner',
             ),
             array(
                 'name' => 'form[listDescription]',
                 'value' => 'Text',
+                'form[courseOrder]' => 1,
+                'form[type]' => 'Beginner',
             ),
             array(
                 'name' => 'form[showOnPage]',
                 'value' => true,
+                'form[courseOrder]' => 1,
+                'form[type]' => 'Beginner',
             ),
         ));
     }

@@ -15,7 +15,3 @@ AdminBundle\Entity\Course:
             expose: true
             groups: [course_list]
             serialized_name: courseUrl
-        initialCourse:
-            expose: true
-            groups: [course_list]
-            serialized_name: initialCourse

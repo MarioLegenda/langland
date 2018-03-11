@@ -111,6 +111,8 @@
     </class>
 
     <class name="AdminBundle\Entity\Course">
+        <constraint name="Callback">validate</constraint>
+
         <property name="language">
             <constraint name="NotNull">
                 <option name="message">You have to specify a language for a course</option>
@@ -135,12 +137,24 @@
 
         <property name="whatToLearn">
             <constraint name="NotBlank">
-                <option name="message">Course description cannot be empty</option>
+                <option name="message">Description cannot be empty</option>
             </constraint>
 
             <constraint name="Length">
                 <option name="max">255</option>
                 <option name="maxMessage">Course description can have up to {{ limit }} characters</option>
+            </constraint>
+        </property>
+
+        <property name="type">
+            <constraint name="NotBlank">
+                <option name="message">You have to specify a type. A type can be 'Beginner', 'Intermediate' or 'Advanced'</option>
+            </constraint>
+        </property>
+
+        <property name="courseOrder">
+            <constraint name="NotBlank">
+                <option name="message">Course order cannot be empty</option>
             </constraint>
         </property>
     </class>

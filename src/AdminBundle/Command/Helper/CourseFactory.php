@@ -28,18 +28,17 @@ class CourseFactory
      */
     public function create(Language $language, int $numberOfEntries) : array
     {
+        $courseTypes = ['Beginner', 'Intermediate', 'Advanced'];
         $courseArray = array();
 
         for ($i = 0; $i < $numberOfEntries; $i++) {
             $course = new Course();
 
-            if ($i === 0) {
-                $course->setInitialCourse(true);
-            }
-
             $course->setName($language->getName() . ' course ' . $i);
             $course->setWhatToLearn($this->getFaker()->sentence(30));
             $course->setLanguage($language);
+            $course->setType($courseTypes[rand(0, 2)]);
+            $course->setCourseOrder(rand(0, 10));
             $course->setCourseUrl(\URLify::filter($course->getName()));
 
             $this->em->persist($course);

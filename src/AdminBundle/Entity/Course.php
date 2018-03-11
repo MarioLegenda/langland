@@ -3,6 +3,8 @@
 namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Course implements ContainsLanguageInterface
 {
@@ -19,10 +21,6 @@ class Course implements ContainsLanguageInterface
      */
     private $whatToLearn;
     /**
-     * @var bool $initialCourse
-     */
-    private $initialCourse;
-    /**
      * @var string $courseUrl
      */
     private $courseUrl;
@@ -30,6 +28,14 @@ class Course implements ContainsLanguageInterface
      * @var Language $language
      */
     private $language;
+    /**
+     * @var int $courseOrder
+     */
+    private $courseOrder;
+    /**
+     * @var string $type
+     */
+    private $type;
     /**
      * @var \DateTime $createdAt
      */
@@ -42,11 +48,12 @@ class Course implements ContainsLanguageInterface
      * @var ArrayCollection $lessons
      */
     private $lessons;
-
+    /**
+     * Course constructor.
+     */
     public function __construct()
     {
         $this->lessons = new ArrayCollection();
-        $this->initialCourse = false;
     }
     /**
      * Get id
@@ -79,7 +86,6 @@ class Course implements ContainsLanguageInterface
     {
         return $this->name;
     }
-
     /**
      * @param $whatToLearn
      * @return Course
@@ -90,30 +96,12 @@ class Course implements ContainsLanguageInterface
 
         return $this;
     }
-
     /**
      * @return string
      */
     public function getWhatToLearn()
     {
         return $this->whatToLearn;
-    }
-    /**
-     * @return bool
-     */
-    public function isInitialCourse(): bool
-    {
-        return $this->initialCourse;
-    }
-    /**
-     * @param bool $initialCourse
-     * @return Course
-     */
-    public function setInitialCourse(bool $initialCourse) : Course
-    {
-        $this->initialCourse = $initialCourse;
-
-        return $this;
     }
     /**
      * @return mixed
@@ -131,6 +119,72 @@ class Course implements ContainsLanguageInterface
         $this->courseUrl = $courseUrl;
 
         return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+    /**
+     * @param mixed $language
+     * @return Course
+     */
+    public function setLanguage($language) : Course
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+    /**
+     * @return int
+     */
+    public function getCourseOrder()
+    {
+        return $this->courseOrder;
+    }
+    /**
+     * @param int $courseOrder
+     * @return Course
+     */
+    public function setCourseOrder(int $courseOrder): Course
+    {
+        $this->courseOrder = $courseOrder;
+
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    /**
+     * @param string $type
+     * @return Course
+     */
+    public function setType($type): Course
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+    /**
+     * @return ArrayCollection
+     */
+    public function getLessons()
+    {
+        return $this->lessons;
+    }
+    /**
+     * @param Lesson $lesson
+     * @return bool
+     */
+    public function hasLesson(Lesson $lesson) : bool
+    {
+        return $this->lessons->contains($lesson);
     }
     /**
      * Set createdAt
@@ -172,38 +226,6 @@ class Course implements ContainsLanguageInterface
         return $this;
     }
     /**
-     * @return mixed
-     */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-    /**
-     * @param mixed $language
-     * @return Course
-     */
-    public function setLanguage($language) : Course
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-    /**
-     * @return ArrayCollection
-     */
-    public function getLessons()
-    {
-        return $this->lessons;
-    }
-    /**
-     * @param Lesson $lesson
-     * @return bool
-     */
-    public function hasLesson(Lesson $lesson) : bool
-    {
-        return $this->lessons->contains($lesson);
-    }
-    /**
      * @param Lesson $lesson
      * @return Course
      */
@@ -235,6 +257,26 @@ class Course implements ContainsLanguageInterface
 
         if (!$this->getCreatedAt() instanceof \DateTime) {
             $this->setCreatedAt(new \DateTime());
+        }
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        $validTypes = ['Beginner', 'Intermediate', 'Advanced'];
+
+        if (!in_array($this->getType(), $validTypes)) {
+            $context->buildViolation('A type can be \'Beginner\', \'Intermediate\' or \'Advanced\'')
+                ->atPath('type')
+                ->addViolation();
+        }
+
+        if (!is_int((int) $this->getCourseOrder())) {
+            $context->buildViolation('Course order has to be an integer')
+                ->atPath('courseOrder')
+                ->addViolation();
         }
     }
 }

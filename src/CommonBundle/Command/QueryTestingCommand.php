@@ -32,7 +32,7 @@ class QueryTestingCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->repositoryCommunicator = $this->getContainer()->get('langland.public_api.repository.repository_communicator');
+        $this->repositoryCommunicator = $this->getContainer()->get('public_api.repository.repository_communicator');
         $this->userRepository = $this->getContainer()->get('armor.repository.user');
 
         $this->getAllAlreadyLearningLanguages();

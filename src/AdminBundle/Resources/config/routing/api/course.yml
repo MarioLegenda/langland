@@ -1,27 +1,27 @@
 admin_course_index:
     path: /course
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.course:indexAction }
+    defaults: { _controller: learning_metadata.controller.course:indexAction }
 
 admin_course_create:
     path: /course/create
     methods: [POST, GET]
-    defaults: { _controller: langland.learning_metadata.controller.course:createAction }
+    defaults: { _controller: learning_metadata.controller.course:createAction }
 
 admin_course_new:
     path: /course/new
     methods: [POST]
-    defaults: { _controller: langland.learning_metadata.controller.course:newAction }
+    defaults: { _controller: learning_metadata.controller.course:newAction }
 
 admin_course_update:
     path: /course/update/{id}
     methods: [POST, GET]
-    defaults: { _controller: langland.learning_metadata.controller.course:updateAction }
+    defaults: { _controller: learning_metadata.controller.course:updateAction }
 
 admin_course_managment:
     path: /course/manage/{courseId}
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.course:manageAction }
+    defaults: { _controller: learning_metadata.controller.course:manageAction }
 
 admin_course:
   resource: "@AdminBundle/Resources/config/routing/api/course_managment/main.yml"

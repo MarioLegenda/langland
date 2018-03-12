@@ -6,16 +6,16 @@
 
     <services>
         <service
-                id="langland.public_api.language_value_resolver"
+                id="public_api.language_value_resolver"
                 class="PublicApi\Infrastructure\Resolver\LanguageValueResolver" public="true">
 
-            <argument type="service" id="langland.public_api.repository.language" />
+            <argument type="service" id="public_api.repository.language" />
 
             <tag name="controller.argument_value_resolver" priority="50" />
         </service>
 
         <service
-                id="langland.public_api.user_value_resolver"
+                id="public_api.user_value_resolver"
                 class="PublicApi\Infrastructure\Resolver\UserValueResolver" public="true">
 
             <argument type="service" id="security.token_storage" />
@@ -24,16 +24,16 @@
         </service>
 
         <service
-                id="langland.public_api.lesson_value_resolver"
+                id="public_api.lesson_value_resolver"
                 class="PublicApi\Lesson\Business\Infrastructure\Resolver\LessonValueResolver" public="true">
 
-            <argument type="service" id="langland.public_api.repository.lesson" />
+            <argument type="service" id="public_api.repository.lesson" />
 
             <tag name="controller.argument_value_resolver" priority="50" />
         </service>
 
         <service
-                id="langland.public_api.question_answers_resolver"
+                id="public_api.question_answers_resolver"
                 class="PublicApi\Infrastructure\Resolver\QuestionAnswersResolver" public="true">
 
             <tag name="controller.argument_value_resolver" priority="50" />

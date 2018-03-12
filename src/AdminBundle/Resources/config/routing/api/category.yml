@@ -1,19 +1,19 @@
 admin_category_index:
     path: /category
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.category:indexAction }
+    defaults: { _controller: learning_metadata.controller.category:indexAction }
 
 admin_category_create:
     path: /category/create
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.category:createAction }
+    defaults: { _controller: learning_metadata.controller.category:createAction }
 
 admin_category_new:
     path: /category/new
     methods: [POST]
-    defaults: { _controller: langland.learning_metadata.controller.category:newAction }
+    defaults: { _controller: learning_metadata.controller.category:newAction }
 
 admin_category_update:
     path: /category/update/{id}
     methods: [POST, GET]
-    defaults: { _controller: langland.learning_metadata.controller.category:updateAction }
+    defaults: { _controller: learning_metadata.controller.category:updateAction }

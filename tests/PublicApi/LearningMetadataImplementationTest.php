@@ -54,14 +54,14 @@ class LearningMetadataImplementationTest extends LanglandAdminTestCase
     {
         parent::setUp();
 
-        $this->languageDataProvider = $this->container->get('langland.data_provider.language');
-        $this->learningUserImplementation = $this->container->get('langland.public_api.business.implementation.learning_user');
-        $this->userDataProvider = $this->container->get('langland.data_provider.user');
-        $this->learningUserDataProvider = $this->container->get('langland.data_provider.learning_user');
-        $this->lessonDataProvider = $this->container->get('langland.data_provider.lesson');
-        $this->courseDataProvider = $this->container->get('langland.data_provider.course');
-        $this->blueDot = $this->container->get('langland.common.blue_dot');
-        $this->learningMetadataImplementation = $this->container->get('langland.public_api.business.implementation.learning_metadata');
+        $this->languageDataProvider = $this->container->get('data_provider.language');
+        $this->learningUserImplementation = $this->container->get('public_api.business.implementation.learning_user');
+        $this->userDataProvider = $this->container->get('data_provider.user');
+        $this->learningUserDataProvider = $this->container->get('data_provider.learning_user');
+        $this->lessonDataProvider = $this->container->get('data_provider.lesson');
+        $this->courseDataProvider = $this->container->get('data_provider.course');
+        $this->blueDot = $this->container->get('common.blue_dot');
+        $this->learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
     }
 
     public function test_first_learning_metadata_creation()

@@ -6,17 +6,17 @@
 
     <services>
         <service
-                id="langland.common.factory.blue_dot"
+                id="common.factory.blue_dot"
                 class="Library\Infrastructure\BlueDot\Factory\BlueDotFactory" public="true">
 
             <argument type="service" id="doctrine.dbal.default_connection" />
             <argument>%blue_dot_apis%</argument>
         </service>
 
-        <service id="langland.common.blue_dot"
+        <service id="common.blue_dot"
                  class="BlueDot\BlueDot" public="true">
 
-            <factory service="langland.common.factory.blue_dot" method="createBlueDot" />
+            <factory service="common.factory.blue_dot" method="createBlueDot" />
         </service>
     </services>
 </container>

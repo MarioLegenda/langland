@@ -6,32 +6,32 @@
 
     <services>
         <service
-                id="langland.public_api.controller.lesson"
+                id="public_api.controller.lesson"
                 class="PublicApi\Lesson\Business\Controller\LessonController" public="true">
 
-            <argument type="service" id="langland.public_api.business.implementation.lesson" />
+            <argument type="service" id="public_api.business.implementation.lesson" />
         </service>
 
         <service
-                id="langland.public_api.controller.language"
+                id="public_api.controller.language"
                 class="PublicApi\Language\Business\Controller\LanguageController" public="true">
 
-            <argument type="service" id="langland.public_api.business.implementation.language" />
+            <argument type="service" id="public_api.business.implementation.language" />
         </service>
 
         <service
-                id="langland.public_api.controller.learning_user"
+                id="public_api.controller.learning_user"
                 class="PublicApi\LearningUser\Business\Controller\LearningUserController" public="true">
 
-            <argument type="service" id="langland.public_api.business.implementation.learning_user" />
-            <argument type="service" id="langland.public_api.business.implementation.learning_metadata" />
+            <argument type="service" id="public_api.business.implementation.learning_user" />
+            <argument type="service" id="public_api.business.implementation.learning_metadata" />
         </service>
 
         <service
-                id="langland.static.controller.language_index"
+                id="public_api.controller.language_index"
                 class="PublicApi\StaticPage\Business\Controller\StaticController" public="true">
 
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
         </service>
 
     </services>

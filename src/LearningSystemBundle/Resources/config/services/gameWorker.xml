@@ -10,7 +10,7 @@
                 public="true"
                 class="LearningSystem\Library\Worker\GameWorker">
 
-            <argument type="service" id="langland.public_api.learning_system.data_collector" />
+            <argument type="service" id="public_api.learning_system.data_collector" />
         </service>
     </services>
 </container>

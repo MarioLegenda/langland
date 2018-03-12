@@ -6,7 +6,7 @@
 
     <services>
         <service
-                id="langland.public_api.repository.lesson"
+                id="public_api.repository.lesson"
                 class="PublicApi\Lesson\Repository\LessonRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
@@ -14,7 +14,7 @@
         </service>
 
         <service
-                id="langland.public_api.repository.language"
+                id="public_api.repository.language"
                 class="PublicApi\Language\Repository\LanguageRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
@@ -22,7 +22,7 @@
         </service>
 
         <service
-                id="langland.public_api.repository.learning_user"
+                id="public_api.repository.learning_user"
                 class="PublicApi\LearningUser\Repository\LearningUserRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
@@ -30,7 +30,7 @@
         </service>
 
         <service
-                id="langland.public_api.repository.language_info"
+                id="public_api.repository.language_info"
                 class="PublicApi\Language\Repository\LanguageInfoRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
@@ -38,7 +38,7 @@
         </service>
 
         <service
-                id="langland.public_api.repository.word"
+                id="public_api.repository.word"
                 class="PublicApi\Infrastructure\Repository\WordRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
@@ -46,26 +46,26 @@
         </service>
 
         <service
-                id="langland.public_api.repository.repository_communicator"
+                id="public_api.repository.repository_communicator"
                 class="PublicApi\Infrastructure\Communication\RepositoryCommunicator" public="true">
 
-            <argument type="service" id="langland.public_api.repository.language" />
-            <argument type="service" id="langland.public_api.repository.learning_user" />
+            <argument type="service" id="public_api.repository.language" />
+            <argument type="service" id="public_api.repository.learning_user" />
         </service>
 
         <service
-                id="langland.public_api.repository.blue_dot.learning_metadata"
+                id="public_api.repository.blue_dot.learning_metadata"
                 class="PublicApi\LearningUser\Repository\LearningMetadataRepository" public="true">
 
-            <argument type="service" id="langland.common.blue_dot" />
+            <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>
         </service>
 
         <service
-                id="langland.public_api.repository.blue_dot.lesson"
+                id="public_api.repository.blue_dot.lesson"
                 class="PublicApi\Lesson\Repository\BlueDot\LessonRepository" public="true">
 
-            <argument type="service" id="langland.common.blue_dot" />
+            <argument type="service" id="common.blue_dot" />
             <argument>public_api_lesson</argument>
         </service>
 

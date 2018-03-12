@@ -49,11 +49,11 @@ class LessonControllerTest extends LanglandAdminTestCase
 
         $this->faker = Factory::create();
 
-        $this->lessonDataProvider = $this->container->get('langland.data_provider.lesson');
-        $this->courseDataProvider = $this->container->get('langland.data_provider.course');
-        $this->languageDataProvider = $this->container->get('langland.data_provider.language');
-        $this->lessonController = $this->container->get('langland.public_api.controller.lesson');
-        $this->lessonImplementation = $this->container->get('langland.public_api.business.implementation.lesson');
+        $this->lessonDataProvider = $this->container->get('data_provider.lesson');
+        $this->courseDataProvider = $this->container->get('data_provider.course');
+        $this->languageDataProvider = $this->container->get('data_provider.language');
+        $this->lessonController = $this->container->get('public_api.controller.lesson');
+        $this->lessonImplementation = $this->container->get('public_api.business.implementation.lesson');
     }
 
     public function test_lesson_implementation()

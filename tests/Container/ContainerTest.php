@@ -41,7 +41,7 @@ class ContainerTest extends ContainerAwareTest
     public function test_repositories()
     {
         foreach ($this->layers as $layer) {
-            $root = sprintf('langland.%s.repository', $layer);
+            $root = sprintf('%s.repository', $layer);
 
 
             foreach ($this->businessImplementations as $implementation) {
@@ -53,7 +53,7 @@ class ContainerTest extends ContainerAwareTest
     public function test_business_implementation_objects()
     {
         foreach ($this->layers as $layer) {
-            $root = sprintf('langland.%s.business.implementation.', $layer);
+            $root = sprintf('%s.business.implementation.', $layer);
 
             foreach ($this->businessImplementations as $implementation) {
                 $this->assertService($root, $implementation);
@@ -64,7 +64,7 @@ class ContainerTest extends ContainerAwareTest
     public function test_controller_objects()
     {
         foreach ($this->layers as $layer) {
-            $root = sprintf('langland.%s.controller.', $layer);
+            $root = sprintf('%s.controller.', $layer);
 
             foreach ($this->businessImplementations as $implementation) {
                 $this->assertService($root, $implementation);

@@ -6,89 +6,89 @@
 
     <services>
         <service
-                id="langland.learning_metadata.business.implementation.language"
+                id="learning_metadata.business.implementation.language"
                 class="LearningMetadata\Business\Implementation\LanguageImplementation" public="true">
 
-            <argument type="service" id="langland.learning_metadata.repository.language" />
-            <argument type="service" id="langland.learning_metadata.repository.image" />
-            <argument type="service" id="langland.learning_metadata.form.form_builder" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.repository.language" />
+            <argument type="service" id="learning_metadata.repository.image" />
+            <argument type="service" id="learning_metadata.form.form_builder" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
 
         <service
-                id="langland.learning_metadata.business.implementation.category"
+                id="learning_metadata.business.implementation.category"
                 class="LearningMetadata\Business\Implementation\CategoryImplementation" public="true">
 
-            <argument type="service" id="langland.learning_metadata.repository.category" />
-            <argument type="service" id="langland.learning_metadata.form.form_builder" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.repository.category" />
+            <argument type="service" id="learning_metadata.form.form_builder" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
 
         <service
-                id="langland.learning_metadata.business.implementation.word"
+                id="learning_metadata.business.implementation.word"
                 class="LearningMetadata\Business\Implementation\WordImplementation" public="true">
 
-            <argument type="service" id="langland.learning_metadata.repository.word" />
-            <argument type="service" id="langland.learning_metadata.repository.image" />
-            <argument type="service" id="langland.learning_metadata.form.form_builder" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.repository.word" />
+            <argument type="service" id="learning_metadata.repository.image" />
+            <argument type="service" id="learning_metadata.form.form_builder" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
 
         <service
-                id="langland.learning_metadata.business.implementation.language_info"
+                id="learning_metadata.business.implementation.language_info"
                 class="LearningMetadata\Business\Implementation\LanguageInfoImplementation" public="true">
 
-            <argument type="service" id="langland.learning_metadata.repository.language_info" />
-            <argument type="service" id="langland.learning_metadata.repository.language_info_text" />
-            <argument type="service" id="langland.learning_metadata.repository.image" />
-            <argument type="service" id="langland.learning_metadata.form.form_builder" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.repository.language_info" />
+            <argument type="service" id="learning_metadata.repository.language_info_text" />
+            <argument type="service" id="learning_metadata.repository.image" />
+            <argument type="service" id="learning_metadata.form.form_builder" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
 
         <service
-                id="langland.learning_metadata.business.implementation.sound"
+                id="learning_metadata.business.implementation.sound"
                 class="LearningMetadata\Business\Implementation\SoundImplementation" public="true">
 
-            <argument type="service" id="langland.learning_metadata.repository.sound" />
-            <argument type="service" id="langland.learning_metadata.form.form_builder" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.repository.sound" />
+            <argument type="service" id="learning_metadata.form.form_builder" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
 
         <service
-                id="langland.learning_metadata.business.implementation.course"
+                id="learning_metadata.business.implementation.course"
                 class="LearningMetadata\Business\Implementation\CourseImplementation" public="true">
 
-            <argument type="service" id="langland.learning_metadata.repository.course" />
-            <argument type="service" id="langland.learning_metadata.form.form_builder" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.repository.course" />
+            <argument type="service" id="learning_metadata.form.form_builder" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
         </service>
 
         <service
-                id="langland.learning_metadata.business.implementation.lesson"
+                id="learning_metadata.business.implementation.lesson"
                 class="LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation" public="true">
 
-            <argument type="service" id="langland.learning_metadata.repository.lesson" />
-            <argument type="service" id="langland.learning_metadata.repository.course" />
-            <argument type="service" id="langland.learning_metadata.form.form_builder" />
-            <argument type="service" id="langland.learning_metadata.presentation.template_wrapper" />
+            <argument type="service" id="learning_metadata.repository.lesson" />
+            <argument type="service" id="learning_metadata.repository.course" />
+            <argument type="service" id="learning_metadata.form.form_builder" />
+            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />

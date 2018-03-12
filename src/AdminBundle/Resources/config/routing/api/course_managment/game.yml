@@ -1,7 +1,7 @@
 admin_basic_word_game_index:
     path: /games/basic-word-game
     methods: [GET]
-    defaults: { _controller: langland.learning_metadata.controller.basic_word_game:indexAction }
+    defaults: { _controller: learning_metadata.controller.basic_word_game:indexAction }
 
 #admin_lesson_create:
 #    path: /lesson/create

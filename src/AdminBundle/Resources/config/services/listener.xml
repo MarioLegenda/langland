@@ -6,7 +6,7 @@
 
     <services>
 
-        <service id="langland.common.entity_processor_event_listener"
+        <service id="learning_metadata.listener.entity_processor_event_listener"
                  class="Library\Listener\EntityProcessorEventListener" public="true">
 
             <argument type="service" id="doctrine.orm.entity_manager" />
@@ -14,7 +14,7 @@
             <tag name="kernel.event_listener" event="entity_processor_event" method="onProcess" />
         </service>
 
-        <service id="langland.listener.image_upload_listener"
+        <service id="learning_metadata.listener.image_upload_listener"
                  class="LearningMetadata\Business\Listener\ImageUploadListener" public="true">
 
             <argument type="service" id="doctrine.orm.entity_manager" />
@@ -23,7 +23,7 @@
             <tag name="kernel.event_listener" event="admin.image_upload_event" method="onUpload" />
         </service>
 
-        <service id="langland.listener.audio_upload_listener"
+        <service id="learning_metadata.listener.audio_upload_listener"
                  class="LearningMetadata\Business\Listener\AudioUploadListener" public="true">
 
             <argument type="service" id="doctrine.orm.entity_manager" />

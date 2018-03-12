@@ -36,10 +36,10 @@ class LanguageControllerTest extends LanglandAdminTestCase
     {
         parent::setUp();
 
-        $this->languageController = $this->container->get('langland.public_api.controller.language');
-        $this->languageDataProvider = $this->container->get('langland.data_provider.language');
-        $this->userDataProvider = $this->container->get('langland.data_provider.user');
-        $this->languageInfoDataProvider = $this->container->get('langland.data_provider.language_info');
+        $this->languageController = $this->container->get('public_api.controller.language');
+        $this->languageDataProvider = $this->container->get('data_provider.language');
+        $this->userDataProvider = $this->container->get('data_provider.user');
+        $this->languageInfoDataProvider = $this->container->get('data_provider.language_info');
     }
 
     public function test_find_all_languages()

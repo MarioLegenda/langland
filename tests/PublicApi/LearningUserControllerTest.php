@@ -89,18 +89,18 @@ class LearningUserControllerTest extends LanglandAdminTestCase
     {
         parent::setUp();
 
-        $this->languageDataProvider = $this->container->get('langland.data_provider.language');
-        $this->learningUserImplementation = $this->container->get('langland.public_api.business.implementation.learning_user');
-        $this->userDataProvider = $this->container->get('langland.data_provider.user');
-        $this->learningUserRepository = $this->container->get('langland.public_api.repository.learning_user');
-        $this->learningUserController = $this->container->get('langland.public_api.controller.learning_user');
-        $this->learningUserDataProvider = $this->container->get('langland.data_provider.learning_user');
+        $this->languageDataProvider = $this->container->get('data_provider.language');
+        $this->learningUserImplementation = $this->container->get('public_api.business.implementation.learning_user');
+        $this->userDataProvider = $this->container->get('data_provider.user');
+        $this->learningUserRepository = $this->container->get('public_api.repository.learning_user');
+        $this->learningUserController = $this->container->get('public_api.controller.learning_user');
+        $this->learningUserDataProvider = $this->container->get('data_provider.learning_user');
         $this->userRepository = $this->container->get('armor.repository.user');
-        $this->languageRepository = $this->container->get('langland.public_api.repository.language');
-        $this->languageController = $this->container->get('langland.public_api.controller.language');
-        $this->questionsDataProvider = $this->container->get('langland.data_provider.questions');
-        $this->lessonDataProvider = $this->container->get('langland.data_provider.lesson');
-        $this->courseDataProvider = $this->container->get('langland.data_provider.course');
+        $this->languageRepository = $this->container->get('public_api.repository.language');
+        $this->languageController = $this->container->get('public_api.controller.language');
+        $this->questionsDataProvider = $this->container->get('data_provider.questions');
+        $this->lessonDataProvider = $this->container->get('data_provider.lesson');
+        $this->courseDataProvider = $this->container->get('data_provider.course');
     }
 
     public function test_register_learning_user()

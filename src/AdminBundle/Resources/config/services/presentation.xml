@@ -6,7 +6,7 @@
 
     <services>
         <service
-                id="langland.learning_metadata.presentation.template_wrapper"
+                id="learning_metadata.presentation.template_wrapper"
                 class="Library\Presentation\Template\TemplateWrapper" public="true">
 
             <argument type="service" id="templating" />

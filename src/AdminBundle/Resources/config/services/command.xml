@@ -6,7 +6,7 @@
 
     <services>
         <service
-                id="langland.command.admin_user_create"
+                id="learning_metadata.command.admin_user_create"
                 class="Library\Command\AdminUserCreateCommand" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
@@ -16,11 +16,11 @@
         </service>
 
         <service
-                id="langland.command.language_images_add_command"
+                id="learning_metadata.command.language_images_add_command"
                 class="AdminBundle\Command\LanguageImagesAddingCommand" public="true">
 
             <argument>%image_upload%</argument>
-            <argument type="service" id="langland.learning_metadata.repository.language" />
+            <argument type="service" id="learning_metadata.repository.language" />
 
             <tag name="console.command" />
         </service>

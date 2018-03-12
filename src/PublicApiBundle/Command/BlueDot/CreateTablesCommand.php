@@ -23,7 +23,7 @@ class CreateTablesCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $blueDot = $this->getContainer()->get('langland.common.blue_dot');
+        $blueDot = $this->getContainer()->get('common.blue_dot');
 
         $blueDot->repository()->putRepository(__DIR__.'/create_tables.yml');
         $blueDot->useRepository('create_tables');

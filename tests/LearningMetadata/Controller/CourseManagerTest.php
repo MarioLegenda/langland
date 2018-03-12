@@ -33,7 +33,7 @@ class CourseManagerTest extends LanglandAdminTestCase
         $courseFactory = new CourseFactory($em);
         /** @var Language $language */
         foreach ($languages as $language) {
-            $courses = $courseFactory->create($language, 5);
+            $courses = $courseFactory->create($language, 3);
 
             /** @var Course $course */
             foreach ($courses as $course) {

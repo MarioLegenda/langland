@@ -5,6 +5,8 @@ namespace PublicApi\LearningSystem\DataCollector;
 use LearningSystem\Library\DataCollectorInterface;
 use LearningSystem\Library\Infrastructure\SystemHeadCollection;
 use PublicApi\Infrastructure\Repository\WordRepository;
+use PublicApi\LearningSystem\DataDecider\DataDeciderInterface;
+use PublicApi\LearningSystem\DataDecider\InitialDataDecider;
 use PublicApi\LearningSystem\RuleResolver;
 use PublicApi\Lesson\Repository\LessonRepository;
 
@@ -19,29 +21,29 @@ class DataCollector implements DataCollectorInterface
      */
     private $wordRepository;
     /**
-     * @var RuleResolver $ruleResolver
+     * @var DataDeciderInterface $initialDataDecider
      */
-    private $ruleResolver;
+    private $initialDataDecider;
     /**
      * DataCollector constructor.
      * @param LessonRepository $lessonRepository
      * @param WordRepository $wordRepository
-     * @param RuleResolver $ruleResolver
+     * @param DataDeciderInterface $initialDataDecider
      */
     public function __construct(
         LessonRepository $lessonRepository,
         WordRepository $wordRepository,
-        RuleResolver $ruleResolver
+        DataDeciderInterface $initialDataDecider
     ) {
         $this->lessonRepository = $lessonRepository;
         $this->wordRepository = $wordRepository;
-        $this->ruleResolver = $ruleResolver;
+        $this->initialDataDecider = $initialDataDecider;
     }
     /**
      * @inheritdoc
      */
     public function getCollectedData(): array
     {
-
+        $data = $this->initialDataDecider->getData();
     }
 }

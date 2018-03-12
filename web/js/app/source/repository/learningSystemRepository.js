@@ -3,7 +3,7 @@ import {global, user} from "../../../global/constants.js";
 export class LearningSystemRepository {
     constructor() {
         this.routes = {
-            initial_data_creation: global.base_url + 'api/v1/learning-system/initial-data-creation',
+            initial_data_creation: global.base_url + 'api/v1/learning-system/make-initial-data-creation',
         }
     }
 

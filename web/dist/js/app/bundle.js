@@ -27218,7 +27218,7 @@ class LearningUserRepository {
 class LearningSystemRepository {
     constructor() {
         this.routes = {
-            initial_data_creation: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-system/initial-data-creation'
+            initial_data_creation: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-system/make-initial-data-creation'
         };
     }
 
@@ -27741,6 +27741,8 @@ var Item = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Item.__proto__ || Object.getPrototypeOf(Item)).call(this, props));
 
+        _this.learningSystemRepository = (0, _factory.factory)('learning-system');
+
         _this.next = _this.next.bind(_this);
         _this.prev = _this.prev.bind(_this);
 
@@ -27952,6 +27954,7 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
 
         _this4.inNextClick = false;
         _this4.inPrevClick = false;
+        _this4.isFinal = false;
 
         _this4.next = _this4.next.bind(_this4);
         _this4.prev = _this4.prev.bind(_this4);
@@ -27996,10 +27999,14 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
                 if (event.originalEvent.animationName === 'fadeOutUp' && this[clickType] === true) {
                     switch (clickType) {
                         case 'onNextClick':
-                            if (this.state.counter === this.state.items.length - 1) {
+                            if (this.state.counter === this.state.items.length - 1 && this.isFinal === false) {
+                                this.isFinal = true;
                                 this.learningUserRepository.validateQuestions(this.answers, $.proxy(function () {
                                     this.learningUserRepository.markQuestionsAnswered(this.answers, $.proxy(function () {
-                                        this.props.componentChange();
+
+                                        this.learningSystemRepository.makeInitialDataCreation($.proxy(function () {
+                                            this.props.componentChange();
+                                        }, this));
                                     }, this));
 
                                     this.setState(function (prevState) {
@@ -28112,18 +28119,10 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
     function MainAppContainer(props) {
         _classCallCheck(this, MainAppContainer);
 
-        var _this = _possibleConstructorReturn(this, (MainAppContainer.__proto__ || Object.getPrototypeOf(MainAppContainer)).call(this, props));
-
-        _this.learningSystemRepository = (0, _factory.factory)('learning-system');
-        return _this;
+        return _possibleConstructorReturn(this, (MainAppContainer.__proto__ || Object.getPrototypeOf(MainAppContainer)).call(this, props));
     }
 
     _createClass(MainAppContainer, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            this.learningSystemRepository.makeInitialDataCreation($.proxy(function (data) {}, this));
-        }
-    }, {
         key: "render",
         value: function render() {
             return _react2.default.createElement(

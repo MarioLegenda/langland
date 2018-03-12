@@ -4,14 +4,6 @@ import React from "react";
 export class MainAppContainer extends React.Component {
     constructor(props) {
         super(props);
-
-        this.learningSystemRepository = factory('learning-system');
-    }
-
-    componentDidMount() {
-        this.learningSystemRepository.makeInitialDataCreation($.proxy(function(data) {
-
-        }, this));
     }
 
     render() {

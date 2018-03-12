@@ -11,6 +11,8 @@ class Item extends React.Component {
     constructor(props) {
         super(props);
 
+        this.learningSystemRepository = factory('learning-system');
+
         this.next = this.next.bind(this);
         this.prev = this.prev.bind(this);
 
@@ -178,6 +180,7 @@ export class QuestionsContainer extends React.Component {
 
         this.inNextClick = false;
         this.inPrevClick = false;
+        this.isFinal = false;
 
         this.next = this.next.bind(this);
         this.prev = this.prev.bind(this);
@@ -215,10 +218,14 @@ export class QuestionsContainer extends React.Component {
             if (event.originalEvent.animationName === 'fadeOutUp' && this[clickType] === true) {
                 switch(clickType) {
                     case 'onNextClick':
-                        if (this.state.counter === this.state.items.length - 1) {
+                        if (this.state.counter === this.state.items.length - 1 && this.isFinal === false) {
+                                this.isFinal = true;
                                 this.learningUserRepository.validateQuestions(this.answers, $.proxy(function() {
                                     this.learningUserRepository.markQuestionsAnswered(this.answers, $.proxy(function() {
-                                        this.props.componentChange();
+
+                                        this.learningSystemRepository.makeInitialDataCreation($.proxy(function() {
+                                            this.props.componentChange();
+                                        }, this));
                                     }, this));
 
                                     this.setState((prevState) => prevState.stopRendering = true);

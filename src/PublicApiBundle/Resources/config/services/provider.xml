@@ -20,5 +20,13 @@
 
             <argument type="service" id="security.token_storage" />
         </service>
+
+        <service
+                id="public_api.provider.language_provider"
+                public="true"
+                class="PublicApi\Language\Infrastructure\LanguageProvider">
+
+            <argument type="service" id="langland.public_api.learning_user_provider" />
+        </service>
     </services>
 </container>

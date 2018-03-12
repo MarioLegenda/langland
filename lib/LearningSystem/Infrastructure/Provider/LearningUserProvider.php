@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningUser\Infrastructure\Provider;
+namespace LearningSystem\Infrastructure\Provider;
 
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -11,10 +11,6 @@ class LearningUserProvider
      * @var TokenStorage $tokenStorage
      */
     private $tokenStorage;
-    /**
-     * @var LearningUser $learningUser
-     */
-    private $learningUser;
     /**
      * LearningUserProvider constructor.
      * @param TokenStorage $tokenStorage
@@ -29,19 +25,6 @@ class LearningUserProvider
      */
     public function getLearningUser(): LearningUser
     {
-        return $this->saveAndGetLearningUser();
-    }
-    /**
-     * @return LearningUser
-     */
-    public function saveAndGetLearningUser(): LearningUser
-    {
-        if ($this->learningUser instanceof LearningUser) {
-            return $this->learningUser;
-        }
-
-        $this->learningUser =  $this->tokenStorage->getToken()->getUser()->getCurrentLearningUser();
-
-        return $this->learningUser;
+        return $this->tokenStorage->getToken()->getUser()->getCurrentLearningUser();
     }
 }

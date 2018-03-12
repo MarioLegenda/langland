@@ -4,7 +4,7 @@ namespace LearningSystem\Library\Worker;
 
 use LearningSystem\Library\DataCollectorInterface;
 
-class Worker
+class GameWorker
 {
     /**
      * @var DataCollectorInterface $dataCollector
@@ -20,7 +20,7 @@ class Worker
         $this->dataCollector = $dataCollector;
     }
 
-    public function workByRule()
+    public function createGame()
     {
         $data = $this->dataCollector->getCollectedData();
 

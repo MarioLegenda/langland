@@ -27,5 +27,7 @@ class LearningSystemExtension extends Extension
 
         $loader->load('controller.xml');
         $loader->load('implementation.xml');
+        $loader->load('provider.xml');
+        $loader->load('gameWorker.xml');
     }
 }

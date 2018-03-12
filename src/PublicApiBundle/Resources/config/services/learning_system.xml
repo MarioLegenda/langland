@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service
+                id="langland.public_api.learning_system.data_collector"
+                class="PublicApi\LearningSystem\DataCollector\DataCollector">
+
+            <argument type="service" id="langland.public_api.repository.lesson" />
+            <argument type="service" id="langland.public_api.repository.word" />
+            <argument type="service" id="langland.public_api.learning_system.initial_data_decider" />
+        </service>
+
+        <service
+                id="langland.public_api.learning_system.initial_data_decider"
+                class="PublicApi\LearningSystem\DataDecider\InitialDataDecider">
+
+            <argument type="service" id="langland.public_api.question_answers_application_provider" />
+            <argument type="service" id="langland.public_api.learning_system.data_provider.word_data_provider" />
+        </service>
+
+        <service
+                id="langland.public_api.learning_system.data_provider.word_data_provider"
+                class="PublicApi\LearningSystem\DataProvider\WordDataProvider">
+
+            <argument type="service" id="public_api.provider.language_provider" />
+
+        </service>
+
+    </services>
+</container>

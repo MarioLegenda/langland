@@ -63,5 +63,14 @@
             <argument type="service" id="doctrine.orm.default_entity_manager" />
         </service>
 
+        <service
+                id="data_provider.word"
+                class="TestLibrary\DataProvider\WordDataProvider" public="true">
+
+            <argument type="service" id="learning_metadata.repository.word" />
+            <argument type="service" id="data_provider.language" />
+            <argument type="service" id="data_provider.lesson" />
+        </service>
+
     </services>
 </container>

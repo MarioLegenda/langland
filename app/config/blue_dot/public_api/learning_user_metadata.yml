@@ -2,6 +2,15 @@ configuration:
 
     sql_import: imports/learning_user_metadata.yml
 
+    simple:
+        select:
+            get_words_count:
+                sql: "SELECT id AS id FROM words WHERE language_id = :language_id AND level = :word_level"
+                parameters: [language_id, word_level]
+            get_words_count_with_lesson_excluded:
+                sql: "SELECT id AS id FROM words WHERE language_id = :language_id AND lesson_id != :lesson_id OR lesson_id IS NULL AND level = :word_level"
+                parameters: [language_id, lesson_id, word_level]
+
     scenario:
         create_learning_metadata:
             atomic: true
@@ -25,3 +34,16 @@ configuration:
                     foreign_key:
                         statement_name: create_data_collector
                         bind_to: data_collector_id
+
+        initial_data_collection:
+            atomic: true
+            statements:
+                find_learning_lesson:
+                    sql: "SELECT l.id AS lesson_id FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON lm.learning_user_id = :learning_user_id AND ll.lesson_id = l.id"
+                    parameters: [learning_user_id]
+                find_learning_lesson_words:
+                    sql: "SELECT w.id, w.name, w.type, w.plural_form, w.level, t.name AS translation FROM words AS w INNER JOIN word_translations AS t ON w.id = t.word_id AND w.language_id = :language_id AND w.level = :word_level WHERE w.lesson_id = :lesson_id"
+                    parameters: [language_id, word_level]
+                    use:
+                        statement_name: find_learning_lesson
+                        values: { find_learning_lesson.lesson_id: lesson_id }

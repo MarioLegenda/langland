@@ -10,11 +10,14 @@ class WordRepository extends EntityRepository
 {
     /**
      * @param Word $word
+     * @return Word
      */
-    public function persistAndFlush(Word $word)
+    public function persistAndFlush(Word $word): Word
     {
         $this->getEntityManager()->persist($word);
         $this->getEntityManager()->flush($word);
+
+        return $word;
     }
     /**
      * @param string $pattern

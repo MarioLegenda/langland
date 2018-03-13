@@ -16,7 +16,7 @@ class InitialDataDecider implements DataDeciderInterface
      */
     private $wordDataProvider;
     /**
-     * RuleResolver constructor.
+     * InitialDataDecider constructor.
      * @param QuestionAnswersApplicationProvider $questionAnswersApplicationResolver
      * @param DataProviderInterface $wordDataProvider
      */
@@ -34,6 +34,12 @@ class InitialDataDecider implements DataDeciderInterface
     {
         $questionAnswers = $this->questionAnswersApplicationResolver->resolve();
 
+        $wordNumber = 20;
+        $wordLevel = 1;
 
+        $this->wordDataProvider->getData([
+            'word_number' => $wordNumber,
+            'word_level' => $wordLevel
+        ]);
     }
 }

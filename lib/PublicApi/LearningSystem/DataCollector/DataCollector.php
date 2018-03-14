@@ -13,30 +13,16 @@ use PublicApi\Lesson\Repository\LessonRepository;
 class DataCollector implements DataCollectorInterface
 {
     /**
-     * @var LessonRepository $lessonRepository
-     */
-    private $lessonRepository;
-    /**
-     * @var WordRepository $wordRepository
-     */
-    private $wordRepository;
-    /**
      * @var DataDeciderInterface $initialDataDecider
      */
     private $initialDataDecider;
     /**
      * DataCollector constructor.
-     * @param LessonRepository $lessonRepository
-     * @param WordRepository $wordRepository
      * @param DataDeciderInterface $initialDataDecider
      */
     public function __construct(
-        LessonRepository $lessonRepository,
-        WordRepository $wordRepository,
         DataDeciderInterface $initialDataDecider
     ) {
-        $this->lessonRepository = $lessonRepository;
-        $this->wordRepository = $wordRepository;
         $this->initialDataDecider = $initialDataDecider;
     }
     /**
@@ -44,6 +30,6 @@ class DataCollector implements DataCollectorInterface
      */
     public function getCollectedData(): array
     {
-        $data = $this->initialDataDecider->getData();
+
     }
 }

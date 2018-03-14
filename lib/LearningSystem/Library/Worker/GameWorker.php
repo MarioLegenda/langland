@@ -2,28 +2,46 @@
 
 namespace LearningSystem\Library\Worker;
 
-use LearningSystem\Library\DataCollectorInterface;
+use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
+use LearningSystem\Infrastructure\Type\TypeInterface;
+use LearningSystem\Library\Game\Implementation\BasicGame;
+use LearningSystem\Library\Game\Implementation\GameInterface;
+use PublicApi\LearningSystem\DataDecider\DataDeciderInterface;
 
 class GameWorker
 {
     /**
-     * @var DataCollectorInterface $dataCollector
+     * @var DataDeciderInterface $dataDecider
      */
-    private $dataCollector;
+    private $dataDecider;
     /**
      * Worker constructor.
-     * @param DataCollectorInterface $dataCollector
+     * @param DataDeciderInterface $dataDecider
      */
     public function __construct(
-        DataCollectorInterface $dataCollector
+        DataDeciderInterface $dataDecider
     ) {
-        $this->dataCollector = $dataCollector;
+        $this->dataDecider = $dataDecider;
     }
-
-    public function createGame()
+    /**
+     * @return GameInterface
+     */
+    public function createGame(): GameInterface
     {
-        $data = $this->dataCollector->getCollectedData();
+        return $this->doCreateGame();
+    }
+    /**
+     * @return GameInterface
+     */
+    private function doCreateGame(): GameInterface
+    {
+        $decidedData = $this->dataDecider->getData();
 
+        $gameType = $decidedData['game_type'];
+        $data = $decidedData['data'];
 
+        if ((string) $gameType === BasicGameType::getName()) {
+            return new BasicGame($data);
+        }
     }
 }

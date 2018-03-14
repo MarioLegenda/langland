@@ -10,7 +10,7 @@
                 public="true"
                 class="LearningSystem\Library\Worker\GameWorker">
 
-            <argument type="service" id="public_api.learning_system.data_collector" />
+            <argument type="service" id="public_api.learning_system.initial_data_decider" />
         </service>
     </services>
 </container>

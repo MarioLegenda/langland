@@ -3,11 +3,14 @@
 namespace PublicApi\LearningSystem\DataProvider;
 
 use BlueDot\BlueDot;
+use LearningSystem\Library\DataProviderInterface;
+use LearningSystem\Library\ProvidedDataInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 use PublicApi\Language\Infrastructure\LanguageProvider;
+use PublicApi\LearningSystem\DataProvider\Word\ProvidedWordDataCollection;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 
-class WordDataProvider extends BaseBlueDotRepository implements DataProviderInterface
+class InitialWordDataProvider extends BaseBlueDotRepository implements DataProviderInterface
 {
     /**
      * @var LanguageProvider $languageProvider
@@ -38,7 +41,7 @@ class WordDataProvider extends BaseBlueDotRepository implements DataProviderInte
     /**
      * @inheritdoc
      */
-    public function getData(array $rules): array
+    public function getData(array $rules): ProvidedDataInterface
     {
         $initialWords = $this->getWordsFromLessons($rules['word_level']);
 
@@ -59,17 +62,17 @@ class WordDataProvider extends BaseBlueDotRepository implements DataProviderInte
 
         $falseTranslations = $this->getFalseTranslations($extractedWordIds);
 
-        return $this->assignTranslationsAndGetFinalWords($finalWords, $falseTranslations);
+        return $this->assignTranslationsAndGetFinalWordsAsDataCollection($finalWords, $falseTranslations);
     }
     /**
      * @param array $finalWords
      * @param array $falseTranslations
-     * @return array
+     * @return ProvidedDataInterface
      */
-    public function assignTranslationsAndGetFinalWords(
+    public function assignTranslationsAndGetFinalWordsAsDataCollection(
         array $finalWords,
         array $falseTranslations
-    ): array {
+    ): ProvidedDataInterface {
         foreach ($finalWords as &$finalWord) {
             $randomTranslations = array_rand($falseTranslations, 3);
 
@@ -80,7 +83,7 @@ class WordDataProvider extends BaseBlueDotRepository implements DataProviderInte
             }
         }
 
-        return $finalWords;
+        return new ProvidedWordDataCollection($finalWords);
     }
     /**
      * @param array $wordIds
@@ -208,7 +211,7 @@ class WordDataProvider extends BaseBlueDotRepository implements DataProviderInte
         $randomizedWordIds = $this->randomizeWordIds($wordIds, $wordNumber);
 
         $sql = sprintf(
-            'SELECT w.id, w.name, w.type, w.plural_form, w.level, t.name AS translation FROM words AS w INNER JOIN word_translations AS t ON w.id = t.word_id AND w.language_id = %d AND w.id IN(%s) AND w.level = %d',
+            'SELECT w.id, w.name, w.type, w.plural_form, w.level, t.name AS translations FROM words AS w INNER JOIN word_translations AS t ON w.id = t.word_id AND w.language_id = %d AND w.id IN(%s) AND w.level = %d',
             $this->languageProvider->getLanguage()->getId(),
             implode(',', $randomizedWordIds),
             $wordLevel
@@ -222,7 +225,7 @@ class WordDataProvider extends BaseBlueDotRepository implements DataProviderInte
         $words = $promise->getResult()->normalizeJoinedResult([
             'linking_column' => 'id',
             'columns' => [
-                'translation',
+                'translations',
             ],
         ]);
 

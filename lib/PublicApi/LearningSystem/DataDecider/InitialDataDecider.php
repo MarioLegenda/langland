@@ -2,7 +2,9 @@
 
 namespace PublicApi\LearningSystem\DataDecider;
 
-use PublicApi\LearningSystem\DataProvider\DataProviderInterface;
+use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
+use LearningSystem\Library\DataProviderInterface;
+use PublicApi\LearningSystem\DataProvider\Word\ProvidedWordDataCollection;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 
 class InitialDataDecider implements DataDeciderInterface
@@ -37,9 +39,15 @@ class InitialDataDecider implements DataDeciderInterface
         $wordNumber = 20;
         $wordLevel = 1;
 
-        $this->wordDataProvider->getData([
+        /** @var ProvidedWordDataCollection $dataCollection */
+        $dataCollection = $this->wordDataProvider->getData([
             'word_number' => $wordNumber,
-            'word_level' => $wordLevel
+            'word_level' => $wordLevel,
         ]);
+
+        return [
+            'game_type' => BasicGameType::fromValue(BasicGameType::getName()),
+            'data' => $dataCollection,
+        ];
     }
 }

@@ -13,7 +13,7 @@ class StringType extends BaseType
      */
     public static function fromValue($value): TypeInterface
     {
-        if (is_int($value)) {
+        if (is_string($value)) {
             return new static([$value]);
         }
 

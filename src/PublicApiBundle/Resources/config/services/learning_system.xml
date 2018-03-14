@@ -7,15 +7,6 @@
     <services>
 
         <service
-                id="public_api.learning_system.data_collector"
-                class="PublicApi\LearningSystem\DataCollector\DataCollector">
-
-            <argument type="service" id="public_api.repository.lesson" />
-            <argument type="service" id="public_api.repository.word" />
-            <argument type="service" id="public_api.learning_system.initial_data_decider" />
-        </service>
-
-        <service
                 id="public_api.learning_system.initial_data_decider"
                 class="PublicApi\LearningSystem\DataDecider\InitialDataDecider">
 
@@ -23,9 +14,11 @@
             <argument type="service" id="public_api.learning_system.data_provider.word_data_provider" />
         </service>
 
+
+
         <service
                 id="public_api.learning_system.data_provider.word_data_provider"
-                class="PublicApi\LearningSystem\DataProvider\WordDataProvider">
+                class="PublicApi\LearningSystem\DataProvider\InitialWordDataProvider">
 
             <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>

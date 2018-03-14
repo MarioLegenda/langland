@@ -6,6 +6,7 @@ use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Lesson;
 use ArmorBundle\Entity\User;
+use LearningSystem\Library\Game\Implementation\GameInterface;
 use LearningSystem\Library\Worker\GameWorker;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 use PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation;
@@ -75,7 +76,9 @@ class GameWorkerTest extends LanglandAdminTestCase
         /** @var GameWorker $gameWorker */
         $gameWorker = $this->container->get('learning_system.game_worker.initial_system_game_worker');
 
-        $gameWorker->createGame();
+        $game = $gameWorker->createGame();
+
+        static::assertInstanceOf(GameInterface::class, $game);
     }
     /**
      * @throws \Doctrine\ORM\OptimisticLockException

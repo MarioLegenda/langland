@@ -2,7 +2,9 @@
 
 namespace PublicApi\LearningSystem\DataProvider\Word;
 
-class ProvidedWord
+use LearningSystem\Library\ProvidedDataInterface;
+
+class ProvidedWord implements ProvidedDataInterface
 {
     /**
      * @var array $word
@@ -29,6 +31,22 @@ class ProvidedWord
         return null;
     }
     /**
+     * @param array $toExclude
+     * @return array
+     */
+    public function getFields(array $toExclude = []): array
+    {
+        $fields = array_keys($this->word);
+
+        foreach ($toExclude as $excluded) {
+            unset($fields[array_search($excluded, $fields)]);
+        }
+
+        sort($fields);
+
+        return $fields;
+    }
+    /**
      * @param string $field
      * @return bool
      */
@@ -49,5 +67,26 @@ class ProvidedWord
     public function getFalseTranslations(): array
     {
         return $this->getField('false_translations');
+    }
+    /**
+     * @return \ArrayIterator
+     */
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->word);
+    }
+    /**
+     * @return int
+     */
+    public function count(): int
+    {
+        return count($this->getFields());
+    }
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->word;
     }
 }

@@ -10,30 +10,25 @@ use Symfony\Component\HttpFoundation\Response;
 class InitialDataCreationController
 {
     /**
-     * @var LearningUserProvider $learningUserProvider
-     */
-    private $learningUserProvider;
-    /**
      * @var InitialDataCreationImplementation $initialDataCreationImplementation
      */
     private $initialDataCreationImplementation;
     /**
      * InitialDataCreationController constructor.
-     * @param LearningUserProvider $learningUserProvider
      * @param InitialDataCreationImplementation $initialDataCreationImplementation
      */
     public function __construct(
-        LearningUserProvider $learningUserProvider,
         InitialDataCreationImplementation $initialDataCreationImplementation
     ) {
-        $this->learningUserProvider = $learningUserProvider;
         $this->initialDataCreationImplementation = $initialDataCreationImplementation;
     }
-
+    /**
+     * @return Response
+     */
     public function makeInitialDataCreation(): Response
     {
         return new JsonResponse(
-            $this->initialDataCreationImplementation->createInitialData($this->learningUserProvider->getLearningUser()),
+            $this->initialDataCreationImplementation->createInitialData(),
             201
         );
     }

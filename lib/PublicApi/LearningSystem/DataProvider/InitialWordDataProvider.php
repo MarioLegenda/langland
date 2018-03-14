@@ -143,7 +143,7 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
         $words = $promise->getResult()->normalizeJoinedResult([
             'linking_column' => 'id',
             'columns' => [
-                'translation',
+                'translations',
             ],
         ], 'find_learning_lesson_words');
 

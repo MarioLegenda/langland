@@ -33,6 +33,14 @@ class InitialDataCreationImplementation
      */
     public function createInitialData(): array
     {
+        $game = $this->gameWorker->createGame();
 
+        return $this->apiSdk
+            ->create([])
+            ->method('POST')
+            ->isResource()
+            ->addMessage(sprintf('Created %s', $game->getName()))
+            ->setStatusCode(201)
+            ->build();
     }
 }

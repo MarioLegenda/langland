@@ -13,10 +13,6 @@ class LanguageProvider
      */
     private $learningUserProvider;
     /**
-     * @var Language $language
-     */
-    private $language;
-    /**
      * LanguageProvider constructor.
      * @param LearningUserProvider $learningUserProvider
      */
@@ -30,19 +26,6 @@ class LanguageProvider
      */
     public function getLanguage(): Language
     {
-        return $this->saveAndGetLanguage();
-    }
-    /**
-     * @return Language
-     */
-    private function saveAndGetLanguage(): Language
-    {
-        if ($this->language instanceof Language) {
-            return $this->language;
-        }
-
-        $this->language = $this->learningUserProvider->getLearningUser()->getLanguage();
-
-        return $this->language;
+        return $this->learningUserProvider->getLearningUser()->getLanguage();
     }
 }

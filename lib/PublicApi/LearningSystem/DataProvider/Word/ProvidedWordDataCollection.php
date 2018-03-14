@@ -22,4 +22,11 @@ class ProvidedWordDataCollection extends BaseProvidedDataCollection
             $this->words[] = new ProvidedWord($arrayWord);
         }
     }
+    /**
+     * @return \ArrayIterator
+     */
+    public function getIterator(): \ArrayIterator
+    {
+        return new \ArrayIterator($this->words);
+    }
 }

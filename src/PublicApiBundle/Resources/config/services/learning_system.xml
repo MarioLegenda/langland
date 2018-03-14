@@ -18,7 +18,8 @@
 
         <service
                 id="public_api.learning_system.data_provider.word_data_provider"
-                class="PublicApi\LearningSystem\DataProvider\InitialWordDataProvider">
+                class="PublicApi\LearningSystem\DataProvider\InitialWordDataProvider"
+                public="true">
 
             <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>

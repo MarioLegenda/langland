@@ -35,32 +35,55 @@ class LearningUserDataProvider implements DefaultDataProviderInterface
     /**
      * @param Generator $faker
      * @param Language $language
+     * @param $questionAnswers
      * @return LearningUser
      */
-    public function createDefault(Generator $faker, Language $language = null): LearningUser
-    {
-        return $this->createLearningUser($faker, $this->createLanguageIfNotExists($faker, $language));
+    public function createDefault(
+        Generator $faker,
+        Language $language = null,
+        array $questionAnswers = null
+    ): LearningUser {
+        return $this->createLearningUser(
+            $faker,
+            $this->createLanguageIfNotExists($faker, $language),
+            $questionAnswers
+        );
     }
     /**
      * @param Generator $faker
      * @param Language $language
+     * @param array $questionAnswers
      * @return LearningUser
      */
-    public function createDefaultDb(Generator $faker, Language $language = null): LearningUser
-    {
-        return $this->learningUserRepository->persistAndFlush($this->createDefault($faker, $language));
+    public function createDefaultDb(
+        Generator $faker,
+        Language $language = null,
+        array $questionAnswers = null
+    ): LearningUser {
+        return $this->learningUserRepository->persistAndFlush(
+            $this->createDefault($faker, $language, $questionAnswers)
+        );
     }
     /**
      * @param Generator $faker
      * @param Language $language
+     * @param array $questionAnswers
      * @return LearningUser
      */
-    private function createLearningUser(Generator $faker, Language $language): LearningUser
-    {
+    private function createLearningUser(
+        Generator $faker,
+        Language $language,
+        array $questionAnswers = null
+    ): LearningUser {
         $learningUser = new LearningUser();
         $learningUser->setIsLanguageInfoLooked(false);
         $learningUser->setLanguage($language);
-        $learningUser->setAnsweredQuestions($this->createQuestionAnswers()->getAnswers());
+
+        if (is_array($questionAnswers)) {
+            $learningUser->setAnsweredQuestions($questionAnswers);
+        } else {
+            $learningUser->setAnsweredQuestions($this->createQuestionAnswers()->getAnswers());
+        }
 
         return $learningUser;
     }

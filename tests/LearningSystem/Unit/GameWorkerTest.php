@@ -6,6 +6,15 @@ use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Lesson;
 use ArmorBundle\Entity\User;
+use LearningSystem\Infrastructure\Type\ChallengesType;
+use LearningSystem\Infrastructure\Type\FreeTimeType;
+use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
+use LearningSystem\Infrastructure\Type\LearningTimeType;
+use LearningSystem\Infrastructure\Type\MemoryType;
+use LearningSystem\Infrastructure\Type\PersonType;
+use LearningSystem\Infrastructure\Type\ProfessionType;
+use LearningSystem\Infrastructure\Type\SpeakingLanguagesType;
+use LearningSystem\Infrastructure\Type\StressfulJobType;
 use LearningSystem\Library\Game\Implementation\GameInterface;
 use LearningSystem\Library\ProvidedDataInterface;
 use LearningSystem\Library\Worker\GameWorker;
@@ -55,10 +64,6 @@ class GameWorkerTest extends LanglandAdminTestCase
      * @var WordDataProvider $wordDataProvider
      */
     private $wordDataProvider;
-    /**
-     * @var GameWorker $gameWorker
-     */
-    private $gameWorker;
 
     public function setUp()
     {
@@ -213,6 +218,66 @@ class GameWorkerTest extends LanglandAdminTestCase
             }
         }
     }
+
+    public function test_InitialDataDecider()
+    {
+        $this->manualReset();
+
+        $questionAnswers = array(
+            SpeakingLanguagesType::getName() => 0,
+            ProfessionType::getName() => 'arts_and_entertainment',
+            PersonType::getName() => 'sure_thing',
+            LearningTimeType::getName() => 'morning',
+            FreeTimeType::getName() => '30_minutes',
+            MemoryType::getName() => 'short_term',
+            ChallengesType::getName() => 'dislike_challenges',
+            StressfulJobType::getName() => 'stressful_job',
+        );
+
+        $numberOfLanguages = 3;
+        $wordLevels = [1, 2, 3];
+
+        for ($i = 0; $i < $numberOfLanguages; $i++) {
+            $language = $this->prepareLanguageData($wordLevels[$i]);
+            $userData = $this->prepareUserData($language, $questionAnswers);
+
+            /** @var LearningUser $learningUser */
+            $learningUser = $userData['learningUser'];
+            /** @var User $user */
+            $user = $userData['user'];
+
+            $mockedProviderData = $this->mockLearningUserProvider($user);
+
+            $this->prepareLearningMetadata($learningUser);
+
+            foreach ($wordLevels as $level) {
+                $this->createWords($language,50, [
+                    'level' => $level,
+                ]);
+            }
+
+            $wordNumbers = 3;
+
+            for ($i = 0; $i < $wordNumbers; $i++) {
+                $this->mockInitialWordDataProvider(
+                    $mockedProviderData['learningUserProvider'],
+                    $mockedProviderData['languageProvider']
+                );
+
+                $initialDataDecider = $this->container->get('public_api.learning_system.initial_data_decider');
+
+                $decidedData = $initialDataDecider->getData();
+
+                static::assertEquals(BasicGameType::getName(), $decidedData['game_type']);
+
+                $data = $decidedData['data'];
+
+                static::assertInstanceOf(ProvidedWordDataCollection::class, $data);
+
+                static::assertEquals(15, count($data));
+            }
+        }
+    }
     /**
      * @param int $wordLevel
      * @return Language
@@ -232,12 +297,13 @@ class GameWorkerTest extends LanglandAdminTestCase
     }
     /**
      * @param Language $language
+     * @param array|null $questionAnswers
      * @return array
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    private function prepareUserData(Language $language): array
+    private function prepareUserData(Language $language, array $questionAnswers = null): array
     {
-        $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
+        $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language, $questionAnswers);
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
         $user->setCurrentLearningUser($learningUser);
 

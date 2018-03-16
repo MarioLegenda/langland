@@ -24,8 +24,8 @@ class ResetCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('langland:reset')
-            ->setDescription('Seeds users')
+            ->setName('langland:learning_metadata:reset')
+            ->setDescription('Reset database')
             ->addOption('cache', 'cache', InputOption::VALUE_OPTIONAL, 'To clear the cache?', 'n');
     }
     /**
@@ -33,6 +33,7 @@ class ResetCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->isValidEnvironment();
         $this->em = $this->getContainer()->get('doctrine')->getManager();
 
         $this->resetDatabase($output);
@@ -94,5 +95,19 @@ class ResetCommand extends ContainerAwareCommand
             ]);
 
         $output->writeln('<info>Users created</info>');
+    }
+    /**
+     * @throws \RuntimeException
+     */
+    private function isValidEnvironment()
+    {
+        $env = $this->getContainer()->get('kernel')->getEnvironment();
+        $validEnvironments = ['dev', 'test'];
+
+        if (!in_array($env, $validEnvironments)) {
+            $message = sprintf('This command can only be executed in \'%s\' environments', implode(', ', $validEnvironments));
+
+            throw new \RuntimeException($message);
+        }
     }
 }

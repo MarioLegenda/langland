@@ -30,15 +30,15 @@ class Seed
 
         $this->hasSeeded = true;
 
-        exec('/usr/bin/php /var/www/bin/console langland:reset');
-        exec('/usr/bin/php /var/www/bin/console langland:seed');
+        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
+        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:seed');
     }
     /**
      * @return Seed
      */
     public function reset() : Seed
     {
-        exec('/usr/bin/php /var/www/bin/console langland:reset');
+        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
 
         return $this;
     }
@@ -47,7 +47,7 @@ class Seed
      */
     public function populate() : Seed
     {
-        exec('/usr/bin/php /var/www/bin/console langland:seed');
+        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:seed');
 
         return $this;
     }

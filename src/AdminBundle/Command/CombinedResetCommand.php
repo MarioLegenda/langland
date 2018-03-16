@@ -23,7 +23,23 @@ class CombinedResetCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        exec('/usr/bin/php bin/console langland:reset');
-        exec('/usr/bin/php bin/console langland:seed');
+        $this->isValidEnvironment();
+
+        exec('/usr/bin/php bin/console langland:learning_metadata:reset');
+        exec('/usr/bin/php bin/console langland:learning_metadata:seed --words=200 --lessons=100');
+    }
+    /**
+     * @throws \RuntimeException
+     */
+    private function isValidEnvironment()
+    {
+        $env = $this->getContainer()->get('kernel')->getEnvironment();
+        $validEnvironments = ['dev', 'test'];
+
+        if (!in_array($env, $validEnvironments)) {
+            $message = sprintf('This command can only be executed in \'%s\' environments', implode(', ', $validEnvironments));
+
+            throw new \RuntimeException($message);
+        }
     }
 }

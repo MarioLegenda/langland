@@ -17,6 +17,10 @@ class NumberType extends BaseType
             return new static([$value]);
         }
 
+        if (is_numeric($value)) {
+            return new static([(int) $value]);
+        }
+
         throw new \RuntimeException(sprintf('%s could not be created from value %s', static::class, (string) $value));
     }
 }

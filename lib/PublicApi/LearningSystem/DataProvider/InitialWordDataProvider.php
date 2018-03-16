@@ -208,7 +208,18 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
         array $wordIds,
         int $wordLevel
     ): array {
+
         $randomizedWordIds = $this->randomizeWordIds($wordIds, $wordNumber);
+
+        if (count($randomizedWordIds) !== $wordNumber) {
+            $message = sprintf(
+                'Invalid number of words found. There has to be %d words. %d given',
+                $wordNumber,
+                count($wordIds)
+            );
+
+            throw new \RuntimeException($message);
+        }
 
         $sql = sprintf(
             'SELECT w.id, w.name, w.type, w.plural_form, w.level, t.name AS translations FROM words AS w INNER JOIN word_translations AS t ON w.id = t.word_id AND w.language_id = %d AND w.id IN(%s) AND w.level = %d',

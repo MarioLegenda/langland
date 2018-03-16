@@ -1,6 +1,6 @@
 make_initial_data_creation:
     path: /make-initial-data-creation
-    defaults: { _controller: langland.public_api.controller.lesson:getLessonById }
-    methods: [GET]
+    defaults: { _controller: learning_system.business.controller.initial_data_creation:makeInitialDataCreation }
+    methods: [POST]
     requirements:
         _format: json

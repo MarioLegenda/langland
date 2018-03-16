@@ -11,8 +11,6 @@ class Item extends React.Component {
     constructor(props) {
         super(props);
 
-        this.learningSystemRepository = factory('learning-system');
-
         this.next = this.next.bind(this);
         this.prev = this.prev.bind(this);
 
@@ -166,6 +164,7 @@ export class QuestionsContainer extends React.Component {
         super(props);
 
         this.learningUserRepository = factory('learning-user');
+        this.learningSystemRepository = factory('learning-system');
 
         this.state = {
             items: null,

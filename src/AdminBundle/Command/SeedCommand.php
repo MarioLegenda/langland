@@ -12,21 +12,36 @@ use AdminBundle\Command\Helper\WordFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 require_once __DIR__.'/../../../vendor/fzaninotto/faker/src/autoload.php';
 
 class SeedCommand extends ContainerAwareCommand
 {
+    /**
+     * @void
+     */
     public function configure()
     {
         $this
-            ->setName('langland:seed')
+            ->setName('langland:learning_metadata:seed')
+            ->addOption('words', 'w', InputOption::VALUE_OPTIONAL, null, 10)
+            ->addOption('lessons', 'l', InputOption::VALUE_OPTIONAL, null, 5)
             ->setDescription('Seeds initial data');
     }
-
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->isValidEnvironment();
+
+        $numOfWords = (int) $input->getOption('words');
+        $numOfLessons = (int) $input->getOption('lessons');
+
         $em = $this->getContainer()->get('doctrine')->getManager();
 
         $faker = \Faker\Factory::create();
@@ -46,14 +61,17 @@ class SeedCommand extends ContainerAwareCommand
         $questionsFactory->create();
         $categoryFactory->create($categories, true);
         $languageObjects = $languageFactory->create($languages, true);
+        $wordObjects = [];
 
         foreach ($languageObjects as $i => $languageObject) {
-            $wordFactory->create(
+            $words = $wordFactory->create(
                 $categoryFactory,
                 $wordTranslationFactory,
                 $languageObject,
-                10
+                $numOfWords
             );
+
+            $wordObjects = array_merge($wordObjects, $words);
         }
 
         foreach ($languageObjects as $i => $languageObject) {
@@ -66,11 +84,36 @@ class SeedCommand extends ContainerAwareCommand
 
         $lessons = [];
         foreach ($courses as $course) {
-            $lessons = $lessonFactory->create($course, 10);
+            $lessons = $lessonFactory->create($course, $numOfLessons);
         }
 
         if (empty($lessons)) {
             throw new \RuntimeException('Seeding went wrong. There are no created lessons');
+        }
+
+        foreach ($wordObjects as $key => $word) {
+            if (($key % 2) === 0) {
+                $lesson = $lessons[array_rand($lessons, 1)];
+
+                $word->setLesson($lesson);
+                $em->persist($word);
+            }
+        }
+
+        $em->flush();
+    }
+    /**
+     * @throws \RuntimeException
+     */
+    private function isValidEnvironment()
+    {
+        $env = $this->getContainer()->get('kernel')->getEnvironment();
+        $validEnvironments = ['dev', 'test'];
+
+        if (!in_array($env, $validEnvironments)) {
+            $message = sprintf('This command can only be executed in \'%s\' environments', implode(', ', $validEnvironments));
+
+            throw new \RuntimeException($message);
         }
     }
 }

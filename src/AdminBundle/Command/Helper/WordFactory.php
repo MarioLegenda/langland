@@ -28,15 +28,20 @@ class WordFactory
      * @param int $numberOfEntries
      * @return array
      */
-    public function create(CategoryFactory $categoryFactory, WordTranslationFactory $wordTranslationFactory, Language $language, int $numberOfEntries) : array
-    {
+    public function create(
+        CategoryFactory $categoryFactory,
+        WordTranslationFactory $wordTranslationFactory,
+        Language $language,
+        int $numberOfEntries
+    ) : array {
         $wordsArray = array();
 
         for ($i = 0; $i < $numberOfEntries; $i++) {
             $word = new Word();
+
             $word->setName($this->getFaker()->word);
             $word->setLanguage($language);
-            $word->setLevel(rand(1, 5));
+            $word->setLevel(1);
             $word->setPluralForm($this->getFaker()->word);
 
             $word->setCategories($categoryFactory->createCollection(2));

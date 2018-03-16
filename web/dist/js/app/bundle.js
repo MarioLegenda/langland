@@ -27226,7 +27226,6 @@ class LearningSystemRepository {
         $.ajax({
             url: this.routes.initial_data_creation,
             method: 'POST',
-            contentType: 'application/json',
             headers: {
                 'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
             }
@@ -27741,8 +27740,6 @@ var Item = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Item.__proto__ || Object.getPrototypeOf(Item)).call(this, props));
 
-        _this.learningSystemRepository = (0, _factory.factory)('learning-system');
-
         _this.next = _this.next.bind(_this);
         _this.prev = _this.prev.bind(_this);
 
@@ -27940,6 +27937,7 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
         var _this4 = _possibleConstructorReturn(this, (QuestionsContainer.__proto__ || Object.getPrototypeOf(QuestionsContainer)).call(this, props));
 
         _this4.learningUserRepository = (0, _factory.factory)('learning-user');
+        _this4.learningSystemRepository = (0, _factory.factory)('learning-system');
 
         _this4.state = {
             items: null,

@@ -58,11 +58,13 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
 
         $finalWords = array_merge($initialWords['words'], $restOfTheWords);
 
-        $extractedWordIds = $this->extractWordIds($finalWords);
+        if (array_key_exists('row_count', $finalWords)) {
+            dump($initialWords['words']);
+            dump($restOfTheWords);
+            die();
+        }
 
-        $falseTranslations = $this->getFalseTranslations($extractedWordIds);
-
-        return $this->assignTranslationsAndGetFinalWordsAsDataCollection($finalWords, $falseTranslations);
+        return new ProvidedWordDataCollection($finalWords);
     }
     /**
      * @param array $finalWords
@@ -126,7 +128,6 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
      * @return array
      * @throws \BlueDot\Exception\BlueDotRuntimeException
      * @throws \BlueDot\Exception\ConnectionException
-     * @throws \BlueDot\Exception\EntityException
      */
     private function getWordsFromLessons(int $wordLevel): array
     {
@@ -140,18 +141,14 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
             ],
         ]);
 
-        $words = $promise->getResult()->normalizeJoinedResult([
-            'linking_column' => 'id',
-            'columns' => [
-                'translations',
-            ],
-        ], 'find_learning_lesson_words');
+        $words = $promise->getResult()->get('find_learning_lesson_words')->toArray();
+        unset($words['row_count']);
 
         $lessonId = $promise->getResult()->get('find_learning_lesson')->normalizeIfOneExists()->get('lesson_id');
 
         return [
             'words' => $words,
-            'lesson_id' => $lessonId,
+            'lesson_id' => (int) $lessonId,
         ];
     }
     /**
@@ -222,10 +219,10 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
         }
 
         $sql = sprintf(
-            'SELECT w.id, w.name, w.type, w.plural_form, w.level, t.name AS translations FROM words AS w INNER JOIN word_translations AS t ON w.id = t.word_id AND w.language_id = %d AND w.id IN(%s) AND w.level = %d',
+            'SELECT w.id, w.level FROM words AS w WHERE w.language_id = %d AND w.level = %d AND w.id IN(%s) ',
             $this->languageProvider->getLanguage()->getId(),
-            implode(',', $randomizedWordIds),
-            $wordLevel
+            $wordLevel,
+            implode(',', $randomizedWordIds)
         );
 
         $promise = $this->blueDot
@@ -233,14 +230,7 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
             ->addSql($sql)
             ->execute();
 
-        $words = $promise->getResult()->normalizeJoinedResult([
-            'linking_column' => 'id',
-            'columns' => [
-                'translations',
-            ],
-        ]);
-
-        return $words;
+        return $promise->getResult()->toArray();
     }
     /**
      * @param int $rulesWordNumber

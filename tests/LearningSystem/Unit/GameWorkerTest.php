@@ -101,7 +101,7 @@ class GameWorkerTest extends LanglandAdminTestCase
     {
         $this->manualReset();
 
-        $prepared = $this->prepareFullLearningMetadata(1);
+        $prepared = $this->prepareFullLearningMetadata([1, 2, 3, 4, 5]);
 
         $levels = [1, 2, 3, 4];
 
@@ -279,19 +279,31 @@ class GameWorkerTest extends LanglandAdminTestCase
         }
     }
     /**
-     * @param int $wordLevel
+     * @param int|array $wordLevel
      * @return Language
      */
-    private function prepareLanguageData(int $wordLevel): Language
+    private function prepareLanguageData($wordLevel): Language
     {
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
         $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language);
         $lesson = $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
 
-        $this->createWordsForLesson($lesson, $language, 5, [
-            'level' => $wordLevel,
-        ]);
+        if (is_array($wordLevel)) {
+            foreach ($wordLevel as $level) {
+                $this->createWordsForLesson($lesson, $language, 5, [
+                    'level' => $level,
+                ]);
+            }
+        } else if (is_int($wordLevel)) {
+            $this->createWordsForLesson($lesson, $language, 5, [
+                'level' => $wordLevel,
+            ]);
+        } else {
+            $this->createWordsForLesson($lesson, $language, 5, [
+                'level' => 1,
+            ]);
+        }
 
         return $language;
     }
@@ -313,10 +325,11 @@ class GameWorkerTest extends LanglandAdminTestCase
         ];
     }
     /**
-     * @param int $wordLevel
+     * @param array|int $wordLevel
+     * @return array
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    private function prepareFullLearningMetadata(int $wordLevel): array
+    private function prepareFullLearningMetadata($wordLevel): array
     {
         $language = $this->prepareLanguageData($wordLevel);
 
@@ -440,31 +453,9 @@ class GameWorkerTest extends LanglandAdminTestCase
         foreach ($providedWordDataCollection as $providedWord) {
             static::assertInstanceOf(ProvidedWord::class, $providedWord);
 
-            static::assertInternalType('array', $providedWord->getTranslations());
-            static::assertNotEmpty($providedWord->getFalseTranslations());
-
-            static::assertInternalType('array', $providedWord->getFalseTranslations());
-            static::assertNotEmpty($providedWord->getFalseTranslations());
-
-            $fields = $providedWord->getFields([
-                'false_translations',
-                'translations',
-            ]);
-
-            static::assertNotEmpty($fields);
-            static::assertArrayNotHasKey('false_translations', $fields);
-            static::assertArrayNotHasKey('translations', $fields);
-
-            foreach ($fields as $field) {
-                static::assertTrue($providedWord->hasField($field));
-                static::assertNotEmpty($providedWord->getField($field));
-            }
-
             $fields = $providedWord->getFields();
 
             static::assertNotEmpty($fields);
-            static::assertArrayNotHasKey('false_translations', $fields);
-            static::assertArrayNotHasKey('translations', $fields);
 
             foreach ($fields as $field) {
                 static::assertTrue($providedWord->hasField($field));

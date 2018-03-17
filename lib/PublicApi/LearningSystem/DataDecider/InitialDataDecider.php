@@ -44,7 +44,6 @@ class InitialDataDecider implements DataDeciderInterface
         $questionAnswers = $this->questionAnswersApplicationResolver->resolve();
 
         $wordNumber = $this->resolveWordNumber($questionAnswers);
-
         $wordLevel = 1;
 
         /** @var ProvidedWordDataCollection $dataCollection */

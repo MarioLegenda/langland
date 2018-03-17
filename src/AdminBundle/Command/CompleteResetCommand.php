@@ -4,9 +4,10 @@ namespace AdminBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CombinedResetCommand extends ContainerAwareCommand
+class CompleteResetCommand extends ContainerAwareCommand
 {
     /**
      * @void
@@ -14,7 +15,10 @@ class CombinedResetCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('langland:complete_reset');
+            ->setName('langland:complete_reset --words=20 --lessons=100')
+            ->addOption('words', 'w', InputOption::VALUE_OPTIONAL, null, 10)
+            ->addOption('lessons', 'l', InputOption::VALUE_OPTIONAL, null, 5)
+            ->setDescription('Executes langland:learning_metadata:reset and langland:learning_metadata:seed together');
     }
     /**
      * @param InputInterface $input
@@ -25,8 +29,17 @@ class CombinedResetCommand extends ContainerAwareCommand
     {
         $this->isValidEnvironment();
 
+        $words = $input->getOption('words');
+        $lessons = $input->getOption('lessons');
+
+        $seedCommand = sprintf(
+            '/usr/bin/php bin/console langland:learning_metadata:seed --words=%s --lessons=%s',
+            $words,
+            $lessons
+        );
+
         exec('/usr/bin/php bin/console langland:learning_metadata:reset');
-        exec('/usr/bin/php bin/console langland:learning_metadata:seed --words=200 --lessons=100');
+        exec($seedCommand);
     }
     /**
      * @throws \RuntimeException

@@ -1,8 +1,8 @@
 <?php
 
-namespace PublicApi\LearningSystem\DataProvider\Word;
+namespace PublicApi\LearningSystem\Infrastructure\DataProvider\Word;
 
-use PublicApi\LearningSystem\DataProvider\BaseProvidedDataCollection;
+use PublicApi\LearningSystem\Infrastructure\DataProvider\BaseProvidedDataCollection;
 
 class ProvidedWordDataCollection extends BaseProvidedDataCollection
 {

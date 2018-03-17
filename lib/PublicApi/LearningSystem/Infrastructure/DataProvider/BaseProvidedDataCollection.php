@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningSystem\DataProvider;
+namespace PublicApi\LearningSystem\Infrastructure\DataProvider;
 
 use LearningSystem\Library\ProvidedDataInterface;
 

@@ -4,8 +4,7 @@ namespace LearningSystem\Business\Implementation;
 
 use ApiSDK\ApiSDK;
 use LearningSystem\Library\Worker\GameWorker;
-use PublicApi\LearningSystem\GameProvider\GameProvider;
-use PublicApiBundle\Entity\LearningUser;
+use PublicApi\LearningSystem\Infrastructure\GameProvider\GameProvider;
 
 class InitialDataCreationImplementation
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningSystem\DataDecider;
+namespace PublicApi\LearningSystem\Infrastructure\DataDecider;
 
 use LearningSystem\Infrastructure\Type\ChallengesType;
 use LearningSystem\Infrastructure\Type\FreeTimeType;
@@ -10,9 +10,10 @@ use LearningSystem\Infrastructure\Type\SpeakingLanguagesType;
 use LearningSystem\Infrastructure\Type\StressfulJobType;
 use LearningSystem\Library\DataProviderInterface;
 use LearningSystem\Infrastructure\Type\TypeInterface;
-use PublicApi\LearningSystem\DataProvider\Word\ProvidedWordDataCollection;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
+use PublicApi\LearningSystem\Infrastructure\DataProvider\Word\ProvidedWordDataCollection;
+use LearningSystem\Library\DataDeciderInterface;
 
 class InitialDataDecider implements DataDeciderInterface
 {

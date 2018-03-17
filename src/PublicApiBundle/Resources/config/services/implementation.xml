@@ -42,5 +42,13 @@
             <argument type="service" id="public_api.repository.blue_dot.lesson" />
         </service>
 
+        <service
+                id="learning_system.business.implementation.learning_metadata"
+                public="true"
+                class="PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation">
+
+            <argument type="service" id="public_api.repository.learning_system.blue_dot.learning_metadata" />
+        </service>
+
     </services>
 </container>

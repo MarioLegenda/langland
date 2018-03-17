@@ -8,7 +8,7 @@
 
         <service
                 id="public_api.learning_system.initial_data_decider"
-                class="PublicApi\LearningSystem\DataDecider\InitialDataDecider"
+                class="PublicApi\LearningSystem\Infrastructure\DataDecider\InitialDataDecider"
                 public="true">
 
             <argument type="service" id="public_api.provider.question_answers_application_provider" />
@@ -17,7 +17,7 @@
 
         <service
                 id="public_api.learning_system.data_provider.word_data_provider"
-                class="PublicApi\LearningSystem\DataProvider\InitialWordDataProvider"
+                class="PublicApi\LearningSystem\Infrastructure\DataProvider\InitialWordDataProvider"
                 public="true">
 
             <argument type="service" id="common.blue_dot" />
@@ -29,7 +29,7 @@
 
         <service
                 id="public_api.learning_system.data_provider.game_provider"
-                class="PublicApi\LearningSystem\GameProvider\GameProvider"
+                class="PublicApi\LearningSystem\Infrastructure\GameProvider\GameProvider"
                 public="true">
 
             <argument type="service" id="public_api.learning_user_provider" />

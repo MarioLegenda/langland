@@ -7,7 +7,6 @@ use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Lesson;
 use ArmorBundle\Entity\User;
 use PublicApi\Language\Infrastructure\LanguageProvider;
-use PublicApi\LearningSystem\DataProvider\InitialWordDataProvider;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 use PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
@@ -20,6 +19,7 @@ use TestLibrary\DataProvider\WordDataProvider;
 use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
 use Tests\TestLibrary\DataProvider\LessonDataProvider;
+use PublicApi\LearningSystem\Infrastructure\DataProvider\InitialWordDataProvider;
 
 class PublicApiTestCase extends LanglandAdminTestCase
 {

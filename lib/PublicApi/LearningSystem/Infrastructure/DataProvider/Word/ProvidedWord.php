@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningSystem\DataProvider\Word;
+namespace PublicApi\LearningSystem\Infrastructure\DataProvider\Word;
 
 use LearningSystem\Library\ProvidedDataInterface;
 

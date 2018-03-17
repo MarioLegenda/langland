@@ -1,14 +1,9 @@
 <?php
 
-namespace PublicApi\LearningSystem\DataCollector;
+namespace PublicApi\LearningSystem\Infrastructure\DataCollector;
 
 use LearningSystem\Library\DataCollectorInterface;
-use LearningSystem\Library\Infrastructure\SystemHeadCollection;
-use PublicApi\Infrastructure\Repository\WordRepository;
-use PublicApi\LearningSystem\DataDecider\DataDeciderInterface;
-use PublicApi\LearningSystem\DataDecider\InitialDataDecider;
-use PublicApi\LearningSystem\RuleResolver;
-use PublicApi\Lesson\Repository\LessonRepository;
+use PublicApi\LearningSystem\Infrastructure\DataDecider\DataDeciderInterface;
 
 class DataCollector implements DataCollectorInterface
 {

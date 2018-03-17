@@ -3,7 +3,6 @@
 namespace LearningSystem\Business\Controller;
 
 use LearningSystem\Business\Implementation\InitialDataCreationImplementation;
-use LearningSystem\Infrastructure\Provider\LearningUserProvider;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

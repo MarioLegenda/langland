@@ -10,18 +10,22 @@ configuration:
             get_words_count_with_lesson_excluded:
                 sql: "SELECT id AS id FROM words WHERE language_id = :language_id AND lesson_id != :lesson_id OR lesson_id IS NULL AND level = :word_level"
                 parameters: [language_id, lesson_id, word_level]
+        update:
+            update_learning_lesson:
+                sql: "UPDATE learning_lessons SET learning_metadata_id = :learning_metadata_id WHERE id = :learning_lesson_id"
+                parameters: [learning_metadata_id, learning_lesson_id]
 
     scenario:
         create_learning_metadata:
             atomic: true
             statements:
                 find_lesson:
-                    sql: create_learning_metadata.find_lesson
+                    sql: "SELECT l.id AS id FROM lessons AS l INNER JOIN courses AS c ON l.course_id = c.id AND c.language_id = :language_id AND c.type = :course_type AND l.learning_order = :learning_order"
                     parameters: [language_id, course_type, learning_order]
                 create_data_collector:
-                    sql: create_learning_metadata.create_data_collector
+                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
                 create_learning_lesson:
-                    sql: create_learning_metadata.create_learning_lesson
+                    sql: "INSERT INTO learning_lessons (data_collector_id, lesson_id, learning_metadata_id, has_completed) VALUES (:data_collector_id, :lesson_id, NULL, 0)"
                     foreign_key:
                         statement_name: create_data_collector
                         bind_to: data_collector_id
@@ -29,7 +33,7 @@ configuration:
                         statement_name: find_lesson
                         values: { find_lesson.id : lesson_id }
                 create_learning_metadata:
-                    sql: create_learning_metadata.create_learning_metadata
+                    sql: "INSERT INTO learning_metadata (lesson_data_collector_id, learning_user_id) VALUES(:data_collector_id, :learning_user_id)"
                     parameters: [learning_user_id]
                     foreign_key:
                         statement_name: create_data_collector
@@ -47,12 +51,19 @@ configuration:
                     use:
                         statement_name: find_learning_lesson
                         values: { find_learning_lesson.lesson_id: lesson_id }
-#
-#        get_learning_metadata_for_learning_user:
-#            atomic: true
-#            statements:
-#                find_learning_metadata:
-#                    sql: "SELECT lm.* FROM learning_metadata AS lm INNER JOIN learning_users AS lu ON lm.learning_user_id = lu.id AND lu.id = 1"
-#                    parameters: [learning_user_id]
-#                find_learning_user_lesson:
-#                    sql: ""
+
+        get_learning_metadata_presentation_by_learning_user:
+            atomic: true
+            statements:
+                find_learning_lesson:
+                    sql: "SELECT l.id, l.name FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id WHERE lm.learning_user_id = :learning_user_id"
+                    parameters: [learning_user_id]
+                find_courses:
+                    sql: "SELECT name, what_to_learn, type FROM courses WHERE language_id = :language_id"
+                    parameters: [language_id]
+
+
+    callable:
+        learning_metadata_presentation:
+            type: object
+            name: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\LearningMetadataPresentationCallable

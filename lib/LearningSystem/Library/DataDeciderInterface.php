@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningSystem\DataDecider;
+namespace LearningSystem\Library;
 
 interface DataDeciderInterface
 {

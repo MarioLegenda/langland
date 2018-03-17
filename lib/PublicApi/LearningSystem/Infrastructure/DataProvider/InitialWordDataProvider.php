@@ -1,14 +1,14 @@
 <?php
 
-namespace PublicApi\LearningSystem\DataProvider;
+namespace PublicApi\LearningSystem\Infrastructure\DataProvider;
 
 use BlueDot\BlueDot;
 use LearningSystem\Library\DataProviderInterface;
 use LearningSystem\Library\ProvidedDataInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 use PublicApi\Language\Infrastructure\LanguageProvider;
-use PublicApi\LearningSystem\DataProvider\Word\ProvidedWordDataCollection;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
+use PublicApi\LearningSystem\Infrastructure\DataProvider\Word\ProvidedWordDataCollection;
 
 class InitialWordDataProvider extends BaseBlueDotRepository implements DataProviderInterface
 {

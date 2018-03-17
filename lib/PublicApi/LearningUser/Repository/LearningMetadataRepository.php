@@ -2,20 +2,11 @@
 
 namespace PublicApi\LearningUser\Repository;
 
-use BlueDot\BlueDot;
+use BlueDot\Entity\PromiseInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 
 class LearningMetadataRepository extends BaseBlueDotRepository
 {
-    /**
-     * LearningMetadataRepository constructor.
-     * @param BlueDot $blueDot
-     * @param string $apiName
-     */
-    public function __construct(BlueDot $blueDot, string $apiName)
-    {
-        parent::__construct($blueDot, $apiName);
-    }
     /**
      * @param array $parameters
      * @throws \BlueDot\Exception\BlueDotRuntimeException
@@ -37,6 +28,14 @@ class LearningMetadataRepository extends BaseBlueDotRepository
             'create_learning_metadata' => [
                 'learning_user_id' => $parameters['learning_user_id'],
             ],
-        ]);
+        ])->success(function(PromiseInterface $promise) {
+            $learningMetadataId = $promise->getResult()->get('create_learning_metadata')->get('last_insert_id');
+            $learningLessonId = $promise->getResult()->get('create_learning_lesson')->get('last_insert_id');
+
+            $this->blueDot->execute('simple.update.update_learning_lesson', [
+                'learning_metadata_id' => $learningMetadataId,
+                'learning_lesson_id' => $learningLessonId,
+            ]);
+        });
     }
 }

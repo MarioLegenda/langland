@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\LearningSystem\GameProvider;
+namespace PublicApi\LearningSystem\Infrastructure\GameProvider;
 
 use LearningSystem\Business\Repository\GameRepository;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;

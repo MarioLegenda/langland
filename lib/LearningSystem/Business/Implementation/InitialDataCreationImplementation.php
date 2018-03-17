@@ -4,6 +4,7 @@ namespace LearningSystem\Business\Implementation;
 
 use ApiSDK\ApiSDK;
 use LearningSystem\Library\Worker\GameWorker;
+use PublicApi\LearningSystem\GameProvider\GameProvider;
 use PublicApiBundle\Entity\LearningUser;
 
 class InitialDataCreationImplementation
@@ -17,16 +18,23 @@ class InitialDataCreationImplementation
      */
     private $gameWorker;
     /**
+     * @var GameProvider $gameProvider
+     */
+    private $gameProvider;
+    /**
      * InitialDataCreationImplementation constructor.
      * @param ApiSDK $apiSDK
      * @param GameWorker $gameWorker
+     * @param GameProvider $gameProvider
      */
     public function __construct(
         ApiSDK $apiSDK,
-        GameWorker $gameWorker
+        GameWorker $gameWorker,
+        GameProvider $gameProvider
     ) {
         $this->apiSdk = $apiSDK;
         $this->gameWorker = $gameWorker;
+        $this->gameProvider = $gameProvider;
     }
     /**
      * @return array
@@ -34,6 +42,8 @@ class InitialDataCreationImplementation
     public function createInitialData(): array
     {
         $game = $this->gameWorker->createGame();
+
+        $this->gameProvider->createGame($game);
 
         return $this->apiSdk
             ->create([])

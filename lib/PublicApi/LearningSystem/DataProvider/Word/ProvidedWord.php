@@ -18,9 +18,9 @@ class ProvidedWord implements ProvidedDataInterface
     {
         $this->word = $word;
     }
+
     /**
-     * @param string $field
-     * @return mixed|null
+     * @inheritdoc
      */
     public function getField(string $field)
     {
@@ -31,8 +31,7 @@ class ProvidedWord implements ProvidedDataInterface
         return null;
     }
     /**
-     * @param array $toExclude
-     * @return array
+     * @inheritdoc
      */
     public function getFields(array $toExclude = []): array
     {
@@ -47,8 +46,7 @@ class ProvidedWord implements ProvidedDataInterface
         return $fields;
     }
     /**
-     * @param string $field
-     * @return bool
+     * @inheritdoc
      */
     public function hasField(string $field): bool
     {
@@ -69,21 +67,21 @@ class ProvidedWord implements ProvidedDataInterface
         return $this->getField('false_translations');
     }
     /**
-     * @return \ArrayIterator
+     * @inheritdoc
      */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->word);
     }
     /**
-     * @return int
+     * @inheritdoc
      */
     public function count(): int
     {
         return count($this->getFields());
     }
     /**
-     * @return array
+     * @inheritdoc
      */
     public function toArray(): array
     {

@@ -15,8 +15,6 @@
             <argument type="service" id="public_api.learning_system.data_provider.word_data_provider" />
         </service>
 
-
-
         <service
                 id="public_api.learning_system.data_provider.word_data_provider"
                 class="PublicApi\LearningSystem\DataProvider\InitialWordDataProvider"
@@ -26,6 +24,16 @@
             <argument>learning_user_metadata</argument>
             <argument type="service" id="public_api.provider.language_provider" />
             <argument type="service" id="public_api.learning_user_provider" />
+
+        </service>
+
+        <service
+                id="public_api.learning_system.data_provider.game_provider"
+                class="PublicApi\LearningSystem\GameProvider\GameProvider"
+                public="true">
+
+            <argument type="service" id="public_api.learning_user_provider" />
+            <argument type="service" id="public_api.repository.blue_dot.game" />
 
         </service>
 

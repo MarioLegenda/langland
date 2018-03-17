@@ -3,7 +3,6 @@
 namespace LearningSystem\Library\Worker;
 
 use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
-use LearningSystem\Infrastructure\Type\TypeInterface;
 use LearningSystem\Library\Game\Implementation\BasicGame;
 use LearningSystem\Library\Game\Implementation\GameInterface;
 use PublicApi\LearningSystem\DataDecider\DataDeciderInterface;

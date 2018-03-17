@@ -7,7 +7,8 @@
     <services>
         <service
                 id="public_api.repository.lesson"
-                class="PublicApi\Lesson\Repository\LessonRepository" public="true">
+                class="PublicApi\Lesson\Repository\LessonRepository"
+                public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>AdminBundle\Entity\Lesson</argument>
@@ -15,7 +16,8 @@
 
         <service
                 id="public_api.repository.language"
-                class="PublicApi\Language\Repository\LanguageRepository" public="true">
+                class="PublicApi\Language\Repository\LanguageRepository"
+                public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>AdminBundle\Entity\Language</argument>
@@ -23,7 +25,8 @@
 
         <service
                 id="public_api.repository.learning_user"
-                class="PublicApi\LearningUser\Repository\LearningUserRepository" public="true">
+                class="PublicApi\LearningUser\Repository\LearningUserRepository"
+                public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>PublicApiBundle\Entity\LearningUser</argument>
@@ -31,7 +34,8 @@
 
         <service
                 id="public_api.repository.language_info"
-                class="PublicApi\Language\Repository\LanguageInfoRepository" public="true">
+                class="PublicApi\Language\Repository\LanguageInfoRepository"
+                public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>AdminBundle\Entity\LanguageInfo</argument>
@@ -39,7 +43,8 @@
 
         <service
                 id="public_api.repository.word"
-                class="PublicApi\Infrastructure\Repository\WordRepository" public="true">
+                class="PublicApi\Infrastructure\Repository\WordRepository"
+                public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>AdminBundle\Entity\Word</argument>
@@ -47,7 +52,8 @@
 
         <service
                 id="public_api.repository.repository_communicator"
-                class="PublicApi\Infrastructure\Communication\RepositoryCommunicator" public="true">
+                class="PublicApi\Infrastructure\Communication\RepositoryCommunicator"
+                public="true">
 
             <argument type="service" id="public_api.repository.language" />
             <argument type="service" id="public_api.repository.learning_user" />
@@ -55,11 +61,22 @@
 
         <service
                 id="public_api.repository.blue_dot.learning_metadata"
-                class="PublicApi\LearningUser\Repository\LearningMetadataRepository" public="true">
+                class="PublicApi\LearningUser\Repository\LearningMetadataRepository"
+                public="true">
 
             <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>
         </service>
+
+        <service
+                id="public_api.repository.blue_dot.game"
+                class="LearningSystem\Business\Repository\GameRepository"
+                public="true">
+
+            <argument type="service" id="common.blue_dot" />
+            <argument>public_api_game</argument>
+        </service>
+
 
         <service
                 id="public_api.repository.blue_dot.lesson"

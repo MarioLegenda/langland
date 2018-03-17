@@ -40,4 +40,32 @@ class BaseProvidedDataCollection implements ProvidedDataInterface
     {
         return $this->data;
     }
+
+    /**
+     * @inheritdoc
+     * @throws \RuntimeException
+     */
+    public function getField(string $field)
+    {
+        $message = sprintf('getField() is not implemented for %s', BaseProvidedDataCollection::class);
+        throw new \RuntimeException($message);
+    }
+    /**
+     * @inheritdoc
+     * @throws \RuntimeException
+     */
+    public function getFields(array $toExclude = [])
+    {
+        $message = sprintf('getFields() is not implemented for %s', BaseProvidedDataCollection::class);
+        throw new \RuntimeException($message);
+    }
+    /**
+     * @inheritdoc
+     * @throws \RuntimeException
+     */
+    public function hasField(string $field)
+    {
+        $message = sprintf('hasField() is not implemented for %s', BaseProvidedDataCollection::class);
+        throw new \RuntimeException($message);
+    }
 }

@@ -43,6 +43,8 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
      */
     public function getData(array $rules): ProvidedDataInterface
     {
+        $this->blueDot->useRepository('learning_user_metadata');
+
         $initialWords = $this->getWordsFromLessons($rules['word_level']);
 
         $wordNumber = $this->getWordNumber($rules['word_number'], count($initialWords['words']));
@@ -57,12 +59,6 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
         $restOfTheWords = $this->getRestOfTheWords($wordNumber, $wordIds, $rules['word_level']);
 
         $finalWords = array_merge($initialWords['words'], $restOfTheWords);
-
-        if (array_key_exists('row_count', $finalWords)) {
-            dump($initialWords['words']);
-            dump($restOfTheWords);
-            die();
-        }
 
         return new ProvidedWordDataCollection($finalWords);
     }

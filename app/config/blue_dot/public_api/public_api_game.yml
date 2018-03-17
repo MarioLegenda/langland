@@ -1,0 +1,62 @@
+configuration:
+    scenario:
+        create_learning_game:
+            atomic: false
+            statements:
+                create_data_collector:
+                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
+
+                create_learning_game:
+                    sql: "INSERT INTO learning_games (data_collector_id, learning_user_id, has_completed) VALUES (:data_collector_id, :learning_user_id, 0)"
+                    parameters: [learning_user_id]
+                    foreign_key:
+                        statement_name: create_data_collector
+                        bind_to: data_collector_id
+
+        remove_learning_game:
+            atomic: true
+            statements:
+                get_learning_game:
+                    sql: "SELECT data_collector_id FROM learning_games WHERE id = :learning_game_id"
+                    parameters: [learning_game_id]
+                remove_data_collector:
+                    sql: "DELETE FROM data_collector WHERE id = :data_collector_id"
+                    use:
+                        statement_name: get_learning_game
+                        values: { "get_learning_game.data_collector_id": data_collector_id}
+                remove_learning_game:
+                    sql: "DELETE FROM learning_games WHERE id = :learning_game_id"
+                    parameters: [learning_game_id]
+
+        create_game_challenge:
+            atomic: false
+            statements:
+                create_data_collector:
+                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
+                get_learning_game:
+                    sql: "SELECT id FROM learning_games WHERE learning_user_id = :learning_user_id AND data_collector_id = :data_collector_id"
+                    parameters: [learning_user_id, data_collector_id]
+                create_learning_game_challenge:
+                    sql: "INSERT INTO learning_game_challenge (data_collector_id, learning_user_id, learning_game_id) VALUES (:data_collector_id, :learning_user_id, :learning_game_id)"
+                    parameters: [learning_user_id]
+                    foreign_key:
+                        statement_name: create_data_collector
+                        bind_to: data_collector_id
+                    use:
+                        statement_name: get_learning_game
+                        values: { "get_learning_game.id": learning_game_id }
+                create_learning_game_data:
+                    sql: "INSERT INTO learning_game_data (name, learning_game_challenge_id, data_id) VALUES (:name, :learning_game_challenge_id, :data_id)"
+                    parameters: [name, data_id]
+                    foreign_key:
+                        statement_name: create_learning_game_challenge
+                        bind_to: learning_game_challenge_id
+
+#        get_learning_metadata_for_learning_user:
+#            atomic: true
+#            statements:
+#                find_learning_metadata:
+#                    sql: "SELECT lm.* FROM learning_metadata AS lm INNER JOIN learning_users AS lu ON lm.learning_user_id = lu.id AND lu.id = 1"
+#                    parameters: [learning_user_id]
+#                find_learning_user_lesson:
+#                    sql: ""

@@ -13,6 +13,10 @@ class BlueDotFactory
      */
     private $blueDotApis;
     /**
+     * @var string $blueDotEnvironment
+     */
+    private $blueDotEnvironment;
+    /**
      * @var DoctrineConnection $doctrineConnection
      */
     private $doctrineConnection;
@@ -20,13 +24,16 @@ class BlueDotFactory
      * BlueDotFactory constructor.
      * @param DoctrineConnection $doctrineConnection
      * @param array $blueDotApis
+     * @param string $blueDotEnvironment
      */
     public function __construct(
         DoctrineConnection $doctrineConnection,
-        array $blueDotApis
+        array $blueDotApis,
+        string $blueDotEnvironment
     ) {
         $this->doctrineConnection = $doctrineConnection;
         $this->blueDotApis = $blueDotApis;
+        $this->blueDotEnvironment = $blueDotEnvironment;
     }
     /**
      * @return BlueDot
@@ -36,7 +43,7 @@ class BlueDotFactory
         $blueDotConnection = new Connection();
         $blueDotConnection->setPDO($this->doctrineConnection->getWrappedConnection());
 
-        $blueDot = new BlueDot();
+        $blueDot = new BlueDot(null, $this->blueDotEnvironment);
         $blueDot->setConnection($blueDotConnection);
 
         foreach ($this->blueDotApis as $apiDir) {

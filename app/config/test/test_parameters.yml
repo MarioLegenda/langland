@@ -25,3 +25,5 @@ parameters:
 
     blue_dot_apis:
         public_api: '%kernel.root_dir%/config/blue_dot/public_api'
+
+    blue_dot_environment: dev

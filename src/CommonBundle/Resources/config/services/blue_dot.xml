@@ -11,6 +11,7 @@
 
             <argument type="service" id="doctrine.dbal.default_connection" />
             <argument>%blue_dot_apis%</argument>
+            <argument>%blue_dot_environment%</argument>
         </service>
 
         <service id="common.blue_dot"

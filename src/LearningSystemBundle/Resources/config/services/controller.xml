@@ -12,5 +12,13 @@
 
             <argument type="service" id="learning_system.business.implementation.initial_data_creation" />
         </service>
+
+        <service
+                id="learning_system.business.controller.learning_metadata"
+                class="LearningSystem\Business\Controller\LearningMetadataController"
+                public="true">
+
+            <argument type="service" id="learning_system.business.implementation.learning_metadata" />
+        </service>
     </services>
 </container>

@@ -13,5 +13,15 @@
             <argument type="service" id="library.api_sdk" />
             <argument type="service" id="learning_system.game_worker.initial_system_game_worker" />
         </service>
+
+        <service
+                id="learning_system.business.implementation.learning_metadata"
+                public="true"
+                class="LearningSystem\Business\Implementation\LearningMetadataImplementation">
+
+            <argument type="service" id="learning_system.repository.learning_metadata" />
+            <argument type="service" id="learning_system.provider.learning_user_provider" />
+            <argument type="service" id="library.api_sdk" />
+        </service>
     </services>
 </container>

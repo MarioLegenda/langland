@@ -8,7 +8,8 @@
 
         <service
                 id="public_api.learning_system.initial_data_decider"
-                class="PublicApi\LearningSystem\DataDecider\InitialDataDecider">
+                class="PublicApi\LearningSystem\DataDecider\InitialDataDecider"
+                public="true">
 
             <argument type="service" id="public_api.provider.question_answers_application_provider" />
             <argument type="service" id="public_api.learning_system.data_provider.word_data_provider" />

@@ -47,7 +47,7 @@ configuration:
                     use:
                         statement_name: find_learning_lesson
                         values: { find_learning_lesson.lesson_id: lesson_id }
-
+#
 #        get_learning_metadata_for_learning_user:
 #            atomic: true
 #            statements:

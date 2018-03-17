@@ -43,7 +43,6 @@ class GameRepository extends BaseBlueDotRepository
             $dataCollectorId = $thisResult->get('create_data_collector')->get('last_insert_id');
             $learningGameId = $thisResult->get('create_learning_game')->get('last_insert_id');
 
-
             /** @var ProvidedDataInterface $item */
             foreach ($data as $item) {
                 $this->blueDot->prepareExecution('scenario.create_game_challenge', [

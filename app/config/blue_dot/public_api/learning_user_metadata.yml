@@ -56,11 +56,12 @@ configuration:
             atomic: true
             statements:
                 find_learning_lesson:
-                    sql: "SELECT l.id, l.name FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id WHERE lm.learning_user_id = :learning_user_id"
+                    sql: "SELECT l.id, l.name FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id AND lm.id = ll.learning_metadata_id WHERE lm.learning_user_id = 1"
                     parameters: [learning_user_id]
                 find_courses:
                     sql: "SELECT name, what_to_learn, type FROM courses WHERE language_id = :language_id"
                     parameters: [language_id]
+
 
 
     callable:

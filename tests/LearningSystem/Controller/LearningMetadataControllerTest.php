@@ -6,6 +6,7 @@ use ArmorBundle\Entity\User;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\PublicApiTestCase;
+use PublicApi\LearningSystem\Repository\LearningMetadataRepository;
 
 class LearningMetadataControllerTest extends PublicApiTestCase
 {
@@ -18,7 +19,7 @@ class LearningMetadataControllerTest extends PublicApiTestCase
     {
         parent::setUp();
 
-        $this->learningMetadataRepository = $this->container->get('learning_system.repository.learning_metadata');
+        $this->learningMetadataRepository = $this->container->get('public_api.repository.learning_system.blue_dot.learning_metadata');
     }
 
     public function test_get_learning_metadata_repository()
@@ -26,6 +27,8 @@ class LearningMetadataControllerTest extends PublicApiTestCase
         $this->manualReset();
 
         $learningUsers = $this->prepareTest();
+
+        die("mile");
 
         /** @var LearningUser $learningUser */
         foreach ($learningUsers as $learningUser) {

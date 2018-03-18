@@ -23,18 +23,20 @@ class GameWorker
         $this->dataDecider = $dataDecider;
     }
     /**
+     * @param int $learningMetadataId
      * @return GameInterface
      */
-    public function createGame(): GameInterface
+    public function createGame(int $learningMetadataId): GameInterface
     {
-        return $this->doCreateGame();
+        return $this->doCreateGame($learningMetadataId);
     }
     /**
+     * @param int $learningMetadataId
      * @return GameInterface
      */
-    private function doCreateGame(): GameInterface
+    private function doCreateGame(int $learningMetadataId): GameInterface
     {
-        $decidedData = $this->dataDecider->getData();
+        $decidedData = $this->dataDecider->getData($learningMetadataId);
 
         $gameType = $decidedData['game_type'];
         $data = $decidedData['data'];

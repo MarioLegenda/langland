@@ -1,15 +1,16 @@
 <?php
 
-namespace LearningSystem\Controller;
+namespace PublicApi\Controller;
 
 use ArmorBundle\Entity\User;
+use PublicApi\Infrastructure\Type\CourseType;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\PublicApiTestCase;
 
-class InitialDataCreationControllerTest extends PublicApiTestCase
+class InitialDataCreationTest extends PublicApiTestCase
 {
-    public function test_InitialWordDataProvider_Controller()
+    public function test_InitialDataCreationController()
     {
         $this->manualReset();
 
@@ -25,9 +26,7 @@ class InitialDataCreationControllerTest extends PublicApiTestCase
             /** @var User $user */
             $user = $userData['user'];
 
-            $mockedProviderData = $this->mockLearningUserProvider($user);
-
-            $this->prepareLearningMetadata($learningUser);
+            $mockedProviderData = $this->mockProviders($user);
 
             foreach ($wordLevels as $level) {
                 $this->createWords($language,50, [
@@ -43,7 +42,7 @@ class InitialDataCreationControllerTest extends PublicApiTestCase
                     $mockedProviderData['languageProvider']
                 );
 
-                $controller = $this->container->get('learning_system.business.controller.initial_data_creation');
+                $controller = $this->container->get('public_api.controller.initial_data_creation_controller');
 
                 $response = $controller->makeInitialDataCreation();
 

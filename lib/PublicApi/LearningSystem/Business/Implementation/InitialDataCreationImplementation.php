@@ -1,9 +1,11 @@
 <?php
 
-namespace LearningSystem\Business\Implementation;
+namespace PublicApi\LearningSystem\Business\Implementation;
 
 use ApiSDK\ApiSDK;
+use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use LearningSystem\Library\Worker\GameWorker;
+use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Infrastructure\GameProvider\GameProvider;
 
 class InitialDataCreationImplementation
@@ -36,13 +38,14 @@ class InitialDataCreationImplementation
         $this->gameProvider = $gameProvider;
     }
     /**
+     * @param int $learningMetadataId
      * @return array
      */
-    public function createInitialData(): array
+    public function createInitialData(int $learningMetadataId): array
     {
-        $game = $this->gameWorker->createGame();
+        $game = $this->gameWorker->createGame($learningMetadataId);
 
-        $this->gameProvider->createGame($game);
+        $this->gameProvider->createGame($game, $learningMetadataId);
 
         return $this->apiSdk
             ->create([])

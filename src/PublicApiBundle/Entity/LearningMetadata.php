@@ -15,10 +15,6 @@ class LearningMetadata
      */
     private $hasCompleted = false;
     /**
-     * @var bool $isCurrent
-     */
-    private $isCurrent = false;
-    /**
      * @var int $learningUserId
      */
     private $learningUser;

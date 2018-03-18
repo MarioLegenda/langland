@@ -20,20 +20,13 @@ class LearningUserController
      */
     private $learningUserImplementation;
     /**
-     * @var LearningMetadataImplementation $learningMetadataImplementation
-     */
-    private $learningMetadataImplementation;
-    /**
      * LearningUserController constructor.
      * @param LearningUserImplementation $learningUserImplementation
-     * @param LearningMetadataImplementation $learningMetadataImplementation
      */
     public function __construct(
-        LearningUserImplementation $learningUserImplementation,
-        LearningMetadataImplementation $learningMetadataImplementation
+        LearningUserImplementation $learningUserImplementation
     ) {
         $this->learningUserImplementation = $learningUserImplementation;
-        $this->learningMetadataImplementation = $learningMetadataImplementation;
     }
     /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
@@ -57,8 +50,6 @@ class LearningUserController
         }
 
         $responseData = $this->learningUserImplementation->registerLearningUser($language, $user);
-
-        $this->learningMetadataImplementation->createFirstLearningMetadata($responseData['learningUser']);
 
         return new JsonResponse(
             $responseData['response'],

@@ -5,7 +5,6 @@ configuration:
             statements:
                 create_data_collector:
                     sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
-
                 create_learning_game:
                     sql: "INSERT INTO learning_games (data_collector_id, learning_user_id, has_completed) VALUES (:data_collector_id, :learning_user_id, 0)"
                     parameters: [learning_user_id]

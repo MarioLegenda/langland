@@ -41,11 +41,14 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
     /**
      * @inheritdoc
      */
-    public function getData(array $rules): ProvidedDataInterface
+    public function getData(int $learningMetadataId, array $rules): ProvidedDataInterface
     {
         $this->blueDot->useRepository('learning_user_metadata');
 
-        $initialWords = $this->getWordsFromLessons($rules['word_level']);
+        $initialWords = $this->getWordsFromLessons(
+            $learningMetadataId,
+            $rules['word_level']
+        );
 
         $wordNumber = $this->getWordNumber($rules['word_number'], count($initialWords['words']));
         $wordIds = (empty($initialWords['words'])) ?
@@ -120,15 +123,17 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
         return $result;
     }
     /**
+     * @param int $learningMetadataId
      * @param int $wordLevel
      * @return array
      * @throws \BlueDot\Exception\BlueDotRuntimeException
      * @throws \BlueDot\Exception\ConnectionException
      */
-    private function getWordsFromLessons(int $wordLevel): array
+    private function getWordsFromLessons(int $learningMetadataId, int $wordLevel): array
     {
         $promise = $this->blueDot->execute('scenario.initial_data_collection', [
             'find_learning_lesson' => [
+                'learning_metadata_id' => $learningMetadataId,
                 'learning_user_id' => $this->learningUserProvider->getLearningUser()->getId(),
             ],
             'find_learning_lesson_words' => [

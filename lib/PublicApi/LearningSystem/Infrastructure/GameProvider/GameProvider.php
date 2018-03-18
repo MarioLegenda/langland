@@ -27,8 +27,11 @@ class GameProvider
         $this->learningUserProvider = $learningUserProvider;
         $this->gameRepository = $gameRepository;
     }
-
-    public function createGame($game)
+    /**
+     * @param $game
+     * @param int $learningMetadataId
+     */
+    public function createGame($game, int $learningMetadataId)
     {
         $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
 

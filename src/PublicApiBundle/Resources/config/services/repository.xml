@@ -59,24 +59,6 @@
             <argument type="service" id="public_api.repository.learning_user" />
         </service>
 
-        <service
-                id="public_api.repository.blue_dot.learning_metadata"
-                class="PublicApi\LearningUser\Repository\LearningMetadataRepository"
-                public="true">
-
-            <argument type="service" id="common.blue_dot" />
-            <argument>learning_user_metadata</argument>
-        </service>
-
-        <service
-                id="public_api.repository.blue_dot.game"
-                class="LearningSystem\Business\Repository\GameRepository"
-                public="true">
-
-            <argument type="service" id="common.blue_dot" />
-            <argument>public_api_game</argument>
-        </service>
-
 
         <service
                 id="public_api.repository.blue_dot.lesson"

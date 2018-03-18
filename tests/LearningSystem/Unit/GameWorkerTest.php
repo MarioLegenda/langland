@@ -71,17 +71,24 @@ class GameWorkerTest extends PublicApiTestCase
     {
         $this->manualReset();
 
-        $prepared = $this->prepareFullLearningMetadata(1);
+        $level = 1;
+
+        $prepared = $this->prepareFullLearningMetadata(
+            null,
+            0,
+            0,
+            $level
+        );
 
         $this->createWords($prepared['language'],100, [
-            'level' => 1,
+            'level' => $level,
         ]);
 
         /** @var GameWorker $gameWorker */
         $gameWorker = $this->container->get('learning_system.game_worker.initial_system_game_worker');
 
         /** @var GameInterface $game */
-        $game = $gameWorker->createGame();
+        $game = $gameWorker->createGame($prepared['learningMetadataId']);
 
         static::assertInstanceOf(GameInterface::class, $game);
         static::assertInstanceOf(ProvidedDataInterface::class, $game->getGameData());
@@ -91,14 +98,32 @@ class GameWorkerTest extends PublicApiTestCase
     {
         $this->manualReset();
 
-        $prepared = $this->prepareFullLearningMetadata([1, 2, 3, 4, 5]);
-
         $levels = [1, 2, 3, 4];
 
+        $preparedData = [];
+
         foreach ($levels as $level) {
+            $prepared = $this->prepareFullLearningMetadata(
+                null,
+                0,
+                0,
+                $level
+            );
+
             $this->createWords($prepared['language'],50, [
                 'level' => $level,
             ]);
+
+            $this->createWordsForLesson(
+                $prepared['lesson'],
+                $prepared['language'],
+                50,
+                [
+                    'level' => $level,
+                ]
+            );
+
+            $preparedData[] = $prepared;
         }
 
         $initialWordDataProvider = $this->container->get('public_api.learning_system.data_provider.word_data_provider');
@@ -106,10 +131,15 @@ class GameWorkerTest extends PublicApiTestCase
         $wordNumbers = [15, 17, 20, 35];
 
         foreach ($wordNumbers as $wordNumber) {
-            $wordLevel = rand(1, 4);
+            $wordLevel = rand(0, 3);
+
+            /** @var int $learningMetadataId $learningMetadataId */
+            $learningMetadataId = $preparedData[$wordLevel]['learningMetadataId'];
+
+            $wordLevel = ($wordLevel === 0) ? ++$wordLevel : $wordLevel;
 
             /** @var ProvidedWordDataCollection $providedData */
-            $providedData = $initialWordDataProvider->getData([
+            $providedData = $initialWordDataProvider->getData($learningMetadataId, [
                 'word_number' => $wordNumber,
                 'word_level' => $wordLevel,
             ]);

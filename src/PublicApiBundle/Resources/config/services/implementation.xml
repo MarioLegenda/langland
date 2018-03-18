@@ -7,7 +7,8 @@
     <services>
         <service
                 id="public_api.business.implementation.lesson"
-                class="PublicApi\Lesson\Business\Implementation\LessonImplementation" public="true">
+                class="PublicApi\Lesson\Business\Implementation\LessonImplementation"
+                public="true">
 
             <argument type="service" id="public_api.repository.lesson" />
             <argument type="service" id="library.common_serializer" />
@@ -15,7 +16,8 @@
 
         <service
                 id="public_api.business.implementation.language"
-                class="PublicApi\Language\Business\Implementation\LanguageImplementation" public="true">
+                class="PublicApi\Language\Business\Implementation\LanguageImplementation"
+                public="true">
 
             <argument type="service" id="public_api.repository.language" />
             <argument type="service" id="public_api.repository.repository_communicator" />
@@ -26,7 +28,8 @@
 
         <service
                 id="public_api.business.implementation.learning_user"
-                class="PublicApi\LearningUser\Business\Implementation\LearningUserImplementation" public="true">
+                class="PublicApi\LearningUser\Business\Implementation\LearningUserImplementation"
+                public="true">
 
             <argument type="service" id="public_api.repository.learning_user" />
             <argument type="service" id="public_api.repository.language" />
@@ -36,18 +39,22 @@
 
         <service
                 id="public_api.business.implementation.learning_metadata"
-                class="PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation" public="true">
+                class="PublicApi\LearningSystem\Business\Implementation\LearningMetadataImplementation"
+                public="true">
 
-            <argument type="service" id="public_api.repository.blue_dot.learning_metadata" />
-            <argument type="service" id="public_api.repository.blue_dot.lesson" />
+            <argument type="service" id="public_api.provider.language_provider" />
+            <argument type="service" id="public_api.learning_user_provider" />
+            <argument type="service" id="public_api.repository.learning_system.blue_dot.learning_metadata" />
         </service>
 
         <service
-                id="learning_system.business.implementation.learning_metadata"
-                public="true"
-                class="PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation">
+                id="public_api.business.implementation.initial_data_creation_implementation"
+                class="PublicApi\LearningSystem\Business\Implementation\InitialDataCreationImplementation"
+                public="true">
 
-            <argument type="service" id="public_api.repository.learning_system.blue_dot.learning_metadata" />
+            <argument type="service" id="library.api_sdk" />
+            <argument type="service" id="learning_system.game_worker.initial_system_game_worker" />
+            <argument type="service" id="public_api.learning_system.data_provider.game_provider" />
         </service>
 
     </services>

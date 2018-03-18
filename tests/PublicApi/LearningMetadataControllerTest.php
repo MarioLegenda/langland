@@ -1,6 +1,6 @@
 <?php
 
-namespace LearningSystem\Controller;
+namespace PublicApi\Controller;
 
 use ArmorBundle\Entity\User;
 use PublicApiBundle\Entity\LearningUser;

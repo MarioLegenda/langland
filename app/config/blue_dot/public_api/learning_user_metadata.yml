@@ -19,9 +19,15 @@ configuration:
         create_learning_metadata:
             atomic: true
             statements:
+                find_course:
+                    sql: "SELECT id FROM courses WHERE language_id = :language_id AND course_order = :course_order AND type = :course_type ORDER BY course_order ASC"
+                    parameters: [language_id, course_order, course_type]
                 find_lesson:
-                    sql: "SELECT l.id AS id FROM lessons AS l INNER JOIN courses AS c ON l.course_id = c.id AND c.language_id = :language_id AND c.type = :course_type AND l.learning_order = :learning_order"
-                    parameters: [language_id, course_type, learning_order]
+                    sql: "SELECT id FROM lessons WHERE course_id = :course_id AND learning_order = :learning_order ORDER BY learning_order"
+                    parameters: [learning_order]
+                    use:
+                        statement_name: find_course
+                        values: { "find_course.id": course_id }
                 create_data_collector:
                     sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
                 create_learning_lesson:
@@ -43,8 +49,8 @@ configuration:
             atomic: true
             statements:
                 find_learning_lesson:
-                    sql: "SELECT ll.lesson_id AS lesson_id FROM learning_lessons AS ll INNER JOIN learning_metadata AS lm ON lm.learning_user_id = 1 AND lm.lesson_data_collector_id = ll.data_collector_id"
-                    parameters: [learning_user_id]
+                    sql: "SELECT ll.lesson_id AS lesson_id FROM learning_lessons AS ll INNER JOIN learning_metadata AS lm ON lm.learning_user_id = :learning_user_id AND lm.id = ll.learning_metadata_id WHERE ll.learning_metadata_id = :learning_metadata_id"
+                    parameters: [learning_user_id, learning_metadata_id]
                 find_learning_lesson_words:
                     sql: "SELECT w.id, w.level FROM words AS w WHERE w.language_id = :language_id AND w.level = :word_level AND w.lesson_id = :lesson_id"
                     parameters: [language_id, word_level]

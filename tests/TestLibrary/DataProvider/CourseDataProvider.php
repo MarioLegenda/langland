@@ -61,18 +61,20 @@ class CourseDataProvider implements DefaultDataProviderInterface
      * @param string $name
      * @param string $whatToLearn
      * @param string|null $courseUrl
+     * @param int $courseOrder
      * @return Course
      */
     public function createCourse(
         Language $language,
         string $name,
         string $whatToLearn,
-        string $courseUrl = null
+        string $courseUrl = null,
+        int $courseOrder = 0
     ): Course {
         $course = new Course();
         $course->setName($name);
         $course->setLanguage($language);
-        $course->setCourseOrder(1);
+        $course->setCourseOrder($courseOrder);
         $course->setType((string) CourseType::fromValue('Beginner'));
         $course->setCourseUrl((is_string($courseUrl)) ? $courseUrl : \URLify::filter($name));
         $course->setWhatToLearn($whatToLearn);

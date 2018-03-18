@@ -24,7 +24,6 @@
                 class="PublicApi\LearningUser\Business\Controller\LearningUserController" public="true">
 
             <argument type="service" id="public_api.business.implementation.learning_user" />
-            <argument type="service" id="public_api.business.implementation.learning_metadata" />
         </service>
 
         <service
@@ -35,10 +34,10 @@
         </service>
 
         <service
-                id="learning_system.business.controller.learning_metadata"
-                public="true"
-                class="PublicApi\LearningSystem\Business\Controller\LearningMetadataController">
+                id="public_api.controller.initial_data_creation_controller"
+                class="PublicApi\LearningSystem\Business\Controller\InitialDataCreationController">
 
+            <argument type="service" id="public_api.business.implementation.initial_data_creation_implementation" />
             <argument type="service" id="public_api.business.implementation.learning_metadata" />
         </service>
 

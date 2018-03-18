@@ -6,9 +6,9 @@ use AdminBundle\Entity\Language;
 use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Lesson;
 use ArmorBundle\Entity\User;
+use PublicApi\Infrastructure\Type\CourseType;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
-use PublicApi\LearningUser\Business\Implementation\LearningMetadataImplementation;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -20,6 +20,7 @@ use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
 use Tests\TestLibrary\DataProvider\LessonDataProvider;
 use PublicApi\LearningSystem\Infrastructure\DataProvider\InitialWordDataProvider;
+use PublicApi\LearningSystem\Business\Implementation\LearningMetadataImplementation;
 
 class PublicApiTestCase extends LanglandAdminTestCase
 {
@@ -62,9 +63,9 @@ class PublicApiTestCase extends LanglandAdminTestCase
     }
     /**
      * @param int|array $wordLevel
-     * @return Language
+     * @return array
      */
-    protected function prepareLanguageData($wordLevel): Language
+    protected function prepareLanguageData($wordLevel): array
     {
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
@@ -87,7 +88,11 @@ class PublicApiTestCase extends LanglandAdminTestCase
             ]);
         }
 
-        return $language;
+        return [
+            'language' => $language,
+            'course' => $course,
+            'lesson' => $lesson,
+        ];
     }
     /**
      * @param Language $language
@@ -101,50 +106,60 @@ class PublicApiTestCase extends LanglandAdminTestCase
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
         $user->setCurrentLearningUser($learningUser);
 
+        $this->userDataProvider->getRepository()->persistAndFlush($user);
+
         return [
             'learningUser' => $learningUser,
             'user' => $user,
         ];
     }
     /**
-     * @param array|int $wordLevel
+     * @param CourseType|null $courseType
+     * @param int $courseOrder
+     * @param int $lessonOrder
+     * @param int $level
      * @return array
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    protected function prepareFullLearningMetadata($wordLevel): array
-    {
-        $language = $this->prepareLanguageData($wordLevel);
-
-        $userData = $this->prepareUserData($language);
+    protected function prepareFullLearningMetadata(
+        CourseType $courseType = null,
+        int $courseOrder = 0,
+        int $lessonOrder = 0,
+        int $level = 1
+    ): array {
+        $preparedLanguageData = $this->prepareLanguageData($level);
+        $userData = $this->prepareUserData($preparedLanguageData['language']);
 
         /** @var User $user */
         $user = $userData['user'];
-        /** @var LearningUser $learningUser */
-        $learningUser = $userData['learningUser'];
 
-        $this->mockLearningUserProvider($user);
+        $providers = $this->mockProviders($user);
 
-        $this->prepareLearningMetadata($learningUser);
+        $courseType = (!$courseType instanceof CourseType) ? CourseType::fromValue('Beginner'): $courseType;
 
-        return [
-            'language' => $language,
-        ];
-    }
-    /**
-     * @param LearningUser $learningUser
-     */
-    protected function prepareLearningMetadata(LearningUser $learningUser)
-    {
         /** @var LearningMetadataImplementation $learningMetadataImplementation */
         $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 
-        $learningMetadataImplementation->createFirstLearningMetadata($learningUser);
+        $learningMetadata = $learningMetadataImplementation->createLearningMetadata(
+            $courseType,
+            $courseOrder,
+            $lessonOrder
+        );
+
+        $fullData = array_merge($preparedLanguageData, [
+            'language' => $preparedLanguageData['language'],
+            'learningUser' => $userData['learningUser'],
+            'user' => $userData['user'],
+            'learningMetadataId' => $learningMetadata['learningMetadataId'],
+        ]);
+
+        return $fullData;
     }
     /**
      * @param User $user
      * @return array
      */
-    protected function mockLearningUserProvider(User $user): array
+    protected function mockProviders(User $user): array
     {
         $token = new UsernamePasswordToken($user, 'root', 'admin', ['ROLE_PUBLIC_API_USER']);
         $tokenStorage = new TokenStorage();
@@ -161,6 +176,7 @@ class PublicApiTestCase extends LanglandAdminTestCase
         return [
             'languageProvider' => $languageProvider,
             'learningUserProvider' => $learningUserProvider,
+            'questionAnswersProvider' => $questionAnswersProvider,
         ];
     }
     /**

@@ -38,9 +38,9 @@ class InitialDataDecider implements DataDeciderInterface
         $this->wordDataProvider = $wordDataProvider;
     }
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function getData(): array
+    public function getData(int $learningMetadataId): array
     {
         $questionAnswers = $this->questionAnswersApplicationResolver->resolve();
 
@@ -48,7 +48,7 @@ class InitialDataDecider implements DataDeciderInterface
         $wordLevel = 1;
 
         /** @var ProvidedWordDataCollection $dataCollection */
-        $dataCollection = $this->wordDataProvider->getData([
+        $dataCollection = $this->wordDataProvider->getData($learningMetadataId, [
             'word_number' => $wordNumber,
             'word_level' => $wordLevel,
         ]);

@@ -25,9 +25,7 @@ class LearningSystemExtension extends Extension
             new FileLocator(__DIR__.'/../Resources/config/services')
         );
 
-        $loader->load('controller.xml');
-        $loader->load('implementation.xml');
-        $loader->load('provider.xml');
         $loader->load('gameWorker.xml');
+        $loader->load('repository.xml');
     }
 }

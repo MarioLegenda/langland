@@ -15,3 +15,9 @@ public_api_learning_user:
   prefix: /learning-user
   host: '%host%'
   methods: [POST, GET, PUT]
+
+public_api_learning_system:
+  resource: "@PublicApiBundle/Resources/config/routing/api/learning_system.yml"
+  prefix: /learning-system
+  host: '%host%'
+  methods: [POST, GET, PUT]

@@ -15,7 +15,7 @@ class CompleteResetCommand extends ContainerAwareCommand
     public function configure()
     {
         $this
-            ->setName('langland:complete_reset --words=20 --lessons=100')
+            ->setName('langland:complete_reset --words=200 --lessons=10')
             ->addOption('words', 'w', InputOption::VALUE_OPTIONAL, null, 10)
             ->addOption('lessons', 'l', InputOption::VALUE_OPTIONAL, null, 5)
             ->setDescription('Executes langland:learning_metadata:reset and langland:learning_metadata:seed together');

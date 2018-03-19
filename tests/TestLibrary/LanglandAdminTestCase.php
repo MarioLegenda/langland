@@ -49,14 +49,14 @@ class LanglandAdminTestCase extends WebTestCase
      */
     public static function setUpBeforeClass()
     {
-        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
+        exec('/usr/bin/php /var/www/bin/console database:truncate');
     }
     /**
      * @inheritdoc
      */
     public static function tearDownAfterClass()
     {
-        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
+        exec('/usr/bin/php /var/www/bin/console database:truncate');
 
         $dirs = array(
             realpath(__DIR__.'/../uploads/images'),
@@ -95,7 +95,7 @@ class LanglandAdminTestCase extends WebTestCase
      */
     protected function manualReset(): void
     {
-        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
+        exec('/usr/bin/php /var/www/bin/console database:truncate');
     }
     /**
      * @param Crawler $crawler

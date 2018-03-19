@@ -1,6 +1,6 @@
 make_initial_data_creation:
     path: /make-initial-data-creation
-    defaults: { _controller: learning_system.business.controller.initial_data_creation:makeInitialDataCreation }
+    defaults: { _controller: public_api.controller.initial_data_creation_controller:makeInitialDataCreation }
     methods: [POST]
     requirements:
         _format: json

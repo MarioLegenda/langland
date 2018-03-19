@@ -69,7 +69,7 @@ class AdminTestBuilder
 
         $lessons = [];
         foreach ($courses as $course) {
-            for ($i = 0; $i < 20; $i++) {
+            for ($i = 0; $i < 5; $i++) {
                 $lessons[] = $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course, [
                     'learningOrder' => $i,
                 ]);
@@ -92,7 +92,7 @@ class AdminTestBuilder
 
 
         for ($i = 0; $i < 5; $i++) {
-            $this->createWords(50, $language, [
+            $this->createWords(30, $language, [
                 'level' => $i,
             ]);
         }

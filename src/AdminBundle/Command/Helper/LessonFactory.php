@@ -58,7 +58,7 @@ class LessonFactory
             $lesson = new Lesson(
                 $lessonView->getName(),
                 $lessonView->getUuid(),
-                $i + 1,
+                $i,
                 $lessonView->toArray(),
                 $course
             );

@@ -28,27 +28,27 @@ class PublicApiTestCase extends LanglandAdminTestCase
     /**
      * @var LanguageDataProvider $languageDataProvider
      */
-    private $languageDataProvider;
+    protected $languageDataProvider;
     /**
      * @var UserDataProvider $userDataProvider
      */
-    private $userDataProvider;
+    protected $userDataProvider;
     /**
      * @var LessonDataProvider $lessonDataProvider
      */
-    private $lessonDataProvider;
+    protected $lessonDataProvider;
     /**
      * @var CourseDataProvider $courseDataProvider
      */
-    private $courseDataProvider;
+    protected $courseDataProvider;
     /**
      * @var LearningUserDataProvider $learningUserDataProvider
      */
-    private $learningUserDataProvider;
+    protected $learningUserDataProvider;
     /**
      * @var WordDataProvider $wordDataProvider
      */
-    private $wordDataProvider;
+    protected $wordDataProvider;
 
     public function setUp()
     {
@@ -62,31 +62,18 @@ class PublicApiTestCase extends LanglandAdminTestCase
         $this->wordDataProvider = $this->container->get('data_provider.word');
     }
     /**
-     * @param int|array $wordLevel
+     * @param Language $language
+     * @param array|null $courseSeedData
+     * @param array|null $lessonSeedData
      * @return array
      */
-    protected function prepareLanguageData($wordLevel): array
-    {
-        $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
-
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language);
-        $lesson = $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
-
-        if (is_array($wordLevel)) {
-            foreach ($wordLevel as $level) {
-                $this->createWordsForLesson($lesson, $language, 5, [
-                    'level' => $level,
-                ]);
-            }
-        } else if (is_int($wordLevel)) {
-            $this->createWordsForLesson($lesson, $language, 5, [
-                'level' => $wordLevel,
-            ]);
-        } else {
-            $this->createWordsForLesson($lesson, $language, 5, [
-                'level' => 1,
-            ]);
-        }
+    protected function prepareLanguageData(
+        Language $language,
+        array $courseSeedData = null,
+        array $lessonSeedData = null
+    ): array {
+        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language, $courseSeedData);
+        $lesson = $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course, $lessonSeedData);
 
         return [
             'language' => $language,
@@ -114,6 +101,7 @@ class PublicApiTestCase extends LanglandAdminTestCase
         ];
     }
     /**
+     * @param int $numOfLearningUsers
      * @param CourseType|null $courseType
      * @param int $courseOrder
      * @param int $lessonOrder
@@ -122,18 +110,57 @@ class PublicApiTestCase extends LanglandAdminTestCase
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     protected function prepareFullLearningMetadata(
+        int $numOfLearningUsers = 4,
         CourseType $courseType = null,
         int $courseOrder = 0,
         int $lessonOrder = 0,
         int $level = 1
     ): array {
-        $preparedLanguageData = $this->prepareLanguageData($level);
-        $userData = $this->prepareUserData($preparedLanguageData['language']);
+        $preparedLanguageData = $this->prepareLanguageData();
 
-        /** @var User $user */
-        $user = $userData['user'];
+        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
-        $providers = $this->mockProviders($user);
+        $fullData = [];
+
+        for ($i = 0; $i < $numOfLearningUsers; $i++) {
+            $oneLearningUserData = $this->createOneLearningUserData(
+                $user,
+                $preparedLanguageData,
+                $courseType,
+                $courseOrder,
+                $lessonOrder
+            );
+
+            $fullData[] = $oneLearningUserData;
+        }
+
+        return $fullData;
+    }
+    /**
+     * @param User $user
+     * @param array $languageData
+     * @param CourseType|null $courseType
+     * @param int $courseOrder
+     * @param int $lessonOrder
+     * @return array
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    protected function createOneLearningUserData(
+        User $user,
+        array $languageData,
+        CourseType $courseType = null,
+        int $courseOrder,
+        int $lessonOrder
+    ): array {
+        $language = $languageData['language'];
+
+        $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
+
+        $user->setCurrentLearningUser($learningUser);
+
+        $this->userDataProvider->getRepository()->persistAndFlush($user);
+
+        $this->mockProviders($user);
 
         $courseType = (!$courseType instanceof CourseType) ? CourseType::fromValue('Beginner'): $courseType;
 
@@ -146,14 +173,11 @@ class PublicApiTestCase extends LanglandAdminTestCase
             $lessonOrder
         );
 
-        $fullData = array_merge($preparedLanguageData, [
-            'language' => $preparedLanguageData['language'],
-            'learningUser' => $userData['learningUser'],
-            'user' => $userData['user'],
+        return array_merge([
             'learningMetadataId' => $learningMetadata['learningMetadataId'],
-        ]);
-
-        return $fullData;
+            'learningUser' => $learningUser,
+            'user' => $user,
+        ], $languageData);
     }
     /**
      * @param User $user

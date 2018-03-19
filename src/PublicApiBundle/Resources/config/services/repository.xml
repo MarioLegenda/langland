@@ -76,5 +76,13 @@
             <argument>learning_user_metadata</argument>
         </service>
 
+        <service
+                id="public_api.repository.learning_system.blue_dot.word_data_repository"
+                class="PublicApi\LearningSystem\Repository\WordDataRepository" public="true">
+
+            <argument type="service" id="common.blue_dot" />
+            <argument>learning_user_metadata</argument>
+        </service>
+
     </services>
 </container>

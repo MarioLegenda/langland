@@ -50,12 +50,3 @@ configuration:
                     foreign_key:
                         statement_name: create_learning_game_challenge
                         bind_to: learning_game_challenge_id
-
-#        get_learning_metadata_for_learning_user:
-#            atomic: true
-#            statements:
-#                find_learning_metadata:
-#                    sql: "SELECT lm.* FROM learning_metadata AS lm INNER JOIN learning_users AS lu ON lm.learning_user_id = lu.id AND lu.id = 1"
-#                    parameters: [learning_user_id]
-#                find_learning_user_lesson:
-#                    sql: ""

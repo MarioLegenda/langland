@@ -2,11 +2,9 @@
 
 namespace PublicApi\Controller;
 
-use ArmorBundle\Entity\User;
-use PublicApi\Infrastructure\Type\CourseType;
-use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\PublicApiTestCase;
+use TestLibrary\TestBuilder\AdminTestBuilder;
 
 class InitialDataCreationTest extends PublicApiTestCase
 {
@@ -14,41 +12,26 @@ class InitialDataCreationTest extends PublicApiTestCase
     {
         $this->manualReset();
 
-        $numberOfLanguages = 3;
-        $wordLevels = [1, 2, 3];
+        $adminBuilder = new AdminTestBuilder($this->container);
+        $language = $adminBuilder->buildAdmin();
 
-        for ($i = 0; $i < $numberOfLanguages; $i++) {
-            $language = $this->prepareLanguageData($wordLevels[$i]);
-            $userData = $this->prepareUserData($language);
+        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
-            /** @var LearningUser $learningUser */
-            $learningUser = $userData['learningUser'];
-            /** @var User $user */
-            $user = $userData['user'];
+        for ($i = 0; $i < 5; $i++) {
+            $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
 
-            $mockedProviderData = $this->mockProviders($user);
+            $user->setCurrentLearningUser($learningUser);
 
-            foreach ($wordLevels as $level) {
-                $this->createWords($language,50, [
-                    'level' => $level,
-                ]);
-            }
+            $this->userDataProvider->getRepository()->persistAndFlush($user);
 
-            $wordNumbers = [15, 17, 20];
+            $this->mockProviders($user);
 
-            foreach ($wordNumbers as $wordNumber) {
-                $this->mockInitialWordDataProvider(
-                    $mockedProviderData['learningUserProvider'],
-                    $mockedProviderData['languageProvider']
-                );
+            $controller = $this->container->get('public_api.controller.initial_data_creation_controller');
 
-                $controller = $this->container->get('public_api.controller.initial_data_creation_controller');
+            $response = $controller->makeInitialDataCreation();
 
-                $response = $controller->makeInitialDataCreation();
-
-                static::assertInstanceOf(JsonResponse::class, $response);
-                static::assertEquals(201, $response->getStatusCode());
-            }
+            static::assertInstanceOf(JsonResponse::class, $response);
+            static::assertEquals(201, $response->getStatusCode());
         }
     }
 }

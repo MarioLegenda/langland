@@ -8,7 +8,7 @@ configuration:
                 sql: "SELECT id AS id FROM words WHERE language_id = :language_id AND level = :word_level"
                 parameters: [language_id, word_level]
             get_words_count_with_lesson_excluded:
-                sql: "SELECT id AS id FROM words WHERE language_id = :language_id AND lesson_id != :lesson_id OR lesson_id IS NULL AND level = :word_level"
+                sql: "SELECT id AS id FROM words WHERE language_id = :language_id AND (lesson_id != :lesson_id OR lesson_id IS NULL) AND level = :word_level"
                 parameters: [language_id, lesson_id, word_level]
         update:
             update_learning_lesson:

@@ -34,34 +34,38 @@ class LessonDataProvider implements DefaultDataProviderInterface
     /**
      * @param Generator $faker
      * @param Course $course
+     * @param array|null $seedData
      * @return Lesson
      */
-    public function createDefault(Generator $faker, Course $course = null): Lesson
+    public function createDefault(Generator $faker, Course $course = null, array $seedData = null): Lesson
     {
         if (!$course instanceof Course) {
             throw new \RuntimeException(sprintf('LessonDataProvider::createDefault() has to receive an %s object', Course::class));
         }
 
+        $seedData = $this->resolveSeedData($faker, $seedData);
+
         return $this->createLesson(
             $course,
-            Uuid::uuid4(),
-            0,
+            $seedData['uuid'],
+            $seedData['learningOrder'],
             ['name' => $faker->name]
         );
     }
     /**
      * @param Generator $faker
      * @param Course|null $course
+     * @param array|null $seedData
      * @return Lesson
      */
-    public function createDefaultDb(Generator $faker, Course $course = null): Lesson
+    public function createDefaultDb(Generator $faker, Course $course = null, array $seedData = null): Lesson
     {
         if (!$course instanceof Course) {
             $course = $this->courseDataProvider->createDefaultDb($faker);
         }
 
         $lesson = $this->lessonRepository->persistAndFlush(
-            $this->createDefault($faker, $course)
+            $this->createDefault($faker, $course, $seedData)
         );
 
         $course->addLesson($lesson);
@@ -119,5 +123,43 @@ class LessonDataProvider implements DefaultDataProviderInterface
     public function getRepository(): LessonRepository
     {
         return $this->lessonRepository;
+    }
+    /**
+     * @param Generator $faker
+     * @param array|null $seedData
+     * @return array
+     */
+    private function resolveSeedData(Generator $faker, array $seedData = null): array
+    {
+        $seedData = (is_null($seedData)) ? [] : $seedData;
+
+        $properties = ['name', 'uuid', 'learningOrder', 'jsonLesson'];
+
+        $newSeedData = [];
+        foreach ($properties as $property) {
+            if (!array_key_exists($property, $seedData)) {
+                if ($property === 'learningOrder') {
+                    $newSeedData[$property] = rand(1, 10);
+
+                    continue;
+                }
+
+                if ($property === 'uuid') {
+                    $newSeedData[$property] = Uuid::uuid4();
+
+                    continue;
+                }
+
+                if ($property === 'jsonLesson') {
+                    $newSeedData[$property] = ['name' => $faker->name];
+                }
+
+                $newSeedData[$property] = $faker->name;
+            } else {
+                $newSeedData[$property] = $seedData[$property];
+            }
+        }
+
+        return $newSeedData;
     }
 }

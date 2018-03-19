@@ -4,3 +4,10 @@ make_initial_data_creation:
     methods: [POST]
     requirements:
         _format: json
+
+get_learning_lesson_presentation:
+    path: /lesson-presentation
+    defaults: { _controller: public_api.controller.learning_metadata:getLearningLessonPresentation }
+    methods: [GET]
+    requirements:
+        _format: json

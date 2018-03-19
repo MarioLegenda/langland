@@ -58,19 +58,17 @@ configuration:
                         statement_name: find_learning_lesson
                         values: { find_learning_lesson.lesson_id: lesson_id }
 
-        get_learning_metadata_presentation_by_learning_user:
+        get_lesson_presentation_by_learning_user:
             atomic: true
             statements:
                 find_learning_lesson:
-                    sql: "SELECT l.id, l.name FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id AND lm.id = ll.learning_metadata_id WHERE lm.learning_user_id = 1"
+                    sql: "SELECT l.id, l.name, l.course_id, ll.has_completed FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id AND lm.id = ll.learning_metadata_id WHERE lm.learning_user_id = :learning_user_id"
                     parameters: [learning_user_id]
                 find_courses:
-                    sql: "SELECT name, what_to_learn, type FROM courses WHERE language_id = :language_id"
+                    sql: "SELECT id, name, what_to_learn, type FROM courses WHERE language_id = :language_id"
                     parameters: [language_id]
-
-
 
     callable:
         learning_metadata_presentation:
             type: object
-            name: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\LearningMetadataPresentationCallable
+            name: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\LearningLessonPresentationCallable

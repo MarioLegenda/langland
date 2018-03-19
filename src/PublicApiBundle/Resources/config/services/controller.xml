@@ -41,5 +41,12 @@
             <argument type="service" id="public_api.business.implementation.learning_metadata" />
         </service>
 
+        <service
+                id="public_api.controller.learning_metadata"
+                class="PublicApi\LearningSystem\Business\Controller\LearningMetadataController">
+
+            <argument type="service" id="public_api.business.implementation.learning_metadata" />
+        </service>
+
     </services>
 </container>

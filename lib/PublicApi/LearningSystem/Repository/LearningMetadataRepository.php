@@ -9,12 +9,6 @@ use PublicApi\Infrastructure\Type\TypeInterface;
 
 class LearningMetadataRepository extends BaseBlueDotRepository
 {
-    public function getLearningMetadata(
-        int $learningUserId
-    ) {
-        $this->blueDot->useRepository('learning_user_metadata');
-
-    }
     /**
      * @param TypeInterface $courseType
      * @param int $courseLearningOrder
@@ -85,5 +79,22 @@ class LearningMetadataRepository extends BaseBlueDotRepository
         return [
             'learningMetadataId' => (int) $result->get('create_learning_metadata')->get('last_insert_id'),
         ];
+    }
+    /**
+     * @param int $learningUserId
+     * @param int $languageId
+     * @return array
+     */
+    public function getLearningLessonPresentation(
+        int $learningUserId,
+        int $languageId
+    ): array
+    {
+        $this->blueDot->useRepository('learning_user_metadata');
+
+        return $this->blueDot->execute('callable.learning_metadata_presentation', [
+            'learning_user_id' => $learningUserId,
+            'language_id' => $languageId,
+        ])->getResult();
     }
 }

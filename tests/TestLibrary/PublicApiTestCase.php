@@ -10,7 +10,9 @@ use PublicApi\Infrastructure\Type\CourseType;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
-use PublicApiBundle\Entity\LearningUser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\BrowserKit\Client;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TestLibrary\DataProvider\LearningUserDataProvider;
@@ -22,7 +24,7 @@ use Tests\TestLibrary\DataProvider\LessonDataProvider;
 use PublicApi\LearningSystem\Infrastructure\DataProvider\InitialWordDataProvider;
 use PublicApi\LearningSystem\Business\Implementation\LearningMetadataImplementation;
 
-class PublicApiTestCase extends LanglandAdminTestCase
+class PublicApiTestCase extends WebTestCase
 {
     use FakerTrait;
     /**
@@ -49,10 +51,22 @@ class PublicApiTestCase extends LanglandAdminTestCase
      * @var WordDataProvider $wordDataProvider
      */
     protected $wordDataProvider;
+    /**
+     * @var Client $client
+     */
+    protected $client;
+    /**
+     * @var ContainerInterface $container
+     */
+    protected $container;
 
     public function setUp()
     {
         parent::setUp();
+
+        $this->client = static::createClient();
+
+        $this->container = $this->client->getContainer();
 
         $this->languageDataProvider = $this->container->get('data_provider.language');
         $this->userDataProvider = $this->container->get('data_provider.user');
@@ -62,200 +76,39 @@ class PublicApiTestCase extends LanglandAdminTestCase
         $this->wordDataProvider = $this->container->get('data_provider.word');
     }
     /**
-     * @param Language $language
-     * @param array|null $courseSeedData
-     * @param array|null $lessonSeedData
-     * @return array
+     * @inheritdoc
      */
-    protected function prepareLanguageData(
-        Language $language,
-        array $courseSeedData = null,
-        array $lessonSeedData = null
-    ): array {
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language, $courseSeedData);
-        $lesson = $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course, $lessonSeedData);
-
-        return [
-            'language' => $language,
-            'course' => $course,
-            'lesson' => $lesson,
-        ];
-    }
-    /**
-     * @param Language $language
-     * @param array|null $questionAnswers
-     * @return array
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    protected function prepareUserData(Language $language, array $questionAnswers = null): array
+    public static function setUpBeforeClass()
     {
-        $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language, $questionAnswers);
-        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
-        $user->setCurrentLearningUser($learningUser);
-
-        $this->userDataProvider->getRepository()->persistAndFlush($user);
-
-        return [
-            'learningUser' => $learningUser,
-            'user' => $user,
-        ];
+        exec('/usr/bin/php /var/www/bin/console database:truncate');
     }
     /**
-     * @param int $numOfLearningUsers
-     * @param CourseType|null $courseType
-     * @param int $courseOrder
-     * @param int $lessonOrder
-     * @param int $level
-     * @return array
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @inheritdoc
      */
-    protected function prepareFullLearningMetadata(
-        int $numOfLearningUsers = 4,
-        CourseType $courseType = null,
-        int $courseOrder = 0,
-        int $lessonOrder = 0,
-        int $level = 1
-    ): array {
-        $preparedLanguageData = $this->prepareLanguageData();
+    public static function tearDownAfterClass()
+    {
+        exec('/usr/bin/php /var/www/bin/console database:truncate');
 
-        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
-
-        $fullData = [];
-
-        for ($i = 0; $i < $numOfLearningUsers; $i++) {
-            $oneLearningUserData = $this->createOneLearningUserData(
-                $user,
-                $preparedLanguageData,
-                $courseType,
-                $courseOrder,
-                $lessonOrder
-            );
-
-            $fullData[] = $oneLearningUserData;
-        }
-
-        return $fullData;
-    }
-    /**
-     * @param User $user
-     * @param array $languageData
-     * @param CourseType|null $courseType
-     * @param int $courseOrder
-     * @param int $lessonOrder
-     * @return array
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    protected function createOneLearningUserData(
-        User $user,
-        array $languageData,
-        CourseType $courseType = null,
-        int $courseOrder,
-        int $lessonOrder
-    ): array {
-        $language = $languageData['language'];
-
-        $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
-
-        $user->setCurrentLearningUser($learningUser);
-
-        $this->userDataProvider->getRepository()->persistAndFlush($user);
-
-        $this->mockProviders($user);
-
-        $courseType = (!$courseType instanceof CourseType) ? CourseType::fromValue('Beginner'): $courseType;
-
-        /** @var LearningMetadataImplementation $learningMetadataImplementation */
-        $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
-
-        $learningMetadata = $learningMetadataImplementation->createLearningMetadata(
-            $courseType,
-            $courseOrder,
-            $lessonOrder
+        $dirs = array(
+            realpath(__DIR__.'/../uploads/images'),
+            realpath(__DIR__.'/../uploads/sounds'),
         );
 
-        return array_merge([
-            'learningMetadataId' => $learningMetadata['learningMetadataId'],
-            'learningUser' => $learningUser,
-            'user' => $user,
-        ], $languageData);
-    }
-    /**
-     * @param User $user
-     * @return array
-     */
-    protected function mockProviders(User $user): array
-    {
-        $token = new UsernamePasswordToken($user, 'root', 'admin', ['ROLE_PUBLIC_API_USER']);
-        $tokenStorage = new TokenStorage();
-        $tokenStorage->setToken($token);
-
-        $learningUserProvider = new LearningUserProvider($tokenStorage);
-        $languageProvider = new LanguageProvider($learningUserProvider);
-        $questionAnswersProvider = new QuestionAnswersApplicationProvider($learningUserProvider);
-
-        $this->container->set('public_api.provider.language', $languageProvider);
-        $this->container->set('public_api.learning_user_provider', $learningUserProvider);
-        $this->container->set('public_api.provider.question_answers_application_provider', $questionAnswersProvider);
-
-        return [
-            'languageProvider' => $languageProvider,
-            'learningUserProvider' => $learningUserProvider,
-            'questionAnswersProvider' => $questionAnswersProvider,
-        ];
-    }
-    /**
-     * @param Lesson $lesson
-     * @param Language $language
-     * @param int $numOfWords
-     * @param array|null $seedData
-     */
-    protected function createWordsForLesson(
-        Lesson $lesson,
-        Language $language,
-        int $numOfWords = 5,
-        array $seedData = null
-    ) {
-        for ($i = 0; $i < $numOfWords; $i++) {
-            $this->wordDataProvider->createWithLesson(
-                $this->getFaker(),
-                $language,
-                $lesson,
-                $seedData
-            );
+        foreach ($dirs as $dir) {
+            foreach (new \DirectoryIterator($dir) as $fileInfo) {
+                if(!$fileInfo->isDot()) {
+                    if ($fileInfo->isFile()) {
+                        unlink($fileInfo->getPathname());
+                    }
+                }
+            }
         }
     }
     /**
-     * @param Language $language
-     * @param int $numOfWords
-     * @param array|null $seedData
+     * @void
      */
-    protected function createWords(Language $language, int $numOfWords, array $seedData = null)
+    protected function manualReset(): void
     {
-        for ($i = 0; $i < $numOfWords; $i++) {
-            $this->wordDataProvider->createDefaultDb($this->getFaker(), $language, $seedData);
-        }
-    }
-    /**
-     * @param LearningUserProvider $learningUserProvider
-     * @param LanguageProvider $languageProvider
-     * @return InitialWordDataProvider
-     * @throws \BlueDot\Exception\ConfigurationException
-     * @throws \BlueDot\Exception\ConnectionException
-     * @throws \BlueDot\Exception\RepositoryException
-     */
-    protected function mockInitialWordDataProvider(
-        LearningUserProvider $learningUserProvider,
-        LanguageProvider $languageProvider
-    ): InitialWordDataProvider {
-        $apiName = 'learning_user_metadata';
-        $blueDot = $this->container->get('common.blue_dot');
-        $blueDot->useRepository($apiName);
-
-        return new InitialWordDataProvider(
-            $blueDot,
-            $apiName,
-            $languageProvider,
-            $learningUserProvider
-        );
+        exec('/usr/bin/php /var/www/bin/console database:truncate');
     }
 }

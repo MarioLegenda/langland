@@ -7,6 +7,7 @@ use PublicApi\Infrastructure\Type\CourseType;
 use PublicApiBundle\Entity\LearningUser;
 use TestLibrary\PublicApiTestCase;
 use TestLibrary\TestBuilder\AdminTestBuilder;
+use TestLibrary\TestBuilder\AppTestBuilder;
 
 class InitialWordDataProviderTest extends PublicApiTestCase
 {
@@ -17,16 +18,12 @@ class InitialWordDataProviderTest extends PublicApiTestCase
         $adminBuilder = new AdminTestBuilder($this->container);
         $language = $adminBuilder->buildAdmin();
 
-        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
-
         for ($i = 0; $i < 5; $i++) {
-            $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
+            $appBuilder = new AppTestBuilder($this->container);
 
-            $user->setCurrentLearningUser($learningUser);
-
-            $this->userDataProvider->getRepository()->persistAndFlush($user);
-
-            $this->mockProviders($user);
+            /** @var User $user */
+            $user = $appBuilder->createLearningUser($language);
+            $appBuilder->makeInitialDataCreation($user);
 
             $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 

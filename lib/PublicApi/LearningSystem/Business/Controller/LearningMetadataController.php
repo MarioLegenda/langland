@@ -31,4 +31,14 @@ class LearningMetadataController
             200
         );
     }
+    /**
+     * @return Response
+     */
+    public function getLearningGamesPresentation(): Response
+    {
+        return new JsonResponse(
+            $this->learningMetadataImplementation->getLearningGamesPresentation(),
+            200
+        );
+    }
 }

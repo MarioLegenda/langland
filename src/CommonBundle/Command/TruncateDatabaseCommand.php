@@ -28,7 +28,7 @@ class TruncateDatabaseCommand extends ContainerAwareCommand
         $blueDot->createStatementBuilder()->addSql('SET foreign_key_checks = 0')->execute();
 
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE learning_game_data')->execute();
-        $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE learning_game_challenge')->execute();
+        $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE learning_game_challenges')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE learning_games')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE learning_lessons')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE learning_metadata')->execute();

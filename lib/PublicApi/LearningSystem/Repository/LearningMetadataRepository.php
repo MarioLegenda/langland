@@ -90,11 +90,28 @@ class LearningMetadataRepository extends BaseBlueDotRepository
         int $languageId
     ): array
     {
-        $this->blueDot->useRepository('learning_user_metadata');
+        if (!$this->blueDot->repository()->isCurrentlyUsingRepository('presentation')) {
+            $this->blueDot->useRepository('presentation');
+        }
 
-        return $this->blueDot->execute('callable.learning_metadata_presentation', [
+        return $this->blueDot->execute('callable.learning_lesson_presentation', [
             'learning_user_id' => $learningUserId,
             'language_id' => $languageId,
+        ])->getResult();
+    }
+    /**
+     * @param int $learningUserId
+     * @return array
+     */
+    public function getLearningGamesPresentation(
+        int $learningUserId
+    ): array {
+        if (!$this->blueDot->repository()->isCurrentlyUsingRepository('presentation')) {
+            $this->blueDot->useRepository('presentation');
+        }
+
+        return $this->blueDot->execute('callable.learning_games_presentation', [
+            'learning_user_id' => $learningUserId,
         ])->getResult();
     }
 }

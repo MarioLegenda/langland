@@ -9,10 +9,10 @@ class LearningLessonPresentationCallable extends AbstractCallable
     /**
      * @inheritdoc
      */
-    public function run()
+    public function run(): array
     {
-        if ($this->blueDot->repository()->getCurrentlyUsingRepository() !== 'learning_user_metadata') {
-            $this->blueDot->useRepository('learning_user_metadata');
+        if ($this->blueDot->repository()->isCurrentlyUsingRepository('presentation')) {
+            $this->blueDot->useRepository('presentation');
         }
 
         $learningUserId = $this->parameters['learning_user_id'];

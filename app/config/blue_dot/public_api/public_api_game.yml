@@ -36,7 +36,7 @@ configuration:
                     sql: "SELECT id FROM learning_games WHERE learning_user_id = :learning_user_id AND data_collector_id = :data_collector_id"
                     parameters: [learning_user_id, data_collector_id]
                 create_learning_game_challenge:
-                    sql: "INSERT INTO learning_game_challenge (data_collector_id, learning_user_id, learning_game_id) VALUES (:data_collector_id, :learning_user_id, :learning_game_id)"
+                    sql: "INSERT INTO learning_game_challenges (data_collector_id, learning_user_id, learning_game_id) VALUES (:data_collector_id, :learning_user_id, :learning_game_id)"
                     parameters: [learning_user_id]
                     foreign_key:
                         statement_name: create_data_collector

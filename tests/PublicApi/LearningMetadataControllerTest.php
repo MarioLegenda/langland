@@ -11,9 +11,10 @@ use TestLibrary\TestBuilder\AppTestBuilder;
 
 class LearningMetadataControllerTest extends PublicApiTestCase
 {
-
-    public function test_initial_learning_lesson_presentation()
+    public function setUp()
     {
+        parent::setUp();
+
         $adminBuilder = new AdminTestBuilder($this->container);
         $language = $adminBuilder->buildAdmin();
 
@@ -22,12 +23,36 @@ class LearningMetadataControllerTest extends PublicApiTestCase
         /** @var User $user */
         $user = $appBuilder->createLearningUser($language);
         $appBuilder->makeInitialDataCreation($user);
+    }
 
+    public function test_learning_lesson_presentation()
+    {
         /** @var LearningMetadataController $controller */
         $controller = $this->container->get('public_api.controller.learning_metadata');
 
         /** @var JsonResponse $response */
         $response = $controller->getLearningLessonPresentation();
+
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertEquals(200, $response->getStatusCode());
+
+        $json = $response->getContent();
+
+        static::assertInternalType('string', $json);
+
+        $data = json_decode($json, true);
+
+        static::assertInternalType('array', $data);
+        static::assertNotEmpty($data);
+    }
+
+    public function test_learning_games_presentation()
+    {
+        /** @var LearningMetadataController $controller */
+        $controller = $this->container->get('public_api.controller.learning_metadata');
+
+        /** @var JsonResponse $response */
+        $response = $controller->getLearningGamesPresentation();
 
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(200, $response->getStatusCode());

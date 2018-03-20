@@ -3,29 +3,32 @@
 namespace PublicApi\Implementation;
 
 use AdminBundle\Command\Helper\FakerTrait;
+use ArmorBundle\Entity\User;
 use PublicApi\Infrastructure\Type\CourseType;
 use TestLibrary\PublicApiTestCase;
 use TestLibrary\TestBuilder\AdminTestBuilder;
+use TestLibrary\TestBuilder\AppTestBuilder;
 
 class LearningMetadataImplementationTest extends PublicApiTestCase
 {
     use FakerTrait;
 
-    public function test_createLearningMetadata()
+    public function setUp()
     {
+        parent::setUp();
+
         $adminBuilder = new AdminTestBuilder($this->container);
         $language = $adminBuilder->buildAdmin();
 
-        $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
+        $appBuilder = new AppTestBuilder($this->container);
 
-        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
+        /** @var User $user */
+        $user = $appBuilder->createLearningUser($language);
+        $appBuilder->makeInitialDataCreation($user);
+    }
 
-        $user->setCurrentLearningUser($learningUser);
-
-        $this->userDataProvider->getRepository()->persistAndFlush($user);
-
-        $this->mockProviders($user);
-
+    public function test_createLearningMetadata()
+    {
         $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 
         $learningMetadata = $learningMetadataImplementation->createLearningMetadata(

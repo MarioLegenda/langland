@@ -65,6 +65,13 @@ class LearningUserDataProvider implements DefaultDataProviderInterface
         );
     }
     /**
+     * @return LearningUserRepository
+     */
+    public function getRepository(): LearningUserRepository
+    {
+        return $this->learningUserRepository;
+    }
+    /**
      * @param Generator $faker
      * @param Language $language
      * @param array $questionAnswers

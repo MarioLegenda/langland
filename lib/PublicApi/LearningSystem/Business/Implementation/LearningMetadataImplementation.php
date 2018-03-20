@@ -80,4 +80,20 @@ class LearningMetadataImplementation
             ->setStatusCode(200)
             ->build();
     }
+    /**
+     * @return array
+     */
+    public function getLearningGamesPresentation(): array
+    {
+        $presentation = $this->learningMetadataRepository->getLearningGamesPresentation(
+            $this->learningUserProvider->getLearningUser()->getId()
+        );
+
+        return $this->apiSdk
+            ->create($presentation)
+            ->isCollection()
+            ->method('GET')
+            ->setStatusCode(200)
+            ->build();
+    }
 }

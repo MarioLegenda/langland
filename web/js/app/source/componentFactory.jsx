@@ -2,7 +2,7 @@ import React from 'react';
 import {factory as repoFactory} from "./repository/factory.js";
 import {LanguageInfo} from "./languageInfo.jsx";
 import {QuestionsContainer} from "./questions.jsx";
-import {MainAppContainer} from "./mainAppContainer.jsx";
+import {MainAppContainer} from "./app/mainAppContainer.jsx";
 
 export class ComponentFactory extends React.Component {
     constructor(props) {

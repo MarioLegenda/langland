@@ -11145,6 +11145,9 @@ function CenterLoading() {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (immutable) */ __webpack_exports__["mainAppLoaded"] = mainAppLoaded;
+/* harmony export (immutable) */ __webpack_exports__["lessonMenuClicked"] = lessonMenuClicked;
+/* harmony export (immutable) */ __webpack_exports__["gameMenuClicked"] = gameMenuClicked;
 /* harmony export (immutable) */ __webpack_exports__["fetchAllLanguagesInProgress"] = fetchAllLanguagesInProgress;
 /* harmony export (immutable) */ __webpack_exports__["languagesFetched"] = languagesFetched;
 /* harmony export (immutable) */ __webpack_exports__["registeringLanguage"] = registeringLanguage;
@@ -11160,13 +11163,47 @@ const LanguageActions = {
 /* harmony export (immutable) */ __webpack_exports__["LanguageActions"] = LanguageActions;
 
 
+const ViewActions = {
+    MAIN_APP_LOADED: 'MAIN_APP_LOADED',
+    LESSON_MENU_CLICKED: 'LESSON_MENU_CLICKED',
+    GAMES_MENU_CLICKED: 'GAMES_MENU_CLICKED'
+};
+/* harmony export (immutable) */ __webpack_exports__["ViewActions"] = ViewActions;
+
+
 let appModel = {
     language: {
         isFetchingAll: false,
         languages: [],
         isRegistering: false
+    },
+    app: {
+        isMainAppLoaded: false,
+        isLessonMenuClicked: false,
+        isGamesMenuClicked: false
     }
 };
+
+function mainAppLoaded(mainAppLoaded) {
+    return {
+        type: ViewActions.MAIN_APP_LOADED,
+        isMainAppLoaded: mainAppLoaded
+    };
+}
+
+function lessonMenuClicked(lessonMenuClicked) {
+    return {
+        type: ViewActions.LESSON_MENU_CLICKED,
+        isLessonMenuClicked: lessonMenuClicked
+    };
+}
+
+function gameMenuClicked(gamesMenuClicked) {
+    return {
+        type: ViewActions.GAMES_MENU_CLICKED,
+        isGamesMenuClicked: gamesMenuClicked
+    };
+}
 
 function fetchAllLanguagesInProgress(isFetchingAll) {
     return {
@@ -11212,8 +11249,28 @@ function language(state = appModel, action) {
     }
 }
 
+function app(state = appModel, action) {
+    switch (action.type) {
+        case ViewActions.MAIN_APP_LOADED:
+            return Object.assign({}, state.app, {
+                isMainAppLoaded: !state.app.isMainAppLoaded
+            });
+        case ViewActions.LESSON_MENU_CLICKED:
+            return Object.assign({}, state.app, {
+                isLessonMenuClicked: !state.app.isLessonMenuClicked
+            });
+        case ViewActions.GAMES_MENU_CLICKED:
+            return Object.assign({}, state.app, {
+                isGamesMenuClicked: !state.app.isGamesMenuClicked
+            });
+        default:
+            return state;
+    }
+}
+
 const reduxApp = Object(__WEBPACK_IMPORTED_MODULE_0_redux__["a" /* combineReducers */])({
-    language
+    language,
+    app
 });
 
 const store = Object(__WEBPACK_IMPORTED_MODULE_0_redux__["b" /* createStore */])(reduxApp);
@@ -27421,7 +27478,7 @@ var _languageInfo = __webpack_require__(257);
 
 var _questions = __webpack_require__(258);
 
-var _mainAppContainer = __webpack_require__(259);
+var _mainAppContainer = __webpack_require__(261);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -28084,7 +28141,9 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
 }(_react2.default.Component);
 
 /***/ }),
-/* 259 */
+/* 259 */,
+/* 260 */,
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28097,7 +28156,13 @@ exports.MainAppContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _factory = __webpack_require__(21);
+var _mainNavigation = __webpack_require__(262);
+
+var _lessonPresentationContainer = __webpack_require__(263);
+
+var _gamesPresentationContainer = __webpack_require__(264);
+
+var _events = __webpack_require__(98);
 
 var _react = __webpack_require__(5);
 
@@ -28117,66 +28182,242 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
     function MainAppContainer(props) {
         _classCallCheck(this, MainAppContainer);
 
-        return _possibleConstructorReturn(this, (MainAppContainer.__proto__ || Object.getPrototypeOf(MainAppContainer)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (MainAppContainer.__proto__ || Object.getPrototypeOf(MainAppContainer)).call(this, props));
+
+        _this.state = {
+            actions: {
+                mainAppLoaded: false,
+                lessonMenuClicked: false,
+                gamesMenuClicked: false
+            }
+        };
+
+        _events.store.subscribe(function () {
+            var isMainAppLoaded = _events.store.getState().app.isMainAppLoaded;
+
+            _this.setState(function (prevState) {
+                prevState.actions.mainAppLoaded = isMainAppLoaded;
+                prevState.actions.lessonMenuClicked = true;
+                prevState.actions.gamesMenuClicked = false;
+            });
+        });
+        return _this;
     }
 
     _createClass(MainAppContainer, [{
+        key: "_menuPresentationInversion",
+        value: function _menuPresentationInversion(menuState) {}
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            _events.store.dispatch((0, _events.mainAppLoaded)(true));
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            var lessonMenu = this.state.actions.lessonMenuClicked,
+                gamesMenu = this.state.actions.gamesMenuClicked;
+
+            return _react2.default.createElement(
+                "div",
+                { className: "app-console-wrapper" },
+                _react2.default.createElement(_mainNavigation.MainNavigation, null),
+                lessonMenu === true && _react2.default.createElement(_lessonPresentationContainer.LessonPresentationContainer, null),
+                gamesMenu === true && _react2.default.createElement(_gamesPresentationContainer.GamesPresentationContainer, null)
+            );
+        }
+    }]);
+
+    return MainAppContainer;
+}(_react2.default.Component);
+
+/***/ }),
+/* 262 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MainNavigation = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _events = __webpack_require__(98);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MainNavigation = exports.MainNavigation = function (_React$Component) {
+    _inherits(MainNavigation, _React$Component);
+
+    function MainNavigation(props) {
+        _classCallCheck(this, MainNavigation);
+
+        return _possibleConstructorReturn(this, (MainNavigation.__proto__ || Object.getPrototypeOf(MainNavigation)).call(this, props));
+    }
+
+    _createClass(MainNavigation, [{
         key: "render",
         value: function render() {
             return _react2.default.createElement(
                 "div",
-                { className: "app-console-wrapper" },
+                { className: "app-menu" },
                 _react2.default.createElement(
                     "div",
-                    { className: "app-menu" },
+                    { className: "menu-item" },
                     _react2.default.createElement(
-                        "div",
-                        { className: "menu-item" },
+                        "button",
+                        { className: "circle-wrapper" },
                         _react2.default.createElement(
-                            "button",
-                            { className: "circle-wrapper" },
-                            _react2.default.createElement(
-                                "span",
-                                { className: "circle-wrapper-text lesson-text-wrapper" },
-                                "Lessons"
-                            ),
-                            _react2.default.createElement("i", { className: "menu-icon fa fa-mortar-board fa-lg" })
-                        )
-                    ),
+                            "span",
+                            { className: "circle-wrapper-text lesson-text-wrapper" },
+                            "Lessons"
+                        ),
+                        _react2.default.createElement("i", { className: "menu-icon fa fa-mortar-board fa-lg" })
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "menu-item" },
                     _react2.default.createElement(
-                        "div",
-                        { className: "menu-item" },
+                        "button",
+                        { className: "circle-wrapper" },
                         _react2.default.createElement(
-                            "button",
-                            { className: "circle-wrapper" },
-                            _react2.default.createElement(
-                                "span",
-                                { className: "circle-wrapper-text games-text-wrapper" },
-                                "Games"
-                            ),
-                            _react2.default.createElement("i", { className: "menu-icon fa fa-gamepad fa-lg" })
-                        )
-                    ),
+                            "span",
+                            { className: "circle-wrapper-text games-text-wrapper" },
+                            "Games"
+                        ),
+                        _react2.default.createElement("i", { className: "menu-icon fa fa-gamepad fa-lg" })
+                    )
+                ),
+                _react2.default.createElement(
+                    "div",
+                    { className: "menu-item" },
                     _react2.default.createElement(
-                        "div",
-                        { className: "menu-item" },
+                        "button",
+                        { className: "circle-wrapper" },
                         _react2.default.createElement(
-                            "button",
-                            { className: "circle-wrapper" },
-                            _react2.default.createElement(
-                                "span",
-                                { className: "circle-wrapper-text trophies-text-wrapper" },
-                                "Trophies"
-                            ),
-                            _react2.default.createElement("i", { className: "menu-icon fa fa-trophy fa-lg" })
-                        )
+                            "span",
+                            { className: "circle-wrapper-text trophies-text-wrapper" },
+                            "Trophies"
+                        ),
+                        _react2.default.createElement("i", { className: "menu-icon fa fa-trophy fa-lg" })
                     )
                 )
             );
         }
     }]);
 
-    return MainAppContainer;
+    return MainNavigation;
+}(_react2.default.Component);
+
+/***/ }),
+/* 263 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LessonPresentationContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _factory = __webpack_require__(21);
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LessonPresentationContainer = exports.LessonPresentationContainer = function (_React$Component) {
+    _inherits(LessonPresentationContainer, _React$Component);
+
+    function LessonPresentationContainer(props) {
+        _classCallCheck(this, LessonPresentationContainer);
+
+        return _possibleConstructorReturn(this, (LessonPresentationContainer.__proto__ || Object.getPrototypeOf(LessonPresentationContainer)).call(this, props));
+    }
+
+    _createClass(LessonPresentationContainer, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {}
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement("div", null);
+        }
+    }]);
+
+    return LessonPresentationContainer;
+}(_react2.default.Component);
+
+/***/ }),
+/* 264 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.GamesPresentationContainer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _factory = __webpack_require__(21);
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GamesPresentationContainer = exports.GamesPresentationContainer = function (_React$Component) {
+    _inherits(GamesPresentationContainer, _React$Component);
+
+    function GamesPresentationContainer(props) {
+        _classCallCheck(this, GamesPresentationContainer);
+
+        return _possibleConstructorReturn(this, (GamesPresentationContainer.__proto__ || Object.getPrototypeOf(GamesPresentationContainer)).call(this, props));
+    }
+
+    _createClass(GamesPresentationContainer, [{
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement("div", null);
+        }
+    }]);
+
+    return GamesPresentationContainer;
 }(_react2.default.Component);
 
 /***/ })

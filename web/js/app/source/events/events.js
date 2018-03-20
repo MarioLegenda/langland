@@ -7,13 +7,45 @@ export const LanguageActions = {
     UPDATE_LANGUAGE: 'UPDATE_LANGUAGE'
 };
 
+export const ViewActions = {
+    MAIN_APP_LOADED: 'MAIN_APP_LOADED',
+    LESSON_MENU_CLICKED: 'LESSON_MENU_CLICKED',
+    GAMES_MENU_CLICKED: 'GAMES_MENU_CLICKED',
+};
+
 let appModel = {
     language: {
         isFetchingAll: false,
         languages: [],
         isRegistering: false
+    },
+    app: {
+        isMainAppLoaded: false,
+        isLessonMenuClicked: false,
+        isGamesMenuClicked: false,
     }
 };
+
+export function mainAppLoaded(mainAppLoaded) {
+    return {
+        type: ViewActions.MAIN_APP_LOADED,
+        isMainAppLoaded: mainAppLoaded
+    }
+}
+
+export function lessonMenuClicked(lessonMenuClicked) {
+    return {
+        type: ViewActions.LESSON_MENU_CLICKED,
+        isLessonMenuClicked: lessonMenuClicked
+    }
+}
+
+export function gameMenuClicked(gamesMenuClicked) {
+    return {
+        type: ViewActions.GAMES_MENU_CLICKED,
+        isGamesMenuClicked: gamesMenuClicked
+    }
+}
 
 export function fetchAllLanguagesInProgress(isFetchingAll) {
     return {
@@ -59,8 +91,28 @@ function language(state = appModel, action) {
     }
 }
 
+function app(state = appModel, action) {
+    switch (action.type) {
+        case ViewActions.MAIN_APP_LOADED:
+            return Object.assign({}, state.app, {
+                isMainAppLoaded: !state.app.isMainAppLoaded
+            });
+        case ViewActions.LESSON_MENU_CLICKED:
+            return Object.assign({}, state.app, {
+                isLessonMenuClicked: !state.app.isLessonMenuClicked
+            });
+        case ViewActions.GAMES_MENU_CLICKED:
+            return Object.assign({}, state.app, {
+                isGamesMenuClicked: !state.app.isGamesMenuClicked
+            });
+        default:
+            return state;
+    }
+}
+
 const reduxApp = combineReducers({
-    language
+    language,
+    app
 });
 
 export const store = createStore(reduxApp);

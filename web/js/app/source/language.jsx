@@ -5,11 +5,11 @@ import {factory as repoFactory} from "./repository/factory.js";
 import {
     store,
     fetchAllLanguagesInProgress,
-    languagesFetched,
-    registeringLanguage}
+    languagesFetched
+}
 from "./events/events.js";
-import {CenterLoading} from "./util.jsx";
 
+import {CenterLoading} from "./util.jsx";
 
 class Item extends React.Component {
     constructor(props) {

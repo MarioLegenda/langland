@@ -506,63 +506,64 @@ body {
   #main_content .app-wrapper .app-console-wrapper {
     width: 100%;
     float: right; }
-    #main_content .app-wrapper .app-console-wrapper .app-menu {
-      width: 115px;
-      float: left;
-      border-right: 1px solid gray; }
-      #main_content .app-wrapper .app-console-wrapper .app-menu:hover {
-        border-right: 1px solid #F16C20; }
-      #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item {
-        width: 100px;
-        height: 100px;
-        position: relative;
-        margin-bottom: 10px;
-        transition: margin-left 1s;
-        -webkit-transition: margin-left 0.4s;
-        float: left; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item:hover {
-          margin-left: 12px; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item:hover .circle-wrapper {
-          border: 1px solid #F16C20;
-          color: #F16C20; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item:hover .menu-icon {
-          color: #F16C20; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .circle-wrapper {
-          background: none;
-          color: gray;
-          font-family: "Alegreya Sans", sans-serif;
-          font-size: 1em;
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          z-index: 100;
-          padding: 50px 50px 50px 50px;
-          border: 1px solid gray;
-          border-radius: 200px; }
-          #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .circle-wrapper:hover {
-            cursor: pointer; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .menu-icon {
-          position: absolute;
-          top: 68px;
-          left: 40px;
-          color: gray; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .circle-wrapper-text {
-          display: block;
-          position: absolute;
-          text-align: center;
-          z-index: 99; }
-          #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .circle-wrapper-text:hover {
-            cursor: pointer; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .lesson-text-wrapper {
-          top: 41px;
-          left: 27px; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .games-text-wrapper {
-          top: 41px;
-          left: 29px; }
-        #main_content .app-wrapper .app-console-wrapper .app-menu .menu-item .trophies-text-wrapper {
-          top: 41px;
-          left: 24px; }
+
+.app-menu {
+  width: 115px;
+  float: left;
+  border-right: 1px solid gray; }
+  .app-menu:hover {
+    border-right: 1px solid #F16C20; }
+  .app-menu .menu-item {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin-bottom: 10px;
+    transition: margin-left 1s;
+    -webkit-transition: margin-left 0.4s;
+    float: left; }
+    .app-menu .menu-item:hover {
+      margin-left: 12px; }
+    .app-menu .menu-item:hover .circle-wrapper {
+      border: 1px solid #F16C20;
+      color: #F16C20; }
+    .app-menu .menu-item:hover .menu-icon {
+      color: #F16C20; }
+    .app-menu .menu-item .circle-wrapper {
+      background: none;
+      color: gray;
+      font-family: "Alegreya Sans", sans-serif;
+      font-size: 1em;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      padding: 50px 50px 50px 50px;
+      border: 1px solid gray;
+      border-radius: 200px; }
+      .app-menu .menu-item .circle-wrapper:hover {
+        cursor: pointer; }
+    .app-menu .menu-item .menu-icon {
+      position: absolute;
+      top: 68px;
+      left: 40px;
+      color: gray; }
+    .app-menu .menu-item .circle-wrapper-text {
+      display: block;
+      position: absolute;
+      text-align: center;
+      z-index: 99; }
+      .app-menu .menu-item .circle-wrapper-text:hover {
+        cursor: pointer; }
+    .app-menu .menu-item .lesson-text-wrapper {
+      top: 41px;
+      left: 27px; }
+    .app-menu .menu-item .games-text-wrapper {
+      top: 41px;
+      left: 29px; }
+    .app-menu .menu-item .trophies-text-wrapper {
+      top: 41px;
+      left: 24px; }
 
 .main-wrapper {
   width: 100%;

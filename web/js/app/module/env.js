@@ -1,14 +1,13 @@
 function env () {
     const path = window.location.pathname;
-    let env = '';
 
     if (/app_dev.php/.test(path)) {
-        env = '/app_dev.php/';
+        let environment = '/app_dev.php/';
     } else {
-        env = '/';
+        let environment = '/';
     }
 
-    return env;
+    return environment;
 }
 
 export const envr = env();

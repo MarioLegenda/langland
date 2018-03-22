@@ -3,6 +3,7 @@ import {UserRepository} from "./userRepository.js";
 import {LearningUserRepository} from "./learningUserRepository.js";
 import {LearningSystemRepository} from "./learningSystemRepository.js";
 import {Cache} from "./cache.js";
+import {MetadataPresentationRepository} from "./metadataPresentationRepository";
 
 const cache = new Cache();
 
@@ -16,6 +17,8 @@ export function factory(repository) {
             return new LearningUserRepository();
         case 'learning-system':
             return new LearningSystemRepository();
+        case 'metadata-presentation':
+            return new MetadataPresentationRepository();
     }
 
     throw new Error('Repository ' + repository + ' not found');

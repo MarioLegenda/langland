@@ -24,15 +24,21 @@ export class MainAppContainer extends React.Component {
         store.subscribe(() => {
             const isMainAppLoaded = store.getState().app.isMainAppLoaded;
 
-            this.setState((prevState) => {
-                prevState.actions.mainAppLoaded = isMainAppLoaded;
-                prevState.actions.lessonMenuClicked = true;
-                prevState.actions.gamesMenuClicked = false;
-            });
+            if (isMainAppLoaded) {
+                this.setState((prevState) => {
+                    prevState.actions.mainAppLoaded = isMainAppLoaded;
+                    prevState.actions.lessonMenuClicked = true;
+                    prevState.actions.gamesMenuClicked = false;
+                });
+            }
         });
     }
 
     _menuPresentationInversion(menuState) {
+    }
+
+    componentWillUnmount() {
+        store.dispatch(mainAppLoaded(false));
     }
 
     componentDidMount() {

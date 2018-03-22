@@ -13,17 +13,18 @@ export const ViewActions = {
     GAMES_MENU_CLICKED: 'GAMES_MENU_CLICKED',
 };
 
-let appModel = {
+let languageModel = {
     language: {
         isFetchingAll: false,
         languages: [],
         isRegistering: false
-    },
-    app: {
-        isMainAppLoaded: false,
-        isLessonMenuClicked: false,
-        isGamesMenuClicked: false,
     }
+};
+
+let appModel = {
+    isMainAppLoaded: false,
+    isLessonMenuClicked: false,
+    isGamesMenuClicked: false,
 };
 
 export function mainAppLoaded(mainAppLoaded) {
@@ -68,7 +69,7 @@ export function registeringLanguage(isRegistering) {
     }
 }
 
-function language(state = appModel, action) {
+function language(state = languageModel, action) {
     switch (action.type) {
         case LanguageActions.FETCH_ALL_IN_PROGRESS:
             return Object.assign({}, state.language, {
@@ -94,16 +95,16 @@ function language(state = appModel, action) {
 function app(state = appModel, action) {
     switch (action.type) {
         case ViewActions.MAIN_APP_LOADED:
-            return Object.assign({}, state.app, {
-                isMainAppLoaded: !state.app.isMainAppLoaded
+            return Object.assign({}, state, {
+                isMainAppLoaded: action.isMainAppLoaded
             });
         case ViewActions.LESSON_MENU_CLICKED:
-            return Object.assign({}, state.app, {
-                isLessonMenuClicked: !state.app.isLessonMenuClicked
+            return Object.assign({}, state, {
+                isLessonMenuClicked: action.isLessonMenuClicked
             });
         case ViewActions.GAMES_MENU_CLICKED:
-            return Object.assign({}, state.app, {
-                isGamesMenuClicked: !state.app.isGamesMenuClicked
+            return Object.assign({}, state, {
+                isGamesMenuClicked: action.isGamesMenuClicked
             });
         default:
             return state;

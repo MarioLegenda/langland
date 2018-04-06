@@ -3,7 +3,7 @@
 namespace Library\Infrastructure\BlueDot\Factory;
 
 use BlueDot\BlueDot;
-use BlueDot\Database\Connection;
+use BlueDot\Kernel\Connection\Connection;
 use Doctrine\DBAL\Connection as DoctrineConnection;
 
 class BlueDotFactory
@@ -43,7 +43,7 @@ class BlueDotFactory
         $blueDotConnection = new Connection();
         $blueDotConnection->setPDO($this->doctrineConnection->getWrappedConnection());
 
-        $blueDot = new BlueDot(null, $this->blueDotEnvironment);
+        $blueDot = new BlueDot(null);
         $blueDot->setConnection($blueDotConnection);
 
         foreach ($this->blueDotApis as $apiDir) {

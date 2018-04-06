@@ -89,8 +89,6 @@ class AdminTestBuilder
             }
         }
 
-
-
         for ($i = 0; $i < 5; $i++) {
             $this->createWords(30, $language, [
                 'level' => $i,

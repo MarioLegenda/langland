@@ -12,7 +12,6 @@ class WordDataRepository extends BaseBlueDotRepository
      * @param int $learningUserId
      * @param int $languageId
      * @return array
-     * @throws \BlueDot\Exception\BlueDotRuntimeException
      * @throws \BlueDot\Exception\ConnectionException
      */
     public function getWordsFromLessons(
@@ -32,10 +31,9 @@ class WordDataRepository extends BaseBlueDotRepository
             ],
         ]);
 
-        $words = $promise->getResult()->get('find_learning_lesson_words')->toArray();
-        unset($words['row_count']);
+        $words = $promise->getResult()->get('find_learning_lesson_words')['data'];
 
-        $lessonId = $promise->getResult()->get('find_learning_lesson')->normalizeIfOneExists()->get('lesson_id');
+        $lessonId = $promise->getResult()->get('find_learning_lesson')['data'][0]['lesson_id'];
 
         return [
             'words' => $words,
@@ -46,7 +44,6 @@ class WordDataRepository extends BaseBlueDotRepository
      * @param int $languageId
      * @param int $wordLevel
      * @return array
-     * @throws \BlueDot\Exception\BlueDotRuntimeException
      * @throws \BlueDot\Exception\ConnectionException
      */
     public function getWordsIds(int $languageId, int $wordLevel): array
@@ -56,7 +53,7 @@ class WordDataRepository extends BaseBlueDotRepository
             'word_level' => $wordLevel,
         ]);
 
-        $result = $promise->getResult()->extractColumn('id')['id'];
+        $result = $promise->getResult()->extractColumn('id')['data']['id'];
 
         return $result;
     }
@@ -65,9 +62,7 @@ class WordDataRepository extends BaseBlueDotRepository
      * @param int $lessonId
      * @param int $wordLevel
      * @return array
-     * @throws \BlueDot\Exception\BlueDotRuntimeException
      * @throws \BlueDot\Exception\ConnectionException
-     * @throws \BlueDot\Exception\EntityException
      */
     public function getWordsIdsWithExcludedLesson(
         int $languageId,
@@ -80,7 +75,7 @@ class WordDataRepository extends BaseBlueDotRepository
             'word_level' => $wordLevel,
         ]);
 
-        $result = $promise->getResult()->extractColumn('id')['id'];
+        $result = $promise->getResult()->extractColumn('id')['data']['id'];
 
         return $result;
     }
@@ -123,7 +118,7 @@ class WordDataRepository extends BaseBlueDotRepository
             ->addSql($sql)
             ->execute();
 
-        return $promise->getResult()->toArray();
+        return $promise->getResult()['data'];
     }
     /**
      * @param array $wordIds

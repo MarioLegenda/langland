@@ -2,7 +2,10 @@
 
 namespace PublicApi\Controller;
 
+use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
+use PublicApi\LearningSystem\Business\Controller\InitialDataCreationController;
+use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\PublicApiTestCase;
 use TestLibrary\TestBuilder\AdminTestBuilder;
@@ -20,17 +23,29 @@ class InitialDataCreationTest extends PublicApiTestCase
         $this->manualReset();
 
         $adminBuilder = new AdminTestBuilder($this->container);
-        $language = $adminBuilder->buildAdmin();
+        $appBuilder = new AppTestBuilder($this->container);
 
-        for ($i = 0; $i < 5; $i++) {
-            $appBuilder = new AppTestBuilder($this->container);
+        /** @var User $user */
+        $user = $appBuilder->createAppUser();
 
-            /** @var User $user */
-            $user = $appBuilder->createLearningUser($language);
-            $appBuilder->makeInitialDataCreation($user);
+        /** @var Language[] $languages */
+        $languages = [];
 
+        for ($i = 0; $i < 2; $i++) {
+            $languages[] = $adminBuilder->buildAdmin();
+        }
+
+        /** @var Language $language */
+        foreach ($languages as $language) {
+            /** @var LearningUser $user */
+            $learningUser = $appBuilder->createLearningUser($language);
+            $user->setCurrentLearningUser($learningUser);
+            $appBuilder->mockProviders($user);
+
+            /** @var InitialDataCreationController $controller */
             $controller = $this->container->get('public_api.controller.initial_data_creation_controller');
 
+            /** @var JsonResponse $response */
             $response = $controller->makeInitialDataCreation();
 
             static::assertInstanceOf(JsonResponse::class, $response);

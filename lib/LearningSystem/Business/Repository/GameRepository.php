@@ -40,8 +40,8 @@ class GameRepository extends BaseBlueDotRepository
         ])->success(function(PromiseInterface $promise) use ($learningUserId, $gameName, $data) {
             $thisResult = $promise->getResult();
 
-            $dataCollectorId = $thisResult->get('create_data_collector')->get('last_insert_id');
-            $learningGameId = $thisResult->get('create_learning_game')->get('last_insert_id');
+            $dataCollectorId = $thisResult->get('create_data_collector')['last_insert_id'];
+            $learningGameId = $thisResult->get('create_learning_game')['last_insert_id'];
 
             /** @var ProvidedDataInterface $item */
             foreach ($data as $item) {

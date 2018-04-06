@@ -9,6 +9,7 @@ use PublicApi\Infrastructure\Type\CourseType;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
+use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -44,20 +45,21 @@ class AppTestBuilder
     }
     /**
      * @param Language $language
+     * @return LearningUser
+     */
+    public function createLearningUser(Language $language): LearningUser
+    {
+        return $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
+    }
+    /**
      * @return User
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function createLearningUser(Language $language): User
+    public function createAppUser(): User
     {
-        $learningUser = $this->learningUserDataProvider->createDefaultDb($this->getFaker(), $language);
-
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
-        $user->setCurrentLearningUser($learningUser);
-
-        $this->userDataProvider->getRepository()->persistAndFlush($user);
-
-        return $user;
+        return $this->userDataProvider->getRepository()->persistAndFlush($user);
     }
     /**
      * @param User $user

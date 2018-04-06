@@ -3,7 +3,6 @@
 namespace PublicApi\LearningSystem\Business\Implementation;
 
 use ApiSDK\ApiSDK;
-use PublicApi\Infrastructure\Type\TypeInterface;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Repository\LearningMetadataRepository;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
@@ -45,20 +44,11 @@ class LearningMetadataImplementation
         $this->languageProvider = $languageProvider;
     }
     /**
-     * @param TypeInterface $courseType
-     * @param int $courseLearningOrder
-     * @param int $lessonLearningOrder
      * @return array
      */
-    public function createLearningMetadata(
-        TypeInterface $courseType,
-        int $courseLearningOrder,
-        int $lessonLearningOrder
-    ): array {
+    public function createLearningMetadata(): array
+    {
         return $this->learningMetadataRepository->createLearningMetadata(
-            $courseType,
-            $courseLearningOrder,
-            $lessonLearningOrder,
             $this->languageProvider->getLanguage()->getId(),
             $this->learningUserProvider->getLearningUser()->getId()
         );

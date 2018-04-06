@@ -2,6 +2,7 @@
 
 namespace CommonBundle\Command;
 
+use BlueDot\BlueDot;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -23,6 +24,7 @@ class TruncateDatabaseCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var BlueDot $blueDot */
         $blueDot = $this->getContainer()->get('common.blue_dot');
 
         $blueDot->createStatementBuilder()->addSql('SET foreign_key_checks = 0')->execute();

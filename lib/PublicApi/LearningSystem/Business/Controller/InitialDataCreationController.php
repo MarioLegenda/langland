@@ -35,11 +35,7 @@ class InitialDataCreationController
      */
     public function makeInitialDataCreation(): Response
     {
-        $learningMetadata = $this->learningMetadataImplementation->createLearningMetadata(
-            CourseType::fromValue('Beginner'),
-            0,
-            0
-        );
+        $learningMetadata = $this->learningMetadataImplementation->createLearningMetadata();
 
         return new JsonResponse(
             $this->initialDataCreationImplementation->createInitialData($learningMetadata['learningMetadataId']),

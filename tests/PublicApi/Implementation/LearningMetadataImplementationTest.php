@@ -3,8 +3,9 @@
 namespace PublicApi\Implementation;
 
 use AdminBundle\Command\Helper\FakerTrait;
+use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
-use PublicApi\Infrastructure\Type\CourseType;
+use PublicApiBundle\Entity\LearningUser;
 use TestLibrary\PublicApiTestCase;
 use TestLibrary\TestBuilder\AdminTestBuilder;
 use TestLibrary\TestBuilder\AppTestBuilder;
@@ -13,33 +14,35 @@ class LearningMetadataImplementationTest extends PublicApiTestCase
 {
     use FakerTrait;
 
-    public function setUp()
+    public function test_createLearningMetadata()
     {
-        parent::setUp();
-
         $adminBuilder = new AdminTestBuilder($this->container);
-        $language = $adminBuilder->buildAdmin();
-
         $appBuilder = new AppTestBuilder($this->container);
 
         /** @var User $user */
-        $user = $appBuilder->createLearningUser($language);
-        $appBuilder->makeInitialDataCreation($user);
-    }
+        $user = $appBuilder->createAppUser();
 
-    public function test_createLearningMetadata()
-    {
-        $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
+        $languages = [];
 
-        $learningMetadata = $learningMetadataImplementation->createLearningMetadata(
-            CourseType::fromValue('Beginner'),
-            0,
-            0
-        );
+        for ($i = 0; $i < 2; $i++) {
+            $languages[] = $adminBuilder->buildAdmin();
+        }
 
-        static::assertNotEmpty($learningMetadata);
-        static::assertInternalType('array', $learningMetadata);
-        static::assertArrayHasKey('learningMetadataId', $learningMetadata);
-        static::assertInternalType('int', $learningMetadata['learningMetadataId']);
+        /** @var Language $language */
+        foreach ($languages as $language) {
+            /** @var LearningUser $user */
+            $learningUser = $appBuilder->createLearningUser($language);
+            $user->setCurrentLearningUser($learningUser);
+            $appBuilder->mockProviders($user);
+
+            $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
+
+            $learningMetadata = $learningMetadataImplementation->createLearningMetadata();
+
+            static::assertNotEmpty($learningMetadata);
+            static::assertInternalType('array', $learningMetadata);
+            static::assertArrayHasKey('learningMetadataId', $learningMetadata);
+            static::assertInternalType('int', $learningMetadata['learningMetadataId']);
+        }
     }
 }

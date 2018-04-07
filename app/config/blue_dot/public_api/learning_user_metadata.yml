@@ -52,3 +52,7 @@ configuration:
                     use:
                         statement_name: find_learning_lesson
                         values: { find_learning_lesson.lesson_id: lesson_id }
+
+    service:
+        create_learning_metadata:
+            class: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\CreateLearningMetadataService

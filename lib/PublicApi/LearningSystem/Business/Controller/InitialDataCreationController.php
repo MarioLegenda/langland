@@ -2,7 +2,6 @@
 
 namespace PublicApi\LearningSystem\Business\Controller;
 
-use PublicApi\Infrastructure\Type\CourseType;
 use PublicApi\LearningSystem\Business\Implementation\InitialDataCreationImplementation;
 use PublicApi\LearningSystem\Business\Implementation\LearningMetadataImplementation;
 use Symfony\Component\HttpFoundation\JsonResponse;

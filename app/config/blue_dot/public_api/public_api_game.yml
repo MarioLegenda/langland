@@ -4,9 +4,9 @@ configuration:
             atomic: false
             statements:
                 create_data_collector:
-                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
+                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count, created_at) VALUES (0, 0, 0, 0, 0, CURDATE())"
                 create_learning_game:
-                    sql: "INSERT INTO learning_games (data_collector_id, learning_user_id, has_completed) VALUES (:data_collector_id, :learning_user_id, 0)"
+                    sql: "INSERT INTO learning_games (data_collector_id, learning_user_id, has_completed, created_at) VALUES (:data_collector_id, :learning_user_id, 0, CURDATE())"
                     parameters: [learning_user_id]
                     foreign_key:
                         statement_name: create_data_collector
@@ -31,12 +31,12 @@ configuration:
             atomic: false
             statements:
                 create_data_collector:
-                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count) VALUES (0, 0, 0, 0, 0)"
+                    sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count, created_at) VALUES (0, 0, 0, 0, 0, CURDATE())"
                 get_learning_game:
                     sql: "SELECT id FROM learning_games WHERE learning_user_id = :learning_user_id AND data_collector_id = :data_collector_id"
                     parameters: [learning_user_id, data_collector_id]
                 create_learning_game_challenge:
-                    sql: "INSERT INTO learning_game_challenges (data_collector_id, learning_user_id, learning_game_id) VALUES (:data_collector_id, :learning_user_id, :learning_game_id)"
+                    sql: "INSERT INTO learning_game_challenges (data_collector_id, learning_user_id, learning_game_id, created_at) VALUES (:data_collector_id, :learning_user_id, :learning_game_id, CURDATE())"
                     parameters: [learning_user_id]
                     foreign_key:
                         statement_name: create_data_collector
@@ -45,7 +45,7 @@ configuration:
                         statement_name: get_learning_game
                         values: { "get_learning_game.id": learning_game_id }
                 create_learning_game_data:
-                    sql: "INSERT INTO learning_game_data (name, learning_game_challenge_id, data_id) VALUES (:name, :learning_game_challenge_id, :data_id)"
+                    sql: "INSERT INTO learning_game_data (name, learning_game_challenge_id, data_id, created_at) VALUES (:name, :learning_game_challenge_id, :data_id, CURDATE())"
                     parameters: [name, data_id]
                     foreign_key:
                         statement_name: create_learning_game_challenge

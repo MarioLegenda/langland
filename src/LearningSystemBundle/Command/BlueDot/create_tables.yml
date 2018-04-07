@@ -4,10 +4,10 @@ configuration:
             atomic: true
             statements:
                 create_data_collector:
-                    sql: "CREATE TABLE IF NOT EXISTS data_collector (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, has_completed TINYINT(1) DEFAULT 0, time_spent INT DEFAULT NULL, accessed_count INT DEFAULT NULL, completed_count INT DEFAULT NULL, un_completed_count INT DEFAULT NULL) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
+                    sql: "CREATE TABLE IF NOT EXISTS data_collector (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, has_completed TINYINT(1) DEFAULT 0, time_spent INT DEFAULT NULL, accessed_count INT DEFAULT NULL, completed_count INT DEFAULT NULL, un_completed_count INT DEFAULT NULL, created_at DATE) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
                 create_learning_game:
-                    sql: "CREATE TABLE IF NOT EXISTS learning_games (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, data_collector_id INT NOT NULL, learning_user_id INT NOT NULL, learning_metadata_id INT DEFAULT NULL, has_completed TINYINT(1) NOT NULL DEFAULT 0) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
+                    sql: "CREATE TABLE IF NOT EXISTS learning_games (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, data_collector_id INT NOT NULL, learning_user_id INT NOT NULL, learning_metadata_id INT DEFAULT NULL, has_completed TINYINT(1) NOT NULL DEFAULT 0, created_at DATE) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
                 create_learning_game_challenges:
-                    sql: "CREATE TABLE IF NOT EXISTS learning_game_challenges (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, data_collector_id INT NOT NULL, learning_user_id INT NOT NULL, learning_game_id INT NOT NULL, game_type_id INT NOT NULL) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
+                    sql: "CREATE TABLE IF NOT EXISTS learning_game_challenges (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, data_collector_id INT NOT NULL, learning_user_id INT NOT NULL, learning_game_id INT NOT NULL, game_type_id INT NOT NULL, created_at DATE) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
                 create_learning_game_data:
-                    sql: "CREATE TABLE IF NOT EXISTS learning_game_data (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, name VARCHAR(255) NOT NULL, learning_game_challenge_id INT NOT NULL, data_id INT NOT NULL) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
+                    sql: "CREATE TABLE IF NOT EXISTS learning_game_data (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, name VARCHAR(255) NOT NULL, learning_game_challenge_id INT NOT NULL, data_id INT NOT NULL, created_at DATE) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"

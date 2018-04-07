@@ -15,6 +15,8 @@ class CreateLearningMetadataService extends BaseService
     {
         $lessonIds = $this->getLessonIds();
 
+        sort($lessonIds);
+
         $createLearningMetadataPromises = $this->createLearningMetadata($lessonIds);
 
         $this->updateLearningLessons($createLearningMetadataPromises);
@@ -50,11 +52,21 @@ class CreateLearningMetadataService extends BaseService
     {
         $learningUserId = $this->parameters['learning_user_id'];
 
+        $isFirst = true;
         foreach ($lessonIds as $lessonId) {
+            $isAvailable = 0;
+
+            if ($isFirst === true) {
+                $isAvailable = 1;
+
+                $isFirst = false;
+            }
+
             $this->blueDot->prepareExecution(
                 'scenario.create_learning_metadata', [
                 'create_learning_lesson' => [
                     'lesson_id' => $lessonId,
+                    'is_available' => $isAvailable,
                 ],
                 'create_learning_metadata' => [
                     'learning_user_id' => $learningUserId,

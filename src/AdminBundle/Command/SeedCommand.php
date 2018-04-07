@@ -10,6 +10,12 @@ use AdminBundle\Command\Helper\LessonFactory;
 use AdminBundle\Command\Helper\QuestionFactory;
 use AdminBundle\Command\Helper\WordFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
+use AdminBundle\Entity\Course;
+use AdminBundle\Entity\Language;
+use AdminBundle\Entity\Lesson;
+use AdminBundle\Entity\Word;
+use Doctrine\ORM\EntityManager;
+use Library\Util\Util;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,7 +33,7 @@ class SeedCommand extends ContainerAwareCommand
         $this
             ->setName('langland:learning_metadata:seed')
             ->addOption('words', 'w', InputOption::VALUE_OPTIONAL, null, 10)
-            ->addOption('lessons', 'l', InputOption::VALUE_OPTIONAL, null, 5)
+            ->addOption('lessons', 'l', InputOption::VALUE_OPTIONAL, null, 10)
             ->setDescription('Seeds initial data');
     }
     /**
@@ -37,11 +43,14 @@ class SeedCommand extends ContainerAwareCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('');
+
         $this->isValidEnvironment();
 
         $numOfWords = (int) $input->getOption('words');
         $numOfLessons = (int) $input->getOption('lessons');
 
+        /** @var EntityManager $em */
         $em = $this->getContainer()->get('doctrine')->getManager();
 
         $faker = \Faker\Factory::create();
@@ -50,57 +59,79 @@ class SeedCommand extends ContainerAwareCommand
         $categories = array('nature', 'body', 'soul', 'love');
 
         $languageFactory = new LanguageFactory($em);
-        $categoryFactory = new CategoryFactory($em);
-        $wordTranslationFactory = new WordTranslationFactory();
-        $wordFactory = new WordFactory($em);
         $languageInfoFactory = new LanguageInfoFactory($em);
-        $courseFactory = new CourseFactory($em);
+        $categoryFactory = new CategoryFactory($em);
         $lessonFactory = new LessonFactory($em);
-        $questionsFactory = new QuestionFactory($em);
+        $wordFactory = new WordFactory($em);
+        $wordTranslationFactory = new WordTranslationFactory();
+        $courseFactory = new CourseFactory($em);
+        $questionFactory = new QuestionFactory($em);
 
-        $questionsFactory->create();
-        $categoryFactory->create($categories, true);
         $languageObjects = $languageFactory->create($languages, true);
-        $wordObjects = [];
+        $categoryFactory->create($categories, true);
+        $questionFactory->create();
 
-        foreach ($languageObjects as $i => $languageObject) {
-            $words = $wordFactory->create(
+        $levels = [1, 2, 3, 4, 5];
+
+        /** @var Language $languageObject */
+        foreach ($languageObjects as $languageObject) {
+            $languageInfoFactory->create($languageObject);
+            $wordFactory->create(
                 $categoryFactory,
                 $wordTranslationFactory,
                 $languageObject,
-                $numOfWords
+                $numOfWords,
+                true,
+                $levels
             );
 
-            $wordObjects = array_merge($wordObjects, $words);
-        }
+            $courseFactory->create($languageObject, true);
+            $courses = $courseFactory->getSavedCourses();
 
-        foreach ($languageObjects as $i => $languageObject) {
-            $languageInfoFactory->create($languageObject);
-
-            $courseFactory->create($languageObject, 3);
-        }
-
-        $courses = $this->getContainer()->get('learning_metadata.repository.course')->findAll();
-
-        $lessons = [];
-        foreach ($courses as $course) {
-            $lessons = $lessonFactory->create($course, $numOfLessons);
-        }
-
-        if (empty($lessons)) {
-            throw new \RuntimeException('Seeding went wrong. There are no created lessons');
-        }
-
-        foreach ($wordObjects as $key => $word) {
-            if (($key % 2) === 0) {
-                $lesson = $lessons[array_rand($lessons, 1)];
-
-                $word->setLesson($lesson);
-                $em->persist($word);
+            /** @var Course $course */
+            foreach ($courses as $course) {
+                $lessonFactory->create($course, $numOfLessons, true);
             }
+
+            $limit = 10;
+            $offset = 0;
+
+            $savedLessons = $lessonFactory->getSavedLessons();
+            if (empty($savedLessons)) {
+                throw new \RuntimeException('Lessons cannot be empty');
+            }
+
+            foreach ($savedLessons as $lesson) {
+                $selectedWords = $this->getWordsByLimitAndOffset(
+                    $wordFactory->getSavedWords(),
+                    $offset,
+                    $limit
+                );
+
+                /** @var Word $word */
+                foreach ($selectedWords as $word) {
+                    $word->setLesson($lesson);
+                    $em->persist($word);
+                }
+
+                $offset += 10;
+                $limit += 10;
+            }
+
+            $em->flush();
+
+            $message = sprintf('<info>Finished persisting data patch for %s language</info>', $languageObject->getName());
+
+            $output->writeln($message);
+
+            $lessonFactory->clear();
+            $wordFactory->clear();
+            $courseFactory->clear();
         }
 
-        $em->flush();
+
+
+        $output->writeln('');
     }
     /**
      * @throws \RuntimeException
@@ -115,5 +146,23 @@ class SeedCommand extends ContainerAwareCommand
 
             throw new \RuntimeException($message);
         }
+    }
+    /**
+     * @param Word[] $words
+     * @param int $offset
+     * @param int $limit
+     * @return Word[]
+     */
+    public function getWordsByLimitAndOffset(
+        array $words,
+        int $offset,
+        int $limit
+    ): array {
+        $selectedWords = [];
+        for ($i = $offset; $i < $limit; $i++) {
+            $selectedWords[$i] = $words[$i];
+        }
+
+        return $selectedWords;
     }
 }

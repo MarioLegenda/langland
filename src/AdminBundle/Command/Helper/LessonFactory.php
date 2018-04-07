@@ -16,7 +16,7 @@ class LessonFactory
     /**
      * @var array $lessons
      */
-    private $lessons;
+    private $lessons = [];
     /**
      * @var EntityManagerInterface $em
      */
@@ -32,10 +32,12 @@ class LessonFactory
     /**
      * @param Course $course
      * @param int $numberOfEntries
+     * @param bool $save
      * @return array
      */
-    public function create(Course $course, int $numberOfEntries)
+    public function create(Course $course, int $numberOfEntries = null, bool $save = false)
     {
+        $lessons = [];
         for ($i = 0; $i < $numberOfEntries; $i++) {
             $tips = [];
             for ($a = 0; $a < 10; $a++) {
@@ -63,13 +65,31 @@ class LessonFactory
                 $course
             );
 
-            $this->lessons[] = $lesson;
+            $lessons[] = $lesson;
 
             $this->em->persist($lesson);
         }
 
         $this->em->flush();
 
+        if ($save) {
+            $this->lessons = array_merge($this->lessons, $lessons);
+        }
+
         return $this->lessons;
+    }
+    /**
+     * @return Lesson[]
+     */
+    public function getSavedLessons(): array
+    {
+        return $this->lessons;
+    }
+    /**
+     * @void
+     */
+    public function clear()
+    {
+        $this->lessons = [];
     }
 }

@@ -15,6 +15,10 @@ class CourseFactory
      */
     private $em;
     /**
+     * @var Course[] $courses
+     */
+    private $courses = [];
+    /**
      * CourseFactory constructor.
      * @param EntityManager $em
      */
@@ -24,31 +28,52 @@ class CourseFactory
     }
     /**
      * @param Language $language
-     * @param int $numberOfEntries
+     * @param bool $save
      * @return array
      */
-    public function create(Language $language, int $numberOfEntries) : array
+    public function create(Language $language, bool $save = false) : array
     {
         $courseTypes = CourseType::fromValue('Beginner')->toArray();
         $courseArray = array();
 
-        for ($i = 0; $i < $numberOfEntries; $i++) {
+        $courseOrder = 1;
+        foreach ($courseTypes as $courseType) {
             $course = new Course();
 
-            $course->setName($language->getName() . ' course ' . $i);
+            $course->setName($language->getName() . ' course ' . $courseOrder);
             $course->setWhatToLearn($this->getFaker()->sentence(30));
             $course->setLanguage($language);
-            $course->setType($courseTypes[$i]);
-            $course->setCourseOrder($i);
+            $course->setType($courseType);
+            $course->setCourseOrder($courseOrder);
             $course->setCourseUrl(\URLify::filter($course->getName()));
 
             $this->em->persist($course);
 
             $courseArray[] = $course;
+
+            ++$courseOrder;
         }
 
         $this->em->flush();
 
+        if ($save) {
+            $this->courses = array_merge($this->courses, $courseArray);
+        }
+
         return $courseArray;
+    }
+    /**
+     * @return Course[]
+     */
+    public function getSavedCourses(): array
+    {
+        return $this->courses;
+    }
+    /**
+     * @void
+     */
+    public function clear()
+    {
+        $this->courses = [];
     }
 }

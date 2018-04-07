@@ -10,6 +10,10 @@ class WordFactory
 {
     use FakerTrait;
     /**
+     * @var Word[] $words
+     */
+    private $words = [];
+    /**
      * @var EntityManager $em
      */
     private $em;
@@ -26,37 +30,61 @@ class WordFactory
      * @param WordTranslationFactory $wordTranslationFactory
      * @param Language $language
      * @param int $numberOfEntries
+     * @param bool $save
+     * @param array $levels
      * @return array
      */
     public function create(
         CategoryFactory $categoryFactory,
         WordTranslationFactory $wordTranslationFactory,
         Language $language,
-        int $numberOfEntries
+        int $numberOfEntries,
+        bool $save = false,
+        array $levels = [1, 2, 3, 4, 5]
     ) : array {
         $wordsArray = array();
 
-        for ($i = 0; $i < $numberOfEntries; $i++) {
-            $word = new Word();
+        foreach ($levels as $level) {
+            for ($i = 0; $i < $numberOfEntries; $i++) {
+                $word = new Word();
 
-            $word->setName($this->getFaker()->word);
-            $word->setLanguage($language);
-            $word->setLevel(1);
-            $word->setPluralForm($this->getFaker()->word);
+                $word->setName($this->getFaker()->word);
+                $word->setLanguage($language);
+                $word->setLevel($level);
+                $word->setPluralForm($this->getFaker()->word);
 
-            $word->setCategories($categoryFactory->createCollection(2));
-            $word->setDescription($this->getFaker()->sentence(60));
-            $word->setType($this->getFaker()->company);
+                $word->setCategories($categoryFactory->createCollection(2));
+                $word->setDescription($this->getFaker()->sentence(60));
+                $word->setType($this->getFaker()->company);
 
-            $wordTranslationFactory->create($word, 5);
+                $wordTranslationFactory->create($word, 5);
 
-            $this->em->persist($word);
+                $this->em->persist($word);
 
-            $wordsArray[] = $word;
+                $wordsArray[] = $word;
+            }
+
+            $this->em->flush();
         }
 
-        $this->em->flush();
+        if ($save) {
+            $this->words = array_merge($this->words, $wordsArray);
+        }
 
         return $wordsArray;
+    }
+    /**
+     * @return Word[]
+     */
+    public function getSavedWords(): array
+    {
+        return $this->words;
+    }
+    /**
+     * @void
+     */
+    public function clear()
+    {
+        $this->words = [];
     }
 }

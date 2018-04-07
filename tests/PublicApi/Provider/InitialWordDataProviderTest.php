@@ -16,22 +16,22 @@ class InitialWordDataProviderTest extends PublicApiTestCase
         $this->manualReset();
 
         $adminBuilder = new AdminTestBuilder($this->container);
+        $appBuilder = new AppTestBuilder($this->container);
+
         $language = $adminBuilder->buildAdmin();
 
-        for ($i = 0; $i < 5; $i++) {
-            $appBuilder = new AppTestBuilder($this->container);
+        /** @var User $user */
+        $user = $appBuilder->createAppUser();
 
-            /** @var User $user */
-            $user = $appBuilder->createLearningUser($language);
-            $appBuilder->makeInitialDataCreation($user);
+        for ($i = 0; $i < 5; $i++) {
+            /** @var LearningUser $user */
+            $learningUser = $appBuilder->createLearningUser($language);
+            $user->setCurrentLearningUser($learningUser);
+            $appBuilder->mockProviders($user);
 
             $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 
-            $learningMetadata = $learningMetadataImplementation->createLearningMetadata(
-                CourseType::fromValue('Beginner'),
-                0,
-                0
-            );
+            $learningMetadata = $learningMetadataImplementation->createLearningMetadata();
 
             $learningMetadataId = $learningMetadata['learningMetadataId'];
 
@@ -45,38 +45,5 @@ class InitialWordDataProviderTest extends PublicApiTestCase
 
             static::assertEquals($wordNumber, count($providedData));
         }
-    }
-
-    public function prepare_test_InitialWordDataProvider(): int
-    {
-        $language = $this->container->get('data_provider.language')->createDefaultDb($this->getFaker());
-
-        $this->prepareLanguageData(
-            $language, [
-            'courseOrder' => 0,
-        ], [
-            'learningOrder' => 0,
-        ]);
-
-        $userData = $this->prepareUserData($language);
-
-        /** @var LearningUser $learningUser */
-        $learningUser = $userData['learningUser'];
-        /** @var User $user */
-        $user = $userData['user'];
-
-        $user->setCurrentLearningUser($learningUser);
-
-        $this->mockProviders($user);
-
-        $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
-
-        $learningMetadata = $learningMetadataImplementation->createLearningMetadata(
-            CourseType::fromValue('Beginner'),
-            0,
-            0
-        );
-
-        return $learningMetadata['learningMetadataId'];
     }
 }

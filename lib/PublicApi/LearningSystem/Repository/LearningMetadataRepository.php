@@ -92,10 +92,10 @@ class LearningMetadataRepository extends BaseBlueDotRepository
             $this->blueDot->useRepository('presentation');
         }
 
-        return $this->blueDot->execute('callable.learning_lesson_presentation', [
+        return $this->blueDot->execute('service.learning_lesson_presentation', [
             'learning_user_id' => $learningUserId,
             'language_id' => $languageId,
-        ])->getResult();
+        ])->getResult()->get('data');
     }
     /**
      * @param int $learningUserId

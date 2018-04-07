@@ -2,9 +2,9 @@
 
 namespace PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable;
 
-use BlueDot\Common\AbstractCallable;
+use BlueDot\Configuration\Flow\Service\BaseService;
 
-class LearningLessonPresentationCallable extends AbstractCallable
+class LearningLessonPresentationCallable extends BaseService
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class LearningLessonPresentationCallable extends AbstractCallable
         $learningUserId = $this->parameters['learning_user_id'];
         $languageId = $this->parameters['language_id'];
 
-        $promise = $this->blueDot->execute('scenario.get_lesson_presentation_by_learning_user', [
-            'find_learning_lesson' => [
+        $promise = $this->blueDot->execute('scenario.get_lessons_presentation_by_learning_user', [
+            'find_learning_lessons' => [
                 'learning_user_id' => $learningUserId,
             ],
             'find_courses' => [
@@ -27,8 +27,8 @@ class LearningLessonPresentationCallable extends AbstractCallable
             ],
         ]);
 
-        $learningLessons = $promise->getResult()->get('find_learning_lesson')->toArray();
-        $courses = $promise->getResult()->get('find_courses')->toArray();
+        $learningLessons = $promise->getResult()->get('find_learning_lessons')['data'];
+        $courses = $promise->getResult()->get('find_courses')['data'];
 
         $presentation = [
             'blocks' => [

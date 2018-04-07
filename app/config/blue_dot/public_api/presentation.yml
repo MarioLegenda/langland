@@ -7,21 +7,19 @@ configuration:
                 parameters: [learning_user_id]
 
     scenario:
-        get_lesson_presentation_by_learning_user:
+        get_lessons_presentation_by_learning_user:
             atomic: true
             statements:
-                find_learning_lesson:
+                find_learning_lessons:
                     sql: "SELECT l.id, l.name, l.course_id, ll.has_completed, l.learning_order FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id AND lm.id = ll.learning_metadata_id WHERE lm.learning_user_id = :learning_user_id"
                     parameters: [learning_user_id]
                 find_courses:
                     sql: "SELECT id, name, what_to_learn, type FROM courses WHERE language_id = :language_id"
                     parameters: [language_id]
 
-    callable:
+    service:
         learning_lesson_presentation:
-            type: object
-            name: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\LearningLessonPresentationCallable
+            class: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\LearningLessonPresentationCallable
 
         learning_games_presentation:
-            type: object
-            name: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\LearningGamesPresentationCallable
+            class: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\LearningGamesPresentationCallable

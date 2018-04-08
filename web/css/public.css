@@ -526,12 +526,12 @@ body {
     float: left; }
     .app-menu .menu-item:hover {
       margin-left: 12px; }
-    .app-menu .menu-item:hover .circle-wrapper {
+    .app-menu .menu-item:hover .circle-wrapper, .app-menu .menu-item:hover .lesson-menu-item .not-available-circle-wrapper, .lesson-menu-item .app-menu .menu-item:hover .not-available-circle-wrapper, .app-menu .menu-item:hover .available-lesson-menu-item .not-available-circle-wrapper, .available-lesson-menu-item .app-menu .menu-item:hover .not-available-circle-wrapper, .app-menu .menu-item:hover .not-available-lesson-menu-item .not-available-circle-wrapper, .not-available-lesson-menu-item .app-menu .menu-item:hover .not-available-circle-wrapper, .app-menu .menu-item:hover .lesson-menu-item .available-circle-wrapper, .lesson-menu-item .app-menu .menu-item:hover .available-circle-wrapper, .app-menu .menu-item:hover .available-lesson-menu-item .available-circle-wrapper, .available-lesson-menu-item .app-menu .menu-item:hover .available-circle-wrapper, .app-menu .menu-item:hover .not-available-lesson-menu-item .available-circle-wrapper, .not-available-lesson-menu-item .app-menu .menu-item:hover .available-circle-wrapper {
       border: 1px solid #F16C20;
       color: #F16C20; }
     .app-menu .menu-item:hover .menu-icon {
       color: #F16C20; }
-    .app-menu .menu-item .circle-wrapper {
+    .app-menu .menu-item .circle-wrapper, .app-menu .menu-item .lesson-menu-item .not-available-circle-wrapper, .lesson-menu-item .app-menu .menu-item .not-available-circle-wrapper, .app-menu .menu-item .available-lesson-menu-item .not-available-circle-wrapper, .available-lesson-menu-item .app-menu .menu-item .not-available-circle-wrapper, .app-menu .menu-item .not-available-lesson-menu-item .not-available-circle-wrapper, .not-available-lesson-menu-item .app-menu .menu-item .not-available-circle-wrapper, .app-menu .menu-item .lesson-menu-item .available-circle-wrapper, .lesson-menu-item .app-menu .menu-item .available-circle-wrapper, .app-menu .menu-item .available-lesson-menu-item .available-circle-wrapper, .available-lesson-menu-item .app-menu .menu-item .available-circle-wrapper, .app-menu .menu-item .not-available-lesson-menu-item .available-circle-wrapper, .not-available-lesson-menu-item .app-menu .menu-item .available-circle-wrapper {
       background: none;
       color: gray;
       font-family: "Alegreya Sans", sans-serif;
@@ -544,7 +544,7 @@ body {
       padding: 50px 50px 50px 50px;
       border: 1px solid gray;
       border-radius: 200px; }
-      .app-menu .menu-item .circle-wrapper:hover {
+      .app-menu .menu-item .circle-wrapper:hover, .app-menu .menu-item .lesson-menu-item .not-available-circle-wrapper:hover, .lesson-menu-item .app-menu .menu-item .not-available-circle-wrapper:hover, .app-menu .menu-item .available-lesson-menu-item .not-available-circle-wrapper:hover, .available-lesson-menu-item .app-menu .menu-item .not-available-circle-wrapper:hover, .app-menu .menu-item .not-available-lesson-menu-item .not-available-circle-wrapper:hover, .not-available-lesson-menu-item .app-menu .menu-item .not-available-circle-wrapper:hover, .app-menu .menu-item .lesson-menu-item .available-circle-wrapper:hover, .lesson-menu-item .app-menu .menu-item .available-circle-wrapper:hover, .app-menu .menu-item .available-lesson-menu-item .available-circle-wrapper:hover, .available-lesson-menu-item .app-menu .menu-item .available-circle-wrapper:hover, .app-menu .menu-item .not-available-lesson-menu-item .available-circle-wrapper:hover, .not-available-lesson-menu-item .app-menu .menu-item .available-circle-wrapper:hover {
         cursor: pointer; }
     .app-menu .menu-item .menu-icon {
       position: absolute;
@@ -590,24 +590,14 @@ body {
   margin: 0 0 5px 10px;
   float: left; }
 
-.lesson-menu-item {
+.lesson-menu-item, .available-lesson-menu-item, .not-available-lesson-menu-item {
   width: 100px;
   height: 100px;
   position: absolute;
   top: 0;
-  left: 0;
-  transition: margin-top 0.4s;
-  -webkit-transition: margin-top 0.4s;
-  -moz-transition: margin-top 0.4s;
-  -o-transition: margin-top 0.4s; }
-  .lesson-menu-item:hover {
-    margin-top: 10px; }
-  .lesson-menu-item:hover .circle-wrapper {
-    border: 1px solid #F16C20;
-    color: #F16C20; }
-  .lesson-menu-item .circle-wrapper {
+  left: 0; }
+  .lesson-menu-item .circle-wrapper, .available-lesson-menu-item .circle-wrapper, .not-available-lesson-menu-item .circle-wrapper, .lesson-menu-item .not-available-circle-wrapper, .available-lesson-menu-item .not-available-circle-wrapper, .not-available-lesson-menu-item .not-available-circle-wrapper, .lesson-menu-item .available-circle-wrapper, .available-lesson-menu-item .available-circle-wrapper, .not-available-lesson-menu-item .available-circle-wrapper {
     background: none;
-    color: gray;
     font-family: "Alegreya Sans", sans-serif;
     font-size: 1em;
     display: block;
@@ -616,22 +606,43 @@ body {
     left: 0;
     z-index: 100;
     padding: 50px 50px 50px 50px;
-    border: 1px solid gray;
     border-radius: 200px; }
-    .lesson-menu-item .circle-wrapper:hover {
+  .lesson-menu-item .not-available-circle-wrapper, .available-lesson-menu-item .not-available-circle-wrapper, .not-available-lesson-menu-item .not-available-circle-wrapper {
+    color: #ada9ac;
+    border: 1px solid #d6cfd3; }
+  .lesson-menu-item .available-circle-wrapper, .available-lesson-menu-item .available-circle-wrapper, .not-available-lesson-menu-item .available-circle-wrapper {
+    color: gray;
+    border: 1px solid gray; }
+    .lesson-menu-item .available-circle-wrapper:hover, .available-lesson-menu-item .available-circle-wrapper:hover, .not-available-lesson-menu-item .available-circle-wrapper:hover {
       cursor: pointer; }
-  .lesson-menu-item .circle-wrapper-text {
+  .lesson-menu-item .circle-wrapper-position, .available-lesson-menu-item .circle-wrapper-position, .not-available-lesson-menu-item .circle-wrapper-position {
     display: block;
     position: absolute;
     text-align: center;
     z-index: 99; }
-    .lesson-menu-item .circle-wrapper-text:hover {
-      cursor: pointer; }
-  .lesson-menu-item .lesson-text-wrapper {
+  .lesson-menu-item .lesson-text-wrapper, .available-lesson-menu-item .lesson-text-wrapper, .not-available-lesson-menu-item .lesson-text-wrapper {
     width: 80px;
     top: 32px;
     left: 10px;
     text-align: center; }
+  .lesson-menu-item .lesson-icon-wrapper, .available-lesson-menu-item .lesson-icon-wrapper, .not-available-lesson-menu-item .lesson-icon-wrapper {
+    width: 30px;
+    height: 30px;
+    top: 15px;
+    left: 35px;
+    z-index: 98;
+    color: #ada9ac; }
+
+.available-lesson-menu-item {
+  transition: margin-top 0.4s;
+  -webkit-transition: margin-top 0.4s;
+  -moz-transition: margin-top 0.4s;
+  -o-transition: margin-top 0.4s; }
+  .available-lesson-menu-item:hover {
+    margin-top: 10px; }
+  .available-lesson-menu-item:hover .circle-wrapper, .available-lesson-menu-item:hover .not-available-circle-wrapper, .available-lesson-menu-item:hover .available-circle-wrapper {
+    border: 1px solid #F16C20;
+    color: #F16C20; }
 
 .main-wrapper {
   width: 100%;

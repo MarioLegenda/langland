@@ -71,24 +71,51 @@ class LearningMetadataControllerTest extends PublicApiTestCase
 
     public function test_learning_games_presentation()
     {
-        static::markTestSkipped();
+        $adminBuilder = new AdminTestBuilder($this->container);
+        $appBuilder = new AppTestBuilder($this->container);
 
-        /** @var LearningMetadataController $controller */
-        $controller = $this->container->get('public_api.controller.learning_metadata');
+        /** @var User $user */
+        $user = $appBuilder->createAppUser();
 
-        /** @var JsonResponse $response */
-        $response = $controller->getLearningGamesPresentation();
+        $languages = [];
 
-        static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertEquals(200, $response->getStatusCode());
+        for ($i = 0; $i < 2; $i++) {
+            $languages[] = $adminBuilder->buildAdmin();
+        }
 
-        $json = $response->getContent();
+        /** @var Language $language */
+        foreach ($languages as $language) {
+            /** @var LearningUser $user */
+            $learningUser = $appBuilder->createLearningUser($language);
+            $user->setCurrentLearningUser($learningUser);
+            $appBuilder->mockProviders($user);
 
-        static::assertInternalType('string', $json);
+            /** @var InitialDataCreationController $controller */
+            $controller = $this->container->get('public_api.controller.initial_data_creation_controller');
 
-        $data = json_decode($json, true);
+            /** @var JsonResponse $response */
+            $response = $controller->makeInitialDataCreation();
 
-        static::assertInternalType('array', $data);
-        static::assertNotEmpty($data);
+            static::assertInstanceOf(JsonResponse::class, $response);
+            static::assertEquals(201, $response->getStatusCode());
+
+            /** @var LearningMetadataController $controller */
+            $controller = $this->container->get('public_api.controller.learning_metadata');
+
+            /** @var JsonResponse $response */
+            $response = $controller->getLearningGamesPresentation();
+
+            static::assertInstanceOf(JsonResponse::class, $response);
+            static::assertEquals(200, $response->getStatusCode());
+
+            $json = $response->getContent();
+
+            static::assertInternalType('string', $json);
+
+            $data = json_decode($json, true);
+
+            static::assertInternalType('array', $data);
+            static::assertNotEmpty($data);
+        }
     }
 }

@@ -2,9 +2,9 @@
 
 namespace PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable;
 
-use BlueDot\Common\AbstractCallable;
+use BlueDot\Configuration\Flow\Service\BaseService;
 
-class LearningGamesPresentationCallable extends AbstractCallable
+class LearningGamesPresentationCallable extends BaseService
 {
     /**
      * @inheritdoc
@@ -21,6 +21,6 @@ class LearningGamesPresentationCallable extends AbstractCallable
             'learning_user_id' => $learningUserId,
         ]);
 
-        return $promise->getResult()->toArray();
+        return $promise->getResult()['data'];
     }
 }

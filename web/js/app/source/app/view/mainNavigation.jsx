@@ -11,7 +11,6 @@ export class MainNavigation extends React.Component {
         super(props);
     }
 
-
     render() {
         return <div className="app-menu">
             <div className="menu-item">

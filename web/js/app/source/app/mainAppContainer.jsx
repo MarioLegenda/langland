@@ -21,6 +21,10 @@ export class MainAppContainer extends React.Component {
             }
         };
 
+        this._appActions();
+    }
+
+    _appActions() {
         store.subscribe(() => {
             const isMainAppLoaded = store.getState().app.isMainAppLoaded;
 
@@ -32,9 +36,6 @@ export class MainAppContainer extends React.Component {
                 });
             }
         });
-    }
-
-    _menuPresentationInversion(menuState) {
     }
 
     componentWillUnmount() {

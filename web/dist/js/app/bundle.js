@@ -28223,23 +28223,27 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
             }
         };
 
-        _events.store.subscribe(function () {
-            var isMainAppLoaded = _events.store.getState().app.isMainAppLoaded;
-
-            if (isMainAppLoaded) {
-                _this.setState(function (prevState) {
-                    prevState.actions.mainAppLoaded = isMainAppLoaded;
-                    prevState.actions.lessonMenuClicked = true;
-                    prevState.actions.gamesMenuClicked = false;
-                });
-            }
-        });
+        _this._appActions();
         return _this;
     }
 
     _createClass(MainAppContainer, [{
-        key: "_menuPresentationInversion",
-        value: function _menuPresentationInversion(menuState) {}
+        key: "_appActions",
+        value: function _appActions() {
+            var _this2 = this;
+
+            _events.store.subscribe(function () {
+                var isMainAppLoaded = _events.store.getState().app.isMainAppLoaded;
+
+                if (isMainAppLoaded) {
+                    _this2.setState(function (prevState) {
+                        prevState.actions.mainAppLoaded = isMainAppLoaded;
+                        prevState.actions.lessonMenuClicked = true;
+                        prevState.actions.gamesMenuClicked = false;
+                    });
+                }
+            });
+        }
     }, {
         key: "componentWillUnmount",
         value: function componentWillUnmount() {
@@ -28595,7 +28599,10 @@ var Lesson = exports.Lesson = function (_React$Component) {
     function Lesson(props) {
         _classCallCheck(this, Lesson);
 
-        return _possibleConstructorReturn(this, (Lesson.__proto__ || Object.getPrototypeOf(Lesson)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Lesson.__proto__ || Object.getPrototypeOf(Lesson)).call(this, props));
+
+        _this.enterLesson = _this.enterLesson.bind(_this);
+        return _this;
     }
 
     _createClass(Lesson, [{
@@ -28614,10 +28621,23 @@ var Lesson = exports.Lesson = function (_React$Component) {
             return classes;
         }
     }, {
+        key: 'enterLesson',
+        value: function enterLesson(e) {
+            e.preventDefault();
+
+            if (this.props.item.is_available === 0) {
+                console.log('Lesson is not available');
+                return false;
+            }
+
+            console.log('Lesson is available');
+        }
+    }, {
         key: 'render',
         value: function render() {
             var item = this.props.item;
             var classes = this._makeClasses(item);
+            var clickableMethod = item.is_available === 1 ? this.enterLesson : null;
 
             return _react2.default.createElement(
                 'div',
@@ -28627,7 +28647,7 @@ var Lesson = exports.Lesson = function (_React$Component) {
                     { className: classes['lesson-menu'] },
                     _react2.default.createElement(
                         'button',
-                        { className: classes['circle-wrapper'] },
+                        { className: classes['circle-wrapper'], onClick: clickableMethod },
                         _react2.default.createElement(
                             'span',
                             { className: 'circle-wrapper-position lesson-text-wrapper' },

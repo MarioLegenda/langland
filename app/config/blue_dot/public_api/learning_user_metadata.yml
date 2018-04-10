@@ -28,16 +28,16 @@ configuration:
                 create_data_collector:
                     sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count, created_at) VALUES (0, 0, 0, 0, 0, CURDATE())"
                 create_learning_lesson:
-                    sql: "INSERT INTO learning_lessons (data_collector_id, lesson_id, learning_metadata_id, has_completed, is_available, created_at) VALUES (:data_collector_id, :lesson_id, NULL, 0, :is_available, CURDATE())"
+                    sql: "INSERT INTO learning_lessons (data_collector_id, lesson_id, learning_metadata_id, has_completed, is_available, created_at) VALUES (:data_collector_id, :lesson_id, :learning_metadata_id, 0, :is_available, CURDATE())"
                     foreign_key:
-                        statement_name: create_data_collector
-                        bind_to: data_collector_id
+                        statement_names: [create_data_collector, create_learning_metadata]
+                        bind_them_to: [data_collector_id, learning_metadata_id]
                     parameters: [lesson_id, is_available]
                 create_learning_metadata:
                     sql: "INSERT INTO learning_metadata (lesson_data_collector_id, learning_user_id, created_at) VALUES(:data_collector_id, :learning_user_id, CURDATE())"
                     foreign_key:
-                        statement_name: create_data_collector
-                        bind_to: data_collector_id
+                        statement_names: [create_data_collector]
+                        bind_them_to: [data_collector_id]
                     parameters: [learning_user_id]
 
         initial_data_collection:

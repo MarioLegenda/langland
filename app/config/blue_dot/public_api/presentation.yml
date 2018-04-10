@@ -1,10 +1,12 @@
 configuration:
-
     simple:
         select:
             get_games_presentation_by_learning_user:
-                sql: "SELECT lg.id, lg.has_completed, lgdt.time_spent, lgdt.accessed_count, lgdt.completed_count, lgdt.un_completed_count FROM learning_games AS lg INNER JOIN data_collector AS lgdt ON lgdt.id = lg.data_collector_id WHERE lg.learning_user_id = :learning_user_id"
+                sql: "SELECT lg.id, lg.learning_metadata_id, lg.has_completed, lgdt.time_spent, lgdt.accessed_count, lgdt.completed_count, lgdt.un_completed_count FROM learning_games AS lg INNER JOIN data_collector AS lgdt ON lgdt.id = lg.data_collector_id WHERE lg.learning_user_id = :learning_user_id"
                 parameters: [learning_user_id]
+            get_learning_lesson:
+                sql: "SELECT l.course_id FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id AND lm.id = ll.learning_metadata_id WHERE lm.learning_user_id = :learning_user_id AND lm.learning_metadata_id = :learning_metadata_id"
+                parameters: [learning_user_id, learning_metadata_id]
 
     scenario:
         get_lessons_presentation_by_learning_user:

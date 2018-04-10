@@ -3,7 +3,6 @@
 namespace PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable;
 
 use BlueDot\Configuration\Flow\Service\BaseService;
-use BlueDot\Entity\Entity;
 use BlueDot\Entity\PromiseInterface;
 
 class CreateLearningMetadataService extends BaseService
@@ -19,14 +18,12 @@ class CreateLearningMetadataService extends BaseService
 
         $createLearningMetadataPromises = $this->createLearningMetadata($lessonIds);
 
-        $this->updateLearningLessons($createLearningMetadataPromises);
-
-        /** @var Entity $result */
-        $result = $createLearningMetadataPromises[0]->getResult();
-        $learningMetadataId = (int) $result->get('create_learning_metadata')['last_insert_id'];
+        $learningMetadataId = (int) $createLearningMetadataPromises[0]->getResult()->get('create_learning_metadata')['last_insert_id'];
+        $learningLessonId = (int) $createLearningMetadataPromises[0]->getResult()->get('create_learning_lesson')['last_insert_id'];
 
         return [
             'learningMetadataId' => $learningMetadataId,
+            'learningLessonId' => $learningLessonId,
         ];
     }
     /**
@@ -76,25 +73,5 @@ class CreateLearningMetadataService extends BaseService
 
         /** @var PromiseInterface[] $createLearningMetadataPromises */
         return $this->blueDot->executePrepared();
-    }
-    /**
-     * @param PromiseInterface[] $createLearningMetadataPromises
-     */
-    private function updateLearningLessons(array $createLearningMetadataPromises)
-    {
-        /** @var PromiseInterface $promise */
-        foreach ($createLearningMetadataPromises as $promise) {
-            if ($promise->isSuccess()) {
-                $learningMetadataId = $promise->getResult()->get('create_learning_metadata')['last_insert_id'];
-                $learningLessonId = $promise->getResult()->get('create_learning_lesson')['last_insert_id'];
-
-                $this->blueDot->execute('simple.update.update_learning_lesson', [
-                    'learning_metadata_id' => $learningMetadataId,
-                    'learning_lesson_id' => $learningLessonId,
-                ]);
-            }
-        }
-
-        $this->blueDot->executePrepared();
     }
 }

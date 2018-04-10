@@ -155,7 +155,7 @@ export class LanguageList extends React.Component{
             return null;
         }
 
-        return <div className="languages-wrapper">
+        return <div className="animated fadeIn languages-wrapper">
                 {items}
             </div>
     }

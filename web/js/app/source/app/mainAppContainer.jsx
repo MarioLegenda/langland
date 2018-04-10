@@ -4,7 +4,7 @@ import {GamesPresentationContainer} from "./gamesPresentationContainer.jsx";
 
 import {
     store,
-    mainAppLoaded
+    mainAppLoaded, lessonMenuClicked, gamesMenuClicked
 } from "../events/events";
 
 import React from "react";
@@ -21,18 +21,22 @@ export class MainAppContainer extends React.Component {
             }
         };
 
+        this.data = {
+            actionMethods: [lessonMenuClicked, gamesMenuClicked]
+        };
+
         this._appActions();
     }
 
     _appActions() {
         store.subscribe(() => {
-            const isMainAppLoaded = store.getState().app.isMainAppLoaded;
+            const appState = store.getState().app;
 
-            if (isMainAppLoaded) {
+            console.log(appState);
+
+            if (appState.mainAppLoaded) {
                 this.setState((prevState) => {
-                    prevState.actions.mainAppLoaded = isMainAppLoaded;
-                    prevState.actions.lessonMenuClicked = true;
-                    prevState.actions.gamesMenuClicked = false;
+                    prevState.actions = appState;
                 });
             }
         });
@@ -44,6 +48,8 @@ export class MainAppContainer extends React.Component {
 
     componentDidMount() {
         store.dispatch(mainAppLoaded(true));
+        store.dispatch(lessonMenuClicked(true));
+        store.dispatch(gamesMenuClicked(false));
     }
 
     render() {
@@ -51,7 +57,7 @@ export class MainAppContainer extends React.Component {
               gamesMenu = this.state.actions.gamesMenuClicked;
 
         return <div className="app-console-wrapper">
-            <MainNavigation />
+            <MainNavigation actionMethods={this.data.actionMethods}/>
 
             {lessonMenu === true && <LessonPresentationContainer/>}
             {gamesMenu === true && <GamesPresentationContainer/>}

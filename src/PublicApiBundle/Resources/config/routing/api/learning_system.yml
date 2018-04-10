@@ -11,3 +11,10 @@ get_learning_lesson_presentation:
     methods: [GET]
     requirements:
         _format: json
+
+get_games_presentation:
+    path: /games-presentation
+    defaults: { _controller: public_api.controller.learning_metadata:getLearningGamesPresentation }
+    methods: [GET]
+    requirements:
+        _format: json

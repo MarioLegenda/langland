@@ -36,7 +36,7 @@ export class Header extends React.Component {
     render() {
         const areLanguageFetched = this.state.areLanguagesFetched;
 
-        return <header className="full-width align-left">
+        return <header className="animated fadeIn full-width align-left">
             <div className="title-wrapper">
                 <Link to={ env.current + 'langland/' }>Langland</Link>
 

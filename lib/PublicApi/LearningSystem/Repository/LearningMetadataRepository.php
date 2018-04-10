@@ -2,8 +2,6 @@
 
 namespace PublicApi\LearningSystem\Repository;
 
-use BlueDot\Entity\Entity;
-use BlueDot\Entity\PromiseInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 
 class LearningMetadataRepository extends BaseBlueDotRepository

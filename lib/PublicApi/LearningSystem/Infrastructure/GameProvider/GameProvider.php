@@ -35,11 +35,10 @@ class GameProvider
     {
         $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
 
-        $this->gameRepository->createGame($game, $learningUserId);
-    }
-
-    public function getGame()
-    {
-
+        $this->gameRepository->createGame(
+            $game,
+            $learningUserId,
+            $learningMetadataId
+        );
     }
 }

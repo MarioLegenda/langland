@@ -55,7 +55,7 @@ class LearningLessonPresentationCallable extends BaseService
 
             $finalPresentation[] = [
                 'course' => $course,
-                'lessons' => $lessons
+                'items' => $lessons
             ];
         }
 

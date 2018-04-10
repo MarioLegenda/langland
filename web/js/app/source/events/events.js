@@ -22,29 +22,29 @@ let languageModel = {
 };
 
 let appModel = {
-    isMainAppLoaded: false,
-    isLessonMenuClicked: false,
-    isGamesMenuClicked: false,
+    mainAppLoaded: false,
+    lessonMenuClicked: false,
+    gamesMenuClicked: false,
 };
 
 export function mainAppLoaded(mainAppLoaded) {
     return {
         type: ViewActions.MAIN_APP_LOADED,
-        isMainAppLoaded: mainAppLoaded
+        mainAppLoaded: mainAppLoaded
     }
 }
 
 export function lessonMenuClicked(lessonMenuClicked) {
     return {
         type: ViewActions.LESSON_MENU_CLICKED,
-        isLessonMenuClicked: lessonMenuClicked
+        lessonMenuClicked: lessonMenuClicked
     }
 }
 
-export function gameMenuClicked(gamesMenuClicked) {
+export function gamesMenuClicked(gamesMenuClicked) {
     return {
         type: ViewActions.GAMES_MENU_CLICKED,
-        isGamesMenuClicked: gamesMenuClicked
+        gamesMenuClicked: gamesMenuClicked
     }
 }
 
@@ -96,15 +96,15 @@ function app(state = appModel, action) {
     switch (action.type) {
         case ViewActions.MAIN_APP_LOADED:
             return Object.assign({}, state, {
-                isMainAppLoaded: action.isMainAppLoaded
+                mainAppLoaded: action.mainAppLoaded
             });
         case ViewActions.LESSON_MENU_CLICKED:
             return Object.assign({}, state, {
-                isLessonMenuClicked: action.isLessonMenuClicked
+                lessonMenuClicked: action.lessonMenuClicked
             });
         case ViewActions.GAMES_MENU_CLICKED:
             return Object.assign({}, state, {
-                isGamesMenuClicked: action.isGamesMenuClicked
+                gamesMenuClicked: action.gamesMenuClicked
             });
         default:
             return state;

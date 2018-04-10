@@ -37,7 +37,10 @@ class InitialDataCreationController
         $learningMetadata = $this->learningMetadataImplementation->createLearningMetadata();
 
         return new JsonResponse(
-            $this->initialDataCreationImplementation->createInitialData($learningMetadata['learningMetadataId']),
+            $this->initialDataCreationImplementation->createInitialData(
+                $learningMetadata['learningMetadataId'],
+                $learningMetadata['learningLessonId']
+            ),
             201
         );
     }

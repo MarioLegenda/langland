@@ -1,17 +1,17 @@
 import React from "react";
 
-import {LessonItem} from "./lessonItem.jsx";
+import {InnerItem} from "./innerItem.jsx";
 
-export class LessonItems extends React.Component {
+export class OuterItem extends React.Component {
     constructor(props) {
         super(props);
     }
 
     _buildItems(items) {
-        const courses = items.data.blocks.courses;
+        const type = this.props.type;
 
-        return courses.map((item, key) => {
-            return <LessonItem key={key} item={item}/>
+        return items.map((item, key) => {
+            return <InnerItem key={key} item={item} type={type}/>
         });
     }
 

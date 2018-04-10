@@ -2,7 +2,6 @@
 
 namespace LearningSystem\Business\Repository;
 
-use BlueDot\Entity\PromiseInterface;
 use LearningSystem\Library\Game\Implementation\GameInterface;
 use LearningSystem\Library\ProvidedDataInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
@@ -12,23 +11,27 @@ class GameRepository extends BaseBlueDotRepository
     /**
      * @param GameInterface $game
      * @param int $learningUserId
+     * @param int $learningMetadataId
      */
     public function createGame(
         GameInterface $game,
-        int $learningUserId
+        int $learningUserId,
+        int $learningMetadataId
     ) {
         $this->blueDot->useRepository('public_api_game');
 
-        $this->doCreateGame($game, $learningUserId);
+        $this->doCreateGame($game, $learningUserId, $learningMetadataId);
     }
     /**
      * @param GameInterface $game
      * @param int $learningUserId
+     * @param int $learningMetadataId
      * @throws \BlueDot\Exception\ConnectionException
      */
     private function doCreateGame(
         GameInterface $game,
-        int $learningUserId
+        int $learningUserId,
+        int $learningMetadataId
     ) {
         $gameName = $game->getName();
         $data = $game->getGameData();
@@ -36,45 +39,32 @@ class GameRepository extends BaseBlueDotRepository
         $this->blueDot->execute('scenario.create_learning_game', [
             'create_learning_game' => [
                 'learning_user_id' => $learningUserId,
+                'learning_metadata_id' => $learningMetadataId,
             ],
-        ])->success(function(PromiseInterface $promise) use ($learningUserId, $gameName, $data) {
-            $thisResult = $promise->getResult();
+            'create_learning_game_challenge' => [
+                'learning_user_id' => $learningUserId,
+            ],
+            'create_learning_game_data' => $this->createGameDataParameters($gameName, $data),
+        ]);
+    }
+    /**
+     * @param string $gameName
+     * @param ProvidedDataInterface $data
+     * @return array
+     */
+    private function createGameDataParameters(
+        string $gameName,
+        ProvidedDataInterface $data
+    ): array {
+        $parameters = [];
+        /** @var ProvidedDataInterface $item */
+        foreach ($data as $item) {
+            $parameters[] = [
+                'name' => $gameName,
+                'data_id' => $item->getField('id'),
+            ];
+        }
 
-            $dataCollectorId = $thisResult->get('create_data_collector')['last_insert_id'];
-            $learningGameId = $thisResult->get('create_learning_game')['last_insert_id'];
-
-            /** @var ProvidedDataInterface $item */
-            foreach ($data as $item) {
-                $this->blueDot->prepareExecution('scenario.create_game_challenge', [
-                    'get_learning_game' => [
-                        'learning_user_id' => $learningUserId,
-                        'data_collector_id' => $dataCollectorId,
-                    ],
-                    'create_learning_game_challenge' => [
-                        'learning_user_id' => $learningUserId,
-                    ],
-                    'create_learning_game_data' => [
-                        'name' => $gameName,
-                        'data_id' => $item->getField('id'),
-                    ],
-                ]);
-            }
-
-            try {
-                $this->blueDot->executePrepared();
-            } catch (\Exception $e) {
-
-                $this->blueDot->execute('scenario.remove_learning_game', [
-                    'get_learning_game' => [
-                        'learning_game_id' => $learningGameId,
-                    ],
-                    'remove_learning_game' => [
-                        'learning_game_id' => $learningGameId,
-                    ],
-                ]);
-
-                throw $e;
-            }
-        });
+        return $parameters;
     }
 }

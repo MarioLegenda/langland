@@ -1,6 +1,6 @@
 import {factory} from "../repository/factory";
 
-import {LessonItems} from "./view/lessonItems.jsx";
+import {OuterItem} from "./view/outerItem.jsx";
 
 import React from "react";
 
@@ -26,15 +26,16 @@ export class LessonPresentationContainer extends React.Component {
     }
 
     render() {
-        const items = this.state.items;
+        let items = this.state.items;
 
         if (items === null) {
             return null;
         }
 
+        items = items.data.blocks.courses;
 
-        return <div>
-            <LessonItems items={items}/>
+        return <div className="animated fadeIn">
+            <OuterItem items={items} type="lesson"/>
         </div>
     }
 }

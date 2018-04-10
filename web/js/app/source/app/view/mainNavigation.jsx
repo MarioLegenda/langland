@@ -2,7 +2,7 @@ import React from "react";
 
 import {
     store,
-    gameMenuClicked,
+    gamesMenuClicked,
     lessonMenuClicked
 } from "../../events/events";
 
@@ -11,10 +11,20 @@ export class MainNavigation extends React.Component {
         super(props);
     }
 
+    handleMenuChange(actionMethod) {
+        store.dispatch(actionMethod(true));
+
+        for (let method of this.props.actionMethods) {
+            if (method != actionMethod) {
+                store.dispatch(method(false));
+            }
+        }
+    }
+
     render() {
-        return <div className="app-menu">
+        return <div className="animated fadeIn app-menu">
             <div className="menu-item">
-                <button className="circle-wrapper">
+                <button className="circle-wrapper" onClick={() => this.handleMenuChange(lessonMenuClicked)}>
                     <span className="circle-wrapper-text lesson-text-wrapper">Lessons</span>
                     <i className="menu-icon fa fa-mortar-board fa-lg"></i>
                 </button>
@@ -22,7 +32,7 @@ export class MainNavigation extends React.Component {
 
             <div className="menu-item">
                 <button className="circle-wrapper">
-                    <span className="circle-wrapper-text games-text-wrapper">Games</span>
+                    <span className="circle-wrapper-text games-text-wrapper" onClick={() => this.handleMenuChange(gamesMenuClicked)}>Games</span>
                     <i className="menu-icon fa fa-gamepad fa-lg"></i>
                 </button>
             </div>

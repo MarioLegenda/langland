@@ -76,7 +76,8 @@ class LearningMetadataImplementation
     public function getLearningGamesPresentation(): array
     {
         $presentation = $this->learningMetadataRepository->getLearningGamesPresentation(
-            $this->learningUserProvider->getLearningUser()->getId()
+            $this->learningUserProvider->getLearningUser()->getId(),
+            $this->languageProvider->getLanguage()->getId()
         );
 
         return $this->apiSdk

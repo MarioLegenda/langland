@@ -56,10 +56,12 @@ class LearningMetadataRepository extends BaseBlueDotRepository
     }
     /**
      * @param int $learningUserId
+     * @param int $languageId
      * @return array
      */
     public function getLearningGamesPresentation(
-        int $learningUserId
+        int $learningUserId,
+        int $languageId
     ): array {
         if (!$this->blueDot->repository()->isCurrentlyUsingRepository('presentation')) {
             $this->blueDot->useRepository('presentation');
@@ -67,6 +69,7 @@ class LearningMetadataRepository extends BaseBlueDotRepository
 
         return $this->blueDot->execute('service.learning_games_presentation', [
             'learning_user_id' => $learningUserId,
+            'language_id' => $languageId,
         ])->getResult()['data'];
     }
 }

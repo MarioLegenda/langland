@@ -21,6 +21,22 @@ export class Lesson extends React.Component {
         return classes;
     }
 
+    _createPresentationItem(item) {
+        return <div className="animated fadeIn fadeOut presentation-item">
+            <h1>{item.name}</h1>
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+                lobortis commodo quam vel dictum. Interdum et malesuada fames ac
+                ante ipsum primis in faucibus. Aenean vehicula neque ante.
+                Duis euismod nibh non aliquet pretium. Morbi purus lorem, porta
+                in ultricies a, suscipit faucibus tortor. Quisque eget sem in
+                quam auctor faucibus. Phasellus dictum eros erat, iaculis varius
+                arcu ultricies eget. Donec luctus consequat quam, vel pretium sem.
+            </p>
+            <button className="learn-button">Learn <i className="learn-button-icon fa fa-angle-right"></i></button>
+        </div>;
+    }
+
     enterLesson(e) {
         e.preventDefault();
 
@@ -29,7 +45,9 @@ export class Lesson extends React.Component {
             return false;
         }
 
-        console.log('Lesson is available');
+        const presentationItem = this._createPresentationItem(this.props.item);
+
+        this.props.displayPresentationItem(presentationItem);
     }
 
     render() {

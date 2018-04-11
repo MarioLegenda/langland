@@ -71,6 +71,7 @@ class LearningLessonPresentationCallable extends BaseService
         $lessons = [];
         foreach ($learningLessons as $lesson) {
             if ($courseId === $lesson['course_id']) {
+                $lesson['is_available'] = 1;
                 $lessons[] = $lesson;
             }
         }

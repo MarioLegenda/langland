@@ -30035,16 +30035,33 @@ var InnerItem = exports.InnerItem = function (_React$Component) {
     function InnerItem(props) {
         _classCallCheck(this, InnerItem);
 
-        return _possibleConstructorReturn(this, (InnerItem.__proto__ || Object.getPrototypeOf(InnerItem)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (InnerItem.__proto__ || Object.getPrototypeOf(InnerItem)).call(this, props));
+
+        _this.displayPresentationItem = _this.displayPresentationItem.bind(_this);
+
+        _this.state = {
+            presentationItem: null
+        };
+        return _this;
     }
 
     _createClass(InnerItem, [{
+        key: "displayPresentationItem",
+        value: function displayPresentationItem(item) {
+            this.setState(function (prevState) {
+                prevState.presentationItem = item;
+            });
+        }
+    }, {
         key: "render",
         value: function render() {
+            var _this2 = this;
+
+            var presentationItem = this.state.presentationItem;
             var type = this.props.type;
             var course = this.props.item.course,
                 items = this.props.item.items.map(function (item, index) {
-                return type === 'lesson' ? _react2.default.createElement(_lesson.Lesson, { key: index, item: item }) : _react2.default.createElement(_game.Game, { key: index, item: item });
+                return type === 'lesson' ? _react2.default.createElement(_lesson.Lesson, { key: index, item: item, displayPresentationItem: _this2.displayPresentationItem }) : _react2.default.createElement(_game.Game, { key: index, item: item, displayPresentationItem: _this2.displayPresentationItem });
             });
 
             return _react2.default.createElement(
@@ -30058,7 +30075,8 @@ var InnerItem = exports.InnerItem = function (_React$Component) {
                 _react2.default.createElement(
                     "div",
                     { className: "lesson-items" },
-                    items
+                    items,
+                    presentationItem
                 )
             );
         }
@@ -30121,6 +30139,30 @@ var Lesson = exports.Lesson = function (_React$Component) {
             return classes;
         }
     }, {
+        key: '_createPresentationItem',
+        value: function _createPresentationItem(item) {
+            return _react2.default.createElement(
+                'div',
+                { className: 'animated fadeIn fadeOut presentation-item' },
+                _react2.default.createElement(
+                    'h1',
+                    null,
+                    item.name
+                ),
+                _react2.default.createElement(
+                    'p',
+                    null,
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lobortis commodo quam vel dictum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean vehicula neque ante. Duis euismod nibh non aliquet pretium. Morbi purus lorem, porta in ultricies a, suscipit faucibus tortor. Quisque eget sem in quam auctor faucibus. Phasellus dictum eros erat, iaculis varius arcu ultricies eget. Donec luctus consequat quam, vel pretium sem.'
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { className: 'learn-button' },
+                    'Learn ',
+                    _react2.default.createElement('i', { className: 'learn-button-icon fa fa-angle-right' })
+                )
+            );
+        }
+    }, {
         key: 'enterLesson',
         value: function enterLesson(e) {
             e.preventDefault();
@@ -30130,7 +30172,9 @@ var Lesson = exports.Lesson = function (_React$Component) {
                 return false;
             }
 
-            console.log('Lesson is available');
+            var presentationItem = this._createPresentationItem(this.props.item);
+
+            this.props.displayPresentationItem(presentationItem);
         }
     }, {
         key: 'render',

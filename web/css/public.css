@@ -582,6 +582,43 @@ body {
     width: 100%;
     float: left;
     margin: 10px 0 30px 0; }
+  .course-list .presentation-item {
+    width: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid #F16C20;
+    border-top: 1px solid #F16C20;
+    padding: 10px 0 10px 0;
+    height: 200px; }
+    .course-list .presentation-item h1 {
+      width: 100%;
+      float: left;
+      font-size: 1.2em;
+      padding: 0 0 3px 10px;
+      color: #594f4f;
+      border: none;
+      margin-bottom: 10px; }
+    .course-list .presentation-item p {
+      font-size: 1.1em;
+      padding: 0 0 3px 10px;
+      color: #594f4f; }
+    .course-list .presentation-item .learn-button {
+      position: relative;
+      width: 100px;
+      float: right;
+      font-family: "Alegreya Sans", sans-serif;
+      background-color: #F16C20;
+      border: none;
+      color: white;
+      font-size: 1.2em;
+      padding: 5px;
+      margin-top: 20px; }
+      .course-list .presentation-item .learn-button:hover {
+        cursor: pointer; }
+    .course-list .presentation-item .learn-button-icon {
+      position: absolute;
+      top: 6px;
+      right: 5px;
+      color: white; }
 
 .lesson-absolute-item-holder {
   position: relative;

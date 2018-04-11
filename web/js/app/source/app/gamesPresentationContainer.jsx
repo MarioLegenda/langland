@@ -33,14 +33,10 @@ export class GamesPresentationContainer extends React.Component {
             return null;
         }
 
-        items = items.data.map((item, index) => {
-                return <Game key={index} item={item}/>;
-            });
+        items = items.data.blocks.courses;
 
-        return <div className="course-list">
-            <div className="lesson-items">
-                {items}
-            </div>
+        return <div className="animated fadeIn">
+            <OuterItem items={items} type="game"/>
         </div>
     }
 }

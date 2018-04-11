@@ -25,6 +25,10 @@ class Lesson
      */
     private $learningOrder;
     /**
+     * @var string $description
+     */
+    private $description;
+    /**
      * @var array $jsonLesson
      */
     private $jsonLesson;
@@ -47,19 +51,22 @@ class Lesson
      * @param int $learningOrder
      * @param array $jsonLesson
      * @param Course $course
+     * @param string $description
      */
     public function __construct(
         string $name,
         UuidInterface $uuid,
         int $learningOrder,
         array $jsonLesson,
-        Course $course
+        Course $course,
+        string $description
     ) {
         $this->uuid = $uuid;
         $this->learningOrder = $learningOrder;
         $this->jsonLesson = $jsonLesson;
         $this->course = $course;
         $this->name = $name;
+        $this->description = $description;
     }
     /**
      * @param int $id
@@ -146,6 +153,23 @@ class Lesson
         }
 
         $this->jsonLesson = $jsonLesson;
+
+        return $this;
+    }
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    /**
+     * @param string $description
+     * @return Lesson
+     */
+    public function setDescription($description): Lesson
+    {
+        $this->description = $description;
 
         return $this;
     }

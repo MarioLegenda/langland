@@ -49,7 +49,8 @@ class LessonDataProvider implements DefaultDataProviderInterface
             $course,
             $seedData['uuid'],
             $seedData['learningOrder'],
-            ['name' => $faker->name]
+            ['name' => $faker->name],
+            $seedData['description']
         );
     }
     /**
@@ -78,20 +79,23 @@ class LessonDataProvider implements DefaultDataProviderInterface
      * @param UuidInterface $lessonUuid
      * @param int $order
      * @param array $arrayLesson
+     * @param string $description
      * @return Lesson
      */
     public function createLesson(
         Course $course,
         UuidInterface $lessonUuid,
         int $order,
-        array $arrayLesson
+        array $arrayLesson,
+        string $description
     ) {
         return new Lesson(
             $arrayLesson['name'],
             $lessonUuid,
             $order,
             $arrayLesson,
-            $course
+            $course,
+            $description
         );
     }
     /**
@@ -99,6 +103,7 @@ class LessonDataProvider implements DefaultDataProviderInterface
      * @param UuidInterface $lessonUuid
      * @param int $order
      * @param array $arrayLesson
+     * @param string $description
      * @return Lesson
      */
     public function createLessonDb
@@ -106,14 +111,16 @@ class LessonDataProvider implements DefaultDataProviderInterface
         Course $course,
         UuidInterface $lessonUuid,
         int $order,
-        array $arrayLesson
+        array $arrayLesson,
+        string $description
     ) {
         return $this->lessonRepository->persistAndFlush(
             $this->createLesson(
                 $course,
                 $lessonUuid,
                 $order,
-                $arrayLesson
+                $arrayLesson,
+                $description
             )
         );
     }
@@ -133,7 +140,7 @@ class LessonDataProvider implements DefaultDataProviderInterface
     {
         $seedData = (is_null($seedData)) ? [] : $seedData;
 
-        $properties = ['name', 'uuid', 'learningOrder', 'jsonLesson'];
+        $properties = ['name', 'uuid', 'learningOrder', 'jsonLesson', 'description'];
 
         $newSeedData = [];
         foreach ($properties as $property) {

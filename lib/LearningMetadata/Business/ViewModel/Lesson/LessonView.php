@@ -20,6 +20,12 @@ class LessonView implements \JsonSerializable
      */
     protected $name;
     /**
+     * @var string $name
+     * @Serializer\Type("string")
+     * @ValidationAssert\NotBlank(message="Description cannot be empty")
+     */
+    protected $description;
+    /**
      * @var int $learningOrder
      * @Serializer\Type("integer")
      * @Serializer\SerializedName("learningOrder")
@@ -48,19 +54,22 @@ class LessonView implements \JsonSerializable
      * @param int $learningOrder
      * @param array $tips
      * @param array $lessonTexts
+     * @param string $description
      */
     public function __construct(
         UuidInterface $uuid,
         string $name,
         int $learningOrder,
         array $tips,
-        array $lessonTexts
+        array $lessonTexts,
+        string $description
     ) {
         $this->uuid = $uuid;
         $this->setLearningOrder($learningOrder);
         $this->setName($name);
         $this->setTips($tips);
         $this->setLessonTexts($lessonTexts);
+        $this->setDescription($description);
     }
     /**
      * @return string
@@ -175,6 +184,7 @@ class LessonView implements \JsonSerializable
             'tips' => [],
             'learningOrder' => $this->getLearningOrder(),
             'lessonTexts' => [],
+            'description' => $this->getDescription(),
         ];
 
         $tips = [];
@@ -200,5 +210,19 @@ class LessonView implements \JsonSerializable
     public function jsonSerialize() : array
     {
         return $this->toArray();
+    }
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 }

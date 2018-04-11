@@ -2,6 +2,7 @@ import React from 'react';
 
 import {InputText, SubmitButton, Label, Notification} from './../source/fields.jsx';
 import {TipControl} from "./tipControl.jsx";
+import {InputTextarea} from "../source/fields.jsx";
 import {LessonTextControl} from "./lessonTextControl.jsx";
 import {LessonRepository} from "../source/repository/lessonRepository";
 
@@ -17,6 +18,7 @@ export class Lesson extends React.Component {
         this.collectTips = this.collectTips.bind(this);
         this.collectLessonTexts = this.collectLessonTexts.bind(this);
         this.setLearningOrder = this.setLearningOrder.bind(this);
+        this.setDescription = this.setDescription.bind(this);
         this.submit = this.submit.bind(this);
 
         console.log(this._getPageType());
@@ -26,7 +28,8 @@ export class Lesson extends React.Component {
             name: "",
             learningOrder: "",
             tips: [],
-            lessonTexts: []
+            lessonTexts: [],
+            description: ""
         };
 
         this.state.form = {
@@ -59,6 +62,7 @@ export class Lesson extends React.Component {
                 this.lessonId = data.id;
                 this.lessonUuid = data.lesson.uuid;
 
+                prevState.model.description = data.lesson.description;
                 prevState.model.name = data.lesson.name;
                 prevState.model.tips = data.lesson.tips;
                 prevState.model.learningOrder = data.lesson.learningOrder;
@@ -72,6 +76,12 @@ export class Lesson extends React.Component {
     setName(value) {
         this.setState(function(prevState) {
             prevState.model.name = value;
+        });
+    }
+
+    setDescription(value) {
+        this.setState(function(prevState) {
+            prevState.model.description = value;
         });
     }
 
@@ -169,7 +179,8 @@ export class Lesson extends React.Component {
                 prevState.model = {
                     name: "",
                     tips: [],
-                    lessonTexts: []
+                    lessonTexts: [],
+                    description: ""
                 };
             });
         }, this), $.proxy(function(xhr) {
@@ -223,7 +234,8 @@ export class Lesson extends React.Component {
             name: this.state.model.name,
             tips: this.state.model.tips,
             learningOrder: this.state.model.learningOrder,
-            lessonTexts: this.state.model.lessonTexts
+            lessonTexts: this.state.model.lessonTexts,
+            description: this.state.model.description
         };
 
         if (this.lessonId !== null) {
@@ -242,6 +254,7 @@ export class Lesson extends React.Component {
         const learningOrder = this.state.model.learningOrder;
         const tips = this.state.model.tips;
         const lessonTexts = this.state.model.lessonTexts;
+        const description = this.state.model.description;
         const internalError = this.state.form.internalError;
         const errors = this.state.form.errors;
         const success = this.state.form.success;
@@ -269,6 +282,16 @@ export class Lesson extends React.Component {
                             inputClass={"form-control"}
                             dataCollector={this.setName}
                             inputValue={name}
+                        />
+                    </div>
+
+                    <div className={"margin-top-20"}>
+                        <Label labelText={"Description:"}/>
+                        <InputTextarea
+                            labelText={"Description:"}
+                            inputClass={"form-control"}
+                            dataCollector={this.setDescription}
+                            inputValue={description}
                         />
                     </div>
 

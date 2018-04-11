@@ -192,7 +192,8 @@ class LessonImplementation
             $lessonView->getUuid(),
             $lessonView->getLearningOrder(),
             $lessonView->toArray(),
-            $course
+            $course,
+            $lessonView->getDescription()
         );
 
         $course->addLesson($lesson);
@@ -212,6 +213,7 @@ class LessonImplementation
     {
         $lesson->setJsonLesson($lessonView->toArray());
         $lesson->setLearningOrder($lessonView->getLearningOrder());
+        $lesson->setDescription($lessonView->getDescription());
 
         $this->lessonRepository->persistAndFlush($lesson);
 

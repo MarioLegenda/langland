@@ -3,7 +3,6 @@
 namespace LearningMetadata\Business\Middleware;
 
 use AdminBundle\Entity\Lesson;
-use Library\Exception\RequestStatusException;
 use Library\Infrastructure\Helper\Deserializer;
 use LearningMetadata\Business\Implementation\CourseImplementation;
 use LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
@@ -102,6 +101,7 @@ class LessonMiddleware
         }
 
         $lesson->setName($lessonView->getName());
+        $lesson->setDescription($lessonView->getDescription());
         $lesson->setLearningOrder($lessonView->getLearningOrder());
 
         return [

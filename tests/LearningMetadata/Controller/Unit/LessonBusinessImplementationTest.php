@@ -79,6 +79,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             ],
             'name' => 'name-'.Uuid::uuid4()->toString(),
             'learningOrder' => rand(0, 999),
+            'description' => $this->faker->sentence(20),
         ];
 
         $this->deserializer->create($data, LessonView::class);
@@ -130,6 +131,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             ],
             'name' => 'name-'.Uuid::uuid4()->toString(),
             'learningOrder' => rand(0, 999),
+            'description' => $this->faker->sentence(20),
         ];
 
         $lessonMiddleware = new LessonMiddleware();
@@ -185,6 +187,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             ],
             'name' => $name,
             'learningOrder' => rand(0, 999),
+            'description' => $this->faker->sentence(20),
         ];
 
         $lessonMiddleware = new LessonMiddleware();
@@ -219,6 +222,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             ],
             'name' => $name,
             'learningOrder' => rand(0, 999),
+            'description' => $this->faker->sentence(20),
         ];
 
         $lessonMiddleware = new LessonMiddleware();
@@ -263,6 +267,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             ],
             'name' => $name,
             'learningOrder' => rand(0, 999),
+            'description' => $this->faker->sentence(20),
         ];
 
         $lessonMiddleware = new LessonMiddleware();

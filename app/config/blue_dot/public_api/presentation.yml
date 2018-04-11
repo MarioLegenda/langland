@@ -20,7 +20,7 @@ configuration:
             atomic: true
             statements:
                 find_learning_lessons:
-                    sql: "SELECT l.id, l.name, l.course_id, ll.has_completed, l.learning_order, ll.is_available FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id AND lm.id = ll.learning_metadata_id WHERE lm.learning_user_id = :learning_user_id ORDER BY l.learning_order ASC"
+                    sql: "SELECT l.id, l.name, l.description, l.course_id, ll.has_completed, l.learning_order, ll.is_available FROM lessons AS l INNER JOIN learning_metadata AS lm INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id AND lm.id = ll.learning_metadata_id WHERE lm.learning_user_id = :learning_user_id ORDER BY l.learning_order ASC"
                     parameters: [learning_user_id]
                 find_courses:
                     sql: "SELECT id, name, what_to_learn, type FROM courses WHERE language_id = :language_id"

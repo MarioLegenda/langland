@@ -1,10 +1,16 @@
 import React from "react";
 
+import {
+    store,
+    lessonStarted
+} from "../../events/events";
+
 export class Lesson extends React.Component {
     constructor(props) {
         super(props);
 
         this.enterLesson = this.enterLesson.bind(this);
+        this.startLesson = this.startLesson.bind(this);
     }
 
     _makeClasses(item) {
@@ -26,8 +32,12 @@ export class Lesson extends React.Component {
             <h1>{item.name}</h1>
 
             <p>{item.description}</p>
-            <button className="learn-button">Learn <i className="learn-button-icon fa fa-angle-right"></i></button>
+            <button className="learn-button" onClick={this.startLesson}>Learn <i className="learn-button-icon fa fa-angle-right"></i></button>
         </div>;
+    }
+
+    startLesson() {
+        store.dispatch(lessonStarted(true));
     }
 
     enterLesson(e) {

@@ -11,6 +11,7 @@ export const ViewActions = {
     MAIN_APP_LOADED: 'MAIN_APP_LOADED',
     LESSON_MENU_CLICKED: 'LESSON_MENU_CLICKED',
     GAMES_MENU_CLICKED: 'GAMES_MENU_CLICKED',
+    LESSON_STARTED: 'LESSON_STARTED'
 };
 
 let languageModel = {
@@ -25,6 +26,7 @@ let appModel = {
     mainAppLoaded: false,
     lessonMenuClicked: false,
     gamesMenuClicked: false,
+    lessonStarted: false
 };
 
 export function mainAppLoaded(mainAppLoaded) {
@@ -45,6 +47,13 @@ export function gamesMenuClicked(gamesMenuClicked) {
     return {
         type: ViewActions.GAMES_MENU_CLICKED,
         gamesMenuClicked: gamesMenuClicked
+    }
+}
+
+export function lessonStarted(lessonStarted) {
+    return {
+        type: ViewActions.LESSON_STARTED,
+        lessonStarted: lessonStarted
     }
 }
 
@@ -105,6 +114,10 @@ function app(state = appModel, action) {
         case ViewActions.GAMES_MENU_CLICKED:
             return Object.assign({}, state, {
                 gamesMenuClicked: action.gamesMenuClicked
+            });
+        case ViewActions.LESSON_STARTED:
+            return Object.assign({}, state, {
+                lessonStarted: action.lessonStarted
             });
         default:
             return state;

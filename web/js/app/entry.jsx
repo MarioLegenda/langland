@@ -7,24 +7,51 @@ import {Header} from "./source/header.jsx";
 import {LanguageList} from "./source/language.jsx";
 import {App} from "./source/app.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
+import {store} from "./source/events/events";
 
-function InitApp() {
+class InitApp extends React.Component {
+    constructor(props) {
+        super(props);
 
-    const langList = (match) => <LanguageList history={match.history}/>;
-    const app = (match) => <App match={match.match}/>;
-    const header = <Header/>;
+        this.state = {
+            actions: {
+                lessonStarted: false
+            }
+        };
 
-    return (
-        <Router>
-            <div className="main-wrapper">
-                {header}
-                <Switch>
-                    <Route exact path={env.current + "langland"} render={langList} />
-                    <Route path={env.current + "langland/:language/:languageId"} render={app}/>
-                </Switch>
-            </div>
-        </Router>
-    );
+        store.subscribe(() => {
+            const appState = store.getState().app;
+
+            console.log(appState);
+
+            if (appState.lessonStarted) {
+                this.setState((prevState) => {
+                    prevState.actions.lessonStarted = appState.lessonStarted;
+                });
+            }
+        });
+    }
+
+    render() {
+
+        const lessonStarted = this.state.actions.lessonStarted;
+
+        const langList = (lessonStarted) ? null : (match) => <LanguageList history={match.history}/>;
+        const app = (lessonStarted) ? null : (match) => <App match={match.match}/>;
+        const header = (lessonStarted) ? null : <Header/>;
+
+        return (
+            <Router>
+                <div className="main-wrapper">
+                    {header}
+                    <Switch>
+                        <Route exact path={env.current + "langland"} render={langList} />
+                        <Route path={env.current + "langland/:language/:languageId"} render={app}/>
+                    </Switch>
+                </div>
+            </Router>
+        );
+    }
 }
 
 const react_app = document.getElementById('react_app');

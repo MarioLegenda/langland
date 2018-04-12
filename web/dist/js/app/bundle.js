@@ -5107,6 +5107,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (immutable) */ __webpack_exports__["mainAppLoaded"] = mainAppLoaded;
 /* harmony export (immutable) */ __webpack_exports__["lessonMenuClicked"] = lessonMenuClicked;
 /* harmony export (immutable) */ __webpack_exports__["gamesMenuClicked"] = gamesMenuClicked;
+/* harmony export (immutable) */ __webpack_exports__["lessonStarted"] = lessonStarted;
 /* harmony export (immutable) */ __webpack_exports__["fetchAllLanguagesInProgress"] = fetchAllLanguagesInProgress;
 /* harmony export (immutable) */ __webpack_exports__["languagesFetched"] = languagesFetched;
 /* harmony export (immutable) */ __webpack_exports__["registeringLanguage"] = registeringLanguage;
@@ -5125,7 +5126,8 @@ const LanguageActions = {
 const ViewActions = {
     MAIN_APP_LOADED: 'MAIN_APP_LOADED',
     LESSON_MENU_CLICKED: 'LESSON_MENU_CLICKED',
-    GAMES_MENU_CLICKED: 'GAMES_MENU_CLICKED'
+    GAMES_MENU_CLICKED: 'GAMES_MENU_CLICKED',
+    LESSON_STARTED: 'LESSON_STARTED'
 };
 /* harmony export (immutable) */ __webpack_exports__["ViewActions"] = ViewActions;
 
@@ -5141,7 +5143,8 @@ let languageModel = {
 let appModel = {
     mainAppLoaded: false,
     lessonMenuClicked: false,
-    gamesMenuClicked: false
+    gamesMenuClicked: false,
+    lessonStarted: false
 };
 
 function mainAppLoaded(mainAppLoaded) {
@@ -5162,6 +5165,13 @@ function gamesMenuClicked(gamesMenuClicked) {
     return {
         type: ViewActions.GAMES_MENU_CLICKED,
         gamesMenuClicked: gamesMenuClicked
+    };
+}
+
+function lessonStarted(lessonStarted) {
+    return {
+        type: ViewActions.LESSON_STARTED,
+        lessonStarted: lessonStarted
     };
 }
 
@@ -5222,6 +5232,10 @@ function app(state = appModel, action) {
         case ViewActions.GAMES_MENU_CLICKED:
             return Object.assign({}, state, {
                 gamesMenuClicked: action.gamesMenuClicked
+            });
+        case ViewActions.LESSON_STARTED:
+            return Object.assign({}, state, {
+                lessonStarted: action.lessonStarted
             });
         default:
             return state;
@@ -11549,6 +11563,8 @@ var Game = exports.Game = function (_React$Component) {
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
@@ -11569,34 +11585,78 @@ var _app = __webpack_require__(348);
 
 var _factory = __webpack_require__(26);
 
+var _events = __webpack_require__(68);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function InitApp() {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    var langList = function langList(match) {
-        return _react2.default.createElement(_language.LanguageList, { history: match.history });
-    };
-    var app = function app(match) {
-        return _react2.default.createElement(_app.App, { match: match.match });
-    };
-    var header = _react2.default.createElement(_header.Header, null);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-    return _react2.default.createElement(
-        _reactRouterDom.BrowserRouter,
-        null,
-        _react2.default.createElement(
-            'div',
-            { className: 'main-wrapper' },
-            header,
-            _react2.default.createElement(
-                _reactRouterDom.Switch,
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InitApp = function (_React$Component) {
+    _inherits(InitApp, _React$Component);
+
+    function InitApp(props) {
+        _classCallCheck(this, InitApp);
+
+        var _this = _possibleConstructorReturn(this, (InitApp.__proto__ || Object.getPrototypeOf(InitApp)).call(this, props));
+
+        _this.state = {
+            actions: {
+                lessonStarted: false
+            }
+        };
+
+        _events.store.subscribe(function () {
+            var appState = _events.store.getState().app;
+
+            console.log(appState);
+
+            if (appState.lessonStarted) {
+                _this.setState(function (prevState) {
+                    prevState.actions.lessonStarted = appState.lessonStarted;
+                });
+            }
+        });
+        return _this;
+    }
+
+    _createClass(InitApp, [{
+        key: 'render',
+        value: function render() {
+
+            var lessonStarted = this.state.actions.lessonStarted;
+
+            var langList = lessonStarted ? null : function (match) {
+                return _react2.default.createElement(_language.LanguageList, { history: match.history });
+            };
+            var app = lessonStarted ? null : function (match) {
+                return _react2.default.createElement(_app.App, { match: match.match });
+            };
+            var header = lessonStarted ? null : _react2.default.createElement(_header.Header, null);
+
+            return _react2.default.createElement(
+                _reactRouterDom.BrowserRouter,
                 null,
-                _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList }),
-                _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: app })
-            )
-        )
-    );
-}
+                _react2.default.createElement(
+                    'div',
+                    { className: 'main-wrapper' },
+                    header,
+                    _react2.default.createElement(
+                        _reactRouterDom.Switch,
+                        null,
+                        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: app })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return InitApp;
+}(_react2.default.Component);
 
 var react_app = document.getElementById('react_app');
 
@@ -29820,8 +29880,6 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
         _this.data = {
             actionMethods: [_events.lessonMenuClicked, _events.gamesMenuClicked]
         };
-
-        _this._appActions();
         return _this;
     }
 
@@ -29850,6 +29908,8 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
     }, {
         key: "componentDidMount",
         value: function componentDidMount() {
+            this._appActions();
+
             _events.store.dispatch((0, _events.mainAppLoaded)(true));
             _events.store.dispatch((0, _events.lessonMenuClicked)(true));
             _events.store.dispatch((0, _events.gamesMenuClicked)(false));
@@ -30184,6 +30244,8 @@ var _react = __webpack_require__(2);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _events = __webpack_require__(68);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -30201,11 +30263,12 @@ var Lesson = exports.Lesson = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (Lesson.__proto__ || Object.getPrototypeOf(Lesson)).call(this, props));
 
         _this.enterLesson = _this.enterLesson.bind(_this);
+        _this.startLesson = _this.startLesson.bind(_this);
         return _this;
     }
 
     _createClass(Lesson, [{
-        key: '_makeClasses',
+        key: "_makeClasses",
         value: function _makeClasses(item) {
             var classes = {
                 'lesson-menu': 'not-available-lesson-menu-item',
@@ -30220,31 +30283,36 @@ var Lesson = exports.Lesson = function (_React$Component) {
             return classes;
         }
     }, {
-        key: '_createPresentationItem',
+        key: "_createPresentationItem",
         value: function _createPresentationItem(item) {
             return _react2.default.createElement(
-                'div',
-                { className: 'animated fadeIn fadeOut presentation-item' },
+                "div",
+                { className: "animated fadeIn fadeOut presentation-item" },
                 _react2.default.createElement(
-                    'h1',
+                    "h1",
                     null,
                     item.name
                 ),
                 _react2.default.createElement(
-                    'p',
+                    "p",
                     null,
                     item.description
                 ),
                 _react2.default.createElement(
-                    'button',
-                    { className: 'learn-button' },
-                    'Learn ',
-                    _react2.default.createElement('i', { className: 'learn-button-icon fa fa-angle-right' })
+                    "button",
+                    { className: "learn-button", onClick: this.startLesson },
+                    "Learn ",
+                    _react2.default.createElement("i", { className: "learn-button-icon fa fa-angle-right" })
                 )
             );
         }
     }, {
-        key: 'enterLesson',
+        key: "startLesson",
+        value: function startLesson() {
+            _events.store.dispatch((0, _events.lessonStarted)(true));
+        }
+    }, {
+        key: "enterLesson",
         value: function enterLesson(e) {
             e.preventDefault();
 
@@ -30258,27 +30326,27 @@ var Lesson = exports.Lesson = function (_React$Component) {
             this.props.displayPresentationItem(presentationItem);
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
             var item = this.props.item;
             var classes = this._makeClasses(item);
             var clickableMethod = item.is_available === 1 ? this.enterLesson : null;
 
             return _react2.default.createElement(
-                'div',
-                { className: 'lesson-absolute-item-holder' },
+                "div",
+                { className: "lesson-absolute-item-holder" },
                 _react2.default.createElement(
-                    'div',
+                    "div",
                     { className: classes['lesson-menu'] },
                     _react2.default.createElement(
-                        'button',
+                        "button",
                         { className: classes['circle-wrapper'], onClick: clickableMethod },
                         _react2.default.createElement(
-                            'span',
-                            { className: 'circle-wrapper-position lesson-text-wrapper' },
+                            "span",
+                            { className: "circle-wrapper-position lesson-text-wrapper" },
                             item.name
                         ),
-                        item.is_available === 0 && _react2.default.createElement('span', { className: 'circle-wrapper-position lesson-icon-wrapper fa fa-lock' })
+                        item.is_available === 0 && _react2.default.createElement("span", { className: "circle-wrapper-position lesson-icon-wrapper fa fa-lock" })
                     )
                 )
             );

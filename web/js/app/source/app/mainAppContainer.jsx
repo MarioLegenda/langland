@@ -24,8 +24,6 @@ export class MainAppContainer extends React.Component {
         this.data = {
             actionMethods: [lessonMenuClicked, gamesMenuClicked]
         };
-
-        this._appActions();
     }
 
     _appActions() {
@@ -47,6 +45,8 @@ export class MainAppContainer extends React.Component {
     }
 
     componentDidMount() {
+        this._appActions();
+
         store.dispatch(mainAppLoaded(true));
         store.dispatch(lessonMenuClicked(true));
         store.dispatch(gamesMenuClicked(false));

@@ -25,14 +25,7 @@ export class Lesson extends React.Component {
         return <div className="animated fadeIn fadeOut presentation-item">
             <h1>{item.name}</h1>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-                lobortis commodo quam vel dictum. Interdum et malesuada fames ac
-                ante ipsum primis in faucibus. Aenean vehicula neque ante.
-                Duis euismod nibh non aliquet pretium. Morbi purus lorem, porta
-                in ultricies a, suscipit faucibus tortor. Quisque eget sem in
-                quam auctor faucibus. Phasellus dictum eros erat, iaculis varius
-                arcu ultricies eget. Donec luctus consequat quam, vel pretium sem.
-            </p>
+            <p>{item.description}</p>
             <button className="learn-button">Learn <i className="learn-button-icon fa fa-angle-right"></i></button>
         </div>;
     }

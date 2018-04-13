@@ -30246,8 +30246,6 @@ var Lesson = exports.Lesson = function (_React$Component) {
                 h += item.offsetHeight;
             });
 
-            console.log(h);
-
             _events.store.dispatch((0, _events.handleMenuHeight)(h));
         }
     }, {

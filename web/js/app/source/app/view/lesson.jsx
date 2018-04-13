@@ -35,8 +35,6 @@ export class Lesson extends React.Component {
             h += item.offsetHeight;
         });
 
-        console.log(h);
-
         store.dispatch(handleMenuHeight(h));
     }
 

@@ -1,8 +1,13 @@
+import React from "react";
+
 import {factory} from "../repository/factory";
 
 import {OuterItem} from "./view/outerItem.jsx";
 
-import React from "react";
+import {
+    store,
+    handleMenuHeight
+} from "../events/events";
 
 export class LessonPresentationContainer extends React.Component {
     constructor(props) {
@@ -15,11 +20,25 @@ export class LessonPresentationContainer extends React.Component {
         }
     }
 
+    _handleMenuHeight() {
+        const courseList = $('.course-list');
+
+        let h = 0;
+        courseList.each(function(index, item) {
+            h += item.offsetHeight;
+        });
+
+        store.dispatch(handleMenuHeight(h));
+    }
+
     componentDidMount() {
         this.metadataPresentationRepository.getLearningLessonPresentation($.proxy(function(data) {
             this.setState((prevState) => {
                 prevState.items = data.collection;
             });
+
+            this._handleMenuHeight();
+
         }, this), $.proxy(function() {
 
         }, this));
@@ -34,7 +53,7 @@ export class LessonPresentationContainer extends React.Component {
 
         items = items.data.blocks.courses;
 
-        return <div className="animated fadeIn">
+        return <div className="menu-content animated fadeIn">
             <OuterItem items={items} type="lesson"/>
         </div>
     }

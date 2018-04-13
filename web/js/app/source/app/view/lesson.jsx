@@ -2,7 +2,7 @@ import React from "react";
 
 import {
     store,
-    lessonStarted
+    lessonStarted, handleMenuHeight
 } from "../../events/events";
 
 export class Lesson extends React.Component {
@@ -25,6 +25,19 @@ export class Lesson extends React.Component {
         }
 
         return classes;
+    }
+
+    _handleMenuHeight() {
+        const courseList = $('.course-list');
+
+        let h = 0;
+        courseList.each(function(index, item) {
+            h += item.offsetHeight;
+        });
+
+        console.log(h);
+
+        store.dispatch(handleMenuHeight(h));
     }
 
     _createPresentationItem(item) {
@@ -51,6 +64,8 @@ export class Lesson extends React.Component {
         const presentationItem = this._createPresentationItem(this.props.item);
 
         this.props.displayPresentationItem(presentationItem);
+
+        this._handleMenuHeight();
     }
 
     render() {

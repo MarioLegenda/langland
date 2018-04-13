@@ -510,8 +510,7 @@ body {
 .app-menu {
   width: 115px;
   float: left;
-  border-right: 1px solid gray;
-  height: 800px; }
+  border-right: 1px solid gray; }
   .app-menu:hover {
     border-right: 1px solid #F16C20; }
   .app-menu .menu-item {
@@ -587,8 +586,7 @@ body {
     overflow: hidden;
     border-bottom: 1px solid #F16C20;
     border-top: 1px solid #F16C20;
-    padding: 10px 0 10px 0;
-    height: 200px; }
+    padding: 10px 0 10px 0; }
     .course-list .presentation-item h1 {
       width: 100%;
       float: left;

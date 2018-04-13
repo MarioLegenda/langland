@@ -55,7 +55,7 @@ class LessonFactory
                 $i,
                 $tips,
                 $lessonTexts,
-                $this->getFaker()->sentence(20)
+                $this->getFaker()->sentence(60)
             );
 
             $lesson = new Lesson(
@@ -64,7 +64,7 @@ class LessonFactory
                 $i,
                 $lessonView->toArray(),
                 $course,
-                $this->getFaker()->sentence(20)
+                $this->getFaker()->sentence(60)
             );
 
             $lessons[] = $lesson;

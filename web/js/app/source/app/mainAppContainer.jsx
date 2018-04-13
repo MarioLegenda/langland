@@ -4,7 +4,7 @@ import {GamesPresentationContainer} from "./gamesPresentationContainer.jsx";
 
 import {
     store,
-    mainAppLoaded, lessonMenuClicked, gamesMenuClicked
+    mainAppLoaded, lessonMenuClicked, gamesMenuClicked, handleMenuHeight
 } from "../events/events";
 
 import React from "react";
@@ -37,6 +37,8 @@ export class MainAppContainer extends React.Component {
                     prevState.actions = appState;
                 });
             }
+
+            $('.app-menu').height(appState.menuHeight);
         });
     }
 
@@ -50,6 +52,7 @@ export class MainAppContainer extends React.Component {
         store.dispatch(mainAppLoaded(true));
         store.dispatch(lessonMenuClicked(true));
         store.dispatch(gamesMenuClicked(false));
+        store.dispatch(handleMenuHeight(800));
     }
 
     render() {

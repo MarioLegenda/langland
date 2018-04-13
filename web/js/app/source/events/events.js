@@ -11,7 +11,8 @@ export const ViewActions = {
     MAIN_APP_LOADED: 'MAIN_APP_LOADED',
     LESSON_MENU_CLICKED: 'LESSON_MENU_CLICKED',
     GAMES_MENU_CLICKED: 'GAMES_MENU_CLICKED',
-    LESSON_STARTED: 'LESSON_STARTED'
+    LESSON_STARTED: 'LESSON_STARTED',
+    MENU_HEIGHT: 'MENU_HEIGHT',
 };
 
 let languageModel = {
@@ -26,13 +27,21 @@ let appModel = {
     mainAppLoaded: false,
     lessonMenuClicked: false,
     gamesMenuClicked: false,
-    lessonStarted: false
+    lessonStarted: false,
+    menuHeight: 900
 };
 
 export function mainAppLoaded(mainAppLoaded) {
     return {
         type: ViewActions.MAIN_APP_LOADED,
         mainAppLoaded: mainAppLoaded
+    }
+}
+
+export function handleMenuHeight(height) {
+    return {
+        type: ViewActions.MENU_HEIGHT,
+        menuHeight: height
     }
 }
 
@@ -118,6 +127,10 @@ function app(state = appModel, action) {
         case ViewActions.LESSON_STARTED:
             return Object.assign({}, state, {
                 lessonStarted: action.lessonStarted
+            });
+        case ViewActions.MENU_HEIGHT:
+            return Object.assign({}, state, {
+                menuHeight: action.menuHeight
             });
         default:
             return state;

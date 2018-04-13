@@ -35,7 +35,7 @@ export class GamesPresentationContainer extends React.Component {
 
         items = items.data.blocks.courses;
 
-        return <div className="animated fadeIn">
+        return <div className="menu-content animated fadeIn">
             <OuterItem items={items} type="game"/>
         </div>
     }

@@ -11,7 +11,9 @@ export class MainNavigation extends React.Component {
         super(props);
     }
 
-    handleMenuChange(actionMethod) {
+    handleMenuChange(e, actionMethod) {
+        e.preventDefault();
+
         store.dispatch(actionMethod(true));
 
         for (let method of this.props.actionMethods) {
@@ -24,15 +26,15 @@ export class MainNavigation extends React.Component {
     render() {
         return <div className="animated fadeIn app-menu">
             <div className="menu-item">
-                <button className="circle-wrapper" onClick={() => this.handleMenuChange(lessonMenuClicked)}>
+                <button className="circle-wrapper" onClick={(e) => this.handleMenuChange(e, lessonMenuClicked)}>
                     <span className="circle-wrapper-text lesson-text-wrapper">Lessons</span>
                     <i className="menu-icon fa fa-mortar-board fa-lg"></i>
                 </button>
             </div>
 
             <div className="menu-item">
-                <button className="circle-wrapper">
-                    <span className="circle-wrapper-text games-text-wrapper" onClick={() => this.handleMenuChange(gamesMenuClicked)}>Games</span>
+                <button className="circle-wrapper" onClick={(e) => this.handleMenuChange(e, gamesMenuClicked)}>
+                    <span className="circle-wrapper-text games-text-wrapper">Games</span>
                     <i className="menu-icon fa fa-gamepad fa-lg"></i>
                 </button>
             </div>

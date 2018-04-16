@@ -5,7 +5,7 @@ export class MetadataPresentationRepository {
         this.routes = {
             get_learning_lesson_presentation: global.base_url + 'api/v1/learning-system/lesson-presentation',
             get_learning_games_presentation: global.base_url + 'api/v1/learning-system/games-presentation'
-        }
+        };
     }
 
     getLearningLessonPresentation(success, failure) {

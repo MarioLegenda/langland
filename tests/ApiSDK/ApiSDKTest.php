@@ -2,6 +2,7 @@
 
 namespace ApiSDK;
 
+use Ramsey\Uuid\Uuid;
 use TestLibrary\ContainerAwareTest;
 
 class ApiSDKTest extends ContainerAwareTest
@@ -103,6 +104,34 @@ class ApiSDKTest extends ContainerAwareTest
 
         static::assertNotEmpty($data);
         static::assertEquals(count($data), count($items));
+    }
+
+    public function test_cache_key()
+    {
+        $apiSdk = $this->container->get('library.api_sdk');
+        $items = $this->generateCollectionResponse();
+        $cacheKey = Uuid::uuid4()->toString();
+
+        $response = $apiSdk
+            ->create($items)
+            ->setStatusCode(200)
+            ->setCacheKey($cacheKey)
+            ->isCollection()
+            ->method('GET')
+            ->build();
+
+        static::assertEquals($response['cache_key'], $response['cache_key']);
+
+        $items = $this->generateCollectionResponse();
+
+        $response = $apiSdk
+            ->create($items)
+            ->setStatusCode(200)
+            ->isCollection()
+            ->method('GET')
+            ->build();
+
+        static::assertNull($response['cache_key']);
     }
     /**
      * @param array $response

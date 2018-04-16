@@ -1,6 +1,20 @@
+import {
+    store
+} from "../events/events";
+
 export class Cache {
     constructor() {
         this.cache = {};
+
+        this._eventListener();
+    }
+
+    _eventListener() {
+        const cacheEvents = store.getState().cacheInvalidation;
+
+        if (this.has(cacheEvents['cacheName'])) {
+            this.remove(cacheEvents['cacheName']);
+        }
     }
 
     has(key) {

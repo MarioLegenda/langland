@@ -6,6 +6,7 @@ use ApiSDK\ApiSDK;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Repository\LearningMetadataRepository;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
+use Ramsey\Uuid\Uuid;
 
 class LearningMetadataImplementation
 {
@@ -68,6 +69,7 @@ class LearningMetadataImplementation
             ->isCollection()
             ->method('GET')
             ->setStatusCode(200)
+            ->setCacheKey(Uuid::uuid4()->toString())
             ->build();
     }
     /**
@@ -85,6 +87,7 @@ class LearningMetadataImplementation
             ->isCollection()
             ->method('GET')
             ->setStatusCode(200)
+            ->setCacheKey(Uuid::uuid4()->toString())
             ->build();
     }
 }

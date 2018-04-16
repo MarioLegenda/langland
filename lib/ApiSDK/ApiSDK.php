@@ -29,6 +29,7 @@ class ApiSDK
         'resource' => [
             'data' => null,
         ],
+        'cache_key' => null,
     ];
     /**
      * @var array $metadata
@@ -122,6 +123,16 @@ class ApiSDK
         return $this;
     }
     /**
+     * @param string $cacheKey
+     * @return ApiSDK
+     */
+    public function setCacheKey(string $cacheKey): ApiSDK
+    {
+        $this->config['cache_key'] = $cacheKey;
+
+        return $this;
+    }
+    /**
      * @return int
      */
     public function getStatusCode(): int
@@ -150,7 +161,22 @@ class ApiSDK
     public function reset(): ApiSDK
     {
         $this->data = null;
-        $this->config = [];
+        $this->config = [
+            'metadata' => [
+                'properties' => [],
+                'method' => null,
+                'type' => null,
+                'statusCode' => null,
+            ],
+            'collection' => [
+                'totalItems' => null,
+                'data' => null,
+            ],
+            'resource' => [
+                'data' => null,
+            ],
+            'cache_key' => null,
+        ];
 
         $this->metadata = [
             'isCollection' => false,
@@ -175,6 +201,7 @@ class ApiSDK
         $method = $this->config['metadata']['method'];
         $type = $this->determineType();
         $statusCode = $this->config['metadata']['statusCode'];
+        $cacheKey = $this->config['cache_key'];
 
         return [
             'properties' => $properties,
@@ -182,6 +209,7 @@ class ApiSDK
             'type' => $type,
             'statusCode' => $statusCode,
             'messages' => $this->messages,
+            'cache_key' => $cacheKey,
         ];
     }
     /**

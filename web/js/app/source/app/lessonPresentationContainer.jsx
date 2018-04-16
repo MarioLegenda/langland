@@ -13,7 +13,7 @@ export class LessonPresentationContainer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.metadataPresentationRepository = factory('metadata-presentation');
+        this.metadataPresentationRepository = factory('metadata-presentation', true);
 
         this.state = {
             items: null

@@ -15,6 +15,14 @@ export const ViewActions = {
     MENU_HEIGHT: 'MENU_HEIGHT',
 };
 
+export const CacheActions = {
+    INVALIDATE_CACHE: true
+}
+
+let cacheModel = {
+    cacheName: null
+}
+
 let languageModel = {
     language: {
         isFetchingAll: false,
@@ -35,6 +43,13 @@ export function mainAppLoaded(mainAppLoaded) {
     return {
         type: ViewActions.MAIN_APP_LOADED,
         mainAppLoaded: mainAppLoaded
+    }
+}
+
+export function invalidateCache(cacheName) {
+    return {
+        type: CacheActions.INVALIDATE_CACHE,
+        cacheName: cacheName
     }
 }
 
@@ -137,9 +152,21 @@ function app(state = appModel, action) {
     }
 }
 
+function cacheInvalidation(state = cacheModel, action) {
+    switch (action.type) {
+        case CacheActions.INVALIDATE_CACHE:
+            return Object.assign({}, state, {
+                cacheName: action.cacheName
+            });
+        default:
+            return state;
+    }
+}
+
 const reduxApp = combineReducers({
     language,
-    app
+    app,
+    cacheInvalidation
 });
 
 export const store = createStore(reduxApp);

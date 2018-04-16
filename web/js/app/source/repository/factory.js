@@ -2,12 +2,16 @@ import {LanguageRepository} from "./languageRepository.js";
 import {UserRepository} from "./userRepository.js";
 import {LearningUserRepository} from "./learningUserRepository.js";
 import {LearningSystemRepository} from "./learningSystemRepository.js";
-import {Cache} from "./cache.js";
 import {MetadataPresentationRepository} from "./metadataPresentationRepository";
+import {Cache} from "./cache.js";
 
 const cache = new Cache();
 
-export function factory(repository) {
+const singletons = {
+    'metadata-presentation': null
+};
+
+export function factory(repository, asSingleton = false) {
     switch (repository) {
         case 'language':
             return new LanguageRepository();

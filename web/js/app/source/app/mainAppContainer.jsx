@@ -38,6 +38,12 @@ export class MainAppContainer extends React.Component {
                 });
             }
 
+            if (appState.menuHeight < 900) {
+                $('.app-menu').height(900);
+
+                return;
+            }
+
             $('.app-menu').height(appState.menuHeight);
         });
     }

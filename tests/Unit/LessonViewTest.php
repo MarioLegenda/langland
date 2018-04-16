@@ -112,6 +112,7 @@ class LessonViewTest extends ContainerAwareTest
                 'Lesson text 2',
                 'Lesson text 3',
             ],
+            'description' => $this->faker->sentence(60),
         ];
 
         $deserializer = $this->container->get('library.deserializer');

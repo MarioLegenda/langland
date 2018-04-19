@@ -30,8 +30,6 @@ export class MainAppContainer extends React.Component {
         store.subscribe(() => {
             const appState = store.getState().app;
 
-            console.log(appState);
-
             if (appState.mainAppLoaded) {
                 this.setState((prevState) => {
                     prevState.actions = appState;

@@ -2284,8 +2284,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__userRepository_js__ = __webpack_require__(262);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository_js__ = __webpack_require__(263);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__learningSystemRepository_js__ = __webpack_require__(264);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__metadataPresentationRepository__ = __webpack_require__(266);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cache_js__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__metadataPresentationRepository__ = __webpack_require__(265);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cache_js__ = __webpack_require__(266);
 
 
 
@@ -11534,7 +11534,8 @@ var InitApp = function (_React$Component) {
 
         _this.state = {
             actions: {
-                lessonStarted: false
+                lessonStarted: false,
+                gameStarted: false
             }
         };
 
@@ -11557,14 +11558,15 @@ var InitApp = function (_React$Component) {
         value: function render() {
 
             var lessonStarted = this.state.actions.lessonStarted;
+            var gameStarted = this.state.actions.gameStarted;
 
-            var langList = lessonStarted ? null : function (match) {
+            var langList = lessonStarted || gameStarted ? null : function (match) {
                 return _react2.default.createElement(_language.LanguageList, { history: match.history });
             };
-            var app = lessonStarted ? null : function (match) {
+            var app = lessonStarted || gameStarted ? null : function (match) {
                 return _react2.default.createElement(_app.App, { match: match.match });
             };
-            var header = lessonStarted ? null : _react2.default.createElement(_header.Header, null);
+            var header = lessonStarted || gameStarted ? null : _react2.default.createElement(_header.Header, null);
 
             return _react2.default.createElement(
                 _reactRouterDom.BrowserRouter,
@@ -11577,7 +11579,9 @@ var InitApp = function (_React$Component) {
                         _reactRouterDom.Switch,
                         null,
                         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: app })
+                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: app }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/lesson/:lessonName/:lessonId" }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/game/:gameId" })
                     )
                 )
             );
@@ -28910,8 +28914,7 @@ class LearningSystemRepository {
 
 
 /***/ }),
-/* 265 */,
-/* 266 */
+/* 265 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28947,6 +28950,60 @@ class MetadataPresentationRepository {
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = MetadataPresentationRepository;
+
+
+/***/ }),
+/* 266 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_events__ = __webpack_require__(17);
+
+
+class Cache {
+    constructor() {
+        this.cache = {};
+
+        this._eventListener();
+    }
+
+    _eventListener() {
+        const cacheEvents = __WEBPACK_IMPORTED_MODULE_0__events_events__["store"].getState().cacheInvalidation;
+
+        if (this.has(cacheEvents['cacheName'])) {
+            this.remove(cacheEvents['cacheName']);
+        }
+    }
+
+    has(key) {
+        return this.cache.hasOwnProperty(key);
+    }
+
+    get(key) {
+        if (this.has(key)) {
+            return this.cache[key];
+        }
+
+        return null;
+    }
+
+    add(key, value) {
+        this.cache[key] = value;
+    }
+
+    remove(key) {
+        if (!this.has(key)) {
+            throw new Error('Cannot remove cache key. Key ' + key + ' does not exist');
+        }
+
+        delete this.cache[key];
+    }
+
+    clear() {
+        this.cache = {};
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Cache;
 
 
 /***/ }),
@@ -29820,8 +29877,6 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
             _events.store.subscribe(function () {
                 var appState = _events.store.getState().app;
 
-                console.log(appState);
-
                 if (appState.mainAppLoaded) {
                     _this2.setState(function (prevState) {
                         prevState.actions = appState;
@@ -30404,60 +30459,6 @@ var GamesPresentationContainer = exports.GamesPresentationContainer = function (
 
     return GamesPresentationContainer;
 }(_react2.default.Component);
-
-/***/ }),
-/* 277 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_events__ = __webpack_require__(17);
-
-
-class Cache {
-    constructor() {
-        this.cache = {};
-
-        this._eventListener();
-    }
-
-    _eventListener() {
-        const cacheEvents = __WEBPACK_IMPORTED_MODULE_0__events_events__["store"].getState().cacheInvalidation;
-
-        if (this.has(cacheEvents['cacheName'])) {
-            this.remove(cacheEvents['cacheName']);
-        }
-    }
-
-    has(key) {
-        return this.cache.hasOwnProperty(key);
-    }
-
-    get(key) {
-        if (this.has(key)) {
-            return this.cache[key];
-        }
-
-        return null;
-    }
-
-    add(key, value) {
-        this.cache[key] = value;
-    }
-
-    remove(key) {
-        if (!this.has(key)) {
-            throw new Error('Cannot remove cache key. Key ' + key + ' does not exist');
-        }
-
-        delete this.cache[key];
-    }
-
-    clear() {
-        this.cache = {};
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Cache;
-
 
 /***/ })
 /******/ ]);

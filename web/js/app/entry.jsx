@@ -15,7 +15,8 @@ class InitApp extends React.Component {
 
         this.state = {
             actions: {
-                lessonStarted: false
+                lessonStarted: false,
+                gameStarted: false
             }
         };
 
@@ -35,10 +36,13 @@ class InitApp extends React.Component {
     render() {
 
         const lessonStarted = this.state.actions.lessonStarted;
+        const gameStarted = this.state.actions.gameStarted;
 
-        const langList = (lessonStarted) ? null : (match) => <LanguageList history={match.history}/>;
-        const app = (lessonStarted) ? null : (match) => <App match={match.match}/>;
-        const header = (lessonStarted) ? null : <Header/>;
+        const langList = (lessonStarted || gameStarted) ? null : (match) => <LanguageList history={match.history}/>;
+        const app = (lessonStarted || gameStarted) ? null : (match) => <App match={match.match}/>;
+        const header = (lessonStarted || gameStarted) ? null : <Header/>;
+
+
 
         return (
             <Router>
@@ -46,7 +50,9 @@ class InitApp extends React.Component {
                     {header}
                     <Switch>
                         <Route exact path={env.current + "langland"} render={langList} />
-                        <Route path={env.current + "langland/:language/:languageId"} render={app}/>
+                        <Route path={env.current + "langland/:language/:languageId"} render={app} />
+                        <Route path={env.current + "langland/lesson/:lessonName/:lessonId"} />
+                        <Route path={env.current + "langland/game/:gameId"} />
                     </Switch>
                 </div>
             </Router>

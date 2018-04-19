@@ -24,10 +24,12 @@ export class MainAppContainer extends React.Component {
         this.data = {
             actionMethods: [lessonMenuClicked, gamesMenuClicked]
         };
+
+        this.storeUnsubscribe = null;
     }
 
     _appActions() {
-        store.subscribe(() => {
+        this.unsubscribe = store.subscribe(() => {
             const appState = store.getState().app;
 
             if (appState.mainAppLoaded) {
@@ -48,6 +50,10 @@ export class MainAppContainer extends React.Component {
 
     componentWillUnmount() {
         store.dispatch(mainAppLoaded(false));
+
+        if (this.storeUnsubscribe !== null) {
+            this.storeUnsubscribe();
+        }
     }
 
     componentDidMount() {

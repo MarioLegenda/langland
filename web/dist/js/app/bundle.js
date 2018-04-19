@@ -29817,6 +29817,8 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
         _this.data = {
             actionMethods: [_events.lessonMenuClicked, _events.gamesMenuClicked]
         };
+
+        _this.storeUnsubscribe = null;
         return _this;
     }
 
@@ -29825,7 +29827,7 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
         value: function _appActions() {
             var _this2 = this;
 
-            _events.store.subscribe(function () {
+            this.unsubscribe = _events.store.subscribe(function () {
                 var appState = _events.store.getState().app;
 
                 if (appState.mainAppLoaded) {
@@ -29847,6 +29849,10 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
         key: "componentWillUnmount",
         value: function componentWillUnmount() {
             _events.store.dispatch((0, _events.mainAppLoaded)(false));
+
+            if (this.storeUnsubscribe !== null) {
+                this.storeUnsubscribe();
+            }
         }
     }, {
         key: "componentDidMount",

@@ -10,10 +10,18 @@ export class LearningUserRepository {
             get_questions: global.base_url + 'api/v1/learning-user/questions/get-questions',
             mark_questions_answered: global.base_url + 'api/v1/learning-user/questions/mark-questions-answered',
             validate_question_answers: global.base_url + 'api/v1/learning-user/questions/validate',
-        }
+        };
+
+        this.currentLearningUser = null;
     }
 
     registerLearningUser(languageId, success, failure) {
+        if (this.currentLearningUser !== null) {
+            success(this.currentLearningUser);
+
+            return;
+        }
+
         $.ajax({
             url: this.routes.register_learning_user,
             method: 'POST',
@@ -23,7 +31,11 @@ export class LearningUserRepository {
             headers: {
                 'X-LANGLAND-PUBLIC-API': user.current.username
             }
-        }).done(success).fail(failure);
+        }).done($.proxy(function(data) {
+            success(data);
+
+            this.currentLearningUser = data.resource.data;
+        }, this)).fail(failure);
     }
 
     markLanguageInfoLooked(success, failure) {

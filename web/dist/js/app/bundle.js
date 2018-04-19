@@ -2285,21 +2285,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__learningUserRepository_js__ = __webpack_require__(263);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__learningSystemRepository_js__ = __webpack_require__(264);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__metadataPresentationRepository__ = __webpack_require__(265);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__cache_js__ = __webpack_require__(266);
 
 
 
 
 
 
-
-const cache = new __WEBPACK_IMPORTED_MODULE_5__cache_js__["a" /* Cache */]();
-
-const singletons = {
-    'metadata-presentation': null
-};
-
-function factory(repository, asSingleton = false) {
+function factory(repository) {
     switch (repository) {
         case 'language':
             return new __WEBPACK_IMPORTED_MODULE_0__languageRepository_js__["a" /* LanguageRepository */]();
@@ -28797,9 +28789,17 @@ class LearningUserRepository {
             mark_questions_answered: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/questions/mark-questions-answered',
             validate_question_answers: __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["global"].base_url + 'api/v1/learning-user/questions/validate'
         };
+
+        this.currentLearningUser = null;
     }
 
     registerLearningUser(languageId, success, failure) {
+        if (this.currentLearningUser !== null) {
+            success(this.currentLearningUser);
+
+            return;
+        }
+
         $.ajax({
             url: this.routes.register_learning_user,
             method: 'POST',
@@ -28809,7 +28809,11 @@ class LearningUserRepository {
             headers: {
                 'X-LANGLAND-PUBLIC-API': __WEBPACK_IMPORTED_MODULE_0__global_constants_js__["user"].current.username
             }
-        }).done(success).fail(failure);
+        }).done($.proxy(function (data) {
+            success(data);
+
+            this.currentLearningUser = data.resource.data;
+        }, this)).fail(failure);
     }
 
     markLanguageInfoLooked(success, failure) {
@@ -28953,60 +28957,7 @@ class MetadataPresentationRepository {
 
 
 /***/ }),
-/* 266 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__events_events__ = __webpack_require__(17);
-
-
-class Cache {
-    constructor() {
-        this.cache = {};
-
-        this._eventListener();
-    }
-
-    _eventListener() {
-        const cacheEvents = __WEBPACK_IMPORTED_MODULE_0__events_events__["store"].getState().cacheInvalidation;
-
-        if (this.has(cacheEvents['cacheName'])) {
-            this.remove(cacheEvents['cacheName']);
-        }
-    }
-
-    has(key) {
-        return this.cache.hasOwnProperty(key);
-    }
-
-    get(key) {
-        if (this.has(key)) {
-            return this.cache[key];
-        }
-
-        return null;
-    }
-
-    add(key, value) {
-        this.cache[key] = value;
-    }
-
-    remove(key) {
-        if (!this.has(key)) {
-            throw new Error('Cannot remove cache key. Key ' + key + ' does not exist');
-        }
-
-        delete this.cache[key];
-    }
-
-    clear() {
-        this.cache = {};
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Cache;
-
-
-/***/ }),
+/* 266 */,
 /* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 

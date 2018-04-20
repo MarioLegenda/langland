@@ -9,6 +9,8 @@ import {App} from "./source/app.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
 import {store} from "./source/events/events";
 
+import {LessonRunner} from "./source/app/runner/runner.jsx";
+
 class InitApp extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +19,19 @@ class InitApp extends React.Component {
             actions: {
                 lessonStarted: false,
                 gameStarted: false
+            },
+            actionStrings: {
+                lesson: null,
+                game: null,
             }
+        };
+
+        this.components = {
+            langList: null,
+            presentation: null,
+            header: null,
+            lessonRunner: null,
+            gameRunner: null,
         };
 
         store.subscribe(() => {
@@ -28,30 +42,42 @@ class InitApp extends React.Component {
             if (appState.lessonStarted) {
                 this.setState((prevState) => {
                     prevState.actions.lessonStarted = appState.lessonStarted;
+                    prevState.actions.lesson = null;
                 });
             }
         });
     }
 
-    render() {
-
+    _createComponents() {
         const lessonStarted = this.state.actions.lessonStarted;
         const gameStarted = this.state.actions.gameStarted;
 
-        const langList = (lessonStarted || gameStarted) ? null : (match) => <LanguageList history={match.history}/>;
-        const app = (lessonStarted || gameStarted) ? null : (match) => <App match={match.match}/>;
-        const header = (lessonStarted || gameStarted) ? null : <Header/>;
+        if (!lessonStarted && !gameStarted) {
+            this.components.langList = (lessonStarted || gameStarted) ? null : (match) => <LanguageList history={match.history}/>;
+            this.components.presentation = (lessonStarted || gameStarted) ? null : (match) => <App match={match.match}/>;
+            this.components.header = (lessonStarted || gameStarted) ? null : <Header/>;
+        }
 
+        if (lessonStarted) {
+            this.components.langList = null;
+            this.components.presentation = null;
+            this.components.header = null;
 
+            this.components.lessonRunner = (match) => <LessonRunner match={match.match}/>;
+        }
+    }
+
+    render() {
+        this._createComponents();
 
         return (
             <Router>
                 <div className="main-wrapper">
-                    {header}
+                    {this.components.header}
                     <Switch>
-                        <Route exact path={env.current + "langland"} render={langList} />
-                        <Route path={env.current + "langland/:language/:languageId"} render={app} />
-                        <Route path={env.current + "langland/lesson/:lessonName/:lessonId"} />
+                        <Route exact path={env.current + "langland"} render={this.components.langList} />
+                        <Route path={env.current + "langland/:language/:languageId"} render={this.components.presentation} />
+                        <Route path={env.current + "langland/lesson/:lessonName/:lessonId"} render={this.components.lessonRunner}/>
                         <Route path={env.current + "langland/game/:gameId"} />
                     </Switch>
                 </div>
@@ -70,47 +96,6 @@ if (react_app !== null) {
         );
     }));
 }
-
-/*import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-
-import {HeaderContainer as Header} from "./module/header.jsx";
-import {LanguageListContainer} from "./module/languages.jsx";
-import {envr} from './module/env.js';
-
-import {MethodAppRouteContainer} from './module/method/methodApp.jsx';
-import {CourseInitContainer} from './module/courseInit.jsx';
-import {DataSource} from './module/dataSource.js';
-
-const NoMatch = () => <div>No match</div>
-
-function App() {
-    //const io = window.io('http://33.33.33.10:3000');
-
-    const methodAppContainer = (match) => <MethodAppRouteContainer io={io} match={match.match} DataSource={DataSource}/>;
-    const languageListContainer = () => <LanguageListContainer DataSource={DataSource}/>;
-    const courseInitContainer = (match) => <CourseInitContainer DataSource={DataSource} match={match.match}/>
-
-    return (
-        <Router>
-            <div className="app">
-                <Header DataSource={DataSource}/>
-
-                <Switch>
-                    <Route exact path={envr + "langland/course/:languageName/:languageId"} render={courseInitContainer}/>
-                    <Route path={envr + "langland/dashboard/:courseName/:learningUserCourseId"} render={methodAppContainer} />
-                    <Route exact path={envr + "langland"} render={languageListContainer} />
-
-                    <Route component={NoMatch}/>
-                </Switch>
-            </div>
-        </Router>
-    );
-}
-
-ReactDOM.render(
-    <App/>,
-    document.getElementById('react-app')
-);*/
 
 
 

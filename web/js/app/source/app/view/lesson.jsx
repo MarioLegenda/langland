@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import {env} from "../../../../global/constants.js";
 
 import {
     store,
@@ -39,11 +41,16 @@ export class Lesson extends React.Component {
     }
 
     _createPresentationItem(item) {
+        const url = `env.current + "langland/lesson/${item.name}/${item.id}"`;
+
+        console.log(url);
+
         return <div className="animated fadeIn fadeOut presentation-item">
             <h1>{item.name}</h1>
 
             <p>{item.description}</p>
-            <button className="learn-button" onClick={this.startLesson}>Learn <i className="learn-button-icon fa fa-angle-right"></i></button>
+
+            <Link to={url} onClick={this.startLesson} className="learn-button-icon fa fa-angle-right">Learn</Link>
         </div>;
     }
 

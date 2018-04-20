@@ -11508,6 +11508,8 @@ var _factory = __webpack_require__(18);
 
 var _events = __webpack_require__(17);
 
+var _runner = __webpack_require__(277);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -11528,7 +11530,19 @@ var InitApp = function (_React$Component) {
             actions: {
                 lessonStarted: false,
                 gameStarted: false
+            },
+            actionStrings: {
+                lesson: null,
+                game: null
             }
+        };
+
+        _this.components = {
+            langList: null,
+            presentation: null,
+            header: null,
+            lessonRunner: null,
+            gameRunner: null
         };
 
         _events.store.subscribe(function () {
@@ -11539,6 +11553,7 @@ var InitApp = function (_React$Component) {
             if (appState.lessonStarted) {
                 _this.setState(function (prevState) {
                     prevState.actions.lessonStarted = appState.lessonStarted;
+                    prevState.actions.lesson = null;
                 });
             }
         });
@@ -11546,19 +11561,35 @@ var InitApp = function (_React$Component) {
     }
 
     _createClass(InitApp, [{
-        key: 'render',
-        value: function render() {
-
+        key: '_createComponents',
+        value: function _createComponents() {
             var lessonStarted = this.state.actions.lessonStarted;
             var gameStarted = this.state.actions.gameStarted;
 
-            var langList = lessonStarted || gameStarted ? null : function (match) {
-                return _react2.default.createElement(_language.LanguageList, { history: match.history });
-            };
-            var app = lessonStarted || gameStarted ? null : function (match) {
-                return _react2.default.createElement(_app.App, { match: match.match });
-            };
-            var header = lessonStarted || gameStarted ? null : _react2.default.createElement(_header.Header, null);
+            if (!lessonStarted && !gameStarted) {
+                this.components.langList = lessonStarted || gameStarted ? null : function (match) {
+                    return _react2.default.createElement(_language.LanguageList, { history: match.history });
+                };
+                this.components.presentation = lessonStarted || gameStarted ? null : function (match) {
+                    return _react2.default.createElement(_app.App, { match: match.match });
+                };
+                this.components.header = lessonStarted || gameStarted ? null : _react2.default.createElement(_header.Header, null);
+            }
+
+            if (lessonStarted) {
+                this.components.langList = null;
+                this.components.presentation = null;
+                this.components.header = null;
+
+                this.components.lessonRunner = function (match) {
+                    return _react2.default.createElement(_runner.LessonRunner, { match: match.match });
+                };
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            this._createComponents();
 
             return _react2.default.createElement(
                 _reactRouterDom.BrowserRouter,
@@ -11566,13 +11597,13 @@ var InitApp = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'main-wrapper' },
-                    header,
+                    this.components.header,
                     _react2.default.createElement(
                         _reactRouterDom.Switch,
                         null,
-                        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: langList }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: app }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/lesson/:lessonName/:lessonId" }),
+                        _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: this.components.langList }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/:language/:languageId", render: this.components.presentation }),
+                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/lesson/:lessonName/:lessonId", render: this.components.lessonRunner }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/game/:gameId" })
                     )
                 )
@@ -11590,47 +11621,6 @@ if (react_app !== null) {
         _reactDom2.default.render(_react2.default.createElement(InitApp, null), react_app);
     }));
 }
-
-/*import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-
-import {HeaderContainer as Header} from "./module/header.jsx";
-import {LanguageListContainer} from "./module/languages.jsx";
-import {envr} from './module/env.js';
-
-import {MethodAppRouteContainer} from './module/method/methodApp.jsx';
-import {CourseInitContainer} from './module/courseInit.jsx';
-import {DataSource} from './module/dataSource.js';
-
-const NoMatch = () => <div>No match</div>
-
-function App() {
-    //const io = window.io('http://33.33.33.10:3000');
-
-    const methodAppContainer = (match) => <MethodAppRouteContainer io={io} match={match.match} DataSource={DataSource}/>;
-    const languageListContainer = () => <LanguageListContainer DataSource={DataSource}/>;
-    const courseInitContainer = (match) => <CourseInitContainer DataSource={DataSource} match={match.match}/>
-
-    return (
-        <Router>
-            <div className="app">
-                <Header DataSource={DataSource}/>
-
-                <Switch>
-                    <Route exact path={envr + "langland/course/:languageName/:languageId"} render={courseInitContainer}/>
-                    <Route path={envr + "langland/dashboard/:courseName/:learningUserCourseId"} render={methodAppContainer} />
-                    <Route exact path={envr + "langland"} render={languageListContainer} />
-
-                    <Route component={NoMatch}/>
-                </Switch>
-            </div>
-        </Router>
-    );
-}
-
-ReactDOM.render(
-    <App/>,
-    document.getElementById('react-app')
-);*/
 
 /***/ }),
 /* 109 */
@@ -30212,6 +30202,10 @@ var _react = __webpack_require__(4);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouterDom = __webpack_require__(58);
+
+var _constants = __webpack_require__(22);
+
 var _events = __webpack_require__(17);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -30265,6 +30259,10 @@ var Lesson = exports.Lesson = function (_React$Component) {
     }, {
         key: "_createPresentationItem",
         value: function _createPresentationItem(item) {
+            var url = "env.current + \"langland/lesson/" + item.name + "/" + item.id + "\"";
+
+            console.log(url);
+
             return _react2.default.createElement(
                 "div",
                 { className: "animated fadeIn fadeOut presentation-item" },
@@ -30279,10 +30277,9 @@ var Lesson = exports.Lesson = function (_React$Component) {
                     item.description
                 ),
                 _react2.default.createElement(
-                    "button",
-                    { className: "learn-button", onClick: this.startLesson },
-                    "Learn ",
-                    _react2.default.createElement("i", { className: "learn-button-icon fa fa-angle-right" })
+                    _reactRouterDom.Link,
+                    { to: url, onClick: this.startLesson, className: "learn-button-icon fa fa-angle-right" },
+                    "Learn"
                 )
             );
         }
@@ -30415,6 +30412,52 @@ var GamesPresentationContainer = exports.GamesPresentationContainer = function (
     }]);
 
     return GamesPresentationContainer;
+}(_react2.default.Component);
+
+/***/ }),
+/* 277 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LessonRunner = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(4);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LessonRunner = exports.LessonRunner = function (_React$Component) {
+    _inherits(LessonRunner, _React$Component);
+
+    function LessonRunner(props) {
+        _classCallCheck(this, LessonRunner);
+
+        var _this = _possibleConstructorReturn(this, (LessonRunner.__proto__ || Object.getPrototypeOf(LessonRunner)).call(this, props));
+
+        console.log('Take it easy');
+        return _this;
+    }
+
+    _createClass(LessonRunner, [{
+        key: 'render',
+        value: function render() {}
+    }]);
+
+    return LessonRunner;
 }(_react2.default.Component);
 
 /***/ })

@@ -41,4 +41,15 @@ class LearningMetadataController
             200
         );
     }
+    /**
+     * @param int $id
+     * @return Response
+     */
+    public function getLearningLessonById(int $id): Response
+    {
+        return new JsonResponse(
+            $this->learningMetadataImplementation->getLearningLessonById($id),
+            200
+        );
+    }
 }

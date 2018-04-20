@@ -2,7 +2,6 @@
 
 namespace AdminBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -32,6 +31,10 @@ class Lesson
      * @var array $jsonLesson
      */
     private $jsonLesson;
+    /**
+     * @var string $urlifiedName
+     */
+    private $urlifiedName;
     /**
      * @var Course $course
      */
@@ -67,6 +70,8 @@ class Lesson
         $this->course = $course;
         $this->name = $name;
         $this->description = $description;
+
+        $this->createUrlifiedFromName($name);
     }
     /**
      * @param int $id
@@ -174,6 +179,17 @@ class Lesson
         return $this;
     }
     /**
+     * @return string
+     */
+    public function getUrlifiedName(): string
+    {
+        if (!is_string($this->urlifiedName)) {
+            $this->createUrlifiedFromName($this->getName());
+        }
+
+        return $this->urlifiedName;
+    }
+    /**
      * @param string $course
      * @return Lesson
      */
@@ -266,6 +282,13 @@ class Lesson
         }
 
         return $dateTime;
+    }
+    /**
+     * @param string $name
+     */
+    private function createUrlifiedFromName(string $name)
+    {
+        $this->urlifiedName = \URLify::filter($name);
     }
 }
 

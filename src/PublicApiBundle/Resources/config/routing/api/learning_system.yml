@@ -18,3 +18,10 @@ get_games_presentation:
     methods: [GET]
     requirements:
         _format: json
+
+get_learning_lesson_by_id:
+    path: /get-learning-lesson-by-id/{id}
+    defaults: { _controller: public_api.controller.learning_metadata:getLearningLessonById }
+    methods: [GET]
+    requirements:
+        _format: json

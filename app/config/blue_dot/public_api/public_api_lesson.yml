@@ -7,5 +7,8 @@ configuration:
             find_lesson_by_id:
                 sql: public_api.lesson.find_by_id
                 parameters: [id]
-                model:
-                    object: AdminBundle\Entity\Lesson
+            find_learning_lesson_by_id:
+                sql: "SELECT l.id, l.json_lesson, ll.id AS learning_lesson_id, ll.has_completed, l.learning_order, ll.is_available, ll.data_collector_id FROM lessons AS l INNER JOIN learning_lessons AS ll ON ll.lesson_id = l.id WHERE ll.id = :learning_lesson_id"
+                parameters: [learning_lesson_id]
+                filter:
+                    normalize_if_one_exists: true

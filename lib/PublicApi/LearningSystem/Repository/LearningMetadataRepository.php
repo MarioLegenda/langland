@@ -72,4 +72,23 @@ class LearningMetadataRepository extends BaseBlueDotRepository
             'language_id' => $languageId,
         ])->getResult()['data'];
     }
+    /**
+     * @param int $learningLessonId
+     * @throws \BlueDot\Exception\ConfigurationException
+     * @throws \BlueDot\Exception\ConnectionException
+     * @throws \BlueDot\Exception\RepositoryException
+     * @return array
+     */
+    public function getLearningLessonById(int $learningLessonId): array
+    {
+        $this->blueDot->useRepository('public_api_lesson');
+
+        $data = $this->blueDot->execute('simple.select.find_learning_lesson_by_id', [
+            'learning_lesson_id' => $learningLessonId,
+        ])->getResult()['data'];
+
+        $this->blueDot->useRepository('presentation');
+
+        return $data;
+    }
 }

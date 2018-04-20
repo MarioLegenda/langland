@@ -41,16 +41,14 @@ export class Lesson extends React.Component {
     }
 
     _createPresentationItem(item) {
-        const url = `env.current + "langland/lesson/${item.name}/${item.id}"`;
-
-        console.log(url);
+        const url = env.current + `langland/lesson/${item.urlified_name}/${item.learning_lesson_id}`;
 
         return <div className="animated fadeIn fadeOut presentation-item">
             <h1>{item.name}</h1>
 
             <p>{item.description}</p>
 
-            <Link to={url} onClick={this.startLesson} className="learn-button-icon fa fa-angle-right">Learn</Link>
+            <Link to={url} onClick={this.startLesson} className="learn-button">Learn <i className="learn-button-icon fa fa-angle-right"></i></Link>
         </div>;
     }
 

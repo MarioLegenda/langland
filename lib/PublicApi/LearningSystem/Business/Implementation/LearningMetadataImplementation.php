@@ -90,4 +90,20 @@ class LearningMetadataImplementation
             ->setCacheKey(Uuid::uuid4()->toString())
             ->build();
     }
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function getLearningLessonById(int $id): array
+    {
+        $learningLessonData = $this->learningMetadataRepository->getLearningLessonById($id);
+
+        return $this->apiSdk
+            ->create($learningLessonData)
+            ->isResource()
+            ->method('GET')
+            ->setStatusCode(200)
+            ->build();
+    }
 }

@@ -29,7 +29,7 @@ export class MainAppContainer extends React.Component {
     }
 
     _appActions() {
-        this.unsubscribe = store.subscribe(() => {
+        this.storeUnsubscribe = store.subscribe(() => {
             const appState = store.getState().app;
 
             if (appState.mainAppLoaded) {

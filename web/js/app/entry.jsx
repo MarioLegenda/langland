@@ -9,7 +9,7 @@ import {App} from "./source/app.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
 import {store} from "./source/events/events";
 
-import {LessonRunner} from "./source/app/runner/runner.jsx";
+import {LessonContainer} from "./source/app/runner/container.jsx";
 
 class InitApp extends React.Component {
     constructor(props) {
@@ -63,12 +63,14 @@ class InitApp extends React.Component {
             this.components.presentation = null;
             this.components.header = null;
 
-            this.components.lessonRunner = (match) => <LessonRunner match={match.match}/>;
+            this.components.lessonRunner = (match) => <LessonContainer match={match.match}/>;
         }
     }
 
     render() {
         this._createComponents();
+
+        console.log(this.components);
 
         return (
             <Router>
@@ -76,8 +78,8 @@ class InitApp extends React.Component {
                     {this.components.header}
                     <Switch>
                         <Route exact path={env.current + "langland"} render={this.components.langList} />
+                        <Route path={env.current + "langland/lesson/:lessonName/:learningLessonId"} render={this.components.lessonRunner}/>
                         <Route path={env.current + "langland/:language/:languageId"} render={this.components.presentation} />
-                        <Route path={env.current + "langland/lesson/:lessonName/:lessonId"} render={this.components.lessonRunner}/>
                         <Route path={env.current + "langland/game/:gameId"} />
                     </Switch>
                 </div>

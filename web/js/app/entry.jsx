@@ -9,7 +9,7 @@ import {App} from "./source/app.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
 import {store} from "./source/events/events";
 
-import {LessonContainer} from "./source/app/runner/container.jsx";
+import {LessonRunnerContainer} from "./source/app/runner/container.jsx";
 
 class InitApp extends React.Component {
     constructor(props) {
@@ -33,44 +33,17 @@ class InitApp extends React.Component {
             lessonRunner: null,
             gameRunner: null,
         };
-
-        store.subscribe(() => {
-            const appState = store.getState().app;
-
-            console.log(appState);
-
-            if (appState.lessonStarted) {
-                this.setState((prevState) => {
-                    prevState.actions.lessonStarted = appState.lessonStarted;
-                    prevState.actions.lesson = null;
-                });
-            }
-        });
     }
 
     _createComponents() {
-        const lessonStarted = this.state.actions.lessonStarted;
-        const gameStarted = this.state.actions.gameStarted;
-
-        if (!lessonStarted && !gameStarted) {
-            this.components.langList = (lessonStarted || gameStarted) ? null : (match) => <LanguageList history={match.history}/>;
-            this.components.presentation = (lessonStarted || gameStarted) ? null : (match) => <App match={match.match}/>;
-            this.components.header = (lessonStarted || gameStarted) ? null : <Header/>;
-        }
-
-        if (lessonStarted) {
-            this.components.langList = null;
-            this.components.presentation = null;
-            this.components.header = null;
-
-            this.components.lessonRunner = (match) => <LessonContainer match={match.match}/>;
-        }
+        this.components.langList = (match) => <LanguageList history={match.history}/>;
+        this.components.presentation = (match) => <App match={match.match}/>;
+        this.components.header = <Header/>;
+        this.components.lessonRunner = (match) => <LessonRunnerContainer match={match.match}/>
     }
 
     render() {
         this._createComponents();
-
-        console.log(this.components);
 
         return (
             <Router>
@@ -79,12 +52,12 @@ class InitApp extends React.Component {
                     <Switch>
                         <Route exact path={env.current + "langland"} render={this.components.langList} />
                         <Route path={env.current + "langland/lesson/:lessonName/:learningLessonId"} render={this.components.lessonRunner}/>
-                        <Route path={env.current + "langland/:language/:languageId"} render={this.components.presentation} />
+                        <Route path={env.current + "langland/language/:language/:languageId"} render={this.components.presentation} />
                         <Route path={env.current + "langland/game/:gameId"} />
                     </Switch>
                 </div>
             </Router>
-        );
+        )
     }
 }
 

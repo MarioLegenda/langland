@@ -679,6 +679,20 @@ body {
     border: 1px solid #F16C20;
     color: #F16C20; }
 
+.base-runner .runner {
+  width: 920px;
+  min-width: 480px;
+  max-width: 920px;
+  margin: auto; }
+.base-runner .content {
+  border-bottom: 1px solid #594f4f;
+  padding: 0 0 15px 15px; }
+.base-runner .direction-buttons {
+  margin-top: 15px;
+  width: 220px;
+  float: right;
+  max-width: 220px; }
+
 .main-wrapper {
   width: 100%;
   overflow: hidden;

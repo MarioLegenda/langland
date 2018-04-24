@@ -62,6 +62,10 @@ class RepositoryCommunicator
             $temp['desc'] = $language->getListDescription();
             $temp['images'] = $this->parseImages($language->getImages());
             $temp['alreadyLearning'] = false;
+            $temp['urls'] = [
+                'backend_url' => null,
+                'frontend_url' => sprintf('language/%s/%d', $language->getName(), $language->getId())
+            ];
 
             foreach ($learningUsers as $learningUser) {
                 if ($this->equalsLanguage($language, $learningUser->getLanguage())) {

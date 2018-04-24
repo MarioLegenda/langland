@@ -72,6 +72,7 @@
                 id="public_api.repository.learning_system.blue_dot.learning_metadata"
                 class="PublicApi\LearningSystem\Repository\LearningMetadataRepository" public="true">
 
+            <argument type="service" id="router" />
             <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>
         </service>

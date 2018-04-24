@@ -2,10 +2,32 @@
 
 namespace PublicApi\LearningSystem\Repository;
 
+use BlueDot\BlueDot;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
+use Symfony\Component\Routing\Router;
 
 class LearningMetadataRepository extends BaseBlueDotRepository
 {
+    /**
+     * @var Router $router
+     */
+    private $router;
+    /**
+     * LearningMetadataRepository constructor.
+     * @param Router $router
+     * @param BlueDot $blueDot
+     * @param string $apiName
+     */
+    public function __construct(
+        Router $router,
+        BlueDot $blueDot,
+        string $apiName
+    ) {
+        parent::__construct($blueDot, $apiName);
+
+        $this->router = $router;
+    }
+
     /**
      * @param int $languageId
      * @param int $learningUserId
@@ -52,6 +74,7 @@ class LearningMetadataRepository extends BaseBlueDotRepository
         return $this->blueDot->execute('service.learning_lesson_presentation', [
             'learning_user_id' => $learningUserId,
             'language_id' => $languageId,
+            'router' => $this->router,
         ])->getResult()->get('data');
     }
     /**
@@ -86,6 +109,15 @@ class LearningMetadataRepository extends BaseBlueDotRepository
         $data = $this->blueDot->execute('simple.select.find_learning_lesson_by_id', [
             'learning_lesson_id' => $learningLessonId,
         ])->getResult()['data'];
+
+        $lessonName = \URLify::filter(json_decode($data['json_lesson'], true)['name']);
+
+        $data['urls'] = [
+            'backend_url' => $this->router->generate('get_learning_lesson_by_id', [
+                'id' => $data['id'],
+            ]),
+            'frontend_url' => sprintf('langland/lesson/%s/%d', $lessonName, $data['id'])
+        ];
 
         $this->blueDot->useRepository('presentation');
 

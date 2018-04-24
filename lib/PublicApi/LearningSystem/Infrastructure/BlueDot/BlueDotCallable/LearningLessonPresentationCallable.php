@@ -3,6 +3,7 @@
 namespace PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable;
 
 use BlueDot\Configuration\Flow\Service\BaseService;
+use Symfony\Component\Routing\Router;
 
 class LearningLessonPresentationCallable extends BaseService
 {
@@ -72,11 +73,26 @@ class LearningLessonPresentationCallable extends BaseService
         foreach ($learningLessons as $lesson) {
             if ($courseId === $lesson['course_id']) {
                 $lesson['urlified_name'] = \URLify::filter($lesson['name']);
+                $lesson['urls'] = $this->createLessonUrls($lesson);
 
                 $lessons[] = $lesson;
             }
         }
 
         return $lessons;
+    }
+    /**
+     * @param array $lesson
+     * @return array
+     */
+    private function createLessonUrls(array $lesson): array
+    {
+        /** @var Router $router */
+        $router = $this->parameters['router'];
+
+        return [
+            'backend_url' => $router->generate('get_learning_lesson_presentation'),
+            'frontend_url' => sprintf('langland/lesson/%s/%d', $lesson['urlified_name'], (int) $lesson['id']),
+        ];
     }
 }

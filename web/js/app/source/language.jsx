@@ -77,16 +77,14 @@ export class LanguageList extends React.Component{
     }
 
     registerLanguage(language) {
-        const url = `language/${language.name}/${language.id}`;
-
         this._updateItems(language.id);
         this.learningUserRepository.registerLearningUser(language.id, $.proxy(function() {
-            this.props.history.push(url);
+            this.props.history.push(language.urls.frontend_url);
         }, this));
     }
 
     _createItems(data) {
-        this.setState((prevState) => {
+        this.setState(() => {
             const languages = data.map((language, i) => {
                 return <Item
                     key={i}

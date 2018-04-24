@@ -30052,11 +30052,9 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
     }, {
         key: 'registerLanguage',
         value: function registerLanguage(language) {
-            var url = 'language/' + language.name + '/' + language.id;
-
             this._updateItems(language.id);
             this.learningUserRepository.registerLearningUser(language.id, $.proxy(function () {
-                this.props.history.push(url);
+                this.props.history.push(language.urls.frontend_url);
             }, this));
         }
     }, {
@@ -30064,7 +30062,7 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
         value: function _createItems(data) {
             var _this3 = this;
 
-            this.setState(function (prevState) {
+            this.setState(function () {
                 var languages = data.map(function (language, i) {
                     return _react2.default.createElement(Item, {
                         key: i,

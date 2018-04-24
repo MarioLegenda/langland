@@ -5944,6 +5944,10 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouterDom = __webpack_require__(36);
 
+var _createBrowserHistory = __webpack_require__(143);
+
+var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
+
 var _constants = __webpack_require__(21);
 
 var _header = __webpack_require__(171);
@@ -5965,6 +5969,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var trackedHistory = {
+    current: null,
+    previous: null
+};
+
+var history = (0, _createBrowserHistory2.default)();
+
+history.listen(function (location, action) {
+    console.log(trackedHistory);
+    trackedHistory.previous = trackedHistory.current;
+    trackedHistory.current = location.pathname;
+});
 
 var InitApp = function (_React$Component) {
     _inherits(InitApp, _React$Component);
@@ -30520,7 +30537,8 @@ var App = exports.App = function (_React$Component) {
                 _react2.default.createElement(_componentFactory.ComponentFactory, {
                     languageId: languageId,
                     currentComponent: currentComponent,
-                    componentChange: this.componentChange
+                    componentChange: this.componentChange,
+                    match: this.props.match
                 })
             );
         }
@@ -30592,12 +30610,18 @@ var ComponentFactory = exports.ComponentFactory = function (_React$Component) {
             switch (comp) {
                 case 'isLanguageInfoLooked':
                     console.log('Component decision: Decision is on language info');
-                    return _react2.default.createElement(_languageInfo.LanguageInfo, { languageId: this.props.languageId, componentChange: this.componentChange });
+                    return _react2.default.createElement(_languageInfo.LanguageInfo, {
+                        languageId: this.props.languageId,
+                        componentChange: this.componentChange
+                    });
                 case 'areQuestionsLooked':
                     console.log('Component decision: Decision is on question');
-                    return _react2.default.createElement(_questions.QuestionsContainer, { componentChange: this.componentChange });
+                    return _react2.default.createElement(_questions.QuestionsContainer, {
+                        componentChange: this.componentChange
+                    });
                 case 'isMainAppReady':
                     console.log('Component decision: Decision is on main app');
+
                     return _react2.default.createElement(_mainAppContainer.MainAppContainer, null);
             }
         }

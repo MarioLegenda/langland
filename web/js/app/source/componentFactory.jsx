@@ -23,12 +23,18 @@ export class ComponentFactory extends React.Component {
         switch (comp) {
             case 'isLanguageInfoLooked':
                 console.log('Component decision: Decision is on language info');
-                return <LanguageInfo languageId={this.props.languageId} componentChange={this.componentChange}/>;
+                return <LanguageInfo
+                    languageId={this.props.languageId}
+                    componentChange={this.componentChange}
+                />;
             case 'areQuestionsLooked':
                 console.log('Component decision: Decision is on question');
-                return <QuestionsContainer componentChange={this.componentChange}/>;
+                return <QuestionsContainer
+                    componentChange={this.componentChange}
+                />;
             case 'isMainAppReady':
                 console.log('Component decision: Decision is on main app');
+
                 return <MainAppContainer/>;
         }
     }

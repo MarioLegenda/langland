@@ -1,3 +1,5 @@
+import React from 'react';
+
 export class Util {
     static isString(value) {
         return Object.prototype.toString.call(value) === "[object String]"

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import createHistory from "history/createBrowserHistory"
 
 import {env, user} from "../global/constants.js";
 import {Header} from "./source/header.jsx";
@@ -10,6 +11,19 @@ import {factory as repoFactory} from "./source/repository/factory.js";
 import {store} from "./source/events/events";
 
 import {LessonRunnerContainer} from "./source/app/runner/container.jsx";
+
+let trackedHistory = {
+    current: null,
+    previous: null,
+};
+
+const history = createHistory();
+
+history.listen((location, action) => {
+    console.log(trackedHistory);
+    trackedHistory.previous = trackedHistory.current;
+    trackedHistory.current = location.pathname;
+});
 
 class InitApp extends React.Component {
     constructor(props) {

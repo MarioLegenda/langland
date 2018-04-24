@@ -63,6 +63,7 @@ export class App extends React.Component {
                 languageId={languageId}
                 currentComponent={currentComponent}
                 componentChange={this.componentChange}
+                match={this.props.match}
             />
         </div>
     }

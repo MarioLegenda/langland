@@ -57,6 +57,7 @@ export class LessonRunner extends React.Component {
 
         return <div className="base-runner">
             <MuiThemeProvider>
+
                 <div className="runner">
                     <Stepper linear={false} activeStep={stepIndex}>
                         {steps}

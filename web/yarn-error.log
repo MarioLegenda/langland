@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/bin/node /usr/share/yarn/bin/yarn.js remove path-to-regex
+  /usr/bin/node /usr/share/yarn/bin/yarn.js upgrade
 
 PATH: 
   /home/mario/.npm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin
@@ -33,8 +33,8 @@ npm manifest:
       "fs": "^0.0.1-security",
       "install": "^0.11.0",
       "jquery": "^3.2.1",
+      "material-ui": "^0.20.0",
       "path": "^0.12.7",
-      "path-to-regexp": "^2.2.0",
       "react": "15.6.2",
       "react-components-form": "^2.3.4",
       "react-dom": "^15.5.4",
@@ -648,6 +648,13 @@ Lockfile:
       core-js "^2.4.0"
       regenerator-runtime "^0.10.0"
   
+  babel-runtime@^6.23.0, babel-runtime@^6.26.0:
+    version "6.26.0"
+    resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
+    dependencies:
+      core-js "^2.4.0"
+      regenerator-runtime "^0.11.0"
+  
   babel-template@^6.24.1:
     version "6.24.1"
     resolved "https://registry.yarnpkg.com/babel-template/-/babel-template-6.24.1.tgz#04ae514f1f93b3a2537f2a0f60a5a45fb8308333"
@@ -736,6 +743,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/boom/-/boom-2.10.1.tgz#39c8918ceff5799f83f9492a848f625add0c766f"
     dependencies:
       hoek "2.x.x"
+  
+  bowser@^1.7.3:
+    version "1.9.3"
+    resolved "https://registry.yarnpkg.com/bowser/-/bowser-1.9.3.tgz#6643ae4d783f31683f6d23156976b74183862162"
   
   brace-expansion@^1.1.7:
     version "1.1.7"
@@ -885,6 +896,10 @@ Lockfile:
       has-ansi "^2.0.0"
       strip-ansi "^3.0.0"
       supports-color "^2.0.0"
+  
+  change-emitter@^0.1.2:
+    version "0.1.6"
+    resolved "https://registry.yarnpkg.com/change-emitter/-/change-emitter-0.1.6.tgz#e8b2fe3d7f1ab7d69a32199aff91ea6931409515"
   
   chokidar@^1.4.3:
     version "1.7.0"
@@ -1070,6 +1085,13 @@ Lockfile:
       pbkdf2 "^3.0.3"
       public-encrypt "^4.0.0"
       randombytes "^2.0.0"
+  
+  css-in-js-utils@^2.0.0:
+    version "2.0.1"
+    resolved "https://registry.yarnpkg.com/css-in-js-utils/-/css-in-js-utils-2.0.1.tgz#3b472b398787291b47cfe3e44fecfdd9e914ba99"
+    dependencies:
+      hyphenate-style-name "^1.0.2"
+      isobject "^3.0.1"
   
   cyclist@~0.2.2:
     version "0.2.2"
@@ -1262,7 +1284,7 @@ Lockfile:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
   
-  fbjs@^0.8.16, fbjs@^0.8.9:
+  fbjs@^0.8.1, fbjs@^0.8.16, fbjs@^0.8.9:
     version "0.8.16"
     resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
     dependencies:
@@ -1540,6 +1562,10 @@ Lockfile:
     version "1.2.0"
     resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
   
+  hoist-non-react-statics@^2.3.1:
+    version "2.5.0"
+    resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
+  
   home-or-tmp@^2.0.0:
     version "2.0.0"
     resolved "https://registry.yarnpkg.com/home-or-tmp/-/home-or-tmp-2.0.0.tgz#e36c3f2d2cae7d746a857e38d18d5f32a7882db8"
@@ -1562,6 +1588,10 @@ Lockfile:
   https-browserify@0.0.1:
     version "0.0.1"
     resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-0.0.1.tgz#3f91365cabe60b77ed0ebba24b454e3e09d95a82"
+  
+  hyphenate-style-name@^1.0.2:
+    version "1.0.2"
+    resolved "https://registry.yarnpkg.com/hyphenate-style-name/-/hyphenate-style-name-1.0.2.tgz#31160a36930adaf1fc04c6074f7eb41465d4ec4b"
   
   iconv-lite@~0.4.13:
     version "0.4.21"
@@ -1603,6 +1633,13 @@ Lockfile:
   ini@~1.3.0:
     version "1.3.4"
     resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.4.tgz#0537cb79daf59b59a1a517dff706c86ec039162e"
+  
+  inline-style-prefixer@^3.0.8:
+    version "3.0.8"
+    resolved "https://registry.yarnpkg.com/inline-style-prefixer/-/inline-style-prefixer-3.0.8.tgz#8551b8e5b4d573244e66a34b04f7d32076a2b534"
+    dependencies:
+      bowser "^1.7.3"
+      css-in-js-utils "^2.0.0"
   
   install@^0.11.0:
     version "0.11.0"
@@ -1718,6 +1755,10 @@ Lockfile:
     dependencies:
       isarray "1.0.0"
   
+  isobject@^3.0.1:
+    version "3.0.1"
+    resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
+  
   isomorphic-fetch@^2.1.1:
     version "2.2.1"
     resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
@@ -1798,6 +1839,10 @@ Lockfile:
       json-schema "0.2.3"
       verror "1.3.6"
   
+  keycode@^2.1.8:
+    version "2.2.0"
+    resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.0.tgz#3d0af56dc7b8b8e5cba8d0a97f107204eec22b04"
+  
   kind-of@^3.0.2:
     version "3.2.0"
     resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.0.tgz#b58abe4d5c044ad33726a8c1525b48cf891bff07"
@@ -1856,6 +1901,14 @@ Lockfile:
     version "4.17.4"
     resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.4.tgz#dcc1d7552e150a0640073ba9cb31d70f032950e7"
   
+  lodash.merge@^4.6.0:
+    version "4.6.1"
+    resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
+  
+  lodash.throttle@^4.1.1:
+    version "4.1.1"
+    resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  
   lodash@^4.14.0, lodash@^4.2.0, lodash@^4.2.1:
     version "4.17.4"
     resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
@@ -1882,6 +1935,22 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.2.0.tgz#6d6a49eead4aae296c53bbf3a1a008bd6c89469b"
     dependencies:
       pify "^3.0.0"
+  
+  material-ui@^0.20.0:
+    version "0.20.0"
+    resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-0.20.0.tgz#85411bb59c916c9c7703f29dcffc44e3a67d5111"
+    dependencies:
+      babel-runtime "^6.23.0"
+      inline-style-prefixer "^3.0.8"
+      keycode "^2.1.8"
+      lodash.merge "^4.6.0"
+      lodash.throttle "^4.1.1"
+      prop-types "^15.5.7"
+      react-event-listener "^0.5.1"
+      react-transition-group "^1.2.1"
+      recompose "^0.26.0"
+      simple-assign "^0.1.0"
+      warning "^3.0.0"
   
   memory-fs@^0.4.0, memory-fs@~0.4.1:
     version "0.4.1"
@@ -2206,10 +2275,6 @@ Lockfile:
     dependencies:
       isarray "0.0.1"
   
-  path-to-regexp@^2.2.0:
-    version "2.2.0"
-    resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-2.2.0.tgz#80f0ff45c1e0e641da74df313644eaf115050972"
-  
   path-type@^1.0.0:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/path-type/-/path-type-1.1.0.tgz#59c44f7ee491da704da415da5a4070ba4f8fe441"
@@ -2318,7 +2383,7 @@ Lockfile:
     dependencies:
       asap "~2.0.3"
   
-  prop-types@^15.5.10:
+  prop-types@^15.5.10, prop-types@^15.6.0:
     version "15.6.1"
     resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
     dependencies:
@@ -2460,6 +2525,15 @@ Lockfile:
       object-assign "^4.1.0"
       prop-types "^15.5.10"
   
+  react-event-listener@^0.5.1:
+    version "0.5.3"
+    resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.5.3.tgz#a8b492596ad601865314fcc2c18cb87b6ce3876e"
+    dependencies:
+      babel-runtime "^6.26.0"
+      fbjs "^0.8.16"
+      prop-types "^15.6.0"
+      warning "^3.0.0"
+  
   react-input-autosize@^1.1.3:
     version "1.1.4"
     resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-1.1.4.tgz#cbc45072d4084ddc57806db8e3b34e644b8366ac"
@@ -2513,6 +2587,16 @@ Lockfile:
     dependencies:
       chain-function "^1.0.0"
       dom-helpers "^3.2.0"
+      prop-types "^15.5.6"
+      warning "^3.0.0"
+  
+  react-transition-group@^1.2.1:
+    version "1.2.1"
+    resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-1.2.1.tgz#e11f72b257f921b213229a774df46612346c7ca6"
+    dependencies:
+      chain-function "^1.0.0"
+      dom-helpers "^3.2.0"
+      loose-envify "^1.3.1"
       prop-types "^15.5.6"
       warning "^3.0.0"
   
@@ -2583,6 +2667,15 @@ Lockfile:
       readable-stream "^2.0.2"
       set-immediate-shim "^1.0.1"
   
+  recompose@^0.26.0:
+    version "0.26.0"
+    resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.26.0.tgz#9babff039cb72ba5bd17366d55d7232fbdfb2d30"
+    dependencies:
+      change-emitter "^0.1.2"
+      fbjs "^0.8.1"
+      hoist-non-react-statics "^2.3.1"
+      symbol-observable "^1.0.4"
+  
   redux@^3.7.2:
     version "3.7.2"
     resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
@@ -2599,6 +2692,10 @@ Lockfile:
   regenerator-runtime@^0.10.0:
     version "0.10.5"
     resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
+  
+  regenerator-runtime@^0.11.0:
+    version "0.11.1"
+    resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
   
   regenerator-transform@0.9.11:
     version "0.9.11"
@@ -2730,8 +2827,8 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
   
   safer-buffer@^2.1.0:
-    version "2.1.1"
-    resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.1.tgz#2e945f82c9a380e8e3b7c1a1bc21c976bb49f3ea"
+    version "2.1.2"
+    resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   
   schema-utils@^0.4.5:
     version "0.4.5"
@@ -2784,6 +2881,10 @@ Lockfile:
   signal-exit@^3.0.0:
     version "3.0.2"
     resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
+  
+  simple-assign@^0.1.0:
+    version "0.1.0"
+    resolved "https://registry.yarnpkg.com/simple-assign/-/simple-assign-0.1.0.tgz#17fd3066a5f3d7738f50321bb0f14ca281cc4baa"
   
   simple-get@^1.4.2:
     version "1.4.3"
@@ -2945,6 +3046,10 @@ Lockfile:
   symbol-observable@^1.0.3:
     version "1.1.0"
     resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.1.0.tgz#5c68fd8d54115d9dfb72a84720549222e8db9b32"
+  
+  symbol-observable@^1.0.4:
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
   
   tapable@^0.2.5, tapable@~0.2.5:
     version "0.2.6"
@@ -3294,10 +3399,8 @@ Lockfile:
       window-size "0.1.0"
 
 Trace: 
-  Error: This module isn't specified in a manifest.
-      at new MessageError (/usr/share/yarn/lib/cli.js:186:110)
-      at Object.<anonymous> (/usr/share/yarn/lib/cli.js:60445:15)
-      at Generator.next (<anonymous>)
-      at step (/usr/share/yarn/lib/cli.js:98:30)
-      at /usr/share/yarn/lib/cli.js:109:13
-      at <anonymous>
+  Error: https://registry.yarnpkg.com/babel-core: ETIMEDOUT
+      at Timeout._onTimeout (/usr/share/yarn/lib/cli.js:133094:19)
+      at ontimeout (timers.js:482:11)
+      at tryOnTimeout (timers.js:317:5)
+      at Timer.listOnTimeout (timers.js:277:5)

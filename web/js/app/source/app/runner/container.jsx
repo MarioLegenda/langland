@@ -26,9 +26,9 @@ export class LessonRunnerContainer extends React.Component {
 
             data.json_lesson = JSON.parse(data.json_lesson);
 
-            this.setState(prevState => {
-                prevState.learningLesson = data;
-            })
+            this.setState({
+                learningLesson: data
+            });
         }, this));
     }
 

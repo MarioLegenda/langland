@@ -69,7 +69,9 @@ class Item extends React.Component {
 
     next(e) {
         if (!this.answers.hasOwnProperty(e.target.dataset.type)) {
-            this.setState((prevState) => prevState.error.showError = true);
+            this.setState({
+                error: {showError: true}
+            });
 
             e.preventDefault();
 
@@ -80,14 +82,18 @@ class Item extends React.Component {
             const answer = this.answers[e.target.dataset.type];
 
             if (answer.length === 0) {
-                this.setState((prevState) => prevState.error.showError = true);
+                this.setState({
+                    error: {showError: true}
+                });
 
                 e.preventDefault();
 
                 return false;
             }
 
-            this.setState((prevState) => prevState.error.showError = false);
+            this.setState({
+                error: {showError: false}
+            });
         }
 
         this.props.nextItem();
@@ -188,8 +194,8 @@ export class QuestionsContainer extends React.Component {
 
     componentDidMount() {
         this.learningUserRepository.getQuestions($.proxy(function(data) {
-            this.setState( (prevState) => {
-                prevState.items = data.collection.data;
+            this.setState({
+                items: data.collection.data
             });
         }, this));
     }
@@ -227,24 +233,26 @@ export class QuestionsContainer extends React.Component {
                                         }, this));
                                     }, this));
 
-                                    this.setState((prevState) => prevState.stopRendering = true);
+                                    this.setState({stopRendering: true});
                                 }, this), $.proxy(function() {
-                                    this.setState((prevState) => prevState.error.message = 'An error occurred. Please, fill in the questions again. We apologize for this mistake');
-                                    this.setState((prevState) => ({
+                                    this.setState({
+                                        error: {message: 'An error occurred. Please, fill in the questions again. We apologize for this mistake'}
+                                    });
+                                    this.setState({
                                         counter: 0
-                                    }));
+                                    });
                                 }, this));
                         } else {
-                            this.setState((prevState) => ({
-                                counter: ++prevState.counter
-                            }));
+                            this.setState((prevState) => {
+                                return {counter: ++prevState.counter}
+                            });
                         }
 
                         break;
                     case 'onPrevClick':
-                        this.setState((prevState) => ({
-                            counter: --prevState.counter
-                        }));
+                        this.setState((prevState) => {
+                            return {counter: --prevState.counter}
+                        });
 
                         break;
                 }

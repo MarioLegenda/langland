@@ -33,8 +33,8 @@ export class LessonPresentationContainer extends React.Component {
 
     componentDidMount() {
         this.metadataPresentationRepository.getLearningLessonPresentation($.proxy(function(data) {
-            this.setState((prevState) => {
-                prevState.items = data.collection;
+            this.setState({
+                items: data.collection
             });
 
             this._handleMenuHeight();

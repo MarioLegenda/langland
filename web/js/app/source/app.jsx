@@ -26,8 +26,8 @@ export class App extends React.Component {
                     let comp = this.componentOrder[i];
                     if (components.hasOwnProperty(comp)) {
                         if (components[comp] === false) {
-                            this.setState((prevState) => {
-                                prevState.currentComponent = comp;
+                            this.setState({
+                                currentComponent: comp
                             });
 
                             break;
@@ -36,8 +36,8 @@ export class App extends React.Component {
                 }
             }, this));
         } else {
-            this.setState((prevState) => {
-                prevState.currentComponent = manualComponent;
+            this.setState({
+                currentComponent: manualComponent,
             });
         }
     }

@@ -29248,7 +29248,9 @@ var Header = exports.Header = function (_React$Component) {
             var isFetchingAllLanguages = _events.store.getState().language.isFetchingAll;
 
             _this.setState(function (prevState) {
-                prevState.areLanguagesFetched = isFetchingAllLanguages;
+                return {
+                    areLanguagesFetched: isFetchingAllLanguages
+                };
             });
         });
         return _this;
@@ -30058,8 +30060,10 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
                 _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(false));
                 _events.store.dispatch((0, _events.languagesFetched)(data));
 
-                prevState.items = languages;
-                prevState.itemsData = data;
+                return {
+                    items: languages,
+                    itemsData: data
+                };
             });
         }
     }, {
@@ -30095,8 +30099,10 @@ var LanguageList = exports.LanguageList = function (_React$Component2) {
                 _events.store.dispatch((0, _events.fetchAllLanguagesInProgress)(false));
                 _events.store.dispatch((0, _events.languagesFetched)(data));
 
-                prevState.items = languages;
-                prevState.itemsData = data;
+                return {
+                    items: languages,
+                    itemsData: data
+                };
             });
         }
     }, {
@@ -30467,32 +30473,24 @@ var App = exports.App = function (_React$Component) {
 
             if (manualComponent === null) {
                 this.learningUserRepository.getDynamicComponentsStatus($.proxy(function (data) {
-                    var _this2 = this;
-
                     var components = data.resource.data;
 
-                    var _loop = function _loop(i) {
-                        var comp = _this2.componentOrder[i];
+                    for (var i = 0; i < this.componentOrder.length; i++) {
+                        var comp = this.componentOrder[i];
                         if (components.hasOwnProperty(comp)) {
                             if (components[comp] === false) {
-                                _this2.setState(function (prevState) {
-                                    prevState.currentComponent = comp;
+                                this.setState({
+                                    currentComponent: comp
                                 });
 
-                                return "break";
+                                break;
                             }
                         }
-                    };
-
-                    for (var i = 0; i < this.componentOrder.length; i++) {
-                        var _ret = _loop(i);
-
-                        if (_ret === "break") break;
                     }
                 }, this));
             } else {
-                this.setState(function (prevState) {
-                    prevState.currentComponent = manualComponent;
+                this.setState({
+                    currentComponent: manualComponent
                 });
             }
         }
@@ -30732,8 +30730,8 @@ var LanguageInfo = exports.LanguageInfo = function (_React$Component2) {
         key: '_fetchLanguageInfo',
         value: function _fetchLanguageInfo() {
             this.languageRepository.getLanguageInfo(this.languageId, $.proxy(function (data) {
-                this.setState(function (prevState) {
-                    prevState.texts = data.resource.data.texts;
+                this.setState({
+                    texts: data.resource.data.texts
                 });
             }, this));
         }
@@ -30940,8 +30938,8 @@ var Item = function (_React$Component) {
         key: "next",
         value: function next(e) {
             if (!this.answers.hasOwnProperty(e.target.dataset.type)) {
-                this.setState(function (prevState) {
-                    return prevState.error.showError = true;
+                this.setState({
+                    error: { showError: true }
                 });
 
                 e.preventDefault();
@@ -30953,8 +30951,8 @@ var Item = function (_React$Component) {
                 var answer = this.answers[e.target.dataset.type];
 
                 if (answer.length === 0) {
-                    this.setState(function (prevState) {
-                        return prevState.error.showError = true;
+                    this.setState({
+                        error: { showError: true }
                     });
 
                     e.preventDefault();
@@ -30962,8 +30960,8 @@ var Item = function (_React$Component) {
                     return false;
                 }
 
-                this.setState(function (prevState) {
-                    return prevState.error.showError = false;
+                this.setState({
+                    error: { showError: false }
                 });
             }
 
@@ -31098,8 +31096,8 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
         key: "componentDidMount",
         value: function componentDidMount() {
             this.learningUserRepository.getQuestions($.proxy(function (data) {
-                this.setState(function (prevState) {
-                    prevState.items = data.collection.data;
+                this.setState({
+                    items: data.collection.data
                 });
             }, this));
         }
@@ -31141,33 +31139,25 @@ var QuestionsContainer = exports.QuestionsContainer = function (_React$Component
                                         }, this));
                                     }, this));
 
-                                    this.setState(function (prevState) {
-                                        return prevState.stopRendering = true;
-                                    });
+                                    this.setState({ stopRendering: true });
                                 }, this), $.proxy(function () {
-                                    this.setState(function (prevState) {
-                                        return prevState.error.message = 'An error occurred. Please, fill in the questions again. We apologize for this mistake';
+                                    this.setState({
+                                        error: { message: 'An error occurred. Please, fill in the questions again. We apologize for this mistake' }
                                     });
-                                    this.setState(function (prevState) {
-                                        return {
-                                            counter: 0
-                                        };
+                                    this.setState({
+                                        counter: 0
                                     });
                                 }, this));
                             } else {
                                 this.setState(function (prevState) {
-                                    return {
-                                        counter: ++prevState.counter
-                                    };
+                                    return { counter: ++prevState.counter };
                                 });
                             }
 
                             break;
                         case 'onPrevClick':
                             this.setState(function (prevState) {
-                                return {
-                                    counter: --prevState.counter
-                                };
+                                return { counter: --prevState.counter };
                             });
 
                             break;
@@ -31286,8 +31276,8 @@ var MainAppContainer = exports.MainAppContainer = function (_React$Component) {
                 var appState = _events.store.getState().app;
 
                 if (appState.mainAppLoaded) {
-                    _this2.setState(function (prevState) {
-                        prevState.actions = appState;
+                    _this2.setState({
+                        actions: appState
                     });
                 }
 
@@ -31534,8 +31524,8 @@ var LessonPresentationContainer = exports.LessonPresentationContainer = function
         key: "componentDidMount",
         value: function componentDidMount() {
             this.metadataPresentationRepository.getLearningLessonPresentation($.proxy(function (data) {
-                this.setState(function (prevState) {
-                    prevState.items = data.collection;
+                this.setState({
+                    items: data.collection
                 });
 
                 this._handleMenuHeight();
@@ -31940,8 +31930,8 @@ var LessonRunnerContainer = exports.LessonRunnerContainer = function (_React$Com
 
                 data.json_lesson = JSON.parse(data.json_lesson);
 
-                this.setState(function (prevState) {
-                    prevState.learningLesson = data;
+                this.setState({
+                    learningLesson: data
                 });
             }, this));
         }

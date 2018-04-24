@@ -65,8 +65,8 @@ export class LanguageInfo extends React.Component {
 
     _fetchLanguageInfo() {
         this.languageRepository.getLanguageInfo(this.languageId, $.proxy(function(data) {
-            this.setState(function(prevState) {
-                prevState.texts = data.resource.data.texts;
+            this.setState({
+                texts: data.resource.data.texts,
             });
         }, this));
     }

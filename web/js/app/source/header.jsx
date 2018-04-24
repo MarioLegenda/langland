@@ -20,7 +20,9 @@ export class Header extends React.Component {
             const isFetchingAllLanguages = store.getState().language.isFetchingAll;
 
             this.setState((prevState) => {
-                prevState.areLanguagesFetched = isFetchingAllLanguages;
+                return {
+                    areLanguagesFetched: isFetchingAllLanguages
+                };
             });
         });
     }

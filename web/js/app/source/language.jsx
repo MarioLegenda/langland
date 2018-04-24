@@ -99,8 +99,10 @@ export class LanguageList extends React.Component{
             store.dispatch(fetchAllLanguagesInProgress(false));
             store.dispatch(languagesFetched(data));
 
-            prevState.items = languages;
-            prevState.itemsData = data;
+            return {
+                items: languages,
+                itemsData: data,
+            };
         });
     }
 
@@ -133,8 +135,10 @@ export class LanguageList extends React.Component{
             store.dispatch(fetchAllLanguagesInProgress(false));
             store.dispatch(languagesFetched(data));
 
-            prevState.items = languages;
-            prevState.itemsData = data;
+            return {
+                items: languages,
+                itemsData: data,
+            };
         });
     }
 

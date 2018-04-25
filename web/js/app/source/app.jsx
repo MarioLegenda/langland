@@ -56,14 +56,13 @@ export class App extends React.Component {
         }
 
         const currentComponent = this.state.currentComponent;
-        const languageId = this.props.match.params.languageId;
+        const languageId = this.props.match.match.params.languageId;
 
         return <div className="app-wrapper">
             <ComponentFactory
                 languageId={languageId}
                 currentComponent={currentComponent}
                 componentChange={this.componentChange}
-                match={this.props.match}
             />
         </div>
     }

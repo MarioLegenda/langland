@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {UrlRecorder} from "./tool/util.js";
 
 import {factory as repoFactory} from "./repository/factory.js";
 import {
@@ -79,7 +80,9 @@ export class LanguageList extends React.Component{
     registerLanguage(language) {
         this._updateItems(language.id);
         this.learningUserRepository.registerLearningUser(language.id, $.proxy(function() {
-            this.props.history.push(language.urls.frontend_url);
+            UrlRecorder.record('language-list', language.urls.frontend_url);
+
+            this.props.match.history.push(language.urls.frontend_url);
         }, this));
     }
 
@@ -89,7 +92,7 @@ export class LanguageList extends React.Component{
                 return <Item
                     key={i}
                     language={language}
-                    history={this.props.history}
+                    history={this.props.match.history}
                     registerLanguage={this.registerLanguage}
                 />;
             });
@@ -107,7 +110,7 @@ export class LanguageList extends React.Component{
     _updateItems(languageId) {
         let data = this.state.itemsData;
 
-        this.setState((prevState) => {
+        this.setState(() => {
             const languages = data.map((language, i) => {
                 if (language.id === languageId) {
                     language.alreadyLearning = true;
@@ -116,7 +119,7 @@ export class LanguageList extends React.Component{
                         key={i}
                         language={language}
                         isInsideRegistration={true}
-                        history={this.props.history}
+                        history={this.props.match.history}
                         registerLanguage={this.registerLanguage}
                     />;
                 }
@@ -125,7 +128,7 @@ export class LanguageList extends React.Component{
                     key={i}
                     language={language}
                     isInsideRegistration={false}
-                    history={this.props.history}
+                    history={this.props.match.history}
                     registerLanguage={this.registerLanguage}
                 />;
             });

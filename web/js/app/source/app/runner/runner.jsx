@@ -8,6 +8,8 @@ import {
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
+import {Link} from 'react-router-dom';
+import {env} from "../../../../global/constants.js";
 
 export class LessonRunner extends React.Component {
     constructor(props) {
@@ -21,7 +23,15 @@ export class LessonRunner extends React.Component {
         };
     }
 
+    _hasFinished() {
+        return this.state.stepIndex === (this.props.item.json_lesson.lessonTexts.length - 1);
+    }
+
     handleNext() {
+        if (this._hasFinished()) {
+            return;
+        }
+
         const {stepIndex} = this.state;
         this.setState({
             stepIndex: stepIndex + 1,
@@ -42,6 +52,7 @@ export class LessonRunner extends React.Component {
     render() {
         const stepIndex = this.state.stepIndex;
         const lessonTexts = this.props.item.json_lesson.lessonTexts;
+        const lessonLanguageUrl = this.props.item.lesson_language_url;
 
         let steps = [];
 
@@ -59,6 +70,7 @@ export class LessonRunner extends React.Component {
             <MuiThemeProvider>
 
                 <div className="runner">
+                    <Link to={env.current + lessonLanguageUrl}>Quit lesson</Link>
                     <Stepper linear={false} activeStep={stepIndex}>
                         {steps}
                     </Stepper>
@@ -75,7 +87,7 @@ export class LessonRunner extends React.Component {
 
                                 <RaisedButton
                                     backgroundColor="orange"
-                                    label="Next"
+                                    label={(this._hasFinished()) ? 'Finish' : 'Next'}
                                     primary={true}
                                     onClick={this.handleNext}
                                     style={{float: "right"}}
@@ -84,6 +96,7 @@ export class LessonRunner extends React.Component {
                         </div>
                     </div>
                 </div>
+
             </MuiThemeProvider>
         </div>
     }

@@ -1,4 +1,28 @@
-import React from 'react';
+class UrlRecorderClass {
+    constructor() {
+        this.urlRecord = {};
+    }
+
+    static create() {
+
+    }
+
+    record(name, value) {
+        this.urlRecord[name] = value;
+    }
+
+    getRecord(name) {
+        if (!this.urlRecord.hasOwnProperty('language-list')) {
+            throw new Error(`Url record with name ${name} does not exist`);
+        }
+
+        return this.urlRecord[name];
+    }
+}
+
+const urlRecorder = new UrlRecorderClass();
+
+export const UrlRecorder = urlRecorder;
 
 export class Util {
     static isString(value) {

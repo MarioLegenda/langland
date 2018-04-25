@@ -98,6 +98,10 @@ class LearningMetadataImplementation
     public function getLearningLessonById(int $id): array
     {
         $learningLessonData = $this->learningMetadataRepository->getLearningLessonById($id);
+        
+        $language = $this->languageProvider->getLanguage();
+        
+        $learningLessonData['lesson_language_url'] = sprintf('langland/language/%s/%d', $language->getName(), $language->getId());
 
         return $this->apiSdk
             ->create($learningLessonData)

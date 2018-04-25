@@ -116,7 +116,7 @@ class LearningMetadataRepository extends BaseBlueDotRepository
             'backend_url' => $this->router->generate('get_learning_lesson_by_id', [
                 'id' => $data['id'],
             ]),
-            'frontend_url' => sprintf('langland/lesson/%s/%d', $lessonName, $data['id'])
+            'frontend_url' => sprintf('langland/lesson/%s/%d', $lessonName, $data['learning_lesson_id'])
         ];
 
         $this->blueDot->useRepository('presentation');

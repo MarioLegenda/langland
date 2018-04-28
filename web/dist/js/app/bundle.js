@@ -5945,6 +5945,9 @@ var InitApp = function (_React$Component) {
             this.components.lessonRunner = function (match) {
                 return _react2.default.createElement(_container.LessonRunnerContainer, { match: match });
             };
+            this.components.gameRunner = function (match) {
+                return _react2.default.createElement(_container.GameRunnerContainer, { match: match });
+            };
         }
     }, {
         key: 'render',
@@ -5964,7 +5967,7 @@ var InitApp = function (_React$Component) {
                         _react2.default.createElement(_reactRouterDom.Route, { exact: true, path: _constants.env.current + "langland", render: this.components.langList }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/lesson/:lessonName/:learningLessonId", render: this.components.lessonRunner }),
                         _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/language/:language/:languageId", render: this.components.presentation }),
-                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/game/:gameId" })
+                        _react2.default.createElement(_reactRouterDom.Route, { path: _constants.env.current + "langland/game/:gameId", render: this.components.gameRunner })
                     )
                 )
             );
@@ -31843,7 +31846,7 @@ var GamePresentationItem = function GamePresentationItem(props) {
         _react2.default.createElement(
             _reactRouterDom.Link,
             { to: props.url, className: "learn-button" },
-            "Learn ",
+            "Play ",
             _react2.default.createElement("i", { className: "learn-button-icon fa fa-angle-right" })
         )
     );
@@ -31864,6 +31867,7 @@ var Game = exports.Game = function (_React$Component) {
     _createClass(Game, [{
         key: "_createPresentationItem",
         value: function _createPresentationItem(item) {
+            console.log(item);
             var url = _constants.env.current + ("langland/game/" + item.id);
 
             return _react2.default.createElement(GamePresentationItem, { item: item, url: url });
@@ -31994,7 +31998,7 @@ var GamesPresentationContainer = exports.GamesPresentationContainer = function (
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LessonRunnerContainer = undefined;
+exports.GameRunnerContainer = exports.LessonRunnerContainer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -32065,6 +32069,31 @@ var LessonRunnerContainer = exports.LessonRunnerContainer = function (_React$Com
     }]);
 
     return LessonRunnerContainer;
+}(_react2.default.Component);
+
+var GameRunnerContainer = exports.GameRunnerContainer = function (_React$Component2) {
+    _inherits(GameRunnerContainer, _React$Component2);
+
+    function GameRunnerContainer(props) {
+        _classCallCheck(this, GameRunnerContainer);
+
+        var _this2 = _possibleConstructorReturn(this, (GameRunnerContainer.__proto__ || Object.getPrototypeOf(GameRunnerContainer)).call(this, props));
+
+        console.log('Running game runner');
+        return _this2;
+    }
+
+    _createClass(GameRunnerContainer, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {}
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement("div", null);
+        }
+    }]);
+
+    return GameRunnerContainer;
 }(_react2.default.Component);
 
 /***/ }),

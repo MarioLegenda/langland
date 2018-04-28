@@ -14,7 +14,7 @@ const GamePresentationItem = (props) => {
 
         <PresentationStatistics item={props.item}/>
 
-        <Link to={props.url} className="learn-button">Learn <i className="learn-button-icon fa fa-angle-right"></i></Link>
+        <Link to={props.url} className="learn-button">Play <i className="learn-button-icon fa fa-angle-right"></i></Link>
     </div>;
 };
 
@@ -26,6 +26,7 @@ export class Game extends React.Component {
     }
 
     _createPresentationItem(item) {
+        console.log(item);
         const url = env.current + `langland/game/${item.id}`;
 
         return <GamePresentationItem item={item} url={url} />

@@ -9,7 +9,7 @@ import {App} from "./source/app.jsx";
 import {factory as repoFactory} from "./source/repository/factory.js";
 import {store} from "./source/events/events";
 
-import {LessonRunnerContainer} from "./source/app/runner/container.jsx";
+import {LessonRunnerContainer, GameRunnerContainer} from "./source/app/runner/container.jsx";
 
 class InitApp extends React.Component {
     constructor(props) {
@@ -39,7 +39,8 @@ class InitApp extends React.Component {
         this.components.langList = (match) => <LanguageList match={match}/>;
         this.components.presentation = (match) => <App match={match}/>;
         this.components.header = <Header/>;
-        this.components.lessonRunner = (match) => <LessonRunnerContainer match={match}/>
+        this.components.lessonRunner = (match) => <LessonRunnerContainer match={match}/>;
+        this.components.gameRunner = (match) => <GameRunnerContainer match={match}/>;
     }
 
     render() {
@@ -53,7 +54,7 @@ class InitApp extends React.Component {
                         <Route exact path={env.current + "langland"} render={this.components.langList} />
                         <Route path={env.current + "langland/lesson/:lessonName/:learningLessonId"} render={this.components.lessonRunner}/>
                         <Route path={env.current + "langland/language/:language/:languageId"} render={this.components.presentation} />
-                        <Route path={env.current + "langland/game/:gameId"} />
+                        <Route path={env.current + "langland/game/:gameId"} render={this.components.gameRunner}/>
                     </Switch>
                 </div>
             </Router>

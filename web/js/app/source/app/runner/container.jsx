@@ -41,3 +41,19 @@ export class LessonRunnerContainer extends React.Component {
         </div>
     }
 }
+
+export class GameRunnerContainer extends React.Component {
+    constructor(props) {
+        super(props);
+
+        console.log('Running game runner');
+    }
+
+    componentDidMount() {
+
+    }
+
+    render() {
+        return <div></div>
+    }
+}

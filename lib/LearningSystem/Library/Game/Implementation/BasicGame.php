@@ -11,19 +11,26 @@ class BasicGame implements GameInterface
      */
     private $name;
     /**
+     * @var string $type
+     */
+    private $type;
+    /**
      * @var ProvidedDataInterface $gameData
      */
     private $gameData;
     /**
      * BasicGame constructor.
      * @param string $name
+     * @param string $type
      * @param ProvidedDataInterface $gameData
      */
     public function __construct(
         string $name,
+        string $type,
         ProvidedDataInterface $gameData
     ) {
         $this->name = $name;
+        $this->type = $type;
         $this->gameData = $gameData;
     }
     /**
@@ -39,5 +46,12 @@ class BasicGame implements GameInterface
     public function getName(): string
     {
         return $this->name;
+    }
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
     }
 }

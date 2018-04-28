@@ -14,8 +14,8 @@ export class InnerItem extends React.Component {
     }
 
     displayPresentationItem(item) {
-        this.setState((prevState) => {
-            prevState.presentationItem = item;
+        this.setState({
+            presentationItem: item
         });
     }
 

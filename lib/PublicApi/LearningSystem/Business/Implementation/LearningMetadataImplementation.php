@@ -49,9 +49,12 @@ class LearningMetadataImplementation
      */
     public function createLearningMetadata(): array
     {
+        $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
+        $languageId = $this->languageProvider->getLanguage()->getId();
+
         return $this->learningMetadataRepository->createLearningMetadata(
-            $this->languageProvider->getLanguage()->getId(),
-            $this->learningUserProvider->getLearningUser()->getId()
+            $languageId,
+            $learningUserId
         );
     }
     /**
@@ -59,9 +62,12 @@ class LearningMetadataImplementation
      */
     public function getLearningLessonPresentation(): array
     {
+        $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
+        $languageId = $this->languageProvider->getLanguage()->getId();
+
         $presentation = $this->learningMetadataRepository->getLearningLessonPresentation(
-            $this->learningUserProvider->getLearningUser()->getId(),
-            $this->languageProvider->getLanguage()->getId()
+            $learningUserId,
+            $languageId
         );
 
         return $this->apiSdk
@@ -77,9 +83,12 @@ class LearningMetadataImplementation
      */
     public function getLearningGamesPresentation(): array
     {
+        $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
+        $languageId = $this->languageProvider->getLanguage()->getId();
+
         $presentation = $this->learningMetadataRepository->getLearningGamesPresentation(
-            $this->learningUserProvider->getLearningUser()->getId(),
-            $this->languageProvider->getLanguage()->getId()
+            $learningUserId,
+            $languageId
         );
 
         return $this->apiSdk

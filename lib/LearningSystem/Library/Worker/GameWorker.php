@@ -41,8 +41,12 @@ class GameWorker
         $gameType = $decidedData['game_type'];
         $data = $decidedData['data'];
 
-        if ((string) $gameType === BasicGameType::getName()) {
-            return new BasicGame(BasicGameType::getName(), $data);
+        if ((string) $gameType === BasicGameType::getType()) {
+            return new BasicGame(
+                BasicGameType::getName(),
+                BasicGameType::getType(),
+                $data
+            );
         }
     }
 }

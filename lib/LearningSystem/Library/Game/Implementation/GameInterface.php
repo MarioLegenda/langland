@@ -11,6 +11,10 @@ interface GameInterface
      */
     public function getName(): string;
     /**
+     * @return string
+     */
+    public function getType(): string;
+    /**
      * @return ProvidedDataInterface
      */
     public function getGameData(): ProvidedDataInterface;

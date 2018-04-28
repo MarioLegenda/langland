@@ -11,7 +11,7 @@ export class MetadataPresentationRepository {
     getLearningLessonPresentation(success, failure) {
         $.ajax({
             url: this.routes.get_learning_lesson_presentation,
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'X-LANGLAND-PUBLIC-API': user.current.username
             }
@@ -21,7 +21,7 @@ export class MetadataPresentationRepository {
     getLearningGamesPresentation(success, failure) {
         $.ajax({
             url: this.routes.get_learning_games_presentation,
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'X-LANGLAND-PUBLIC-API': user.current.username
             }

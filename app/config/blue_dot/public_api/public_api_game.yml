@@ -1,4 +1,10 @@
 configuration:
+    simple:
+        insert:
+            create_learning_game_data:
+                sql: "INSERT INTO learning_game_data (learning_game_challenge_id, data_id, created_at) VALUES (:learning_game_challenge_id, :data_id, CURDATE())"
+                parameters: [data_id, learning_game_challenge_id]
+
     scenario:
         remove_learning_game:
             atomic: true
@@ -21,22 +27,20 @@ configuration:
                 create_learning_game_data_collector:
                     sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count, created_at) VALUES (0, 0, 0, 0, 0, CURDATE())"
                 create_learning_game:
-                    sql: "INSERT INTO learning_games (data_collector_id, learning_user_id, learning_metadata_id, has_completed, created_at) VALUES (:data_collector_id, :learning_user_id, :learning_metadata_id, 0, CURDATE())"
-                    parameters: [learning_user_id, learning_metadata_id]
+                    sql: "INSERT INTO learning_games (name, type, data_collector_id, learning_user_id, learning_metadata_id, learning_lesson_id, has_completed, created_at) VALUES (:name, :type, :data_collector_id, :learning_user_id, :learning_metadata_id, :learning_lesson_id, 0, CURDATE())"
+                    parameters: [name, type, learning_lesson_id, learning_user_id, learning_metadata_id, learning_lesson_id]
                     foreign_key:
                         statement_names: [create_learning_game_data_collector]
                         bind_them_to: [data_collector_id]
+
+        create_learning_game_challenge:
+            atomic: true
+            statements:
                 create_game_challenge_data_collector:
                     sql: "INSERT INTO data_collector (has_completed, time_spent, accessed_count, completed_count, un_completed_count, created_at) VALUES (0, 0, 0, 0, 0, CURDATE())"
                 create_learning_game_challenge:
                     sql: "INSERT INTO learning_game_challenges (data_collector_id, learning_user_id, learning_game_id, created_at) VALUES (:data_collector_id, :learning_user_id, :learning_game_id, CURDATE())"
-                    parameters: [learning_user_id]
+                    parameters: [learning_user_id, learning_game_id]
                     foreign_key:
-                        statement_names: [create_game_challenge_data_collector, create_learning_game]
-                        bind_them_to: [data_collector_id, learning_game_id]
-                create_learning_game_data:
-                    sql: "INSERT INTO learning_game_data (name, learning_game_challenge_id, data_id, created_at) VALUES (:name, :learning_game_challenge_id, :data_id, CURDATE())"
-                    parameters: [name, data_id]
-                    foreign_key:
-                        statement_names: [create_learning_game_challenge]
-                        bind_them_to: [learning_game_challenge_id]
+                        statement_names: [create_game_challenge_data_collector]
+                        bind_them_to: [data_collector_id]

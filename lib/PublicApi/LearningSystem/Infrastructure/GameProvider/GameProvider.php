@@ -30,15 +30,17 @@ class GameProvider
     /**
      * @param $game
      * @param int $learningMetadataId
+     * @param int $learningLessonId
      */
-    public function createGame($game, int $learningMetadataId)
+    public function createGame($game, int $learningMetadataId, int $learningLessonId)
     {
         $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
 
         $this->gameRepository->createGame(
             $game,
             $learningUserId,
-            $learningMetadataId
+            $learningMetadataId,
+            $learningLessonId
         );
     }
 }

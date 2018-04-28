@@ -48,7 +48,7 @@ class InitialDataCreationImplementation
     ): array {
         $game = $this->gameWorker->createGame($learningMetadataId);
 
-        $this->gameProvider->createGame($game, $learningMetadataId);
+        $this->gameProvider->createGame($game, $learningMetadataId, $learningLessonId);
 
         return $this->apiSdk
             ->create([])

@@ -1,7 +1,6 @@
 import {factory} from "../repository/factory";
 
 import {OuterItem} from "./view/outerItem.jsx";
-import {Game} from "./view/game.jsx";
 
 import React from "react";
 
@@ -18,8 +17,8 @@ export class GamesPresentationContainer extends React.Component {
 
     componentDidMount() {
         this.metadataPresentationRepository.getLearningGamesPresentation($.proxy(function(data) {
-            this.setState((prevState) => {
-                prevState.items = data.collection;
+            this.setState({
+                items: data.collection
             });
         }, this), $.proxy(function() {
 
@@ -34,6 +33,8 @@ export class GamesPresentationContainer extends React.Component {
         }
 
         items = items.data.blocks.courses;
+
+        console.log(items);
 
         return <div className="menu-content animated fadeIn">
             <OuterItem items={items} type="game"/>

@@ -4,15 +4,24 @@ import {env} from "../../../../global/constants.js";
 
 import {
     store,
-    lessonStarted, handleMenuHeight
+    handleMenuHeight
 } from "../../events/events";
+
+const LessonPresentationItem = (props) => {
+    return <div className="animated fadeIn fadeOut presentation-item">
+        <h1>{props.item.name}</h1>
+
+        <p>{props.item.description}</p>
+
+        <Link to={props.url} className="learn-button">Learn <i className="learn-button-icon fa fa-angle-right"></i></Link>
+    </div>;
+};
 
 export class Lesson extends React.Component {
     constructor(props) {
         super(props);
 
         this.enterLesson = this.enterLesson.bind(this);
-        this.startLesson = this.startLesson.bind(this);
     }
 
     _makeClasses(item) {
@@ -43,17 +52,7 @@ export class Lesson extends React.Component {
     _createPresentationItem(item) {
         const url = env.current + `langland/lesson/${item.urlified_name}/${item.learning_lesson_id}`;
 
-        return <div className="animated fadeIn fadeOut presentation-item">
-            <h1>{item.name}</h1>
-
-            <p>{item.description}</p>
-
-            <Link to={url} onClick={this.startLesson} className="learn-button">Learn <i className="learn-button-icon fa fa-angle-right"></i></Link>
-        </div>;
-    }
-
-    startLesson() {
-        store.dispatch(lessonStarted(true));
+        return <LessonPresentationItem item={item} url={url}/>
     }
 
     enterLesson(e) {

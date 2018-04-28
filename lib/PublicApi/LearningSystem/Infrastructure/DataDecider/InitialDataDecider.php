@@ -54,7 +54,7 @@ class InitialDataDecider implements DataDeciderInterface
         ]);
 
         return [
-            'game_type' => BasicGameType::fromValue(BasicGameType::getName()),
+            'game_type' => BasicGameType::fromValue(BasicGameType::getType()),
             'data' => $dataCollection,
         ];
     }

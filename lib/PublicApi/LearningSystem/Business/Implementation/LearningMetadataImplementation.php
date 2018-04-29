@@ -119,4 +119,14 @@ class LearningMetadataImplementation
             ->setStatusCode(200)
             ->build();
     }
+    /**
+     * @param int $learningMetadataId
+     * @return array
+     */
+    public function getRunnableGameByLearningMetadataId(int $learningMetadataId): array
+    {
+        $learningGameData = $this->learningMetadataRepository->getRunnableGameByLearningMetadataId($learningMetadataId);
+
+
+    }
 }

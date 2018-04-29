@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const Uglify = require("uglifyjs-webpack-plugin");
 
 module.exports = {
-    entry: './../../js/app/entry.jsx',
+    entry: ['whatwg-fetch', './../../js/app/entry.jsx'],
     output: {
         path: path.resolve('../../dist/js/app'),
         filename: 'bundle.js'
@@ -29,28 +29,6 @@ module.exports = {
             'vue$': 'vue/dist/vue.esm.js' // 'vue/dist/vue.common.js' for webpack 1
         },
         extensions: ['*', '.js', '.vue', '.json']
-    },
-    optimization: {
-        splitChunks: {
-            chunks: "async",
-            minSize: 5000,
-            minChunks: 1,
-            maxAsyncRequests: 5,
-            maxInitialRequests: 3,
-            automaticNameDelimiter: '~',
-            name: true,
-            cacheGroups: {
-                vendors: {
-                    test: /[\\/]node_modules[\\/]/,
-                    priority: -10
-                },
-                default: {
-                    minChunks: 2,
-                    priority: -20,
-                    reuseExistingChunk: true
-                }
-            }
-        }
     }
 };
 

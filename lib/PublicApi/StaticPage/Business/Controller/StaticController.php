@@ -54,4 +54,15 @@ class StaticController
 
         return new Response($template);
     }
+    /**
+     * @Security("has_role('ROLE_USER')")
+     *
+     * @return Response
+     */
+    public function gameRunnerAction(): Response
+    {
+        $template = $this->templateWrapper->getTemplate('::App/Static/app.html.twig');
+
+        return new Response($template);
+    }
 }

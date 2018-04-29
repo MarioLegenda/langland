@@ -1,26 +1,16 @@
 configuration:
     simple:
+        select:
+            get_runnable_game:
+                sql: "SELECT lg.type, lg.data_collector_id, lg.learning_user_id, lg.learning_metadata_id, lg.learning_lesson_id, lg.has_completed, lgd.learning_game_challenge_id, lgd.data_id AS word_id FROM learning_games AS lg INNER JOIN learning_game_data AS lgd ON lg.learning_user_id = :learning_user_id AND lg.id = lgd.learning_game_id AND lg.learning_game_id = :learning_game_id"
+                parameters: [learning_game_id, learning_user_id]
+
         insert:
             create_learning_game_data:
-                sql: "INSERT INTO learning_game_data (learning_game_challenge_id, data_id, created_at) VALUES (:learning_game_challenge_id, :data_id, CURDATE())"
-                parameters: [data_id, learning_game_challenge_id]
+                sql: "INSERT INTO learning_game_data (learning_game_challenge_id, data_id, learning_game_id, created_at) VALUES (:learning_game_challenge_id, :data_id, :learning_game_id, CURDATE())"
+                parameters: [data_id, learning_game_challenge_id, learning_game_id]
 
     scenario:
-        remove_learning_game:
-            atomic: true
-            statements:
-                get_learning_game:
-                    sql: "SELECT data_collector_id FROM learning_games WHERE id = :learning_game_id"
-                    parameters: [learning_game_id]
-                remove_data_collector:
-                    sql: "DELETE FROM data_collector WHERE id = :data_collector_id"
-                    use:
-                        statement_name: get_learning_game
-                        values: { "get_learning_game.data_collector_id": data_collector_id}
-                remove_learning_game:
-                    sql: "DELETE FROM learning_games WHERE id = :learning_game_id"
-                    parameters: [learning_game_id]
-
         create_learning_game:
             atomic: true
             statements:
@@ -44,3 +34,7 @@ configuration:
                     foreign_key:
                         statement_names: [create_game_challenge_data_collector]
                         bind_them_to: [data_collector_id]
+
+    service:
+        create_runnable_game:
+            class: PublicApi\LearningSystem\Infrastructure\BlueDot\BlueDotCallable\RunnableGamesService

@@ -79,7 +79,8 @@ class GameRepository extends BaseBlueDotRepository
 
         $this->blueDot->execute('simple.insert.create_learning_game_data', $this->createGameDataParameters(
             $data,
-            $gameChallengeInsertedIds
+            $gameChallengeInsertedIds,
+            $learningGameId
         ));
     }
     /**
@@ -106,11 +107,13 @@ class GameRepository extends BaseBlueDotRepository
     /**
      * @param ProvidedDataInterface $data
      * @param array $gameChallengeInsertedIds
+     * @param int $learningGameId
      * @return array
      */
     private function createGameDataParameters(
         ProvidedDataInterface $data,
-        array $gameChallengeInsertedIds
+        array $gameChallengeInsertedIds,
+        int $learningGameId
     ): array {
         $parameters = [];
         /** @var ProvidedDataInterface $item */
@@ -118,6 +121,7 @@ class GameRepository extends BaseBlueDotRepository
             $parameters[] = [
                 'data_id' => $item->getField('id'),
                 'learning_game_challenge_id' => $gameChallengeInsertedIds[$key],
+                'learning_game_id' => $learningGameId,
             ];
         }
 

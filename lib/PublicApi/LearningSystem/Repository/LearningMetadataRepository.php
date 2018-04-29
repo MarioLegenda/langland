@@ -67,9 +67,7 @@ class LearningMetadataRepository extends BaseBlueDotRepository
         int $learningUserId,
         int $languageId
     ): array {
-        if (!$this->blueDot->repository()->isCurrentlyUsingRepository('presentation')) {
-            $this->blueDot->useRepository('presentation');
-        }
+        $this->blueDot->useRepository('presentation');
 
         return $this->blueDot->execute('service.learning_lesson_presentation', [
             'learning_user_id' => $learningUserId,
@@ -86,9 +84,7 @@ class LearningMetadataRepository extends BaseBlueDotRepository
         int $learningUserId,
         int $languageId
     ): array {
-        if (!$this->blueDot->repository()->isCurrentlyUsingRepository('presentation')) {
-            $this->blueDot->useRepository('presentation');
-        }
+        $this->blueDot->useRepository('presentation');
 
         return $this->blueDot->execute('service.learning_games_presentation', [
             'learning_user_id' => $learningUserId,
@@ -119,8 +115,18 @@ class LearningMetadataRepository extends BaseBlueDotRepository
             'frontend_url' => sprintf('langland/lesson/%s/%d', $lessonName, $data['learning_lesson_id'])
         ];
 
-        $this->blueDot->useRepository('presentation');
-
         return $data;
+    }
+    /**
+     * @param int $learningMetadataId
+     * @return array
+     */
+    public function getRunnableGameByLearningMetadataId(int $learningMetadataId): array
+    {
+        $this->blueDot->useRepository('public_api_game');
+
+        $this->blueDot->execute('service.create_runnable_game', [
+            'learning_metadata_id' => $learningMetadataId,
+        ])->getResult()['data'];
     }
 }

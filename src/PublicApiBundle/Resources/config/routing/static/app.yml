@@ -13,3 +13,8 @@ app_running_lesson:
     defaults: { _controller: public_api.controller.language_index:lessonRunnerAction }
     methods: [GET]
 
+app_running_game:
+    path: /game/{learningLessonId}
+    defaults: { _controller: public_api.controller.language_index:lessonRunnerAction }
+    methods: [GET]
+

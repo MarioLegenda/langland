@@ -1,10 +1,15 @@
 import {global, user} from "../../../global/constants.js";
+import 'whatwg-fetch';
+import {BaseRepository} from "./base.js";
 
-export class LearningSystemRepository {
+export class LearningSystemRepository extends BaseRepository {
     constructor() {
+        super();
+
         this.routes = {
             initial_data_creation: global.base_url + 'api/v1/learning-system/make-initial-data-creation',
-            get_learning_lesson_by_id: global.base_url + 'api/v1/learning-system/get-learning-lesson-by-id'
+            get_learning_lesson_by_id: global.base_url + 'api/v1/learning-system/get-learning-lesson-by-id',
+            get_runnable_game_by_learning_metadata: global.base_url + 'api/v1/learning-system/get-running-game'
         }
     }
 
@@ -35,5 +40,19 @@ export class LearningSystemRepository {
             success,
             failure
         );
+    }
+
+    getRunnableGameByLearningMetadataId(learningMetadataId, success, failure) {
+        const config = {
+            url: `${this.routes.get_runnable_game_by_learning_metadata}/${learningMetadataId}`,
+            config: {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: this.getTypicalHeaders()
+            },
+            success: success,
+        };
+
+        this.makeRequest(config);
     }
 }

@@ -25,3 +25,8 @@ get_learning_lesson_by_id:
     methods: [GET]
     requirements:
         _format: json
+
+get_runnable_game_by_learning_metadata:
+    path: /get-running-game/{learningMetadataId}
+    defaults: { _controller: public_api.controller.learning_metadata:getRunnableGameByLearningMetadataId }
+    methods: [GET]

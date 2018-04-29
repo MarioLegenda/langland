@@ -52,4 +52,16 @@ class LearningMetadataController
             200
         );
     }
+
+    /*
+     * @param int $learningMetadataId
+     * @return Response
+     */
+    public function getRunnableGameByLearningMetadataId(int $learningMetadataId): Response
+    {
+        return new JsonResponse(
+            $this->learningMetadataImplementation->getRunnableGameByLearningMetadataId($learningMetadataId),
+            200
+        );
+    }
 }

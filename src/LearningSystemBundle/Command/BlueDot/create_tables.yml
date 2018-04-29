@@ -10,4 +10,4 @@ configuration:
                 create_learning_game_challenges:
                     sql: "CREATE TABLE IF NOT EXISTS learning_game_challenges (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, data_collector_id INT NOT NULL, learning_user_id INT NOT NULL, learning_game_id INT NOT NULL, game_type_id INT NOT NULL, created_at DATE) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
                 create_learning_game_data:
-                    sql: "CREATE TABLE IF NOT EXISTS learning_game_data (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, learning_game_challenge_id INT NOT NULL, data_id INT NOT NULL, created_at DATE) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"
+                    sql: "CREATE TABLE IF NOT EXISTS learning_game_data (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, learning_game_challenge_id INT NOT NULL, data_id INT NOT NULL, learning_game_id INT NOT NULL, created_at DATE) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB"

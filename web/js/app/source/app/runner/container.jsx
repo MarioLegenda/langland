@@ -46,10 +46,15 @@ export class GameRunnerContainer extends React.Component {
     constructor(props) {
         super(props);
 
+        this.learningSystemRepository = factory('learning-system');
+
         console.log('Running game runner');
     }
 
     componentDidMount() {
+        this.learningSystemRepository.getRunnableGameByLearningMetadataId(1, (response) => {
+            console.log(response);
+        });
     }
 
     render() {

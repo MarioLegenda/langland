@@ -28,14 +28,15 @@ function getBaseUrl() {
 }
 
 function getServerEnvironment() {
-    const path = window.location.pathname;
-    let env = '';
+    const path = location.pathname;
+
+    let environment;
 
     if (/app_dev.php/.test(path)) {
-        env = '/app_dev.php/';
+        environment = '/app_dev.php/';
     } else {
-        env = '/';
+        environment = '/';
     }
 
-    return env;
+    return environment;
 }

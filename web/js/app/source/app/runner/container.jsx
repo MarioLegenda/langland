@@ -50,10 +50,9 @@ export class GameRunnerContainer extends React.Component {
     }
 
     componentDidMount() {
-
     }
 
     render() {
-        return <div></div>
+        return <div id="vue_game_runner"></div>
     }
 }

@@ -85,9 +85,16 @@ class AppKernel extends Kernel
             return;
         }
 
-        $projectBootstrap->bootstrapDirectories(
+        $directories = array_merge(
             $this->container->getParameter('image_upload'),
-            array('relative_image_path')
+            $this->container->getParameter('audio_upload')
+        );
+
+        $excluded = array('relative_image_path');
+
+        $projectBootstrap->bootstrapDirectories(
+            $directories,
+            $excluded
         );
     }
 }

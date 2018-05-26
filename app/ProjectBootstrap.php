@@ -29,15 +29,16 @@ class ProjectBootstrap
     public function bootstrapDirectories(array $directories, array $exclude)
     {
         $this->createDirectory($this->path.'/uploads');
+
         foreach ($directories as $name => $directory) {
             if (in_array($name, $exclude) === false) {
                 $realPath = realpath($directory);
 
-                if (is_string($realPath) and is_dir($realPath)) {
+                if ($realPath !== false) {
                     continue;
                 }
 
-                $this->createDirectory($realPath);
+                $this->createDirectory($directory);
             }
         }
 

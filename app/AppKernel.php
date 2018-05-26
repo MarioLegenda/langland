@@ -77,9 +77,9 @@ class AppKernel extends Kernel
     {
         parent::initializeContainer();
 
-        include_once __DIR__.'/ProjectBootstrap.php';
+        include_once __DIR__.'/DirectoryBootstrap.php';
 
-        $projectBootstrap = new ProjectBootstrap($this->getEnvironment());
+        $projectBootstrap = new DirectoryBootstrap($this->getEnvironment());
 
         if ($projectBootstrap->isBootstrapped() === true) {
             return;

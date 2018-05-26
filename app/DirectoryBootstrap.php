@@ -1,6 +1,6 @@
 <?php
 
-class ProjectBootstrap
+class DirectoryBootstrap
 {
     /**
      * @var string $env

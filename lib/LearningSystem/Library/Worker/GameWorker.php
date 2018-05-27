@@ -6,6 +6,8 @@ use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
 use LearningSystem\Library\Game\Implementation\BasicGame;
 use LearningSystem\Library\Game\Implementation\GameInterface;
 use LearningSystem\Library\DataDeciderInterface;
+use PublicApiBundle\Entity\LearningLesson;
+use PublicApiBundle\Entity\LearningMetadata;
 
 class GameWorker
 {
@@ -23,20 +25,20 @@ class GameWorker
         $this->dataDecider = $dataDecider;
     }
     /**
-     * @param int $learningMetadataId
+     * @param LearningLesson $learningLesson
      * @return GameInterface
      */
-    public function createGame(int $learningMetadataId): GameInterface
+    public function createGame(LearningLesson $learningLesson): GameInterface
     {
-        return $this->doCreateGame($learningMetadataId);
+        return $this->doCreateGame($learningLesson);
     }
     /**
-     * @param int $learningMetadataId
+     * @param LearningLesson $learningLesson
      * @return GameInterface
      */
-    private function doCreateGame(int $learningMetadataId): GameInterface
+    private function doCreateGame(LearningLesson $learningLesson): GameInterface
     {
-        $decidedData = $this->dataDecider->getData($learningMetadataId);
+        $decidedData = $this->dataDecider->getData($learningLesson);
 
         $gameType = $decidedData['game_type'];
         $data = $decidedData['data'];

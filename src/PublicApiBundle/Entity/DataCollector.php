@@ -1,6 +1,6 @@
 <?php
 
-namespace LearningSystemBundle\Entity;
+namespace PublicApiBundle\Entity;
 
 class DataCollector
 {
@@ -19,15 +19,44 @@ class DataCollector
     /**
      * @var int $accessedCount
      */
-    private $accessedCount;
+    private $accessedCount = 0;
     /**
      * @var int $completedCount
      */
-    private $completedCount;
+    private $completedCount = 0;
     /**
      * @var int $unCompletedCount
      */
-    private $unCompletedCount;
+    private $unCompletedCount = 0;
+    /**
+     * @var \DateTime $createdAt
+     */
+    private $createdAt;
+    /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
+    /**
+     * DataCollector constructor.
+     * @param bool $hasCompleted
+     * @param int $timeSpent
+     * @param int $accessedCount
+     * @param int $completedCount
+     * @param int $unCompletedCount
+     */
+    public function __construct(
+        bool $hasCompleted,
+        int $timeSpent,
+        int $accessedCount,
+        int $completedCount,
+        int $unCompletedCount
+    ) {
+        $this->hasCompleted = $hasCompleted;
+        $this->timeSpent = $timeSpent;
+        $this->accessedCount = $accessedCount;
+        $this->completedCount = $completedCount;
+        $this->unCompletedCount = $unCompletedCount;
+    }
     /**
      * @return int
      */
@@ -131,5 +160,42 @@ class DataCollector
         $this->timeSpent = $timeSpent;
 
         return $this;
+    }
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function updateTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

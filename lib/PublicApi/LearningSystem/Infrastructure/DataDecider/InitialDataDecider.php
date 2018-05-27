@@ -14,6 +14,8 @@ use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
 use PublicApi\LearningSystem\Infrastructure\DataProvider\Word\ProvidedWordDataCollection;
 use LearningSystem\Library\DataDeciderInterface;
+use PublicApiBundle\Entity\LearningLesson;
+use PublicApiBundle\Entity\LearningMetadata;
 
 class InitialDataDecider implements DataDeciderInterface
 {
@@ -40,7 +42,7 @@ class InitialDataDecider implements DataDeciderInterface
     /**
      * @inheritdoc
      */
-    public function getData(int $learningMetadataId): array
+    public function getData(LearningLesson $learningLesson): array
     {
         $questionAnswers = $this->questionAnswersApplicationResolver->resolve();
 
@@ -48,7 +50,7 @@ class InitialDataDecider implements DataDeciderInterface
         $wordLevel = 1;
 
         /** @var ProvidedWordDataCollection $dataCollection */
-        $dataCollection = $this->wordDataProvider->getData($learningMetadataId, [
+        $dataCollection = $this->wordDataProvider->getData($learningLesson, [
             'word_number' => $wordNumber,
             'word_level' => $wordLevel,
         ]);

@@ -34,12 +34,12 @@ class InitialDataCreationController
      */
     public function makeInitialDataCreation(): Response
     {
-        $learningMetadata = $this->learningMetadataImplementation->createLearningMetadata();
+        $learningLesson = $this->learningMetadataImplementation->createLearningMetadata();
 
         return new JsonResponse(
             $this->initialDataCreationImplementation->createInitialData(
-                $learningMetadata['learningMetadataId'],
-                $learningMetadata['learningLessonId']
+                $learningLesson->getLearningMetadata(),
+                $learningLesson
             ),
             201
         );

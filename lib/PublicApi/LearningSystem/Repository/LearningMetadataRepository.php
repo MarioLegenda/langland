@@ -2,61 +2,120 @@
 
 namespace PublicApi\LearningSystem\Repository;
 
-use BlueDot\BlueDot;
-use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Library\Infrastructure\Repository\CommonRepository;
+use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
+use PublicApiBundle\Entity\LearningLesson;
+use PublicApiBundle\Entity\LearningMetadata;
+use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Routing\Router;
+use PublicApiBundle\Entity\DataCollector;
+use PublicApi\Infrastructure\Model\Lesson;
+use PublicApi\Infrastructure\Model\Language;
 
-class LearningMetadataRepository extends BaseBlueDotRepository
+class LearningMetadataRepository extends CommonRepository
 {
     /**
      * @var Router $router
      */
     private $router;
     /**
+     * @var RepositoryCommunicator $repositoryCommunicator
+     */
+    private $repositoryCommunicator;
+    /**
+     * @var LearningLessonRepository $learningLessonRepository
+     */
+    private $learningLessonRepository;
+    /**
+     * @var DataCollectorRepository $dataCollectorRepository
+     */
+    private $dataCollectorRepository;
+    /**
      * LearningMetadataRepository constructor.
+     * @param EntityManagerInterface $em
+     * @param string $class
      * @param Router $router
-     * @param BlueDot $blueDot
-     * @param string $apiName
+     * @param RepositoryCommunicator $repositoryCommunicator
+     * @param LearningLessonRepository $learningLessonRepository
+     * @param DataCollectorRepository $dataCollectorRepository
      */
     public function __construct(
+        EntityManagerInterface $em,
+        string $class,
         Router $router,
-        BlueDot $blueDot,
-        string $apiName
+        RepositoryCommunicator $repositoryCommunicator,
+        LearningLessonRepository $learningLessonRepository,
+        DataCollectorRepository $dataCollectorRepository
     ) {
-        parent::__construct($blueDot, $apiName);
+        parent::__construct($em, $class);
 
         $this->router = $router;
-    }
-
-    /**
-     * @param int $languageId
-     * @param int $learningUserId
-     * @return array
-     */
-    public function createLearningMetadata(
-        int $languageId,
-        int $learningUserId
-    ): array {
-        $this->blueDot->useRepository($this->apiName);
-
-        return $this->doCreateLearningMetadata(
-            $languageId,
-            $learningUserId
-        );
+        $this->repositoryCommunicator = $repositoryCommunicator;
+        $this->learningLessonRepository = $learningLessonRepository;
+        $this->dataCollectorRepository = $dataCollectorRepository;
     }
     /**
-     * @param int $learningUserId
-     * @param int $languageId
-     * @return array
+     * @param LearningMetadata $learningMetadata
+     * @return LearningMetadata
      */
-    private function doCreateLearningMetadata(
-        int $languageId,
-        int $learningUserId
-    ): array {
-        return $this->blueDot->execute('service.create_learning_metadata', [
-            'language_id' => $languageId,
-            'learning_user_id' => $learningUserId,
-        ])->getResult()['data'];
+    public function persistAndFlush(LearningMetadata $learningMetadata)
+    {
+        $this->em->persist($learningMetadata);
+        $this->em->flush();
+
+        return $learningMetadata;
+    }
+    /**
+     * @param Language $language
+     * @param LearningUser $learningUser
+     * @return LearningLesson
+     */
+    public function createLearningMetadataForAllLessonsByLanguage(
+        Language $language,
+        LearningUser $learningUser
+    ): LearningLesson {
+
+        $lessons = $this->repositoryCommunicator->getLessonsByLanguage($language);
+
+        $isFirst = true;
+        $firstLearningLesson = null;
+        /** @var Lesson $lesson */
+        foreach ($lessons as $lesson) {
+            $isAvailable = false;
+
+            if ($isFirst === true) {
+                $isAvailable = true;
+
+                $isFirst = false;
+            }
+
+            $learningMetadataDataCollector = new DataCollector(false, 0, 0, 0, 0);
+            $learningLessonDataCollector = new DataCollector(false, 0, 0, 0, 0);
+            $learningMetadata = new LearningMetadata($learningMetadataDataCollector, $learningUser);
+
+            $this->dataCollectorRepository->persist($learningMetadataDataCollector);
+            $this->dataCollectorRepository->persist($learningLessonDataCollector);
+            $this->persist($learningMetadata);
+
+            $learningLesson = new LearningLesson(
+                $learningLessonDataCollector,
+                $lesson,
+                $learningMetadata,
+                false,
+                $isAvailable
+            );
+
+            $this->learningLessonRepository->persist($learningLesson);
+
+            if (!$firstLearningLesson instanceof LearningLesson) {
+                $firstLearningLesson = $learningLesson;
+            }
+        }
+
+        $this->flush();
+
+        return $firstLearningLesson;
     }
     /**
      * @param int $learningUserId

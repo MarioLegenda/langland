@@ -2,9 +2,8 @@
 
 namespace PublicApi\Language\Infrastructure;
 
-
-use AdminBundle\Entity\Language;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
+use PublicApi\Infrastructure\Model\Language;
 
 class LanguageProvider
 {
@@ -26,6 +25,13 @@ class LanguageProvider
      */
     public function getLanguage(): Language
     {
-        return $this->learningUserProvider->getLearningUser()->getLanguage();
+        $language = $this->learningUserProvider->getLearningUser()->getLanguage();
+
+        return new Language(
+            $language->getId(),
+            $language->getName(),
+            $language->getCreatedAt(),
+            $language->getUpdatedAt()
+        );
     }
 }

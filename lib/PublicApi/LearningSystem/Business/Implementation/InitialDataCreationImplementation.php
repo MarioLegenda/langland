@@ -7,6 +7,8 @@ use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use LearningSystem\Library\Worker\GameWorker;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Infrastructure\GameProvider\GameProvider;
+use PublicApiBundle\Entity\LearningLesson;
+use PublicApiBundle\Entity\LearningMetadata;
 
 class InitialDataCreationImplementation
 {
@@ -38,15 +40,15 @@ class InitialDataCreationImplementation
         $this->gameProvider = $gameProvider;
     }
     /**
-     * @param int $learningMetadataId
-     * @param int $learningLessonId
+     * @param LearningMetadata $learningMetadata
+     * @param LearningLesson $learningLesson
      * @return array
      */
     public function createInitialData(
-        int $learningMetadataId,
-        int $learningLessonId
+        LearningMetadata $learningMetadata,
+        LearningLesson $learningLesson
     ): array {
-        $game = $this->gameWorker->createGame($learningMetadataId);
+        $game = $this->gameWorker->createGame($learningLesson);
 
         $this->gameProvider->createGame($game, $learningMetadataId, $learningLessonId);
 

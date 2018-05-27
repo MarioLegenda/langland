@@ -80,14 +80,14 @@ class PublicApiTestCase extends WebTestCase
      */
     public static function setUpBeforeClass()
     {
-        exec('/usr/bin/php /var/www/bin/console database:truncate');
+        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
     }
     /**
      * @inheritdoc
      */
     public static function tearDownAfterClass()
     {
-        exec('/usr/bin/php /var/www/bin/console database:truncate');
+        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
 
         $dirs = array(
             realpath(__DIR__.'/../uploads/images'),
@@ -109,6 +109,6 @@ class PublicApiTestCase extends WebTestCase
      */
     protected function manualReset(): void
     {
-        exec('/usr/bin/php /var/www/bin/console database:truncate');
+        exec('/usr/bin/php /var/www/bin/console langland:learning_metadata:reset');
     }
 }

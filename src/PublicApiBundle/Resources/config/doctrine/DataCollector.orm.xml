@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity
+            name="PublicApiBundle\Entity\DataCollector"
+            table="data_collector">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="hasCompleted" type="boolean" column="has_completed" nullable="false"/>
+        <field name="timeSpent" type="integer" column="time_spent" nullable="false"/>
+        <field name="accessedCount" type="integer" column="accessed_count" nullable="false"/>
+        <field name="completedCount" type="integer" column="completed_count" nullable="false"/>
+        <field name="unCompletedCount" type="integer" column="uncompleted_count" nullable="false"/>
+
+        <field name="createdAt" type="datetime" column="created_at"/>
+        <field name="updatedAt" type="datetime" column="updated_at"/>
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="updateTimestamps" />
+            <lifecycle-callback type="preUpdate" method="updateTimestamps" />
+        </lifecycle-callbacks>
+
+    </entity>
+</doctrine-mapping>

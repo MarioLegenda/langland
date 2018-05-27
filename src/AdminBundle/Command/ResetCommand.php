@@ -3,7 +3,6 @@
 namespace AdminBundle\Command;
 
 use ArmorBundle\Entity\Role;
-use ArmorBundle\Entity\User;
 use AdminBundle\Command\Helper\UserFactory;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -56,8 +55,6 @@ class ResetCommand extends ContainerAwareCommand
         exec('/usr/bin/php bin/console do:da:dr --force');
         exec('/usr/bin/php bin/console do:da:cr');
         exec('/usr/bin/php bin/console do:sc:up --force');
-        exec('/usr/bin/php bin/console langland:blue_dot:learning_system:table_create');
-        exec('/usr/bin/php bin/console langland:blue_dot:public_api:table_create');
 
         $output->writeln('<info>Database reset finished</info>');
     }

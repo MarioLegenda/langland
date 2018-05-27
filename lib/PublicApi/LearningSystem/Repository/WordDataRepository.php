@@ -2,54 +2,61 @@
 
 namespace PublicApi\LearningSystem\Repository;
 
+use BlueDot\BlueDot;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
+use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
+use PublicApiBundle\Entity\LearningLesson;
+use PublicApi\Infrastructure\Model\Language;
 
 class WordDataRepository extends BaseBlueDotRepository
 {
     /**
-     * @param int $learningMetadataId
-     * @param int $wordLevel
-     * @param int $learningUserId
-     * @param int $languageId
-     * @return array
-     * @throws \BlueDot\Exception\ConnectionException
+     * @var RepositoryCommunicator $repositoryCommunicator
      */
-    public function getWordsFromLessons(
-        int $learningMetadataId,
-        int $wordLevel,
-        int $learningUserId,
-        int $languageId
-    ): array {
-        $promise = $this->blueDot->execute('scenario.initial_data_collection', [
-            'find_learning_lesson' => [
-                'learning_metadata_id' => $learningMetadataId,
-                'learning_user_id' => $learningUserId,
-            ],
-            'find_learning_lesson_words' => [
-                'language_id' => $languageId,
-                'word_level' => $wordLevel,
-            ],
-        ]);
+    private $repositoryCommunicator;
+    /**
+     * WordDataRepository constructor.
+     * @param BlueDot $blueDot
+     * @param $apiName
+     * @param RepositoryCommunicator $repositoryCommunicator
+     */
+    public function __construct(
+        BlueDot $blueDot,
+        $apiName,
+        RepositoryCommunicator $repositoryCommunicator
+    ) {
+        parent::__construct($blueDot, $apiName);
 
-        $words = $promise->getResult()->get('find_learning_lesson_words')['data'];
-
-        $lessonId = $promise->getResult()->get('find_learning_lesson')['data'][0]['lesson_id'];
-
-        return [
-            'words' => $words,
-            'lesson_id' => (int) $lessonId,
-        ];
+        $this->repositoryCommunicator = $repositoryCommunicator;
     }
     /**
-     * @param int $languageId
+     * @param LearningLesson $learningLesson
+     * @param Language $language
+     * @param int $wordLevel
+     * @return array
+     */
+    public function getWordsFromLessons(
+        LearningLesson $learningLesson,
+        Language $language,
+        int $wordLevel
+    ): array {
+        return $this->repositoryCommunicator->getWordsByLevelAndLesson(
+            $language,
+            $learningLesson->getLessonObject(),
+            $wordLevel
+        );
+    }
+    /**
+     * @param Language $language
      * @param int $wordLevel
      * @return array
      * @throws \BlueDot\Exception\ConnectionException
+     * @throws \BlueDot\Exception\EntityException
      */
-    public function getWordsIds(int $languageId, int $wordLevel): array
+    public function getWordsIds(Language $language, int $wordLevel): array
     {
         $promise = $this->blueDot->execute('simple.select.get_words_count', [
-            'language_id' => $languageId,
+            'language_id' => $language->getId(),
             'word_level' => $wordLevel,
         ]);
 
@@ -58,19 +65,25 @@ class WordDataRepository extends BaseBlueDotRepository
         return $result;
     }
     /**
-     * @param int $languageId
+     * @param Language $language
      * @param int $lessonId
      * @param int $wordLevel
      * @return array
+     * @throws \BlueDot\Exception\ConfigurationException
      * @throws \BlueDot\Exception\ConnectionException
+     * @throws \BlueDot\Exception\EntityException
+     * @throws \BlueDot\Exception\RepositoryException
      */
     public function getWordsIdsWithExcludedLesson(
-        int $languageId,
+        Language $language,
         int $lessonId,
         int $wordLevel
     ): array {
+
+        $this->blueDot->useRepository('learning_user_metadata');
+
         $promise = $this->blueDot->execute('simple.select.get_words_count_with_lesson_excluded', [
-            'language_id' => $languageId,
+            'language_id' => $language->getId(),
             'lesson_id' => $lessonId,
             'word_level' => $wordLevel,
         ]);
@@ -83,15 +96,14 @@ class WordDataRepository extends BaseBlueDotRepository
      * @param int $wordNumber
      * @param array $wordIds
      * @param int $wordLevel
-     * @param int $languageId
+     * @param Language $language
      * @return array
-     * @throws \BlueDot\Exception\ConnectionException
      */
     public function getRestOfTheWords(
         int $wordNumber,
         array $wordIds,
         int $wordLevel,
-        int $languageId
+        Language $language
     ): array {
 
         $randomizedWordIds = $this->randomizeWordIds($wordIds, $wordNumber);
@@ -106,19 +118,11 @@ class WordDataRepository extends BaseBlueDotRepository
             throw new \RuntimeException($message);
         }
 
-        $sql = sprintf(
-            'SELECT w.id, w.level FROM words AS w WHERE w.language_id = %d AND w.level = %d AND w.id IN(%s) ',
-            $languageId,
+        return $this->repositoryCommunicator->getWordsByLevelAndLessonByExactIds(
+            $language,
             $wordLevel,
-            implode(',', $randomizedWordIds)
+            $randomizedWordIds
         );
-
-        $promise = $this->blueDot
-            ->createStatementBuilder()
-            ->addSql($sql)
-            ->execute();
-
-        return $promise->getResult()['data'];
     }
     /**
      * @param array $wordIds

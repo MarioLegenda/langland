@@ -2,9 +2,7 @@
 
 namespace PublicApiBundle\Entity;
 
-use AdminBundle\Entity\Lesson;
-use LearningSystem\Library\Repository\Contract\SystemHeadInterface;
-use LearningSystemBundle\Entity\DataCollector;
+use PublicApi\Infrastructure\Model\Lesson;
 
 class LearningLesson
 {
@@ -17,13 +15,55 @@ class LearningLesson
      */
     private $dataCollector;
     /**
-     * @var Lesson $lesson
+     * @var int|Lesson $lesson
      */
     private $lesson;
+    /**
+     * @var Lesson $lessonObject
+     */
+    private $lessonObject;
+    /**
+     * @var LearningMetadata $learningMetadata
+     */
+    private $learningMetadata;
     /**
      * @var bool $hasPassed
      */
     private $hasCompleted = false;
+    /**
+     * @var bool $isAvailable
+     */
+    private $isAvailable = false;
+    /**
+     * @var \DateTime $createdAt
+     */
+    private $createdAt;
+    /**
+     * @var \DateTime $updatedAt
+     */
+    private $updatedAt;
+    /**
+     * LearningLesson constructor.
+     * @param DataCollector $dataCollector
+     * @param Lesson $lesson
+     * @param LearningMetadata $learningMetadata
+     * @param bool $hasCompleted
+     * @param bool $isAvailable
+     */
+    public function __construct(
+        DataCollector $dataCollector,
+        Lesson $lesson,
+        LearningMetadata $learningMetadata,
+        bool $hasCompleted,
+        bool $isAvailable
+    ) {
+        $this->dataCollector = $dataCollector;
+        $this->lesson = $lesson->getId();
+        $this->lessonObject = $lesson;
+        $this->learningMetadata = $learningMetadata;
+        $this->hasCompleted = $hasCompleted;
+        $this->isAvailable = $isAvailable;
+    }
     /**
      * @param int $id
      * @return LearningLesson
@@ -59,9 +99,9 @@ class LearningLesson
         return $this;
     }
     /**
-     * @return Lesson
+     * @return int
      */
-    public function getLesson(): Lesson
+    public function getLesson(): int
     {
         return $this->lesson;
     }
@@ -74,5 +114,63 @@ class LearningLesson
         $this->lesson = $lesson;
 
         return $this;
+    }
+    /**
+     * @return Lesson
+     */
+    public function getLessonObject(): Lesson
+    {
+        return $this->lessonObject;
+    }
+    /**
+     * @return LearningMetadata
+     */
+    public function getLearningMetadata(): LearningMetadata
+    {
+        return $this->learningMetadata;
+    }
+    /**
+     * @param LearningMetadata $learningMetadata
+     */
+    public function setLearningMetadata(LearningMetadata $learningMetadata): void
+    {
+        $this->learningMetadata = $learningMetadata;
+    }
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt(\DateTime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function updateTimestamps(): void
+    {
+        $this->setUpdatedAt(new \DateTime());
+
+        if (!$this->getCreatedAt() instanceof \DateTime) {
+            $this->setCreatedAt(new \DateTime());
+        }
     }
 }

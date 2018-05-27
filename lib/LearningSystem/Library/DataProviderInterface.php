@@ -2,12 +2,14 @@
 
 namespace LearningSystem\Library;
 
+use PublicApiBundle\Entity\LearningLesson;
+
 interface DataProviderInterface
 {
     /**
-     * @param int $learningMetadataId
+     * @param LearningLesson $learningLesson
      * @param array $rules
      * @return ProvidedDataInterface
      */
-    public function getData(int $learningMetadataId, array $rules): ProvidedDataInterface;
+    public function getData(LearningLesson $learningLesson, array $rules): ProvidedDataInterface;
 }

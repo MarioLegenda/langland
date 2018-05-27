@@ -1,6 +1,6 @@
 <?php
 
-namespace AdminBundle\Entity;
+namespace PublicApi\Infrastructure\Model;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -49,6 +49,7 @@ class Lesson
     private $updatedAt;
     /**
      * Lesson constructor.
+     * @param int $id
      * @param string $name
      * @param UuidInterface $uuid
      * @param int $learningOrder
@@ -57,6 +58,7 @@ class Lesson
      * @param string $description
      */
     public function __construct(
+        int $id,
         string $name,
         UuidInterface $uuid,
         int $learningOrder,
@@ -64,6 +66,7 @@ class Lesson
         Course $course,
         string $description
     ) {
+        $this->id = $id;
         $this->uuid = $uuid;
         $this->learningOrder = $learningOrder;
         $this->jsonLesson = $jsonLesson;
@@ -200,7 +203,7 @@ class Lesson
         return $this;
     }
     /**
-     * @return Course
+     * @return string
      */
     public function getCourse()
     {
@@ -254,17 +257,6 @@ class Lesson
         return $this;
     }
     /**
-     * @void
-     */
-    public function updateTimestamps()
-    {
-        $this->setUpdatedAt(new \DateTime());
-
-        if (!$this->getCreatedAt() instanceof \DateTime) {
-            $this->setCreatedAt(new \DateTime());
-        }
-    }
-    /**
      * @param \DateTime|string $dateTime
      * @return \DateTime
      */
@@ -291,4 +283,3 @@ class Lesson
         $this->urlifiedName = \URLify::filter($name);
     }
 }
-

@@ -10,6 +10,7 @@ use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Repository\WordDataRepository;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApi\LearningSystem\Infrastructure\DataProvider\Word\ProvidedWordDataCollection;
+use PublicApiBundle\Entity\LearningLesson;
 
 class InitialWordDataProvider extends BaseBlueDotRepository implements DataProviderInterface
 {
@@ -49,34 +50,38 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
     /**
      * @inheritdoc
      */
-    public function getData(int $learningMetadataId, array $rules): ProvidedDataInterface
+    public function getData(LearningLesson $learningLesson, array $rules): ProvidedDataInterface
     {
-        $this->blueDot->useRepository('learning_user_metadata');
-
         $initialWords = $this->wordDataRepository->getWordsFromLessons(
-            $learningMetadataId,
-            $rules['word_level'],
-            $this->learningUserProvider->getLearningUser()->getId(),
-            $this->languageProvider->getLanguage()->getId()
+            $learningLesson,
+            $this->languageProvider->getLanguage(),
+            $rules['word_level']
         );
 
-        $wordNumber = $this->getWordNumber($rules['word_number'], count($initialWords['words']));
-        $wordIds = (empty($initialWords['words'])) ?
-            $this->wordDataRepository->getWordsIds($this->languageProvider->getLanguage()->getId(), $rules['word_level']) :
-            $this->wordDataRepository->getWordsIdsWithExcludedLesson(
-                $this->languageProvider->getLanguage()->getId(),
-                $initialWords['lesson_id'],
+        $wordNumber = $this->getWordNumber($rules['word_number'], count($initialWords));
+
+        $wordIds = null;
+        if (empty($initialWords)) {
+            $wordIds = $this->wordDataRepository->getWordsIds(
+                $this->languageProvider->getLanguage(),
                 $rules['word_level']
             );
+        } else if (!empty($initialWords)) {
+            $wordIds = $this->wordDataRepository->getWordsIdsWithExcludedLesson(
+                $this->languageProvider->getLanguage(),
+                $learningLesson->getLessonObject()->getId(),
+                $rules['word_level']
+            );
+        }
 
         $restOfTheWords = $this->wordDataRepository->getRestOfTheWords(
             $wordNumber,
             $wordIds,
             $rules['word_level'],
-            $this->languageProvider->getLanguage()->getId()
+            $this->languageProvider->getLanguage()
         );
 
-        $finalWords = array_merge($initialWords['words'], $restOfTheWords);
+        $finalWords = array_merge($initialWords, $restOfTheWords);
 
         if ($rules['word_number'] !== count($finalWords)) {
             $message = sprintf(

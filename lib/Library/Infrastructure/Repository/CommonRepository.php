@@ -77,6 +77,25 @@ class CommonRepository implements RepositoryInterface
         return $this->findBy(array());
     }
     /**
+     * @param object $object
+     * @return CommonRepository
+     */
+    public function persist(object $object): CommonRepository
+    {
+        $this->em->persist($object);
+
+        return $this;
+    }
+    /**
+     * @return CommonRepository
+     */
+    public function flush(): CommonRepository
+    {
+        $this->em->flush();
+
+        return $this;
+    }
+    /**
      * @param string $alias
      * @param null $indexBy
      * @return QueryBuilder

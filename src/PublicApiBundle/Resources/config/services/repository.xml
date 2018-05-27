@@ -57,8 +57,10 @@
 
             <argument type="service" id="public_api.repository.language" />
             <argument type="service" id="public_api.repository.learning_user" />
-        </service>
+            <argument type="service" id="public_api.repository.lesson" />
+            <argument type="service" id="public_api.repository.word" />
 
+        </service>
 
         <service
                 id="public_api.repository.blue_dot.lesson"
@@ -69,20 +71,40 @@
         </service>
 
         <service
-                id="public_api.repository.learning_system.blue_dot.learning_metadata"
-                class="PublicApi\LearningSystem\Repository\LearningMetadataRepository" public="true">
+                id="public_api.repository.learning_system.data_collector"
+                class="PublicApi\LearningSystem\Repository\DataCollectorRepository" public="true">
 
-            <argument type="service" id="router" />
-            <argument type="service" id="common.blue_dot" />
-            <argument>learning_user_metadata</argument>
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\DataCollector</argument>
         </service>
 
         <service
-                id="public_api.repository.learning_system.blue_dot.word_data_repository"
+                id="public_api.repository.learning_system.learning_metadata"
+                class="PublicApi\LearningSystem\Repository\LearningMetadataRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\LearningMetadata</argument>
+            <argument type="service" id="router" />
+            <argument type="service" id="public_api.repository.repository_communicator" />
+            <argument type="service" id="public_api.repository.learning_system.learning_lesson" />
+            <argument type="service" id="public_api.repository.learning_system.data_collector" />
+        </service>
+
+        <service
+                id="public_api.repository.learning_system.learning_lesson"
+                class="PublicApi\LearningSystem\Repository\LearningLessonRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\LearningLesson</argument>
+        </service>
+
+        <service
+                id="public_api.repository.learning_system.word_data_repository"
                 class="PublicApi\LearningSystem\Repository\WordDataRepository" public="true">
 
             <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>
+            <argument type="service" id="public_api.repository.repository_communicator" />
         </service>
 
     </services>

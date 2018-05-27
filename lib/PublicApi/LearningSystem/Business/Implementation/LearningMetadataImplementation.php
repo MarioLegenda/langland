@@ -6,6 +6,7 @@ use ApiSDK\ApiSDK;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Repository\LearningMetadataRepository;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
+use PublicApiBundle\Entity\LearningLesson;
 use Ramsey\Uuid\Uuid;
 
 class LearningMetadataImplementation
@@ -45,16 +46,16 @@ class LearningMetadataImplementation
         $this->languageProvider = $languageProvider;
     }
     /**
-     * @return array
+     * @return LearningLesson
      */
-    public function createLearningMetadata(): array
+    public function createLearningMetadata(): LearningLesson
     {
-        $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
-        $languageId = $this->languageProvider->getLanguage()->getId();
+        $learningUser = $this->learningUserProvider->getLearningUser();
+        $language = $this->languageProvider->getLanguage();
 
-        return $this->learningMetadataRepository->createLearningMetadata(
-            $languageId,
-            $learningUserId
+        return $this->learningMetadataRepository->createLearningMetadataForAllLessonsByLanguage(
+            $language,
+            $learningUser
         );
     }
     /**

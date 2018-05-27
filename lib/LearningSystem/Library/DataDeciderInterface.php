@@ -2,11 +2,13 @@
 
 namespace LearningSystem\Library;
 
+use PublicApiBundle\Entity\LearningLesson;
+
 interface DataDeciderInterface
 {
     /**
-     * @param int $learningMetadataId
+     * @param LearningLesson $learningLesson
      * @return array
      */
-    public function getData(int $learningMetadataId): array;
+    public function getData(LearningLesson $learningLesson): array;
 }

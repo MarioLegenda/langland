@@ -2,10 +2,19 @@
 
 namespace PublicApi\Infrastructure\Communication;
 
-use AdminBundle\Entity\Language;
+use AdminBundle\Entity\Course as MetadataCourse;
+use AdminBundle\Entity\Language as MetadataLanguage;
+use AdminBundle\Entity\Word;
 use ArmorBundle\Entity\User;
+use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
+use PublicApi\Infrastructure\Repository\WordRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
+use PublicApi\Lesson\Repository\LessonRepository;
+use AdminBundle\Entity\Lesson as MetadataLesson;
+use PublicApi\Infrastructure\Model\Language;
+use PublicApi\Infrastructure\Model\Lesson;
+use PublicApi\Infrastructure\Model\Course;
 
 class RepositoryCommunicator
 {
@@ -18,16 +27,119 @@ class RepositoryCommunicator
      */
     private $learningUserRepository;
     /**
+     * @var LessonRepository $lessonRepository
+     */
+    private $lessonRepository;
+    /**
+     * @var WordRepository $wordRepository
+     */
+    private $wordRepository;
+    /**
      * RepositoryCommunicator constructor.
      * @param LanguageRepository $languageRepository
      * @param LearningUserRepository $learningUserRepository
+     * @param LessonRepository $lessonRepository
+     * @param WordRepository $wordRepository
      */
     public function __construct(
         LanguageRepository $languageRepository,
-        LearningUserRepository $learningUserRepository
+        LearningUserRepository $learningUserRepository,
+        LessonRepository $lessonRepository,
+        WordRepository $wordRepository
     ) {
         $this->languageRepository = $languageRepository;
         $this->learningUserRepository = $learningUserRepository;
+        $this->lessonRepository = $lessonRepository;
+        $this->wordRepository = $wordRepository;
+    }
+    /**
+     * @param Language $language
+     * @return Lesson[]
+     */
+    public function getLessonsByLanguage(Language $language): array
+    {
+        $qb = $this->lessonRepository->createQueryBuilderFromClass('l');
+
+        $metadataLessons = $qb
+            ->innerJoin('l.course', 'c')
+            ->where('c.id = l.course')
+            ->andWhere('c.language = :language_id')
+            ->setParameter(':language_id', $language->getId())
+            ->getQuery()
+            ->getResult();
+
+        $publicApiLessons = [];
+
+        /** @var MetadataLesson $lesson */
+        foreach ($metadataLessons as $lesson) {
+            $course = $this->createPublicApiCourse($lesson->getCourse());
+
+            $publicApiLessons[] = new Lesson(
+                $lesson->getId(),
+                $lesson->getName(),
+                $lesson->getUuid(),
+                $lesson->getLearningOrder(),
+                $lesson->getJsonLesson(),
+                $course,
+                $lesson->getDescription()
+            );
+        }
+
+        return $publicApiLessons;
+    }
+    /**
+     * @param Language $language
+     * @param Lesson $lesson
+     * @param int $level
+     * @return array
+     */
+    public function getWordsByLevelAndLesson(
+        Language $language,
+        Lesson $lesson,
+        int $level
+    ) {
+        $qb = $this->wordRepository->createQueryBuilderFromClass('w');
+
+        $words = $qb
+            ->where('w.language = :language_id')
+            ->andWhere('w.level = :level')
+            ->andWhere('w.lesson = :lesson_id')
+            ->setParameters([
+                'language_id' => $language->getId(),
+                'lesson_id' => $lesson->getId(),
+                'level' => $level,
+            ])
+            ->getQuery()
+            ->getResult();
+
+        return $this->createModelsWords($words);
+    }
+    /**
+     * @param Language $language
+     * @param int $wordLevel
+     * @param array $wordIds
+     * @return array
+     */
+    public function getWordsByLevelAndLessonByExactIds(
+        Language $language,
+        int $wordLevel,
+        array $wordIds
+    ) {
+        $qb = $this->wordRepository->createQueryBuilderFromClass('w');
+
+        $words = $qb
+            ->where('w.language = :language_id')
+            ->andWhere('w.level = :level')
+            ->andWhere('w.id IN (:word_ids)')
+            ->setParameters([
+                'language_id' => $language->getId(),
+                'level' => $wordLevel,
+                'word_ids' => $wordIds
+            ])
+            ->getQuery()
+            ->getResult();
+
+        return $this->createModelsWords($words);
     }
     /**
      * @param User $user
@@ -39,7 +151,7 @@ class RepositoryCommunicator
 
         $languageIds = [];
 
-        /** @var Language $language */
+        /** @var MetadataLanguage $language */
         foreach ($languages as $language) {
             $languageIds[] = $language->getId();
         }
@@ -107,5 +219,43 @@ class RepositoryCommunicator
         );
 
         return $parsed;
+    }
+
+    /**
+     * @param Word[] $words
+     * @return InitialCreationWord[]
+     */
+    private function createModelsWords(array $words)
+    {
+        $initialCreationWords = [];
+
+        /** @var Word $word */
+        foreach ($words as $word) {
+            $initialCreationWords[] = new InitialCreationWord(
+                $word->getId(),
+                $word->getLevel(),
+                $word->getCreatedAt(),
+                $word->getUpdatedAt()
+            );
+        }
+
+        return $initialCreationWords;
+    }
+    /**
+     * @param MetadataCourse $metadataCourse
+     * @return Course
+     */
+    private function createPublicApiCourse(MetadataCourse $metadataCourse): Course
+    {
+        return new Course(
+            $metadataCourse->getId(),
+            $metadataCourse->getName(),
+            $metadataCourse->getWhatToLearn(),
+            $metadataCourse->getCourseUrl(),
+            $metadataCourse->getCourseOrder(),
+            $metadataCourse->getType(),
+            $metadataCourse->getCreatedAt(),
+            $metadataCourse->getUpdatedAt()
+        );
     }
 }

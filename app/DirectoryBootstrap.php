@@ -30,17 +30,7 @@ class DirectoryBootstrap
     {
         $this->createDirectory($this->path.'/uploads');
 
-        foreach ($directories as $name => $directory) {
-            if (in_array($name, $exclude) === false) {
-                $realPath = realpath($directory);
-
-                if ($realPath !== false) {
-                    continue;
-                }
-
-                $this->createDirectory($directory);
-            }
-        }
+        $this->createSelectedDirectories($directories, $exclude);
 
         $this->createDirectory($this->path.'/uploads/sounds/temp');
     }
@@ -75,5 +65,23 @@ class DirectoryBootstrap
         }
 
         return true;
+    }
+    /**
+     * @param array $directories
+     * @param array $exclude
+     */
+    private function createSelectedDirectories(array $directories, array $exclude)
+    {
+        foreach ($directories as $name => $directory) {
+            if (in_array($name, $exclude) === false) {
+                $realPath = realpath($directory);
+
+                if ($realPath !== false) {
+                    continue;
+                }
+
+                $this->createDirectory($directory);
+            }
+        }
     }
 }

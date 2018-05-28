@@ -2,11 +2,10 @@
 
 namespace PublicApi\LearningSystem\Infrastructure\GameProvider;
 
-use LearningSystem\Business\Repository\GameRepository;
+use LearningSystem\Business\GameDatabaseCreator;
 use LearningSystem\Library\Game\Implementation\GameInterface;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApiBundle\Entity\LearningLesson;
-use PublicApiBundle\Entity\LearningMetadata;
 
 class GameProvider
 {
@@ -15,17 +14,17 @@ class GameProvider
      */
     private $learningUserProvider;
     /**
-     * @var GameRepository $gameRepository
+     * @var GameDatabaseCreator $gameRepository
      */
     private $gameRepository;
     /**
      * GameProvider constructor.
      * @param LearningUserProvider $learningUserProvider
-     * @param GameRepository $gameRepository
+     * @param GameDatabaseCreator $gameRepository
      */
     public function __construct(
         LearningUserProvider $learningUserProvider,
-        GameRepository $gameRepository
+        GameDatabaseCreator $gameRepository
     ) {
         $this->learningUserProvider = $learningUserProvider;
         $this->gameRepository = $gameRepository;

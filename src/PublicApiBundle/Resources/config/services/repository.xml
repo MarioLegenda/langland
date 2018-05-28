@@ -109,7 +109,7 @@
         </service>
 
         <service
-                id="public_api.repository.learning_system.game_repository"
+                id="public_api.repository.learning_system.learning_game_repository"
                 class="PublicApi\LearningSystem\Repository\LearningGameRepository" public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />

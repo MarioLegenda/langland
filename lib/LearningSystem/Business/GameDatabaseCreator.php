@@ -1,12 +1,8 @@
 <?php
 
-namespace LearningSystem\Business\Repository;
+namespace LearningSystem\Business;
 
-use BlueDot\BlueDot;
-use BlueDot\Entity\PromiseInterface;
 use LearningSystem\Library\Game\Implementation\GameInterface;
-use LearningSystem\Library\ProvidedDataInterface;
-use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
 use PublicApi\LearningSystem\Infrastructure\DataProvider\Word\ProvidedWordDataCollection;
 use PublicApi\LearningSystem\Repository\DataCollectorRepository;
@@ -22,7 +18,7 @@ use PublicApiBundle\Entity\DataCollector;
 use PublicApiBundle\Entity\LearningMetadata;
 use PublicApiBundle\Entity\LearningUser;
 
-class GameRepository extends BaseBlueDotRepository
+class GameDatabaseCreator
 {
     /**
      * @var LearningGameRepository $learningGameRepository
@@ -45,9 +41,7 @@ class GameRepository extends BaseBlueDotRepository
      */
     private $learningGameDataRepository;
     /**
-     * GameRepository constructor.
-     * @param BlueDot $blueDot
-     * @param $apiName
+     * GameDatabaseCreator constructor.
      * @param LearningGameRepository $learningGameRepository
      * @param DataCollectorRepository $dataCollectorRepository
      * @param LearningMetadataRepository $learningMetadataRepository
@@ -55,16 +49,12 @@ class GameRepository extends BaseBlueDotRepository
      * @param LearningGameDataRepository $learningGameDataRepository
      */
     public function __construct(
-        BlueDot $blueDot,
-        $apiName,
         LearningGameRepository $learningGameRepository,
         DataCollectorRepository $dataCollectorRepository,
         LearningMetadataRepository $learningMetadataRepository,
         LearningGameChallengeRepository $learningGameChallengeRepository,
         LearningGameDataRepository $learningGameDataRepository
     ) {
-        parent::__construct($blueDot, $apiName);
-
         $this->learningGameRepository = $learningGameRepository;
         $this->dataCollectorRepository = $dataCollectorRepository;
         $this->learningMetadataRepository = $learningMetadataRepository;
@@ -75,7 +65,6 @@ class GameRepository extends BaseBlueDotRepository
      * @param GameInterface $game
      * @param LearningUser $learningUser
      * @param LearningLesson $learningLesson
-     * @throws \BlueDot\Exception\ConnectionException
      */
     public function createGame(
         GameInterface $game,

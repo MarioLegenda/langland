@@ -8,6 +8,7 @@ use LearningSystem\Library\Game\Implementation\GameInterface;
 use LearningSystem\Library\ProvidedDataInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
+use PublicApi\LearningSystem\Infrastructure\DataProvider\Word\ProvidedWordDataCollection;
 use PublicApi\LearningSystem\Repository\DataCollectorRepository;
 use PublicApi\LearningSystem\Repository\LearningGameChallengeRepository;
 use PublicApi\LearningSystem\Repository\LearningGameDataRepository;
@@ -91,7 +92,6 @@ class GameRepository extends BaseBlueDotRepository
      * @param GameInterface $game
      * @param LearningUser $learningUser
      * @param LearningLesson $learningLesson
-     * @throws \BlueDot\Exception\ConnectionException
      */
     private function doCreateGame(
         GameInterface $game,
@@ -100,6 +100,7 @@ class GameRepository extends BaseBlueDotRepository
     ) {
         $gameName = $game->getName();
         $gameType = $game->getType();
+        /** @var ProvidedWordDataCollection $data */
         $data = $game->getGameData();
 
         $learningGameDataCollector = new DataCollector();
@@ -129,6 +130,27 @@ class GameRepository extends BaseBlueDotRepository
 
         $this->dataCollectorRepository->persist($learningGameChallengeDataCollector);
 
+        $this->persistGameChallenges(
+            $data,
+            $learningGameChallengeDataCollector,
+            $learningUser,
+            $learningGame
+        );
+
+        $this->learningGameRepository->flush();
+    }
+    /**
+     * @param ProvidedWordDataCollection $data
+     * @param DataCollector $learningGameChallengeDataCollector
+     * @param LearningUser $learningUser
+     * @param LearningGame $learningGame
+     */
+    public function persistGameChallenges(
+        ProvidedWordDataCollection $data,
+        DataCollector $learningGameChallengeDataCollector,
+        LearningUser $learningUser,
+        LearningGame $learningGame
+    ) {
         /** @var InitialCreationWord $item */
         foreach ($data as $item) {
             $learningGameChallenge = new LearningGameChallenge(
@@ -146,51 +168,5 @@ class GameRepository extends BaseBlueDotRepository
             $this->learningGameChallengeRepository->persist($learningGameChallenge);
             $this->learningGameDataRepository->persist($learningGameData);
         }
-
-        $this->learningGameRepository->flush();
-    }
-    /**
-     * @param ProvidedDataInterface $data
-     * @param int $learningUserId
-     * @param int $learningGameId
-     * @return array
-     */
-    public function createFakeGameChallengeParameters(
-        ProvidedDataInterface $data,
-        int $learningUserId,
-        int $learningGameId
-    ): array {
-        $parameters = [];
-        foreach ($data as $item) {
-            $parameters[] = [
-                'learning_user_id' => $learningUserId,
-                'learning_game_id' => $learningGameId,
-            ];
-        }
-
-        return $parameters;
-    }
-    /**
-     * @param ProvidedDataInterface $data
-     * @param array $gameChallengeInsertedIds
-     * @param int $learningGameId
-     * @return array
-     */
-    private function createGameDataParameters(
-        ProvidedDataInterface $data,
-        array $gameChallengeInsertedIds,
-        int $learningGameId
-    ): array {
-        $parameters = [];
-        /** @var ProvidedDataInterface $item */
-        foreach ($data as $key => $item) {
-            $parameters[] = [
-                'data_id' => $item->getField('id'),
-                'learning_game_challenge_id' => $gameChallengeInsertedIds[$key],
-                'learning_game_id' => $learningGameId,
-            ];
-        }
-
-        return $parameters;
     }
 }

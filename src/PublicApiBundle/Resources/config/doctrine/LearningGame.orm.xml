@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity
+            name="PublicApiBundle\Entity\LearningGame"
+            table="learning_games">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="hasCompleted" type="boolean" nullable="false"/>
+        <field name="name" type="boolean" nullable="false"/>
+        <field name="type" type="string" nullable="false"/>
+
+        <many-to-one field="dataCollector" target-entity="PublicApiBundle\Entity\DataCollector" />
+        <many-to-one field="learningUser" target-entity="PublicApiBundle\Entity\LearningUser" />
+        <many-to-one field="learningMetadata" target-entity="PublicApiBundle\Entity\LearningMetadata" />
+        <many-to-one field="learningLesson" target-entity="PublicApiBundle\Entity\LearningLesson" />
+
+        <field name="createdAt" type="datetime" />
+        <field name="updatedAt" type="datetime" />
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="updateTimestamps" />
+            <lifecycle-callback type="preUpdate" method="updateTimestamps" />
+        </lifecycle-callbacks>
+
+    </entity>
+</doctrine-mapping>

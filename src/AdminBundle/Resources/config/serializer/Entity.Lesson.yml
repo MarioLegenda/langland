@@ -3,16 +3,44 @@ AdminBundle\Entity\Lesson:
     properties:
         id:
             expose: true
-            groups: [public_api]
+            groups: [public_api, internal_model]
+
+        name:
+            expose: true
+            groups: [internal_model]
+
         uuid:
             expose: true
-            groups: [public_api]
+            groups: [public_api, internal_model]
+
         learningOrder:
-            serialized_name: learningOrder
             expose: true
-            groups: [public_api]
+            groups: [public_api, internal_model]
+
+        description:
+            expose: true
+            groups: [internal_model]
+
+        urlifiedName:
+            expose: true
+            groups: [internal_model]
+
+        course:
+            type: AdminBundle\Entity\Course
+            expose: true
+            groups: [internal_model]
+
         jsonLesson:
             expose: true
-            serialized_name: lesson
             type: array
-            groups: [public_api]
+            groups: [public_api, internal_model]
+
+        createdAt:
+            expose: true
+            type: DateTime<'Y-m-d H:m:s'>
+            groups: [internal_model]
+
+        updatedAt:
+            expose: true
+            type: DateTime<'Y-m-d H:m:s'>
+            groups: [internal_model]

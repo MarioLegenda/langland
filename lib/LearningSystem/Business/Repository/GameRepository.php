@@ -2,86 +2,152 @@
 
 namespace LearningSystem\Business\Repository;
 
+use BlueDot\BlueDot;
 use BlueDot\Entity\PromiseInterface;
 use LearningSystem\Library\Game\Implementation\GameInterface;
 use LearningSystem\Library\ProvidedDataInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
+use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
+use PublicApi\LearningSystem\Repository\DataCollectorRepository;
+use PublicApi\LearningSystem\Repository\LearningGameChallengeRepository;
+use PublicApi\LearningSystem\Repository\LearningGameDataRepository;
+use PublicApi\LearningSystem\Repository\LearningGameRepository;
+use PublicApi\LearningSystem\Repository\LearningMetadataRepository;
+use PublicApiBundle\Entity\LearningGame;
+use PublicApiBundle\Entity\LearningGameChallenge;
+use PublicApiBundle\Entity\LearningGameData;
+use PublicApiBundle\Entity\LearningLesson;
+use PublicApiBundle\Entity\DataCollector;
+use PublicApiBundle\Entity\LearningMetadata;
+use PublicApiBundle\Entity\LearningUser;
 
 class GameRepository extends BaseBlueDotRepository
 {
     /**
+     * @var LearningGameRepository $learningGameRepository
+     */
+    private $learningGameRepository;
+    /**
+     * @var DataCollectorRepository $dataCollectorRepository
+     */
+    private $dataCollectorRepository;
+    /**
+     * @var LearningMetadataRepository $learningMetadataRepository
+     */
+    private $learningMetadataRepository;
+    /**
+     * @var LearningGameChallengeRepository $learningGameChallengeRepository
+     */
+    private $learningGameChallengeRepository;
+    /**
+     * @var LearningGameDataRepository $learningGameDataRepository
+     */
+    private $learningGameDataRepository;
+    /**
+     * GameRepository constructor.
+     * @param BlueDot $blueDot
+     * @param $apiName
+     * @param LearningGameRepository $learningGameRepository
+     * @param DataCollectorRepository $dataCollectorRepository
+     * @param LearningMetadataRepository $learningMetadataRepository
+     * @param LearningGameChallengeRepository $learningGameChallengeRepository
+     * @param LearningGameDataRepository $learningGameDataRepository
+     */
+    public function __construct(
+        BlueDot $blueDot,
+        $apiName,
+        LearningGameRepository $learningGameRepository,
+        DataCollectorRepository $dataCollectorRepository,
+        LearningMetadataRepository $learningMetadataRepository,
+        LearningGameChallengeRepository $learningGameChallengeRepository,
+        LearningGameDataRepository $learningGameDataRepository
+    ) {
+        parent::__construct($blueDot, $apiName);
+
+        $this->learningGameRepository = $learningGameRepository;
+        $this->dataCollectorRepository = $dataCollectorRepository;
+        $this->learningMetadataRepository = $learningMetadataRepository;
+        $this->learningGameChallengeRepository = $learningGameChallengeRepository;
+        $this->learningGameDataRepository = $learningGameDataRepository;
+    }
+    /**
      * @param GameInterface $game
-     * @param int $learningUserId
-     * @param int $learningMetadataId
-     * @param int $learningLessonId
+     * @param LearningUser $learningUser
+     * @param LearningLesson $learningLesson
+     * @throws \BlueDot\Exception\ConnectionException
      */
     public function createGame(
         GameInterface $game,
-        int $learningUserId,
-        int $learningMetadataId,
-        int $learningLessonId
+        LearningUser $learningUser,
+        LearningLesson $learningLesson
     ) {
-        $this->blueDot->useRepository('public_api_game');
-
         $this->doCreateGame(
             $game,
-            $learningUserId,
-            $learningMetadataId,
-            $learningLessonId
+            $learningUser,
+            $learningLesson
         );
     }
     /**
      * @param GameInterface $game
-     * @param int $learningUserId
-     * @param int $learningMetadataId
-     * @param int $learningLessonId
+     * @param LearningUser $learningUser
+     * @param LearningLesson $learningLesson
      * @throws \BlueDot\Exception\ConnectionException
      */
     private function doCreateGame(
         GameInterface $game,
-        int $learningUserId,
-        int $learningMetadataId,
-        int $learningLessonId
+        LearningUser $learningUser,
+        LearningLesson $learningLesson
     ) {
         $gameName = $game->getName();
         $gameType = $game->getType();
         $data = $game->getGameData();
 
-        $promise = $this->blueDot->execute('scenario.create_learning_game', [
-            'create_learning_game' => [
-                'name' => $gameName,
-                'type' => $gameType,
-                'learning_user_id' => $learningUserId,
-                'learning_lesson_id' => $learningLessonId,
-                'learning_metadata_id' => $learningMetadataId,
-            ],
-        ]);
+        $learningGameDataCollector = new DataCollector();
+        $learningMetadataDataCollector = new DataCollector();
+        $learningGameMetadata = new LearningMetadata(
+            $learningMetadataDataCollector,
+            $learningUser
+        );
 
-        $learningGameId = $promise->getResult()->get('create_learning_game')['last_insert_id'];
+        $this->dataCollectorRepository->persist($learningMetadataDataCollector);
+        $this->dataCollectorRepository->persist($learningGameDataCollector);
+        $this->learningMetadataRepository->persist($learningGameMetadata);
 
-		$challengeParameters = $this->createFakeGameChallengeParameters($data, $learningUserId, $learningGameId);
+        $learningGame = new LearningGame(
+            $gameName,
+            $gameType,
+            $learningGameDataCollector,
+            $learningUser,
+            $learningGameMetadata,
+            $learningLesson,
+            false
+        );
 
-		foreach ($challengeParameters as $parameter) {
-			$this->blueDot->prepareExecution('scenario.create_learning_game_challenge', [
-				'create_learning_game_challenge' => $parameter,
-			]);
-		}
+        $this->learningGameRepository->persist($learningGame);
 
-		/** @var PromiseInterface[] $promises */
-		$promises = $this->blueDot->executePrepared();
+        $learningGameChallengeDataCollector = new DataCollector();
 
-		$gameChallengeInsertedIds = [];
-        foreach ($promises as $promise) {
-            $gameChallengedId = $promise->getResult()->get('create_learning_game_challenge')['last_insert_id'];
+        $this->dataCollectorRepository->persist($learningGameChallengeDataCollector);
 
-            $gameChallengeInsertedIds[] = $gameChallengedId;
+        /** @var InitialCreationWord $item */
+        foreach ($data as $item) {
+            $learningGameChallenge = new LearningGameChallenge(
+                $learningGameChallengeDataCollector,
+                $learningUser,
+                $learningGame
+            );
+
+            $learningGameData = new LearningGameData(
+                $learningGameChallenge,
+                $learningGame,
+                $item->getId()
+            );
+
+            $this->learningGameChallengeRepository->persist($learningGameChallenge);
+            $this->learningGameDataRepository->persist($learningGameData);
         }
 
-        $this->blueDot->execute('simple.insert.create_learning_game_data', $this->createGameDataParameters(
-            $data,
-            $gameChallengeInsertedIds,
-            $learningGameId
-        ));
+        $this->learningGameRepository->flush();
     }
     /**
      * @param ProvidedDataInterface $data

@@ -4,10 +4,9 @@ namespace PublicApi\Lesson\Business\Implementation;
 
 use AdminBundle\Entity\Lesson;
 use BlueDot\Entity\PromiseInterface;
-use Library\Infrastructure\Helper\CommonSerializer;
+use Library\Infrastructure\Helper\SerializerWrapper;
 use Library\Infrastructure\Repository\RepositoryInterface;
 use PublicApi\Lesson\Repository\LessonRepository;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LessonImplementation
 {
@@ -16,20 +15,20 @@ class LessonImplementation
      */
     private $lessonRepository;
     /**
-     * @var CommonSerializer $commonSerializer
+     * @var SerializerWrapper $serializerWrapper
      */
-    private $commonSerializer;
+    private $serializerWrapper;
     /**
      * LessonImplementation constructor.
      * @param LessonRepository $lessonRepository
-     * @param CommonSerializer $serializer
+     * @param SerializerWrapper $serializerWrapper
      */
     public function __construct(
         LessonRepository $lessonRepository,
-        CommonSerializer $serializer
+        SerializerWrapper $serializerWrapper
     ) {
         $this->lessonRepository = $lessonRepository;
-        $this->commonSerializer = $serializer;
+        $this->serializerWrapper = $serializerWrapper;
     }
     /**
      * @param int $id
@@ -86,7 +85,7 @@ class LessonImplementation
     {
         $lesson = $this->tryFind($id);
 
-        return $this->commonSerializer->serialize($lesson, $groups, $type);
+        return $this->serializerWrapper->serialize($lesson, $groups, $type);
     }
     /**
      * @param Lesson $lesson
@@ -96,6 +95,6 @@ class LessonImplementation
      */
     private function serialize(Lesson $lesson, array $groups, string $type): string
     {
-        return $this->commonSerializer->serialize($lesson, $groups, $type);
+        return $this->serializerWrapper->serialize($lesson, $groups, $type);
     }
 }

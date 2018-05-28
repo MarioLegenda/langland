@@ -38,7 +38,6 @@ class InitialDataCreationController
 
         return new JsonResponse(
             $this->initialDataCreationImplementation->createInitialData(
-                $learningLesson->getLearningMetadata(),
                 $learningLesson
             ),
             201

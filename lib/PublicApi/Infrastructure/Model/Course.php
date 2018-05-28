@@ -2,40 +2,64 @@
 
 namespace PublicApi\Infrastructure\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class Course
+ * @package PublicApi\Infrastructure\Model
+ *
+ * @ExclusionPolicy("none")
+ */
 class Course
 {
     /**
      * @var int $id
+     * @Type("int")
+     * @Assert\NotBlank(message="id cannot be blank")
      */
     private $id;
     /**
      * @var string $name
+     * @Type("string")
+     * @Assert\NotBlank(message="name cannot be blank")
      */
     private $name;
     /**
      * @var string $whatToLearn
+     * @Type("string")
+     * @Assert\NotBlank(message="whatToLearn cannot be blank")
      */
     private $whatToLearn;
     /**
      * @var string $courseUrl
+     * @Type("string")
+     * @Assert\NotBlank(message="courseUrl cannot be blank")
      */
     private $courseUrl;
     /**
      * @var int $courseOrder
+     * @Type("int")
+     * @Assert\NotBlank(message="courseOrder cannot be blank")
      */
     private $courseOrder;
     /**
      * @var string $type
+     * @Type("string")
+     * @Assert\NotBlank(message="type cannot be blank")
      */
     private $type;
     /**
      * @var \DateTime $createdAt
+     * @Type("DateTime<'Y-m-d H:m:s'>")
+     * @Assert\NotBlank(message="createdAt cannot be blank")
      */
     private $createdAt;
     /**
      * @var \DateTime $updatedAt
+     * @Accessor(setter="setUpdatedAt")
      */
     private $updatedAt;
     /**
@@ -69,8 +93,6 @@ class Course
         $this->updatedAt = $updatedAt;
     }
     /**
-     * Get id
-     *
      * @return int
      */
     public function getId()
@@ -78,36 +100,11 @@ class Course
         return $this->id;
     }
     /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Course
-     */
-    public function setName($name) : Course
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-    /**
-     * Get name
-     *
      * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-    /**
-     * @param $whatToLearn
-     * @return Course
-     */
-    public function setWhatToLearn($whatToLearn) : Course
-    {
-        $this->whatToLearn = $whatToLearn;
-
-        return $this;
     }
     /**
      * @return string
@@ -117,21 +114,11 @@ class Course
         return $this->whatToLearn;
     }
     /**
-     * @return mixed
+     * @return string
      */
     public function getCourseUrl()
     {
         return $this->courseUrl;
-    }
-    /**
-     * @param mixed $courseUrl
-     * @return Course
-     */
-    public function setCourseUrl($courseUrl) : Course
-    {
-        $this->courseUrl = $courseUrl;
-
-        return $this;
     }
     /**
      * @return int
@@ -141,16 +128,6 @@ class Course
         return $this->courseOrder;
     }
     /**
-     * @param int $courseOrder
-     * @return Course
-     */
-    public function setCourseOrder(int $courseOrder): Course
-    {
-        $this->courseOrder = $courseOrder;
-
-        return $this;
-    }
-    /**
      * @return string
      */
     public function getType()
@@ -158,31 +135,6 @@ class Course
         return $this->type;
     }
     /**
-     * @param string $type
-     * @return Course
-     */
-    public function setType($type): Course
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Course
-     */
-    public function setCreatedAt(\DateTime $createdAt) : Course
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-    /**
-     * Get createdAt
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -190,45 +142,47 @@ class Course
         return $this->createdAt;
     }
     /**
-     * @return mixed
+     * @return \DateTime|null
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
     /**
-     * @param \DateTime $updatedAt
+     * @param \DateTime|string $updatedAt
      * @return Course
      */
-    public function setUpdatedAt(\DateTime $updatedAt) : Course
+    public function setUpdatedAt($updatedAt) : Course
     {
+        if (is_string($updatedAt)) {
+            $updatedAt = $this->toDateTime($updatedAt);
+
+            if (!$updatedAt instanceof \DateTime) {
+                throw new \RuntimeException('Invalid date time in %s', Lesson::class);
+            }
+
+            $this->updatedAt = $updatedAt;
+        }
+
         $this->updatedAt = $updatedAt;
-
-        return $this;
     }
     /**
-     * @param Lesson $lesson
-     * @return Course
+     * @param \DateTime|string $dateTime
+     * @return \DateTime
      */
-    public function addLesson(Lesson $lesson) : Course
+    private function toDateTime($dateTime): \DateTime
     {
-        if (!$this->hasLesson($lesson)) {
-            $lesson->setCourse($this);
-            $this->lessons->add($lesson);
+        if ($dateTime instanceof \DateTime) {
+            return $dateTime;
         }
 
-        return $this;
-    }
-    /**
-     * @param ArrayCollection $lessons
-     * @return Course
-     */
-    public function setLessons($lessons) : Course
-    {
-        foreach ($lessons as $lesson) {
-            $this->addLesson($lesson);
+        $dateTime = \DateTime::createFromFormat('Y-m-d H:m:s', $dateTime);
+
+        if (!$dateTime instanceof \DateTime) {
+            $message = sprintf('Invalid date time in %s', Lesson::class);
+            throw new \RuntimeException($message);
         }
 
-        return $this;
+        return $dateTime;
     }
 }

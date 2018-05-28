@@ -3,14 +3,26 @@ AdminBundle\Entity\Word:
     properties:
         id:
             expose: true
-            groups: [game, words_by_language]
+            groups: [game, words_by_language, initial_creation_word]
+
         name:
             expose: true
-            groups: [game, words_by_language]
+            groups: [game, words_by_language, initial_creation_word]
+
+        level:
+            expose: true
+            groups: [initial_creation_word]
+
         type:
             expose: true
-            groups: [game, words_by_language]
+            groups: [game, words_by_language, initial_creation_word]
+
         createdAt:
             expose: true
-            groups: [game, words_by_language]
-            serialized_name: createdAt
+            type: DateTime<'Y-m-d H:m:s'>
+            groups: [game, words_by_language, initial_creation_word]
+
+        createdAt:
+            expose: true
+            type: DateTime<'Y-m-d H:m:s'>
+            groups: [game, words_by_language, initial_creation_word]

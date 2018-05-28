@@ -59,6 +59,7 @@
             <argument type="service" id="public_api.repository.learning_user" />
             <argument type="service" id="public_api.repository.lesson" />
             <argument type="service" id="public_api.repository.word" />
+            <argument type="service" id="library.serializer_wrapper" />
 
         </service>
 
@@ -105,6 +106,33 @@
             <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>
             <argument type="service" id="public_api.repository.repository_communicator" />
+        </service>
+
+        <service
+                id="public_api.repository.learning_system.game_repository"
+                class="PublicApi\LearningSystem\Repository\LearningGameRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\LearningGame</argument>
+
+        </service>
+
+        <service
+                id="public_api.repository.learning_system.learning_game_challenge_repository"
+                class="PublicApi\LearningSystem\Repository\LearningGameChallengeRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\LearningGameChallenge</argument>
+
+        </service>
+
+        <service
+                id="public_api.repository.learning_system.learning_game_data_repository"
+                class="PublicApi\LearningSystem\Repository\LearningGameDataRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\LearningGameData</argument>
+
         </service>
 
     </services>

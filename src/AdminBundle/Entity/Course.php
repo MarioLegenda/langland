@@ -4,7 +4,6 @@ namespace AdminBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PublicApi\Infrastructure\Type\CourseType;
-use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Course implements ContainsLanguageInterface
@@ -260,7 +259,6 @@ class Course implements ContainsLanguageInterface
             $this->setCreatedAt(new \DateTime());
         }
     }
-
     /**
      * @param ExecutionContextInterface $context
      */

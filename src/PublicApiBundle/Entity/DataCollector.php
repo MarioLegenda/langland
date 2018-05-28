@@ -45,11 +45,11 @@ class DataCollector
      * @param int $unCompletedCount
      */
     public function __construct(
-        bool $hasCompleted,
-        int $timeSpent,
-        int $accessedCount,
-        int $completedCount,
-        int $unCompletedCount
+        bool $hasCompleted = false,
+        int $timeSpent = 0,
+        int $accessedCount = 0,
+        int $completedCount = 0,
+        int $unCompletedCount = 0
     ) {
         $this->hasCompleted = $hasCompleted;
         $this->timeSpent = $timeSpent;

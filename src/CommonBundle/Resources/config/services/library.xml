@@ -50,10 +50,19 @@
         </service>
 
         <service
-                id="library.common_serializer"
-                class="Library\Infrastructure\Helper\CommonSerializer" public="true">
+                id="library.model_validator"
+                class="Library\Infrastructure\Helper\ModelValidator" public="true">
+
+            <argument type="service" id="validator" />
+        </service>
+
+        <service
+                id="library.serializer_wrapper"
+                class="Library\Infrastructure\Helper\SerializerWrapper" public="true">
 
             <argument type="service" id="jms_serializer" />
+            <argument type="service" id="library.deserializer" />
+            <argument type="service" id="library.model_validator" />
         </service>
 
         <service

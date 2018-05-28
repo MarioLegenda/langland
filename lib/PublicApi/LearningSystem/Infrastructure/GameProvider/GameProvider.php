@@ -3,7 +3,10 @@
 namespace PublicApi\LearningSystem\Infrastructure\GameProvider;
 
 use LearningSystem\Business\Repository\GameRepository;
+use LearningSystem\Library\Game\Implementation\GameInterface;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
+use PublicApiBundle\Entity\LearningLesson;
+use PublicApiBundle\Entity\LearningMetadata;
 
 class GameProvider
 {
@@ -28,19 +31,19 @@ class GameProvider
         $this->gameRepository = $gameRepository;
     }
     /**
-     * @param $game
-     * @param int $learningMetadataId
-     * @param int $learningLessonId
+     * @param GameInterface $game
+     * @param LearningLesson $learningLesson
      */
-    public function createGame($game, int $learningMetadataId, int $learningLessonId)
-    {
-        $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
+    public function createGame(
+        GameInterface $game,
+        LearningLesson $learningLesson
+    ) {
+        $learningUser  = $this->learningUserProvider->getLearningUser();
 
         $this->gameRepository->createGame(
             $game,
-            $learningUserId,
-            $learningMetadataId,
-            $learningLessonId
+            $learningUser,
+            $learningLesson
         );
     }
 }

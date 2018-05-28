@@ -3,15 +3,25 @@ AdminBundle\Entity\Course:
     properties:
         id:
             expose: true
-            groups: [course_list]
+            groups: [course_list, internal_model]
+
         name:
             expose: true
-            groups: [course_list]
+            groups: [course_list, internal_model]
+
         whatToLearn:
             expose: true
-            groups: [course_list]
-            serialized_name: whatToLearn
+            groups: [course_list, internal_model]
+
+        courseOrder:
+            expose: true
+            groups: [internal_model]
+
+        type:
+            expose: true
+            groups: [internal_model]
+
         courseUrl:
             expose: true
-            groups: [course_list]
-            serialized_name: courseUrl
+            groups: [course_list, internal_model]
+

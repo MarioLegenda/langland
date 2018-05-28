@@ -40,17 +40,15 @@ class InitialDataCreationImplementation
         $this->gameProvider = $gameProvider;
     }
     /**
-     * @param LearningMetadata $learningMetadata
      * @param LearningLesson $learningLesson
      * @return array
      */
     public function createInitialData(
-        LearningMetadata $learningMetadata,
         LearningLesson $learningLesson
     ): array {
         $game = $this->gameWorker->createGame($learningLesson);
 
-        $this->gameProvider->createGame($game, $learningMetadataId, $learningLessonId);
+        $this->gameProvider->createGame($game, $learningLesson);
 
         return $this->apiSdk
             ->create([])

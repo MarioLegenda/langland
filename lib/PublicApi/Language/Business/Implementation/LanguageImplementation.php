@@ -6,7 +6,7 @@ use AdminBundle\Entity\Language;
 use AdminBundle\Entity\LanguageInfo;
 use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
-use Library\Infrastructure\Helper\CommonSerializer;
+use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
 use PublicApi\Language\Repository\LanguageInfoRepository;
 use PublicApi\Language\Repository\LanguageRepository;
@@ -26,9 +26,9 @@ class LanguageImplementation
      */
     private $repositoryCommunicator;
     /**
-     * @var CommonSerializer $commonSerializer
+     * @var SerializerWrapper $serializerWrapper
      */
-    private $commonSerializer;
+    private $serializerWrapper;
     /**
      * @var ApiSDK $apiSDK
      */
@@ -38,20 +38,20 @@ class LanguageImplementation
      * @param LanguageRepository $languageRepository
      * @param RepositoryCommunicator $repositoryCommunicator
      * @param LanguageInfoRepository $languageInfoRepository
-     * @param CommonSerializer $commonSerializer
+     * @param SerializerWrapper $serializerWrapper
      * @param ApiSDK $apiSDK
      */
     public function __construct(
         LanguageRepository $languageRepository,
         RepositoryCommunicator $repositoryCommunicator,
         LanguageInfoRepository $languageInfoRepository,
-        CommonSerializer $commonSerializer,
+        SerializerWrapper $serializerWrapper,
         ApiSDK $apiSDK
     ) {
         $this->languageRepository = $languageRepository;
         $this->repositoryCommunicator = $repositoryCommunicator;
         $this->languageInfoRepository = $languageInfoRepository;
-        $this->commonSerializer = $commonSerializer;
+        $this->serializerWrapper = $serializerWrapper;
         $this->apiSDK = $apiSDK;
     }
     /**
@@ -89,7 +89,7 @@ class LanguageImplementation
             'language' => $language
         ]);
 
-        $serialized = $this->commonSerializer->serialize($languageInfo, ['language_info'], 'json');
+        $serialized = $this->serializerWrapper->serialize($languageInfo, ['language_info'], 'json');
 
         $data = $this->apiSDK
             ->create(json_decode($serialized, true))

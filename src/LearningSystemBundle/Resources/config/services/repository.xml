@@ -12,6 +12,11 @@
 
             <argument type="service" id="common.blue_dot" />
             <argument>public_api_game</argument>
+            <argument type="service" id="public_api.repository.learning_system.game_repository" />
+            <argument type="service" id="public_api.repository.learning_system.data_collector" />
+            <argument type="service" id="public_api.repository.learning_system.learning_metadata" />
+            <argument type="service" id="public_api.repository.learning_system.learning_game_challenge_repository" />
+            <argument type="service" id="public_api.repository.learning_system.learning_game_data_repository" />
         </service>
     </services>
 </container>

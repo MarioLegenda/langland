@@ -6,6 +6,7 @@ use AdminBundle\Entity\Course as MetadataCourse;
 use AdminBundle\Entity\Language as MetadataLanguage;
 use AdminBundle\Entity\Word;
 use ArmorBundle\Entity\User;
+use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
 use PublicApi\Infrastructure\Repository\WordRepository;
 use PublicApi\Language\Repository\LanguageRepository;
@@ -14,7 +15,6 @@ use PublicApi\Lesson\Repository\LessonRepository;
 use AdminBundle\Entity\Lesson as MetadataLesson;
 use PublicApi\Infrastructure\Model\Language;
 use PublicApi\Infrastructure\Model\Lesson;
-use PublicApi\Infrastructure\Model\Course;
 
 class RepositoryCommunicator
 {
@@ -35,22 +35,29 @@ class RepositoryCommunicator
      */
     private $wordRepository;
     /**
+     * @var SerializerWrapper $serializerWrapper
+     */
+    private $serializerWrapper;
+    /**
      * RepositoryCommunicator constructor.
      * @param LanguageRepository $languageRepository
      * @param LearningUserRepository $learningUserRepository
      * @param LessonRepository $lessonRepository
      * @param WordRepository $wordRepository
+     * @param SerializerWrapper $serializerWrapper
      */
     public function __construct(
         LanguageRepository $languageRepository,
         LearningUserRepository $learningUserRepository,
         LessonRepository $lessonRepository,
-        WordRepository $wordRepository
+        WordRepository $wordRepository,
+        SerializerWrapper $serializerWrapper
     ) {
         $this->languageRepository = $languageRepository;
         $this->learningUserRepository = $learningUserRepository;
         $this->lessonRepository = $lessonRepository;
         $this->wordRepository = $wordRepository;
+        $this->serializerWrapper = $serializerWrapper;
     }
     /**
      * @param Language $language
@@ -68,24 +75,11 @@ class RepositoryCommunicator
             ->getQuery()
             ->getResult();
 
-        $publicApiLessons = [];
-
-        /** @var MetadataLesson $lesson */
-        foreach ($metadataLessons as $lesson) {
-            $course = $this->createPublicApiCourse($lesson->getCourse());
-
-            $publicApiLessons[] = new Lesson(
-                $lesson->getId(),
-                $lesson->getName(),
-                $lesson->getUuid(),
-                $lesson->getLearningOrder(),
-                $lesson->getJsonLesson(),
-                $course,
-                $lesson->getDescription()
-            );
-        }
-
-        return $publicApiLessons;
+        return $this->createModelsFromMetadata(
+            $metadataLessons,
+            Lesson::class,
+            ['internal_model']
+        );
     }
     /**
      * @param Language $language
@@ -112,7 +106,11 @@ class RepositoryCommunicator
             ->getQuery()
             ->getResult();
 
-        return $this->createModelsWords($words);
+        return $this->createModelsFromMetadata(
+            $words,
+            InitialCreationWord::class,
+            ['initial_creation_word']
+        );
     }
     /**
      * @param Language $language
@@ -139,7 +137,11 @@ class RepositoryCommunicator
             ->getQuery()
             ->getResult();
 
-        return $this->createModelsWords($words);
+        return $this->createModelsFromMetadata(
+            $words,
+            InitialCreationWord::class,
+            ['initial_creation_word']
+        );
     }
     /**
      * @param User $user
@@ -220,42 +222,33 @@ class RepositoryCommunicator
 
         return $parsed;
     }
-
     /**
-     * @param Word[] $words
-     * @return InitialCreationWord[]
+     * @param array $metadata
+     * @param string $class
+     * @param array $groups
+     * @return array
      */
-    private function createModelsWords(array $words)
-    {
-        $initialCreationWords = [];
+    private function createModelsFromMetadata(
+        array $metadata,
+        string $class,
+        array $groups
+    ) : array {
+        $models = [];
 
-        /** @var Word $word */
-        foreach ($words as $word) {
-            $initialCreationWords[] = new InitialCreationWord(
-                $word->getId(),
-                $word->getLevel(),
-                $word->getCreatedAt(),
-                $word->getUpdatedAt()
+        foreach ($metadata as $m) {
+
+            $serialized = $this->serializerWrapper->serialize($m, $groups);
+
+            $model = $this->serializerWrapper->getDeserializer()->create(
+                $serialized,
+                $class
             );
+
+            $this->serializerWrapper->getModelValidator()->validate($model);
+
+            $models[] = $model;
         }
 
-        return $initialCreationWords;
-    }
-    /**
-     * @param MetadataCourse $metadataCourse
-     * @return Course
-     */
-    private function createPublicApiCourse(MetadataCourse $metadataCourse): Course
-    {
-        return new Course(
-            $metadataCourse->getId(),
-            $metadataCourse->getName(),
-            $metadataCourse->getWhatToLearn(),
-            $metadataCourse->getCourseUrl(),
-            $metadataCourse->getCourseOrder(),
-            $metadataCourse->getType(),
-            $metadataCourse->getCreatedAt(),
-            $metadataCourse->getUpdatedAt()
-        );
+        return $models;
     }
 }

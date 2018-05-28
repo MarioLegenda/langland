@@ -5,20 +5,34 @@ namespace Library\Infrastructure\Helper;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 
-class CommonSerializer
+class SerializerWrapper
 {
     /**
      * @var Serializer $serializer
      */
     private $serializer;
     /**
-     * CommonSerializer constructor.
+     * @var Deserializer $deserializer
+     */
+    private $deserializer;
+    /**
+     * @var ModelValidator $modelValidator
+     */
+    private $modelValidator;
+    /**
+     * SerializerWrapper constructor.
      * @param Serializer $serializer
+     * @param Deserializer $deserializer
+     * @param ModelValidator $modelValidator
      */
     public function __construct(
-        Serializer $serializer
+        Serializer $serializer,
+        Deserializer $deserializer,
+        ModelValidator $modelValidator
     ) {
         $this->serializer = $serializer;
+        $this->deserializer = $deserializer;
+        $this->modelValidator = $modelValidator;
     }
     /**
      * @param $object
@@ -47,5 +61,19 @@ class CommonSerializer
         }
 
         return json_encode($arrayed);
+    }
+    /**
+     * @return Deserializer
+     */
+    public function getDeserializer(): Deserializer
+    {
+        return $this->deserializer;
+    }
+    /**
+     * @return ModelValidator
+     */
+    public function getModelValidator(): ModelValidator
+    {
+        return $this->modelValidator;
     }
 }

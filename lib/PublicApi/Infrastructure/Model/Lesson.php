@@ -4,47 +4,77 @@ namespace PublicApi\Infrastructure\Model;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Class Lesson
+ * @package PublicApi\Infrastructure\Model
+ *
+ * @ExclusionPolicy("none")
+ */
 class Lesson
 {
     /**
      * @var int $id
+     * @Type("int")
+     * @Assert\NotBlank(message="id cannot be blank")
      */
     private $id;
     /**
      * @var string $name
+     * @Type("string")
+     * @Assert\NotBlank(message="name cannot be blank")
      */
     private $name;
     /**
      * @var UuidInterface $uuid
+     * @Type("string")
+     * @Assert\NotBlank(message="uuid cannot be blank")
      */
     private $uuid;
     /**
      * @var int $learningOrder
+     * @Type("int")
+     * @Assert\NotBlank(message="learningOrder cannot be blank")
      */
     private $learningOrder;
     /**
      * @var string $description
+     * @Type("string")
+     * @Assert\NotBlank(message="description cannot be blank")
      */
     private $description;
     /**
      * @var array $jsonLesson
+     * @Type("array")
+     * @Assert\NotBlank(message="jsonLesson cannot be blank")
      */
     private $jsonLesson;
     /**
      * @var string $urlifiedName
+     * @Type("string")
+     * @Assert\NotBlank(message="urlifiedName cannot be blank")
      */
     private $urlifiedName;
     /**
      * @var Course $course
+     * @Type("PublicApi\Infrastructure\Model\Course")
+     * @Assert\NotBlank(message="course cannot be blank")
      */
     private $course;
     /**
      * @var \DateTime $createdAt
+     * @Type("DateTime<'Y-m-d H:m:s'>")
+     * @Assert\NotBlank(message="createdAt cannot be blank")
      */
     private $createdAt;
     /**
      * @var \DateTime $updatedAt
+     * @Type("string")
+     * @Accessor(setter="setUpdatedAt")
      */
     private $updatedAt;
     /**
@@ -246,13 +276,15 @@ class Lesson
      */
     public function setUpdatedAt($updatedAt) : Lesson
     {
-        $updatedAt = $this->toDateTime($updatedAt);
+        if (is_string($updatedAt)) {
+            $updatedAt = $this->toDateTime($updatedAt);
 
-        if (!$updatedAt instanceof \DateTime) {
-            throw new \RuntimeException('Invalid date time in %s', Lesson::class);
+            if (!$updatedAt instanceof \DateTime) {
+                throw new \RuntimeException('Invalid date time in %s', Lesson::class);
+            }
+
+            $this->updatedAt = $updatedAt;
         }
-
-        $this->updatedAt = $updatedAt;
 
         return $this;
     }

@@ -62,11 +62,4 @@ class Deserializer
 
         return $this->serializer->deserialize($data, $type, $format);
     }
-    /**
-     * @return null|object
-     */
-    public function getSerializedObject()
-    {
-        return $this->object;
-    }
 }

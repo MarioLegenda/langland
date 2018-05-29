@@ -8,6 +8,7 @@ use Library\Infrastructure\Helper\Deserializer;
 use LearningMetadata\Business\Implementation\CourseImplementation;
 use LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
 use LearningMetadata\Business\Middleware\LessonMiddleware;
+use Library\Infrastructure\Helper\ModelValidator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,19 +31,26 @@ class LessonController
      */
     private $deserializer;
     /**
+     * @var ModelValidator $modelValidator
+     */
+    private $modelValidator;
+    /**
      * LessonController constructor.
      * @param LessonImplementation $lessonImplementation
      * @param CourseImplementation $courseImplementation
      * @param Deserializer $deserializer
+     * @param ModelValidator $modelValidator
      */
     public function __construct(
         LessonImplementation $lessonImplementation,
         CourseImplementation $courseImplementation,
-        Deserializer $deserializer
+        Deserializer $deserializer,
+        ModelValidator $modelValidator
     ) {
         $this->lessonImplementation = $lessonImplementation;
         $this->courseImplementation = $courseImplementation;
         $this->deserializer = $deserializer;
+        $this->modelValidator = $modelValidator;
     }
     /**
      * @Security("has_role('ROLE_ALLOWED_VIEW')")
@@ -112,7 +120,8 @@ class LessonController
             $request->request->all(),
             $this->courseImplementation,
             $this->lessonImplementation,
-            $this->deserializer
+            $this->deserializer,
+            $this->modelValidator
         );
 
         $data['lessonView']->setUuid(Uuid::uuid4());
@@ -135,7 +144,8 @@ class LessonController
         $data = $lessonMiddleware->createExistingLessonMiddleware(
             $request->request->all(),
             $this->lessonImplementation,
-            $this->deserializer
+            $this->deserializer,
+            $this->modelValidator
         );
 
         return $this->lessonImplementation->updateLesson(

@@ -13,7 +13,7 @@
 
         <field name="lesson" type="integer" column="lesson_id" nullable="false" />
 
-        <many-to-one field="dataCollector" target-entity="PublicApiBundle\Entity\DataCollector" />
+        <many-to-one field="learningUser" target-entity="PublicApiBundle\Entity\LearningUser" />
         <many-to-one field="learningMetadata" target-entity="PublicApiBundle\Entity\LearningMetadata" />
 
         <lifecycle-callbacks>

@@ -63,12 +63,12 @@ class LearningMetadataImplementation
      */
     public function getLearningLessonPresentation(): array
     {
-        $learningUserId = $this->learningUserProvider->getLearningUser()->getId();
-        $languageId = $this->languageProvider->getLanguage()->getId();
+        $learningUser = $this->learningUserProvider->getLearningUser();
+        $language = $this->languageProvider->getLanguage();
 
         $presentation = $this->learningMetadataRepository->getLearningLessonPresentation(
-            $learningUserId,
-            $languageId
+            $learningUser,
+            $language
         );
 
         return $this->apiSdk

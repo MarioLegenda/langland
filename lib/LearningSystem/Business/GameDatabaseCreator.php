@@ -17,6 +17,7 @@ use PublicApiBundle\Entity\LearningLesson;
 use PublicApiBundle\Entity\DataCollector;
 use PublicApiBundle\Entity\LearningMetadata;
 use PublicApiBundle\Entity\LearningUser;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class GameDatabaseCreator
 {
@@ -92,21 +93,17 @@ class GameDatabaseCreator
         /** @var ProvidedWordDataCollection $data */
         $data = $game->getGameData();
 
-        $learningGameDataCollector = new DataCollector();
         $learningMetadataDataCollector = new DataCollector();
         $learningGameMetadata = new LearningMetadata(
-            $learningMetadataDataCollector,
-            $learningUser
+            $learningMetadataDataCollector
         );
 
         $this->dataCollectorRepository->persist($learningMetadataDataCollector);
-        $this->dataCollectorRepository->persist($learningGameDataCollector);
         $this->learningMetadataRepository->persist($learningGameMetadata);
 
         $learningGame = new LearningGame(
             $gameName,
             $gameType,
-            $learningGameDataCollector,
             $learningUser,
             $learningGameMetadata,
             $learningLesson,
@@ -121,8 +118,6 @@ class GameDatabaseCreator
 
         $this->persistGameChallenges(
             $data,
-            $learningGameChallengeDataCollector,
-            $learningUser,
             $learningGame
         );
 
@@ -130,21 +125,22 @@ class GameDatabaseCreator
     }
     /**
      * @param ProvidedWordDataCollection $data
-     * @param DataCollector $learningGameChallengeDataCollector
-     * @param LearningUser $learningUser
      * @param LearningGame $learningGame
      */
     public function persistGameChallenges(
         ProvidedWordDataCollection $data,
-        DataCollector $learningGameChallengeDataCollector,
-        LearningUser $learningUser,
         LearningGame $learningGame
     ) {
         /** @var InitialCreationWord $item */
         foreach ($data as $item) {
+            $learningGameChallengeDataCollector = new DataCollector();
+            $learningGameChallengeLearningMetadata = new LearningMetadata($learningGameChallengeDataCollector);
+
+            $this->dataCollectorRepository->persist($learningGameChallengeDataCollector);
+            $this->learningMetadataRepository->persist($learningGameChallengeLearningMetadata);
+
             $learningGameChallenge = new LearningGameChallenge(
-                $learningGameChallengeDataCollector,
-                $learningUser,
+                $learningGameChallengeLearningMetadata,
                 $learningGame
             );
 

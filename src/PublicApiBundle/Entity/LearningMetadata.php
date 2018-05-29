@@ -13,10 +13,6 @@ class LearningMetadata
      */
     private $dataCollector;
     /**
-     * @var LearningUser $learningUser
-     */
-    private $learningUser;
-    /**
      * @var \DateTime $createdAt
      */
     private $createdAt;
@@ -27,14 +23,11 @@ class LearningMetadata
     /**
      * LearningMetadata constructor.
      * @param DataCollector $dataCollector
-     * @param LearningUser $learningUser
      */
     public function __construct(
-        DataCollector $dataCollector,
-        LearningUser $learningUser
+        DataCollector $dataCollector
     ) {
         $this->dataCollector = $dataCollector;
-        $this->learningUser = $learningUser;
     }
     /**
      * @return int

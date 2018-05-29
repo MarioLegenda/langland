@@ -7,6 +7,7 @@ use Library\Infrastructure\Helper\Deserializer;
 use LearningMetadata\Business\Implementation\CourseImplementation;
 use LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
 use LearningMetadata\Business\ViewModel\Lesson\LessonView;
+use Library\Infrastructure\Helper\ModelValidator;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\ContainerAwareTest;
@@ -43,6 +44,10 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
      */
     private $languageDataProvider;
     /**
+     * @var ModelValidator $modelValidator
+     */
+    private $modelValidator;
+    /**
      * @inheritdoc
      */
     public function setUp()
@@ -55,6 +60,7 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
         $this->lessonDataProvider = $this->container->get('data_provider.lesson');
         $this->courseDataProvider = $this->container->get('data_provider.course');
         $this->languageDataProvider = $this->container->get('data_provider.language');
+        $this->modelValidator = $this->container->get('library.model_validator');
     }
 
     public function test_lesson_creation()
@@ -82,12 +88,11 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             'description' => $this->faker->sentence(20),
         ];
 
-        $this->deserializer->create($data, LessonView::class);
+        $lessonView = $this->deserializer->create($data, LessonView::class);
 
-        static::assertFalse($this->deserializer->hasErrors());
+        $this->modelValidator->tryValidate($lessonView);
 
-        /** @var LessonView $lessonView */
-        $lessonView = $this->deserializer->getSerializedObject();
+        static::assertFalse($this->modelValidator->hasErrors());
 
         $lessonView->setUuid($uuid);
 
@@ -139,7 +144,8 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             $data,
             $this->courseImplementation,
             $this->lessonImplementation,
-            $this->deserializer
+            $this->deserializer,
+            $this->modelValidator
         );
 
         $data['lessonView']->setUuid(Uuid::uuid4());
@@ -195,7 +201,8 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             $data,
             $this->courseImplementation,
             $this->lessonImplementation,
-            $this->deserializer
+            $this->deserializer,
+            $this->modelValidator
         );
 
         $data['lessonView']->setUuid(Uuid::uuid4());
@@ -230,7 +237,8 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             $data,
             $this->courseImplementation,
             $this->lessonImplementation,
-            $this->deserializer
+            $this->deserializer,
+            $this->modelValidator
         );
 
         $data['lessonView']->setUuid(Uuid::uuid4());
@@ -275,7 +283,8 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
             $initialData,
             $this->courseImplementation,
             $this->lessonImplementation,
-            $this->deserializer
+            $this->deserializer,
+            $this->modelValidator
         );
 
         $data['lessonView']->setUuid(Uuid::uuid4());
@@ -295,7 +304,8 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
         $updatedData = $lessonMiddleware->createExistingLessonMiddleware(
             $initialData,
             $this->lessonImplementation,
-            $this->deserializer
+            $this->deserializer,
+            $this->modelValidator
         );
 
         $response = $this->lessonImplementation->updateLesson(

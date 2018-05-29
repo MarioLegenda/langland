@@ -8,12 +8,10 @@
             <generator strategy="AUTO"/>
         </id>
 
-        <many-to-one field="dataCollector" target-entity="PublicApiBundle\Entity\DataCollector" />
-        <many-to-one field="learningUser" target-entity="PublicApiBundle\Entity\LearningUser" />
-
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 
+        <many-to-one field="dataCollector" target-entity="PublicApiBundle\Entity\DataCollector" />
 
         <lifecycle-callbacks>
             <lifecycle-callback type="prePersist" method="updateTimestamps" />

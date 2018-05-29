@@ -12,7 +12,6 @@
         <field name="name" type="boolean" nullable="false"/>
         <field name="type" type="string" nullable="false"/>
 
-        <many-to-one field="dataCollector" target-entity="PublicApiBundle\Entity\DataCollector" />
         <many-to-one field="learningUser" target-entity="PublicApiBundle\Entity\LearningUser" />
         <many-to-one field="learningMetadata" target-entity="PublicApiBundle\Entity\LearningMetadata" />
         <many-to-one field="learningLesson" target-entity="PublicApiBundle\Entity\LearningLesson" />

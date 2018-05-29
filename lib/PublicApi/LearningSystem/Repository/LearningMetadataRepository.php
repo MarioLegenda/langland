@@ -92,14 +92,14 @@ class LearningMetadataRepository extends CommonRepository
 
             $learningMetadataDataCollector = new DataCollector(false, 0, 0, 0, 0);
             $learningLessonDataCollector = new DataCollector(false, 0, 0, 0, 0);
-            $learningMetadata = new LearningMetadata($learningMetadataDataCollector, $learningUser);
+            $learningMetadata = new LearningMetadata($learningMetadataDataCollector);
 
             $this->dataCollectorRepository->persist($learningMetadataDataCollector);
             $this->dataCollectorRepository->persist($learningLessonDataCollector);
             $this->persist($learningMetadata);
 
             $learningLesson = new LearningLesson(
-                $learningLessonDataCollector,
+                $learningUser,
                 $lesson,
                 $learningMetadata,
                 false,
@@ -118,21 +118,19 @@ class LearningMetadataRepository extends CommonRepository
         return $firstLearningLesson;
     }
     /**
-     * @param int $learningUserId
-     * @param int $languageId
+     * @param LearningUser $learningUser
+     * @param Language $language
      * @return array
      */
     public function getLearningLessonPresentation(
-        int $learningUserId,
-        int $languageId
+        LearningUser $learningUser,
+        Language $language
     ): array {
-        $this->blueDot->useRepository('presentation');
+        $language = $this->repositoryCommunicator->getMetadataLanguageByLanguageModel($language);
 
-        return $this->blueDot->execute('service.learning_lesson_presentation', [
-            'learning_user_id' => $learningUserId,
-            'language_id' => $languageId,
-            'router' => $this->router,
-        ])->getResult()->get('data');
+        $learningLessons = $this->learningLessonRepository->getAllLearningLessonsByLearningUser($learningUser);
+
+        
     }
     /**
      * @param int $learningUserId

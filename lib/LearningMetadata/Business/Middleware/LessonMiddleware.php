@@ -8,6 +8,7 @@ use LearningMetadata\Business\Implementation\CourseImplementation;
 use LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
 use LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use AdminBundle\Entity\Course;
+use Library\Infrastructure\Helper\ModelValidator;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class LessonMiddleware
@@ -17,15 +18,16 @@ class LessonMiddleware
      * @param CourseImplementation $courseImplementation
      * @param LessonImplementation $lessonImplementation
      * @param Deserializer $deserializer
+     * @param ModelValidator $modelValidator
      * @throws \RuntimeException
      * @return array
      */
-    public function createNewLessonMiddleware
-    (
+    public function createNewLessonMiddleware (
         array $data,
         CourseImplementation $courseImplementation,
         LessonImplementation $lessonImplementation,
-        Deserializer $deserializer
+        Deserializer $deserializer,
+        ModelValidator $modelValidator
     ): array {
         $courseId = $data['course'];
 
@@ -35,17 +37,17 @@ class LessonMiddleware
             throw new \RuntimeException(sprintf('Course not found'));
         }
 
-        $deserializer->create(
+        /** @var LessonView $lessonView */
+        $lessonView = $deserializer->create(
             $data,
             LessonView::class
         );
 
-        if ($deserializer->hasErrors()) {
-            throw new \RuntimeException($deserializer->getErrorsString());
-        }
+        $modelValidator->tryValidate($lessonView);
 
-        /** @var LessonView $lessonView */
-        $lessonView = $deserializer->getSerializedObject();
+        if ($modelValidator->hasErrors()) {
+            throw new \RuntimeException($modelValidator->getErrorsString());
+        }
 
         $lesson = $lessonImplementation->tryFindByName($lessonView->getName());
 
@@ -62,14 +64,15 @@ class LessonMiddleware
      * @param array $data
      * @param LessonImplementation $lessonImplementation
      * @param Deserializer $deserializer
+     * @param ModelValidator $modelValidator
      * @throws \RuntimeException
      * @return array
      */
-    public function createExistingLessonMiddleware
-    (
+    public function createExistingLessonMiddleware(
         array $data,
         LessonImplementation $lessonImplementation,
-        Deserializer $deserializer
+        Deserializer $deserializer,
+        ModelValidator $modelValidator
     ): array {
         $lessonId = $data['id'];
 
@@ -80,17 +83,16 @@ class LessonMiddleware
         }
 
         /** @var LessonView $lessonView */
-        $deserializer->create(
+        $lessonView = $deserializer->create(
             $data,
             LessonView::class
         );
 
-        if ($deserializer->hasErrors()) {
-            throw new \RuntimeException($deserializer->getErrorsString());
-        }
+        $modelValidator->tryValidate($lessonView);
 
-        /** @var LessonView $lessonView */
-        $lessonView = $deserializer->getSerializedObject();
+        if ($modelValidator->hasErrors()) {
+            throw new \RuntimeException($modelValidator->getErrorsString());
+        }
 
         $existing = $lessonImplementation->tryFindByName($lessonView->getName());
 

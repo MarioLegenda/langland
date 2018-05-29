@@ -2,9 +2,7 @@
 
 namespace PublicApi\Infrastructure\Communication;
 
-use AdminBundle\Entity\Course as MetadataCourse;
 use AdminBundle\Entity\Language as MetadataLanguage;
-use AdminBundle\Entity\Word;
 use ArmorBundle\Entity\User;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
@@ -12,7 +10,6 @@ use PublicApi\Infrastructure\Repository\WordRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApi\Lesson\Repository\LessonRepository;
-use AdminBundle\Entity\Lesson as MetadataLesson;
 use PublicApi\Infrastructure\Model\Language;
 use PublicApi\Infrastructure\Model\Lesson;
 
@@ -69,7 +66,6 @@ class RepositoryCommunicator
 
         $metadataLessons = $qb
             ->innerJoin('l.course', 'c')
-            ->where('c.id = l.course')
             ->andWhere('c.language = :language_id')
             ->setParameter(':language_id', $language->getId())
             ->getQuery()
@@ -111,6 +107,14 @@ class RepositoryCommunicator
             InitialCreationWord::class,
             ['initial_creation_word']
         );
+    }
+    /**
+     * @param Language $language
+     * @return MetadataLanguage
+     */
+    public function getMetadataLanguageByLanguageModel(Language $language): MetadataLanguage
+    {
+        return $this->languageRepository->find($language->getId());
     }
     /**
      * @param Language $language

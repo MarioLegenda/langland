@@ -14,20 +14,20 @@ class GameProvider
      */
     private $learningUserProvider;
     /**
-     * @var GameDatabaseCreator $gameRepository
+     * @var GameDatabaseCreator $gameDatabaseCreator
      */
-    private $gameRepository;
+    private $gameDatabaseCreator;
     /**
      * GameProvider constructor.
      * @param LearningUserProvider $learningUserProvider
-     * @param GameDatabaseCreator $gameRepository
+     * @param GameDatabaseCreator $gameDatabaseCreator
      */
     public function __construct(
         LearningUserProvider $learningUserProvider,
-        GameDatabaseCreator $gameRepository
+        GameDatabaseCreator $gameDatabaseCreator
     ) {
         $this->learningUserProvider = $learningUserProvider;
-        $this->gameRepository = $gameRepository;
+        $this->gameDatabaseCreator = $gameDatabaseCreator;
     }
     /**
      * @param GameInterface $game
@@ -39,7 +39,7 @@ class GameProvider
     ) {
         $learningUser  = $this->learningUserProvider->getLearningUser();
 
-        $this->gameRepository->createGame(
+        $this->gameDatabaseCreator->createGame(
             $game,
             $learningUser,
             $learningLesson

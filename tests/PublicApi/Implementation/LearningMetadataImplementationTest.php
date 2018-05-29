@@ -5,6 +5,7 @@ namespace PublicApi\Implementation;
 use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
+use PublicApiBundle\Entity\LearningLesson;
 use PublicApiBundle\Entity\LearningUser;
 use TestLibrary\PublicApiTestCase;
 use TestLibrary\TestBuilder\AdminTestBuilder;
@@ -37,12 +38,10 @@ class LearningMetadataImplementationTest extends PublicApiTestCase
 
             $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 
-            $learningMetadata = $learningMetadataImplementation->createLearningMetadata();
+            $learningLesson = $learningMetadataImplementation->createLearningMetadata();
 
-            static::assertNotEmpty($learningMetadata);
-            static::assertInternalType('array', $learningMetadata);
-            static::assertArrayHasKey('learningMetadataId', $learningMetadata);
-            static::assertInternalType('int', $learningMetadata['learningMetadataId']);
+            static::assertNotEmpty($learningLesson);
+            static::assertInstanceOf(LearningLesson::class, $learningLesson);
         }
     }
 }

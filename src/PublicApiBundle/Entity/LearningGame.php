@@ -2,7 +2,9 @@
 
 namespace PublicApiBundle\Entity;
 
-class LearningGame
+use PublicApiBundle\Entity\Contract\CollectibleDataContainerInterface;
+
+class LearningGame implements CollectibleDataContainerInterface
 {
     /**
      * @var int $id
@@ -16,10 +18,6 @@ class LearningGame
      * @var string $type
      */
     private $type;
-    /**
-     * @var DataCollector $dataCollector
-     */
-    private $dataCollector;
     /**
      * @var LearningUser $learningUser
      */
@@ -48,7 +46,6 @@ class LearningGame
      * LearningGame constructor.
      * @param string $name
      * @param string $type
-     * @param DataCollector $dataCollector
      * @param LearningUser $learningUser
      * @param LearningMetadata $learningMetadata
      * @param LearningLesson $learningLesson
@@ -57,7 +54,6 @@ class LearningGame
     public function __construct(
         string $name,
         string $type,
-        DataCollector $dataCollector,
         LearningUser $learningUser,
         LearningMetadata $learningMetadata,
         LearningLesson $learningLesson,
@@ -65,7 +61,6 @@ class LearningGame
     ) {
         $this->name = $name;
         $this->type = $type;
-        $this->dataCollector = $dataCollector;
         $this->learningUser = $learningUser;
         $this->learningMetadata = $learningMetadata;
         $this->learningLesson = $learningLesson;
@@ -105,20 +100,6 @@ class LearningGame
     public function setType(string $type): void
     {
         $this->type = $type;
-    }
-    /**
-     * @return DataCollector
-     */
-    public function getDataCollector(): DataCollector
-    {
-        return $this->dataCollector;
-    }
-    /**
-     * @param DataCollector $dataCollector
-     */
-    public function setDataCollector(DataCollector $dataCollector): void
-    {
-        $this->dataCollector = $dataCollector;
     }
     /**
      * @return LearningUser

@@ -2,20 +2,18 @@
 
 namespace PublicApiBundle\Entity;
 
-class LearningGameChallenge
+use PublicApiBundle\Entity\Contract\CollectibleDataContainerInterface;
+
+class LearningGameChallenge implements CollectibleDataContainerInterface
 {
     /**
      * @var int $id
      */
     private $id;
     /**
-     * @var DataCollector $dataCollector
+     * @var LearningMetadata $learningMetadata
      */
-    private $dataCollector;
-    /**
-     * @var LearningUser $learningUser
-     */
-    private $learningUser;
+    private $learningMetadata;
     /**
      * @var LearningGame $learningGame
      */
@@ -30,40 +28,36 @@ class LearningGameChallenge
     private $updatedAt;
     /**
      * LearningGameChallenge constructor.
-     * @param DataCollector $dataCollector
-     * @param LearningUser $learningUser
      * @param LearningGame $learningGame
+     * @param LearningMetadata $learningMetadata
      */
     public function __construct(
-        DataCollector $dataCollector,
-        LearningUser $learningUser,
+        LearningMetadata $learningMetadata,
         LearningGame $learningGame
     ) {
-        $this->dataCollector = $dataCollector;
-        $this->learningUser = $learningUser;
         $this->learningGame = $learningGame;
+        $this->learningMetadata = $learningMetadata;
     }
-
+    /**
+     * @return LearningMetadata
+     */
+    public function getLearningMetadata(): LearningMetadata
+    {
+        return $this->learningMetadata;
+    }
+    /**
+     * @param LearningMetadata $learningMetadata
+     */
+    public function setLearningMetadata(LearningMetadata $learningMetadata): void
+    {
+        $this->learningMetadata = $learningMetadata;
+    }
     /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
-    }
-    /**
-     * @return DataCollector
-     */
-    public function getDataCollector(): DataCollector
-    {
-        return $this->dataCollector;
-    }
-    /**
-     * @param DataCollector $dataCollector
-     */
-    public function setDataCollector(DataCollector $dataCollector): void
-    {
-        $this->dataCollector = $dataCollector;
     }
     /**
      * @return \DateTime

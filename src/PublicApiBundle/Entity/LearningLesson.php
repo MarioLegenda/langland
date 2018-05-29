@@ -3,17 +3,18 @@
 namespace PublicApiBundle\Entity;
 
 use PublicApi\Infrastructure\Model\Lesson;
+use PublicApiBundle\Entity\Contract\CollectibleDataContainerInterface;
 
-class LearningLesson
+class LearningLesson implements CollectibleDataContainerInterface
 {
     /**
      * @var int $id
      */
     private $id;
     /**
-     * @var DataCollector $systemNeuron
+     * @var LearningUser $learningUser
      */
-    private $dataCollector;
+    private $learningUser;
     /**
      * @var int|Lesson $lesson
      */
@@ -44,20 +45,20 @@ class LearningLesson
     private $updatedAt;
     /**
      * LearningLesson constructor.
-     * @param DataCollector $dataCollector
+     * @param LearningUser $learningUser
      * @param Lesson $lesson
      * @param LearningMetadata $learningMetadata
      * @param bool $hasCompleted
      * @param bool $isAvailable
      */
     public function __construct(
-        DataCollector $dataCollector,
+        LearningUser $learningUser,
         Lesson $lesson,
         LearningMetadata $learningMetadata,
         bool $hasCompleted,
         bool $isAvailable
     ) {
-        $this->dataCollector = $dataCollector;
+        $this->learningUser = $learningUser;
         $this->lesson = $lesson->getId();
         $this->lessonObject = $lesson;
         $this->learningMetadata = $learningMetadata;
@@ -65,21 +66,25 @@ class LearningLesson
         $this->isAvailable = $isAvailable;
     }
     /**
-     * @param int $id
-     * @return LearningLesson
-     */
-    public function setId(int $id): LearningLesson
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-    /**
      * @return int
      */
     public function getId(): int
     {
         return $this->id;
+    }
+    /**
+     * @return LearningUser
+     */
+    public function getLearningUser(): LearningUser
+    {
+        return $this->learningUser;
+    }
+    /**
+     * @param LearningUser $learningUser
+     */
+    public function setLearningUser(LearningUser $learningUser): void
+    {
+        $this->learningUser = $learningUser;
     }
     /**
      * @return bool

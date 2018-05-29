@@ -126,11 +126,11 @@ class LearningMetadataRepository extends CommonRepository
         LearningUser $learningUser,
         Language $language
     ): array {
-        $language = $this->repositoryCommunicator->getMetadataLanguageByLanguageModel($language);
+        $learningLessons = $this->repositoryCommunicator->getAllLearningLessonsByLearningUser(
+            $learningUser
+        );
 
-        $learningLessons = $this->learningLessonRepository->getAllLearningLessonsByLearningUser($learningUser);
 
-        
     }
     /**
      * @param int $learningUserId

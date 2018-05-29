@@ -13,6 +13,7 @@
 
         <field name="lesson" type="integer" column="lesson_id" nullable="false" />
 
+        <!-- Learning metadata dependency, has to be removed -->
         <many-to-one field="learningUser" target-entity="PublicApiBundle\Entity\LearningUser" />
         <many-to-one field="learningMetadata" target-entity="PublicApiBundle\Entity\LearningMetadata" />
 

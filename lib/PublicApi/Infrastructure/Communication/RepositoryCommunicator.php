@@ -8,10 +8,12 @@ use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
 use PublicApi\Infrastructure\Repository\WordRepository;
 use PublicApi\Language\Repository\LanguageRepository;
+use PublicApi\LearningSystem\Repository\LearningLessonRepository;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApi\Lesson\Repository\LessonRepository;
 use PublicApi\Infrastructure\Model\Language;
 use PublicApi\Infrastructure\Model\Lesson;
+use PublicApiBundle\Entity\LearningUser;
 
 class RepositoryCommunicator
 {
@@ -28,6 +30,10 @@ class RepositoryCommunicator
      */
     private $lessonRepository;
     /**
+     * @var LearningLessonRepository $learningLessonRepository
+     */
+    private $learningLessonRepository;
+    /**
      * @var WordRepository $wordRepository
      */
     private $wordRepository;
@@ -40,6 +46,7 @@ class RepositoryCommunicator
      * @param LanguageRepository $languageRepository
      * @param LearningUserRepository $learningUserRepository
      * @param LessonRepository $lessonRepository
+     * @param LearningLessonRepository $learningLessonRepository
      * @param WordRepository $wordRepository
      * @param SerializerWrapper $serializerWrapper
      */
@@ -47,6 +54,7 @@ class RepositoryCommunicator
         LanguageRepository $languageRepository,
         LearningUserRepository $learningUserRepository,
         LessonRepository $lessonRepository,
+        LearningLessonRepository $learningLessonRepository,
         WordRepository $wordRepository,
         SerializerWrapper $serializerWrapper
     ) {
@@ -55,6 +63,7 @@ class RepositoryCommunicator
         $this->lessonRepository = $lessonRepository;
         $this->wordRepository = $wordRepository;
         $this->serializerWrapper = $serializerWrapper;
+        $this->learningLessonRepository = $learningLessonRepository;
     }
     /**
      * @param Language $language
@@ -76,6 +85,25 @@ class RepositoryCommunicator
             Lesson::class,
             ['internal_model']
         );
+    }
+    /**
+     * @param LearningUser $learningUser
+     * @return array
+     */
+    public function getAllLearningLessonsByLearningUser(
+        LearningUser $learningUser
+    ): array {
+        $qb = $this->learningLessonRepository->createQueryBuilderFromClass('ll');
+
+        $learningLessons = $qb
+            ->andWhere('ll.learningUser = :learningUser')
+            ->setParameters([
+                ':learningUser' => $learningUser,
+            ])
+            ->getQuery()
+            ->getResult();
+
+        return $learningLessons;
     }
     /**
      * @param Language $language

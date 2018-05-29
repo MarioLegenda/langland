@@ -19,24 +19,4 @@ class LearningLessonRepository extends CommonRepository
 
         return $learningLesson;
     }
-    /**
-     * @param LearningUser $learningUser
-     * @return array
-     */
-    public function getAllLearningLessonsByLearningUser(LearningUser $learningUser): array
-    {
-        $qb = $this->createQueryBuilderFromClass('ll');
-
-        $learningLessons = $qb
-            ->innerJoin('ll.learningMetadata', 'lm')
-            ->where('ll.learningMetadata = lm.id')
-            ->andWhere('ll.learningUser = :learningUser')
-            ->setParameters([
-                ':learningUser' => $learningUser,
-            ])
-            ->getQuery()
-            ->getResult();
-
-        return $learningLessons;
-    }
 }

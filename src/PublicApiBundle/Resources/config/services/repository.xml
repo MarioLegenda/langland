@@ -58,6 +58,7 @@
             <argument type="service" id="public_api.repository.language" />
             <argument type="service" id="public_api.repository.learning_user" />
             <argument type="service" id="public_api.repository.lesson" />
+            <argument type="service" id="public_api.repository.learning_system.learning_lesson" />
             <argument type="service" id="public_api.repository.word" />
             <argument type="service" id="library.serializer_wrapper" />
 

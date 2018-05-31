@@ -4,10 +4,8 @@ namespace TestLibrary\TestBuilder;
 
 use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
-use PublicApi\Infrastructure\Type\CourseType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
-use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LessonDataProvider;
 use TestLibrary\DataProvider\WordDataProvider;
 
@@ -23,10 +21,6 @@ class AdminTestBuilder
      * @var LanguageDataProvider
      */
     private $languageDataProvider;
-    /**
-     * @var CourseDataProvider
-     */
-    private $courseDataProvider;
     /**
      * @var LessonDataProvider
      */
@@ -45,7 +39,6 @@ class AdminTestBuilder
         $this->container = $container;
 
         $this->languageDataProvider = $this->container->get('data_provider.language');
-        $this->courseDataProvider = $this->container->get('data_provider.course');
         $this->lessonDataProvider = $this->container->get('data_provider.lesson');
         $this->wordDataProvider = $this->container->get('data_provider.word');
     }
@@ -56,24 +49,12 @@ class AdminTestBuilder
     {
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $types = ['Beginner', 'Intermediate', 'Advanced'];
-
-        $courses = [];
-
-        foreach ($types as $key => $type) {
-            $courses[] = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language, [
-                'courseOrder' => $key,
-                'type' => CourseType::fromValue($type),
-            ]);
-        }
-
         $lessons = [];
-        foreach ($courses as $course) {
-            for ($i = 0; $i < 5; $i++) {
-                $lessons[] = $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course, [
-                    'learningOrder' => $i,
-                ]);
-            }
+
+        for ($i = 0; $i < 5; $i++) {
+            $lessons[] = $this->lessonDataProvider->createDefaultDb($this->getFaker(), $language, [
+                'learningOrder' => $i,
+            ]);
         }
 
         foreach ($lessons as $lesson) {

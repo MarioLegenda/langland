@@ -19,31 +19,33 @@ export class TipControl extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.tips.length === 0) {
-            this.setState(function(prevState) {
-                prevState.tips = [];
-                prevState.tipValues = [];
+            this.setState({
+                tips: [],
+                tipValues: []
             });
         } else {
-            this.setState(function(prevState) {
-                prevState.tips = this._createTips(nextProps.tips);
-                prevState.tipValues = nextProps.tips;
+            this.setState({
+                tips: this._createTips(nextProps.tips),
+                tipValues: nextProps.tips
             });
         }
     }
 
     removeTip(controlKey) {
-        this.setState(function(prevState) {
-            prevState.tips.splice(controlKey, 1);
-            prevState.tipValues.splice(controlKey, 1);
+        this.setState((prevState) => {
+            const state = {
+                tips: prevState.tips.splice(controlKey, 1),
+                tipValues: prevState.tipValues.splice(controlKey, 1)
+            };
 
             this.props.tipCollector(prevState.tipValues);
 
-            return prevState;
+            return state;
         });
     }
 
     dataCollector(key, value) {
-        this.setState(function(prevState) {
+        this.setState((prevState) => {
             prevState.tipValues[key] = value;
 
             this.props.tipCollector(prevState.tipValues);
@@ -53,7 +55,7 @@ export class TipControl extends React.Component {
     }
 
     addTip() {
-        this.setState(function(prevState) {
+        this.setState((prevState) => {
             const len = prevState.tips.length;
 
             return prevState.tips.push(<RemovableInputText

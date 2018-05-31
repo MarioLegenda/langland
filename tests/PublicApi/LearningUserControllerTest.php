@@ -26,20 +26,11 @@ use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use TestLibrary\DataProvider\QuestionsDataProvider;
-use TestLibrary\DataProvider\UserDataProvider;
-use TestLibrary\LanglandAdminTestCase;
-use Tests\TestLibrary\DataProvider\CourseDataProvider;
-use Tests\TestLibrary\DataProvider\LanguageDataProvider;
-use TestLibrary\DataProvider\LearningUserDataProvider;
-use Tests\TestLibrary\DataProvider\LessonDataProvider;
+use TestLibrary\PublicApiTestCase;
 
-class LearningUserControllerTest extends LanglandAdminTestCase
+class LearningUserControllerTest extends PublicApiTestCase
 {
     use FakerTrait;
-    /**
-     * @var LanguageDataProvider $languageDataProvider
-     */
-    private $languageDataProvider;
     /**
      * @var LearningUserImplementation $learningUserImplementation
      */
@@ -49,10 +40,6 @@ class LearningUserControllerTest extends LanglandAdminTestCase
      */
     private $learningUserController;
     /**
-     * @var UserDataProvider $userDataProvider
-     */
-    private $userDataProvider;
-    /**
      * @var LearningUserRepository $learningUserRepository
      */
     private $learningUserRepository;
@@ -60,10 +47,6 @@ class LearningUserControllerTest extends LanglandAdminTestCase
      * @var QuestionsDataProvider $questionsDataProvider
      */
     private $questionsDataProvider;
-    /**
-     * @var LearningUserDataProvider $learningUserDataProvider
-     */
-    private $learningUserDataProvider;
     /**
      * @var UserRepository $userRepository
      */
@@ -76,39 +59,25 @@ class LearningUserControllerTest extends LanglandAdminTestCase
      * @var LanguageRepository $languageRepository
      */
     private $languageRepository;
-    /**
-     * @var CourseDataProvider $courseDataProvider
-     */
-    private $courseDataProvider;
-    /**
-     * @var LessonDataProvider $lessonDataProvider
-     */
-    private $lessonDataProvider;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->languageDataProvider = $this->container->get('data_provider.language');
         $this->learningUserImplementation = $this->container->get('public_api.business.implementation.learning_user');
-        $this->userDataProvider = $this->container->get('data_provider.user');
         $this->learningUserRepository = $this->container->get('public_api.repository.learning_user');
         $this->learningUserController = $this->container->get('public_api.controller.learning_user');
-        $this->learningUserDataProvider = $this->container->get('data_provider.learning_user');
         $this->userRepository = $this->container->get('armor.repository.user');
         $this->languageRepository = $this->container->get('public_api.repository.language');
         $this->languageController = $this->container->get('public_api.controller.language');
         $this->questionsDataProvider = $this->container->get('data_provider.questions');
-        $this->lessonDataProvider = $this->container->get('data_provider.lesson');
-        $this->courseDataProvider = $this->container->get('data_provider.course');
     }
 
     public function test_register_learning_user()
     {
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
@@ -135,8 +104,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
@@ -159,8 +127,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         /** @var Language $newLanguage */
         $newLanguage = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $newLanguage);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         /** @var Response $response */
         $response = $this->learningUserController->registerLearningUser($newLanguage, $user);
@@ -181,8 +148,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $user = $this->userDataProvider->createDefaultDb($this->getFaker());
 
@@ -197,8 +163,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
         $newLanguage = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $newLanguage);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $response = $this->learningUserController->registerLearningUser($newLanguage, $user);
 
@@ -238,18 +203,15 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $user2 = $this->userDataProvider->createDefaultDb($this->getFaker());
         $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language1);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $language2 = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language2);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $language3 = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language3);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $this->assertLanguageRegistration($language1, $user1);
         $this->assertCurrentLearningUser($language1, $user1);
@@ -333,11 +295,9 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
         $language2 = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language1);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language2);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $this->assertLanguageRegistration($language1, $user1);
         $this->assertCurrentLearningUser($language1, $user1);
@@ -466,8 +426,7 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         $user1 = $this->userDataProvider->createDefaultDb($this->getFaker());
         $language1 = $this->languageDataProvider->createDefaultDb($this->getFaker());
 
-        $course = $this->courseDataProvider->createDefaultDb($this->getFaker(), $language1);
-        $this->lessonDataProvider->createDefaultDb($this->getFaker(), $course);
+        $this->lessonDataProvider->createDefaultDb($this->getFaker());
 
         $this->assertLanguageRegistration($language1, $user1);
 
@@ -594,11 +553,6 @@ class LearningUserControllerTest extends LanglandAdminTestCase
 
     private function assertAlreadyLearningLanguages(array $languages, User $user)
     {
-        /** @var User $user */
-        $user = $this->userRepository->findOneBy([
-            'username' => $user->getUsername(),
-        ]);
-
         $response = $this->languageController->getAll($user);
         $content = json_decode($response->getContent(), true);
         $collection = $content['collection']['data'];
@@ -611,7 +565,6 @@ class LearningUserControllerTest extends LanglandAdminTestCase
         }
 
         static::assertEquals(count($collectionMetadata), count($languages));
-
     }
     /**
      * @param User $user

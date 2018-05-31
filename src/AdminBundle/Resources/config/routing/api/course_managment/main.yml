@@ -1,9 +1,0 @@
-admin_lesson:
-  resource: "@AdminBundle/Resources/config/routing/api/course_managment/lesson.yml"
-  prefix: /
-  host: '%host%'
-
-admin_game:
-  resource: "@AdminBundle/Resources/config/routing/api/course_managment/game.yml"
-  prefix: /
-  host: '%host%'

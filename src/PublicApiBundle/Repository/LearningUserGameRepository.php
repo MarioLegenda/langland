@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-use AppBundle\Entity\LearningUserCourse;
 use Doctrine\ORM\EntityRepository;
 
 class LearningUserGameRepository extends EntityRepository

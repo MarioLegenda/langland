@@ -4,7 +4,6 @@ namespace AdminBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
@@ -13,6 +12,7 @@ class AdminExtension extends Extension
     /**
      * @param array $configs
      * @param ContainerBuilder $container
+     * @throws \Exception
      */
     public function load(array $configs, ContainerBuilder $container)
     {
@@ -28,5 +28,7 @@ class AdminExtension extends Extension
         $loader->load('controller.xml');
         $loader->load('implementation.xml');
         $loader->load('repository.xml');
+        $loader->load('resolver.xml');
+        $loader->load('infrastructure.xml');
     }
 }

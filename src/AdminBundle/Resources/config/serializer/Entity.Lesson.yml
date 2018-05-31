@@ -7,7 +7,7 @@ AdminBundle\Entity\Lesson:
 
         name:
             expose: true
-            groups: [internal_model]
+            groups: [public_api, internal_model]
 
         uuid:
             expose: true
@@ -19,14 +19,9 @@ AdminBundle\Entity\Lesson:
 
         description:
             expose: true
-            groups: [internal_model]
+            groups: [public_api, internal_model]
 
         urlifiedName:
-            expose: true
-            groups: [internal_model]
-
-        course:
-            type: AdminBundle\Entity\Course
             expose: true
             groups: [internal_model]
 

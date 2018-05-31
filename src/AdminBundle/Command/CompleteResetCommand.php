@@ -38,8 +38,15 @@ class CompleteResetCommand extends ContainerAwareCommand
             $lessons
         );
 
+        $output->writeln('');
+        $output->writeln('<info>Resetting LearningMetadata domain</info>');
         exec('/usr/bin/php bin/console langland:learning_metadata:reset');
+        $output->writeln('<info>Seeding LearningMetadata domain</info>');
         exec($seedCommand);
+
+        $output->writeln('');
+        $output->writeln('<info>Command finished</info>');
+        $output->writeln('');
     }
     /**
      * @throws \RuntimeException

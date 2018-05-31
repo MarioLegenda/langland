@@ -30,12 +30,6 @@ class Lesson
      */
     private $name;
     /**
-     * @var UuidInterface $uuid
-     * @Type("string")
-     * @Assert\NotBlank(message="uuid cannot be blank")
-     */
-    private $uuid;
-    /**
      * @var int $learningOrder
      * @Type("int")
      * @Assert\NotBlank(message="learningOrder cannot be blank")
@@ -48,23 +42,11 @@ class Lesson
      */
     private $description;
     /**
-     * @var array $jsonLesson
-     * @Type("array")
-     * @Assert\NotBlank(message="jsonLesson cannot be blank")
-     */
-    private $jsonLesson;
-    /**
      * @var string $urlifiedName
      * @Type("string")
      * @Assert\NotBlank(message="urlifiedName cannot be blank")
      */
     private $urlifiedName;
-    /**
-     * @var Course $course
-     * @Type("PublicApi\Infrastructure\Model\Course")
-     * @Assert\NotBlank(message="course cannot be blank")
-     */
-    private $course;
     /**
      * @var \DateTime $createdAt
      * @Type("DateTime<'Y-m-d H:m:s'>")
@@ -81,26 +63,17 @@ class Lesson
      * Lesson constructor.
      * @param int $id
      * @param string $name
-     * @param UuidInterface $uuid
      * @param int $learningOrder
-     * @param array $jsonLesson
-     * @param Course $course
      * @param string $description
      */
     public function __construct(
         int $id,
         string $name,
-        UuidInterface $uuid,
         int $learningOrder,
-        array $jsonLesson,
-        Course $course,
         string $description
     ) {
         $this->id = $id;
-        $this->uuid = $uuid;
         $this->learningOrder = $learningOrder;
-        $this->jsonLesson = $jsonLesson;
-        $this->course = $course;
         $this->name = $name;
         $this->description = $description;
 
@@ -155,42 +128,12 @@ class Lesson
         return $this;
     }
     /**
-     * @return UuidInterface
-     */
-    public function getUuid(): UuidInterface
-    {
-        return Uuid::fromString($this->uuid);
-    }
-    /**
      * @param string $uuid
      * @return Lesson
      */
     public function setUuid($uuid): Lesson
     {
         $this->uuid = $uuid;
-
-        return $this;
-    }
-    /**
-     * @return array
-     */
-    public function getJsonLesson(): array
-    {
-        return $this->jsonLesson;
-    }
-    /**
-     * @param array|string $jsonLesson
-     * @return Lesson
-     */
-    public function setJsonLesson($jsonLesson): Lesson
-    {
-        if (is_string($jsonLesson)) {
-            $this->jsonLesson = json_decode($jsonLesson, true);
-
-            return $this;
-        }
-
-        $this->jsonLesson = $jsonLesson;
 
         return $this;
     }
@@ -221,23 +164,6 @@ class Lesson
         }
 
         return $this->urlifiedName;
-    }
-    /**
-     * @param string $course
-     * @return Lesson
-     */
-    public function setCourse($course) : Lesson
-    {
-        $this->course = $course;
-
-        return $this;
-    }
-    /**
-     * @return string
-     */
-    public function getCourse()
-    {
-        return $this->course;
     }
     /**
      * @param \DateTime|string $createdAt

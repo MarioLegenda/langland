@@ -1,19 +1,35 @@
-#admin_lesson_index:
-#    path: /
-#    defaults: { _controller: AdminBundle:Lesson:index }
-#    methods: [GET]
-#
-#admin_lesson_create:
-#    path: /create
-#    defaults: { _controller: AdminBundle:Lesson:create }
-#    methods: [GET, POST]
-#
-#admin_lesson_edit:
-#    path: /edit/{lessonId}
-#    defaults: { _controller: AdminBundle:Lesson:edit }
-#    methods: [GET, POST]
-#
-#admin_find_lessons_by_course:
-#    path: /lessons-by-course
-#    defaults: { _controller: AdminBundle:Lesson:findLessonsByCourse }
-#    methods: [GET]
+admin_lesson_index:
+    path: /lessons
+    methods: [GET]
+    defaults: { _controller: learning_metadata.controller.lesson:indexViewAction }
+
+admin_lesson_create:
+    path: /lesson/create
+    methods: [GET]
+    defaults: { _controller: learning_metadata.controller.lesson:createViewAction }
+
+admin_lesson_update_view:
+    path: /lesson/edit/{lessonId}
+    methods: [GET]
+    defaults: { _controller: learning_metadata.controller.lesson:editViewAction }
+
+admin_api_lesson_new:
+    path: /api/v1/lesson/new
+    methods: [POST]
+    defaults: { _controller: learning_metadata.controller.lesson:newAction }
+    requirements:
+        _format: json
+
+admin_api_lesson_update:
+    path: /api/v1/lesson/update
+    methods: [PUT]
+    defaults: { _controller: learning_metadata.controller.lesson:updateAction }
+    requirements:
+        _format: json
+
+admin_get_lesson_by_id:
+    path: /api/v1/lesson/{lessonId}
+    defaults: { _controller: learning_metadata.controller.lesson:getLessonById }
+    methods: [GET]
+    requirements:
+        _format: json

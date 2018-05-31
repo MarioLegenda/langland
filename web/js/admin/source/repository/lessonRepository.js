@@ -8,7 +8,7 @@ export class LessonRepository {
         this.routes = {
             admin_api_lesson_new: '/app_dev.php/admin/api/v1/lesson/new',
             admin_api_lesson_update: '/app_dev.php/admin/api/v1/lesson/update',
-            public_api_get_lesson_by_id: '/app_dev.php/api/v1/lesson/{id}',
+            admin_get_lesson_by_id: '/app_dev.php/admin/api/v1/lesson/{id}',
         }
     }
 
@@ -22,19 +22,16 @@ export class LessonRepository {
             }
         });
 
-        if (info.length < 0 || info.length > 2) {
+        if (info.length < 0 || info.length > 1) {
             throw new Error(`Course and lesson could not be determined from url ${location.pathname}`);
         }
 
         return {
-            courseId: parseInt(info[0]),
-            lessonId: (info.length > 1) ? info[1] : null
+            lessonId: (info.length === 1) ? parseInt(info[0]) : null
         }
     }
 
     newLesson(data, success, failure) {
-        data.course = this.urlMetadata.courseId;
-
         $.ajax({
             url: this.routes.admin_api_lesson_new,
             method: 'POST',
@@ -58,7 +55,7 @@ export class LessonRepository {
         if (lessonId !== null) {
             this.userRepository.getLoggedInUser($.proxy(function(data) {
                 $.ajax({
-                    url: this.routes.public_api_get_lesson_by_id.replace(/{id}/, lessonId),
+                    url: this.routes.admin_get_lesson_by_id.replace(/{id}/, lessonId),
                     method: 'GET',
                     contentType: 'application/json',
                     headers: {

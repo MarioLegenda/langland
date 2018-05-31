@@ -2,12 +2,10 @@
 
 namespace AdminBundle\Command\Helper;
 
+use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Lesson;
-use AdminBundle\Entity\Course;
 use Doctrine\ORM\EntityManagerInterface;
-use LearningMetadata\Business\ViewModel\Lesson\LessonText;
-use LearningMetadata\Business\ViewModel\Lesson\LessonView;
-use LearningMetadata\Business\ViewModel\Lesson\Tip;
+use LearningMetadata\Infrastructure\Type\CourseType;
 use Ramsey\Uuid\Uuid;
 
 class LessonFactory
@@ -30,41 +28,25 @@ class LessonFactory
         $this->em = $em;
     }
     /**
-     * @param Course $course
+     * @param Language $language
      * @param int $numberOfEntries
      * @param bool $save
      * @return array
      */
-    public function create(Course $course, int $numberOfEntries = null, bool $save = false)
+    public function create(Language $language, int $numberOfEntries = null, bool $save = false)
     {
         $lessons = [];
         for ($i = 0; $i < $numberOfEntries; $i++) {
-            $tips = [];
-            for ($a = 0; $a < 10; $a++) {
-                $tips[] = new Tip($this->getFaker()->name);
-            }
 
-            $lessonTexts = [];
-            for ($b = 0; $b < 10; $b++) {
-                $lessonTexts[] = new LessonText($this->getFaker()->text);
-            }
-
-            $lessonView = new LessonView(
-                Uuid::uuid4(),
-                $this->getFaker()->name,
-                $i,
-                $tips,
-                $lessonTexts,
-                $this->getFaker()->sentence(60)
-            );
+            $name = 'name-'.Uuid::uuid4()->toString();
+            $type = (string) CourseType::fromValue('Beginner');
 
             $lesson = new Lesson(
-                $lessonView->getName(),
-                $lessonView->getUuid(),
+                $name,
+                $type,
                 $i,
-                $lessonView->toArray(),
-                $course,
-                $this->getFaker()->sentence(60)
+                $this->getFaker()->sentence(60),
+                $language
             );
 
             $lessons[] = $lesson;

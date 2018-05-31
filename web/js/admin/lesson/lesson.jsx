@@ -57,16 +57,19 @@ export class Lesson extends React.Component {
 
     componentDidMount() {
         this.lessonRepository.getLessonById($.proxy(function(data) {
-            this.setState(function(prevState) {
-                data = JSON.parse(data);
-                this.lessonId = data.id;
-                this.lessonUuid = data.lesson.uuid;
+            const lesson = JSON.parse(data);
 
-                prevState.model.description = data.lesson.description;
-                prevState.model.name = data.lesson.name;
-                prevState.model.tips = data.lesson.tips;
-                prevState.model.learningOrder = data.lesson.learningOrder;
-                prevState.model.lessonTexts = data.lesson.lessonTexts;
+            this.lessonId = lesson.id;
+            this.lessonUuid = lesson.uuid;
+
+            this.setState({
+                model: {
+                    name: lesson.name,
+                    description: lesson.description,
+                    tips: lesson.json_lesson.tips,
+                    learningOrder: lesson.learningOrder,
+                    lessonTexts: lesson.json_lesson.lessonTexts
+                }
             });
         }, this), $.proxy(function(xhr) {
 
@@ -74,46 +77,60 @@ export class Lesson extends React.Component {
     }
 
     setName(value) {
-        this.setState(function(prevState) {
+        this.setState((prevState) => {
             prevState.model.name = value;
+
+            return prevState;
         });
     }
 
     setDescription(value) {
-        this.setState(function(prevState) {
+        this.setState((prevState) => {
             prevState.model.description = value;
+
+            return prevState;
         });
     }
 
-    collectTips(tips) {
-        this.setState(function(prevState) {
-            prevState.model.tips = tips;
+    collectTips(value) {
+        this.setState((prevState) => {
+            prevState.model.tips = value;
+
+            return prevState;
         });
     }
 
     setLearningOrder(value) {
-        this.setState(function(prevState) {
+        this.setState((prevState) => {
             prevState.model.learningOrder = value;
+
+            return prevState;
         });
     }
 
-    collectLessonTexts(texts) {
-        this.setState(function(prevState) {
-            prevState.model.lessonTexts = texts;
+    collectLessonTexts(value) {
+        this.setState((prevState) => {
+            prevState.model.lessonTexts = value;
+
+            return prevState;
         });
     }
 
     submit() {
-        this.setState(function(prevState) {
-            prevState.form.internalError = false;
-            prevState.form.success = false;
+        this.setState({
+            form: {
+                internalError: false,
+                success: false
+            }
         });
 
         const errors = this._validate();
 
         if (errors.length > 0) {
-            this.setState(function(prevState) {
+            this.setState((prevState) => {
                 prevState.form.errors = errors;
+
+                return prevState;
             });
 
             return;
@@ -128,10 +145,9 @@ export class Lesson extends React.Component {
         }
     }
 
-    _update(model)
-    {
+    _update(model) {
         this.lessonRepository.updateLesson(model, $.proxy(function() {
-            this.setState(function(prevState) {
+            this.setState((prevState) => {
                 prevState.form = {
                     internalError: false,
                     isValid: false,
@@ -139,71 +155,89 @@ export class Lesson extends React.Component {
                     success: true
                 };
             });
+
         }, this), $.proxy(function(xhr) {
             if (xhr.status === 500) {
-                this.setState(function(prevState) {
+                this.setState((prevState) => {
                     prevState.form.internalError = true;
+
+                    return prevState;
                 });
             }
 
             if (xhr.status === 400) {
-                this.setState(function(prevState) {
+                this.setState((prevState) => {
                     prevState.form = {
                         internalError: false,
                         isValid: false,
                         errors: [],
                         success: false
                     };
+
+                    return prevState;
                 });
 
-                this.setState(function(prevState) {
+                this.setState((prevState) => {
+                    let errors = [];
+
                     for (let i = 0; i < xhr.responseJSON.length; i++) {
-                        prevState.form.errors.push(<Notification key={i} className={'alert alert-danger'} message={xhr.responseJSON[i]} />)
+                        errors.push(<Notification key={i} className={'alert alert-danger'} message={xhr.responseJSON[i]} />)
                     }
+
+                    return prevState.form.errors = errors;
                 });
             }
         }, this));
     }
 
-    _create(model)
-    {
+    _create(model) {
         this.lessonRepository.newLesson(model, $.proxy(function() {
-            this.setState(function(prevState) {
-                prevState.form = {
+            this.setState({
+                form: {
                     internalError: false,
                     isValid: false,
                     errors: [],
                     success: true
-                };
-
-                prevState.model = {
+                },
+                model: {
                     name: "",
                     tips: [],
                     lessonTexts: [],
-                    description: ""
-                };
+                    description: "",
+                    learningOrder: "",
+                }
             });
         }, this), $.proxy(function(xhr) {
             if (xhr.status === 500) {
-                this.setState(function(prevState) {
+                this.setState((prevState) => {
                     prevState.form.internalError = true;
+
+                    return prevState;
                 });
             }
 
             if (xhr.status === 400) {
-                this.setState(function(prevState) {
+                this.setState((prevState) => {
                     prevState.form = {
                         internalError: false,
                         isValid: false,
                         errors: [],
                         success: false
                     };
+
+                    return prevState;
                 });
 
-                this.setState(function(prevState) {
+                this.setState((prevState) => {
+                    let errors = [];
+
                     for (let i = 0; i < xhr.responseJSON.length; i++) {
-                        prevState.form.errors.push(<Notification key={i} className={'alert alert-danger'} message={xhr.responseJSON[i]} />)
+                        errors.push(<Notification key={i} className={'alert alert-danger'} message={xhr.responseJSON[i]} />)
                     }
+
+                    prevState.form.errors = errors;
+
+                    return prevState;
                 });
             }
         }, this));
@@ -268,7 +302,6 @@ export class Lesson extends React.Component {
 
                     {success === true &&
                         <Notification className={'alert alert-success'} message={actionText} />
-
                     }
 
                     {errors.length > 0 &&
@@ -304,10 +337,6 @@ export class Lesson extends React.Component {
                             inputValue={learningOrder}
                         />
                     </div>
-
-                    <TipControl tipCollector={this.collectTips} tips={tips}/>
-
-                    <LessonTextControl textCollector={this.collectLessonTexts} lessonTexts={lessonTexts}/>
 
                     <SubmitButton
                         wrapperClass={"col-xs-12 no-padding margin-top-30"}

@@ -48,20 +48,11 @@
         </service>
 
         <service
-                id="learning_metadata.controller.course"
-                class="LearningMetadata\Business\Controller\CourseController" public="true">
-
-            <argument type="service" id="learning_metadata.business.implementation.course" />
-        </service>
-
-        <service
                 id="learning_metadata.controller.lesson"
-                class="LearningMetadata\Business\Controller\CourseManagment\LessonController" public="true">
+                class="LearningMetadata\Business\Controller\LessonController" public="true">
 
             <argument type="service" id="learning_metadata.business.implementation.lesson" />
-            <argument type="service" id="learning_metadata.business.implementation.course" />
-            <argument type="service" id="library.deserializer" />
-            <argument type="service" id="library.model_validator" />
+            <argument type="service" id="learning_metadata.infrastructure.lesson_middleware" />
         </service>
 
     </services>

@@ -38,7 +38,6 @@ class TruncateDatabaseCommand extends ContainerAwareCommand
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE questions')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE language_info_texts')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE categories')->execute();
-        $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE courses')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE data_collector')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE images')->execute();
         $blueDot->createStatementBuilder()->addSql('TRUNCATE TABLE language_infos')->execute();

@@ -1,9 +1,9 @@
 <?php
 
-namespace PublicApi\Lesson\Business\Infrastructure\Resolver;
+namespace LearningMetadata\Infrastructure\Resolver;
 
 use AdminBundle\Entity\Lesson;
-use PublicApi\Lesson\Repository\LessonRepository;
+use LearningMetadata\Repository\Implementation\LessonRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

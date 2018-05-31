@@ -14,19 +14,11 @@
         </service>
 
         <service
-                id="data_provider.course"
-                class="Tests\TestLibrary\DataProvider\CourseDataProvider" public="true">
-
-            <argument type="service" id="learning_metadata.repository.course" />
-            <argument type="service" id="data_provider.language" />
-        </service>
-
-        <service
                 id="data_provider.lesson"
                 class="Tests\TestLibrary\DataProvider\LessonDataProvider" public="true">
 
             <argument type="service" id="learning_metadata.repository.lesson" />
-            <argument type="service" id="data_provider.course" />
+            <argument type="service" id="data_provider.language" />
         </service>
 
         <service

@@ -2,10 +2,12 @@
 
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
-use RDV\SymfonyContainerMocks\DependencyInjection\TestContainer;
+use RDV\SymfonyContainerMocks\DependencyInjection\TestKernelTrait;
 
 class AppKernel extends Kernel
 {
+    use TestKernelTrait;
+
     public function registerBundles()
     {
         $bundles = [
@@ -62,15 +64,6 @@ class AppKernel extends Kernel
         }
 
         $loader->load($load);
-    }
-
-    protected function getContainerBaseClass()
-    {
-        if ('test' === $this->environment) {
-            return TestContainer::class;
-        }
-
-        return parent::getContainerBaseClass();
     }
 
     protected function initializeContainer()

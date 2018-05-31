@@ -2,12 +2,10 @@
 
 namespace Tests\TestLibrary\DataProvider;
 
-use AdminBundle\Entity\Course;
+use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Lesson;
 use Faker\Generator;
-use LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
+use LearningMetadata\Repository\Implementation\LessonRepository;
 
 class LessonDataProvider implements DefaultDataProviderInterface
 {
@@ -16,111 +14,104 @@ class LessonDataProvider implements DefaultDataProviderInterface
      */
     private $lessonRepository;
     /**
-     * @var CourseDataProvider $courseDataProvider
+     * @var LanguageDataProvider $languageDataProvider
      */
-    private $courseDataProvider;
+    private $languageDataProvider;
     /**
      * LessonDataProvider constructor.
      * @param LessonRepository $lessonRepository
-     * @param CourseDataProvider $courseDataProvider
+     * @param LanguageDataProvider $languageDataProvider
      */
     public function __construct(
         LessonRepository $lessonRepository,
-        CourseDataProvider $courseDataProvider
+        LanguageDataProvider $languageDataProvider
     ) {
         $this->lessonRepository = $lessonRepository;
-        $this->courseDataProvider = $courseDataProvider;
-    }
+        $this->languageDataProvider = $languageDataProvider;
+     }
     /**
+     * @param Language $language
      * @param Generator $faker
-     * @param Course $course
      * @param array|null $seedData
      * @return Lesson
      */
-    public function createDefault(Generator $faker, Course $course = null, array $seedData = null): Lesson
+    public function createDefault(Generator $faker, Language $language = null, array $seedData = null): Lesson
     {
-        if (!$course instanceof Course) {
-            throw new \RuntimeException(sprintf('LessonDataProvider::createDefault() has to receive an %s object', Course::class));
+        if (!$language instanceof Language) {
+            $language = $this->languageDataProvider->createDefaultDb($faker);
         }
 
         $seedData = $this->resolveSeedData($faker, $seedData);
 
         return $this->createLesson(
-            $course,
-            $seedData['uuid'],
+            $faker->name,
+            $seedData['description'],
             $seedData['learningOrder'],
-            ['name' => $faker->name],
-            $seedData['description']
+            $language,
+            $seedData['type']
         );
     }
     /**
      * @param Generator $faker
-     * @param Course|null $course
+     * @param Language|null $language
      * @param array|null $seedData
      * @return Lesson
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function createDefaultDb(Generator $faker, Course $course = null, array $seedData = null): Lesson
+    public function createDefaultDb(Generator $faker, Language $language = null, array $seedData = null): Lesson
     {
-        if (!$course instanceof Course) {
-            $course = $this->courseDataProvider->createDefaultDb($faker);
-        }
-
         $lesson = $this->lessonRepository->persistAndFlush(
-            $this->createDefault($faker, $course, $seedData)
+            $this->createDefault($faker, $language, $seedData)
         );
-
-        $course->addLesson($lesson);
-        $lesson->setCourse($course);
 
         return $lesson;
     }
     /**
-     * @param Course $course
-     * @param UuidInterface $lessonUuid
-     * @param int $order
-     * @param array $arrayLesson
+     * @param string $name
      * @param string $description
+     * @param int $learningOrder
+     * @param Language $language
+     * @param string $type
      * @return Lesson
      */
     public function createLesson(
-        Course $course,
-        UuidInterface $lessonUuid,
-        int $order,
-        array $arrayLesson,
-        string $description
+        string $name,
+        string $description,
+        int $learningOrder,
+        Language $language,
+        string $type
     ) {
         return new Lesson(
-            $arrayLesson['name'],
-            $lessonUuid,
-            $order,
-            $arrayLesson,
-            $course,
-            $description
+            $name,
+            $type,
+            $learningOrder,
+            $description,
+            $language
         );
     }
     /**
-     * @param Course $course
-     * @param UuidInterface $lessonUuid
+     * @param string $name
      * @param int $order
-     * @param array $arrayLesson
      * @param string $description
+     * @param Language $language
+     * @param string $type
      * @return Lesson
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function createLessonDb
-    (
-        Course $course,
-        UuidInterface $lessonUuid,
+    public function createLessonDb(
+        string $name,
         int $order,
-        array $arrayLesson,
-        string $description
+        string $description,
+        Language $language,
+        string $type
     ) {
         return $this->lessonRepository->persistAndFlush(
             $this->createLesson(
-                $course,
-                $lessonUuid,
+                $name,
+                $description,
                 $order,
-                $arrayLesson,
-                $description
+                $language,
+                $type
             )
         );
     }
@@ -140,7 +131,7 @@ class LessonDataProvider implements DefaultDataProviderInterface
     {
         $seedData = (is_null($seedData)) ? [] : $seedData;
 
-        $properties = ['name', 'uuid', 'learningOrder', 'jsonLesson', 'description'];
+        $properties = ['name', 'learningOrder', 'type', 'description'];
 
         $newSeedData = [];
         foreach ($properties as $property) {
@@ -151,14 +142,8 @@ class LessonDataProvider implements DefaultDataProviderInterface
                     continue;
                 }
 
-                if ($property === 'uuid') {
-                    $newSeedData[$property] = Uuid::uuid4();
-
-                    continue;
-                }
-
-                if ($property === 'jsonLesson') {
-                    $newSeedData[$property] = ['name' => $faker->name];
+                if ($properties === 'type') {
+                    $newSeedData[$property] = 'Beginner';
                 }
 
                 $newSeedData[$property] = $faker->name;

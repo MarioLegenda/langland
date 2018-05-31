@@ -32,22 +32,22 @@ class BaseInput extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.inputValue.length === 0 && this.state.value !== nextProps.inputValue) {
-            this.setState(function(prevState) {
-                prevState.value = "";
+            this.setState({
+                value: ""
             });
         } else {
-            this.setState(function(prevState) {
-                prevState.value = nextProps.inputValue;
+            this.setState({
+                value: nextProps.inputValue
             });
         }
     }
 
     dataCollector(e) {
         const value = e.target.value;
-        this.setState(function(prevState) {
-            prevState.value = value;
-
+        this.setState(() => {
             this.props.dataCollector(value);
+
+            return { value: value };
         });
     }
 }

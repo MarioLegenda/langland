@@ -64,7 +64,6 @@ class SeedCommand extends ContainerAwareCommand
         $lessonFactory = new LessonFactory($em);
         $wordFactory = new WordFactory($em);
         $wordTranslationFactory = new WordTranslationFactory();
-        $courseFactory = new CourseFactory($em);
         $questionFactory = new QuestionFactory($em);
 
         $languageObjects = $languageFactory->create($languages, true);
@@ -85,13 +84,7 @@ class SeedCommand extends ContainerAwareCommand
                 $levels
             );
 
-            $courseFactory->create($languageObject, true);
-            $courses = $courseFactory->getSavedCourses();
-
-            /** @var Course $course */
-            foreach ($courses as $course) {
-                $lessonFactory->create($course, $numOfLessons, true);
-            }
+            $lessonFactory->create($languageObject, $numOfLessons, true);
 
             $limit = 10;
             $offset = 0;
@@ -126,10 +119,7 @@ class SeedCommand extends ContainerAwareCommand
 
             $lessonFactory->clear();
             $wordFactory->clear();
-            $courseFactory->clear();
         }
-
-
 
         $output->writeln('');
     }

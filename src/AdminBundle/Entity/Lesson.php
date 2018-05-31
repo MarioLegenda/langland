@@ -2,9 +2,6 @@
 
 namespace AdminBundle\Entity;
 
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidInterface;
-
 class Lesson
 {
     /**
@@ -16,9 +13,9 @@ class Lesson
      */
     private $name;
     /**
-     * @var UuidInterface $uuid
+     * @var string $type
      */
-    private $uuid;
+    private $type;
     /**
      * @var int $learningOrder
      */
@@ -28,17 +25,13 @@ class Lesson
      */
     private $description;
     /**
-     * @var array $jsonLesson
-     */
-    private $jsonLesson;
-    /**
      * @var string $urlifiedName
      */
     private $urlifiedName;
     /**
-     * @var Course $course
+     * @var Language $language
      */
-    private $course;
+    private $language;
     /**
      * @var \DateTime $createdAt
      */
@@ -50,26 +43,23 @@ class Lesson
     /**
      * Lesson constructor.
      * @param string $name
-     * @param UuidInterface $uuid
+     * @param string $type
      * @param int $learningOrder
-     * @param array $jsonLesson
-     * @param Course $course
      * @param string $description
+     * @param Language $language
      */
     public function __construct(
         string $name,
-        UuidInterface $uuid,
+        string $type,
         int $learningOrder,
-        array $jsonLesson,
-        Course $course,
-        string $description
+        string $description,
+        Language $language
     ) {
-        $this->uuid = $uuid;
+        $this->language = $language;
         $this->learningOrder = $learningOrder;
-        $this->jsonLesson = $jsonLesson;
-        $this->course = $course;
         $this->name = $name;
         $this->description = $description;
+        $this->type = $type;
 
         $this->createUrlifiedFromName($name);
     }
@@ -105,6 +95,20 @@ class Lesson
         return $this;
     }
     /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+    /**
+     * @param string $type
+     */
+    public function setType(string $type): void
+    {
+        $this->type = $type;
+    }
+    /**
      * @return int
      */
     public function getLearningOrder(): int
@@ -118,46 +122,6 @@ class Lesson
     public function setLearningOrder(int $learningOrder): Lesson
     {
         $this->learningOrder = $learningOrder;
-
-        return $this;
-    }
-    /**
-     * @return UuidInterface
-     */
-    public function getUuid(): UuidInterface
-    {
-        return Uuid::fromString($this->uuid);
-    }
-    /**
-     * @param string $uuid
-     * @return Lesson
-     */
-    public function setUuid($uuid): Lesson
-    {
-        $this->uuid = $uuid;
-
-        return $this;
-    }
-    /**
-     * @return array
-     */
-    public function getJsonLesson(): array
-    {
-        return $this->jsonLesson;
-    }
-    /**
-     * @param array|string $jsonLesson
-     * @return Lesson
-     */
-    public function setJsonLesson($jsonLesson): Lesson
-    {
-        if (is_string($jsonLesson)) {
-            $this->jsonLesson = json_decode($jsonLesson, true);
-
-            return $this;
-        }
-
-        $this->jsonLesson = $jsonLesson;
 
         return $this;
     }
@@ -190,21 +154,18 @@ class Lesson
         return $this->urlifiedName;
     }
     /**
-     * @param string $course
-     * @return Lesson
+     * @return Language
      */
-    public function setCourse($course) : Lesson
+    public function getLanguage(): Language
     {
-        $this->course = $course;
-
-        return $this;
+        return $this->language;
     }
     /**
-     * @return Course
+     * @param Language $language
      */
-    public function getCourse()
+    public function setLanguage(Language $language): void
     {
-        return $this->course;
+        $this->language = $language;
     }
     /**
      * @param \DateTime|string $createdAt

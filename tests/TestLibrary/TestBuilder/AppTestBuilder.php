@@ -10,6 +10,7 @@ use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApiBundle\Entity\LearningUser;
+use RDV\SymfonyContainerMocks\DependencyInjection\TestContainer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -20,7 +21,7 @@ class AppTestBuilder
 {
     use FakerTrait;
     /**
-     * @var ContainerInterface $container
+     * @var ContainerInterface|TestContainer $container
      */
     private $container;
     /**
@@ -74,28 +75,16 @@ class AppTestBuilder
     }
     /**
      * @param User $user
-     * @param CourseType $courseType
-     * @param int $courseOrder
-     * @param int $lessonOrder
      * @return int
      */
     public function createLearningMetadata(
-        User $user,
-        CourseType $courseType = null,
-        int $courseOrder = 0,
-        int $lessonOrder = 0
+        User $user
     ): int {
         $this->mockProviders($user);
 
         $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 
-        $courseType = ($courseType instanceof CourseType) ? $courseType : CourseType::fromValue('Beginner');
-
-        $learningMetadata = $learningMetadataImplementation->createLearningMetadata(
-            $courseType,
-            $courseOrder,
-            $lessonOrder
-        );
+        $learningMetadata = $learningMetadataImplementation->createLearningMetadata();
 
         return $learningMetadata['learningMetadataId'];
     }
@@ -113,7 +102,7 @@ class AppTestBuilder
         $languageProvider = new LanguageProvider($learningUserProvider);
         $questionAnswersProvider = new QuestionAnswersApplicationProvider($learningUserProvider);
 
-        $this->container->set('public_api.provider.language', $languageProvider);
+        $this->container->set('public_api.provider.language_provider', $languageProvider);
         $this->container->set('public_api.learning_user_provider', $learningUserProvider);
         $this->container->set('public_api.provider.question_answers_application_provider', $questionAnswersProvider);
 

@@ -14,7 +14,6 @@ class DashboardControllerTest extends LanglandAdminTestCase
         'Categories',
         'Words',
         'Sounds',
-        'Courses',
     ];
 
     public function testMainNavigation()

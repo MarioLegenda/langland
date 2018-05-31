@@ -4,13 +4,14 @@ namespace PublicApi\Infrastructure\Communication;
 
 use AdminBundle\Entity\Language as MetadataLanguage;
 use ArmorBundle\Entity\User;
+use LearningMetadata\Repository\Implementation\LessonRepository;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
 use PublicApi\Infrastructure\Repository\WordRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningSystem\Repository\LearningLessonRepository;
+use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
-use PublicApi\Lesson\Repository\LessonRepository;
 use PublicApi\Infrastructure\Model\Language;
 use PublicApi\Infrastructure\Model\Lesson;
 use PublicApiBundle\Entity\LearningUser;
@@ -42,7 +43,12 @@ class RepositoryCommunicator
      */
     private $serializerWrapper;
     /**
+     * @var LearningUserProvider $learningUserProvider
+     */
+    private $learningUserProvider;
+    /**
      * RepositoryCommunicator constructor.
+     * @param LearningUserProvider $learningUserProvider
      * @param LanguageRepository $languageRepository
      * @param LearningUserRepository $learningUserRepository
      * @param LessonRepository $lessonRepository
@@ -51,6 +57,7 @@ class RepositoryCommunicator
      * @param SerializerWrapper $serializerWrapper
      */
     public function __construct(
+        LearningUserProvider $learningUserProvider,
         LanguageRepository $languageRepository,
         LearningUserRepository $learningUserRepository,
         LessonRepository $lessonRepository,
@@ -64,6 +71,7 @@ class RepositoryCommunicator
         $this->wordRepository = $wordRepository;
         $this->serializerWrapper = $serializerWrapper;
         $this->learningLessonRepository = $learningLessonRepository;
+        $this->learningUserProvider = $learningUserProvider;
     }
     /**
      * @param Language $language
@@ -71,11 +79,10 @@ class RepositoryCommunicator
      */
     public function getLessonsByLanguage(Language $language): array
     {
-        $qb = $this->lessonRepository->createQueryBuilderFromClass('l');
+        $qb = $this->lessonRepository->createQueryBuilder('l');
 
         $metadataLessons = $qb
-            ->innerJoin('l.course', 'c')
-            ->andWhere('c.language = :language_id')
+            ->andWhere('l.language = :language_id')
             ->setParameter(':language_id', $language->getId())
             ->getQuery()
             ->getResult();
@@ -181,7 +188,40 @@ class RepositoryCommunicator
      */
     public function getAllAlreadyLearningLanguages(User $user): array
     {
-        $languages = $this->languageRepository->findAll();
+        /** @var LearningUser[] $learningUsers */
+        $learningUsers = $this->learningUserRepository->findBy([
+            'user' => $user,
+        ]);
+
+        $languages = [];
+        /** @var LearningUser $learningUser */
+        foreach ($learningUsers as $learningUser) {
+            $languages[] = $learningUser->getLanguage();
+        }
+
+        /** @var \AdminBundle\Entity\Language $language */
+        foreach ($languages as $language) {
+            $temp = [];
+            $temp['id'] = $language->getId();
+            $temp['name'] = $language->getName();
+            $temp['desc'] = $language->getListDescription();
+            $temp['images'] = $this->parseImages($language->getImages());
+            $temp['alreadyLearning'] = false;
+            $temp['urls'] = [
+                'backend_url' => null,
+                'frontend_url' => sprintf('language/%s/%d', $language->getName(), $language->getId())
+            ];
+
+            foreach ($learningUsers as $learningUser) {
+                $learningUserLanguage = $learningUser->getLanguage();
+
+                if ($language->getId() === $learningUserLanguage->getId()) {
+                    $temp['alreadyLearning'] = true;
+                }
+            }
+
+            $viewable[] = $temp;
+        }
 
         $languageIds = [];
 
@@ -202,24 +242,7 @@ class RepositoryCommunicator
 
         $viewable = [];
         foreach ($languages as $language) {
-            $temp = [];
-            $temp['id'] = $language->getId();
-            $temp['name'] = $language->getName();
-            $temp['desc'] = $language->getListDescription();
-            $temp['images'] = $this->parseImages($language->getImages());
-            $temp['alreadyLearning'] = false;
-            $temp['urls'] = [
-                'backend_url' => null,
-                'frontend_url' => sprintf('language/%s/%d', $language->getName(), $language->getId())
-            ];
 
-            foreach ($learningUsers as $learningUser) {
-                if ($this->equalsLanguage($language, $learningUser->getLanguage())) {
-                    $temp['alreadyLearning'] = true;
-                }
-            }
-
-            $viewable[] = $temp;
         }
 
         return $viewable;

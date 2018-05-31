@@ -10,7 +10,6 @@
                 class="LearningMetadata\Repository\Implementation\LanguageRepository" public="true">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\Language</argument>
         </service>
 
@@ -19,7 +18,6 @@
                 class="LearningMetadata\Repository\Implementation\ImageRepository" public="true">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\Image</argument>
         </service>
 
@@ -28,7 +26,6 @@
                 class="LearningMetadata\Repository\Implementation\CategoryRepository">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\Category</argument>
         </service>
 
@@ -37,7 +34,6 @@
                 class="LearningMetadata\Repository\Implementation\WordRepository" public="true">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\Word</argument>
         </service>
 
@@ -46,7 +42,6 @@
                 class="LearningMetadata\Repository\Implementation\LanguageInfoRepository" public="true">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\LanguageInfo</argument>
         </service>
 
@@ -55,7 +50,6 @@
                 class="LearningMetadata\Repository\Implementation\LanguageInfoTextRepository" public="true">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\LanguageInfoText</argument>
         </service>
 
@@ -64,25 +58,14 @@
                 class="LearningMetadata\Repository\Implementation\SoundRepository" public="true">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\Sound</argument>
         </service>
 
         <service
-                id="learning_metadata.repository.course"
-                class="LearningMetadata\Repository\Implementation\CourseRepository" public="true">
-
-            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
-            <argument>AdminBundle\Entity\Course</argument>
-        </service>
-
-        <service
                 id="learning_metadata.repository.lesson"
-                class="LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository" public="true">
+                class="LearningMetadata\Repository\Implementation\LessonRepository" public="true">
 
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
-
             <argument>AdminBundle\Entity\Lesson</argument>
         </service>
 

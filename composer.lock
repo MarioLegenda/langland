@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a9b492477e789932bf4b99c77207101e",
+    "content-hash": "07b1b08cb7621a4fc6864d95f9a5f1c3",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -4866,16 +4866,16 @@
         },
         {
             "name": "ramunasd/symfony-container-mocks",
-            "version": "0.4.1",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramunasd/symfony-container-mocks.git",
-                "reference": "e67b8fca1ce719af7a9492eabb19abb6470515a9"
+                "reference": "5694def6594723b6f6b2ea465a29d6004b636cb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramunasd/symfony-container-mocks/zipball/e67b8fca1ce719af7a9492eabb19abb6470515a9",
-                "reference": "e67b8fca1ce719af7a9492eabb19abb6470515a9",
+                "url": "https://api.github.com/repos/ramunasd/symfony-container-mocks/zipball/5694def6594723b6f6b2ea465a29d6004b636cb0",
+                "reference": "5694def6594723b6f6b2ea465a29d6004b636cb0",
                 "shasum": ""
             },
             "require": {
@@ -4909,7 +4909,7 @@
                 "symfony",
                 "test"
             ],
-            "time": "2017-11-30T21:03:20+00:00"
+            "time": "2018-03-10T21:38:50+00:00"
         },
         {
             "name": "sensio/generator-bundle",

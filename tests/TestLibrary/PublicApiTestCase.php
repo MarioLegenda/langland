@@ -40,10 +40,6 @@ class PublicApiTestCase extends WebTestCase
      */
     protected $lessonDataProvider;
     /**
-     * @var CourseDataProvider $courseDataProvider
-     */
-    protected $courseDataProvider;
-    /**
      * @var LearningUserDataProvider $learningUserDataProvider
      */
     protected $learningUserDataProvider;
@@ -71,7 +67,6 @@ class PublicApiTestCase extends WebTestCase
         $this->languageDataProvider = $this->container->get('data_provider.language');
         $this->userDataProvider = $this->container->get('data_provider.user');
         $this->lessonDataProvider = $this->container->get('data_provider.lesson');
-        $this->courseDataProvider = $this->container->get('data_provider.course');
         $this->learningUserDataProvider = $this->container->get('data_provider.learning_user');
         $this->wordDataProvider = $this->container->get('data_provider.word');
     }

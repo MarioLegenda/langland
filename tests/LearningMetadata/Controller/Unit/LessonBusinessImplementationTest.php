@@ -2,10 +2,9 @@
 
 namespace Tests\LearningMetadata\Controller\Unit;
 
-use AdminBundle\Entity\Course;
+use LearningMetadata\Business\Controller\LessonController;
+use LearningMetadata\Infrastructure\Type\CourseType;
 use Library\Infrastructure\Helper\Deserializer;
-use LearningMetadata\Business\Implementation\CourseImplementation;
-use LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation;
 use LearningMetadata\Business\ViewModel\Lesson\LessonView;
 use Library\Infrastructure\Helper\ModelValidator;
 use Ramsey\Uuid\Uuid;
@@ -14,19 +13,14 @@ use TestLibrary\ContainerAwareTest;
 use LearningMetadata\Business\Middleware\LessonMiddleware;
 use AdminBundle\Entity\Lesson;
 use Tests\TestLibrary\DataProvider\LessonDataProvider;
-use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
 
 class LessonBusinessImplementationTest extends ContainerAwareTest
 {
     /**
-     * @var LessonImplementation $lessonImplementation
+     * @var LessonController $lessonController
      */
-    private $lessonImplementation;
-    /**
-     * @var CourseImplementation $courseImplementation
-     */
-    private $courseImplementation;
+    private $lessonController;
     /**
      * @var Deserializer $deserializer
      */
@@ -36,10 +30,6 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
      */
     private $lessonDataProvider;
     /**
-     * @var CourseDataProvider $courseDataProvider
-     */
-    private $courseDataProvider;
-    /**
      * @var LanguageDataProvider $languageDataProvider
      */
     private $languageDataProvider;
@@ -48,205 +38,121 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
      */
     private $modelValidator;
     /**
+     * @var LessonMiddleware $lessonMiddleware
+     */
+    private $lessonMiddleware;
+    /**
      * @inheritdoc
      */
     public function setUp()
     {
         parent::setUp();
 
-        $this->lessonImplementation = $this->container->get('learning_metadata.business.implementation.lesson');
-        $this->courseImplementation = $this->container->get('learning_metadata.business.implementation.course');
+        $this->lessonController = $this->container->get('learning_metadata.controller.lesson');
         $this->deserializer = $this->container->get('library.deserializer');
         $this->lessonDataProvider = $this->container->get('data_provider.lesson');
-        $this->courseDataProvider = $this->container->get('data_provider.course');
         $this->languageDataProvider = $this->container->get('data_provider.language');
         $this->modelValidator = $this->container->get('library.model_validator');
+        $this->lessonMiddleware = $this->container->get('learning_metadata.infrastructure.lesson_middleware');
     }
 
     public function test_lesson_creation()
     {
-        $course = $this->courseDataProvider->createDefault($this->faker);
-        $lesson = $this->lessonDataProvider->createDefault($this->faker, $course);
-        $course->addLesson($lesson);
+        $name = 'name-'.Uuid::uuid4()->toString();
 
-        $this->courseDataProvider->getRepository()->persistAndFlush($course);
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
 
-        $uuid = Uuid::uuid4();
         $data = [
-            'tips' => [
-                'Tip 1',
-                'Tip 2',
-                'Tip 3',
-            ],
-            'lessonTexts' => [
-                'Lesson text 1',
-                'Lesson text 2',
-                'Lesson text 3',
-            ],
-            'name' => 'name-'.Uuid::uuid4()->toString(),
-            'learningOrder' => rand(0, 999),
-            'description' => $this->faker->sentence(20),
+            'lesson' => [
+                'type' => (string) CourseType::fromValue('Beginner'),
+                'name' => $name,
+                'learningOrder' => rand(0, 999),
+                'description' => $this->faker->sentence(20),
+            ]
         ];
 
-        $lessonView = $this->deserializer->create($data, LessonView::class);
+        /** @var LessonView $lessonView */
+        $lessonView = $this->deserializer->create($data['lesson'], LessonView::class);
 
-        $this->modelValidator->tryValidate($lessonView);
+        $lessonView->setLanguage($language);
 
-        static::assertFalse($this->modelValidator->hasErrors());
-
-        $lessonView->setUuid($uuid);
-
-        $course = $this->courseImplementation->findCourse($course->getId());
-
-        $this->lessonImplementation->newLesson($course, $lessonView);
+        $this->lessonController->newAction($lessonView);
 
         /** @var Lesson $lesson */
         $lesson = $this->lessonDataProvider->getRepository()->findOneBy([
-            'uuid' => $uuid->toString(),
+            'name' => $name,
         ]);
 
         static::assertInstanceOf(Lesson::class, $lesson);
-        static::assertEquals($uuid->toString(), $lesson->getUuid()->toString());
-        static::assertNotEmpty($lesson->getJsonLesson());
-
-        static::assertJsonStringEqualsJsonString(
-            json_encode($data, true),
-            json_encode($lesson->getJsonLesson(), true)
-        );
+        static::assertEquals($data['lesson']['name'], $name);
     }
 
     public function test_new_lesson()
     {
-        /** @var Course $course */
-        $course = $this->courseDataProvider->createDefault($this->faker);
-
-        $this->courseDataProvider->getRepository()->persistAndFlush($course);
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
 
         $data = [
-            'course' => $course->getId(),
-            'tips' => [
-                'Tip 1',
-                'Tip 2',
-                'Tip 3',
+            'lesson' => [
+                'type' => (string) CourseType::fromValue('Beginner'),
+                'language' => $language,
+                'name' => 'name-'.Uuid::uuid4()->toString(),
+                'learningOrder' => rand(0, 999),
+                'description' => $this->faker->sentence(20),
             ],
-            'lessonTexts' => [
-                'Lesson text 1',
-                'Lesson text 2',
-                'Lesson text 3',
-            ],
-            'name' => 'name-'.Uuid::uuid4()->toString(),
-            'learningOrder' => rand(0, 999),
-            'description' => $this->faker->sentence(20),
         ];
 
-        $lessonMiddleware = new LessonMiddleware();
-        $data = $lessonMiddleware->createNewLessonMiddleware(
-            $data,
-            $this->courseImplementation,
-            $this->lessonImplementation,
-            $this->deserializer,
-            $this->modelValidator
-        );
+        /** @var LessonView $lessonView */
+        $lessonView = $this->deserializer->create($data['lesson'], LessonView::class);
 
-        $data['lessonView']->setUuid(Uuid::uuid4());
+        $lessonView->setLanguage($language);
 
-        $response = $this->lessonImplementation->newLesson(
-            $data['course'],
-            $data['lessonView']
-        );
+        $response = $this->lessonController->newAction($lessonView);
 
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(201, $response->getStatusCode());
-
-        $course = $this->courseImplementation->findCourse($course->getId());
-
-        static::assertInstanceOf(Course::class, $course);
-        static::assertFalse($course->getLessons()->isEmpty());
-
-        $lesson = $course->getLessons()[0];
-
-        static::assertInstanceOf(Lesson::class, $lesson);
     }
     /**
      * @expectedException Symfony\Component\HttpKernel\Exception\BadRequestHttpException
      */
     public function test_new_lesson_fail()
     {
-        /** @var Course $course */
-        $course = $this->courseDataProvider->createDefault($this->faker);
-
-        $this->courseDataProvider->getRepository()->persistAndFlush($course);
-
         $name = 'name-'.Uuid::uuid4()->toString();
 
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
         $data = [
-            'course' => $course->getId(),
-            'tips' => [
-                'Tip 1',
-                'Tip 2',
-                'Tip 3',
-            ],
-            'lessonTexts' => [
-                'Lesson text 1',
-                'Lesson text 2',
-                'Lesson text 3',
-            ],
-            'name' => $name,
-            'learningOrder' => rand(0, 999),
-            'description' => $this->faker->sentence(20),
+            'lesson' => [
+                'type' => (string) CourseType::fromValue('Beginner'),
+                'language' => $language,
+                'name' => $name,
+                'learningOrder' => rand(0, 999),
+                'description' => $this->faker->sentence(20),
+            ]
         ];
 
-        $lessonMiddleware = new LessonMiddleware();
-        $data = $lessonMiddleware->createNewLessonMiddleware(
-            $data,
-            $this->courseImplementation,
-            $this->lessonImplementation,
-            $this->deserializer,
-            $this->modelValidator
-        );
+        /** @var LessonView $lessonView */
+        $lessonView = $this->deserializer->create($data['lesson'], LessonView::class);
 
-        $data['lessonView']->setUuid(Uuid::uuid4());
+        $lessonView->setLanguage($language);
 
-        $response = $this->lessonImplementation->newLesson(
-            $data['course'],
-            $data['lessonView']
-        );
+        $response = $this->lessonController->newAction($lessonView);
 
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(201, $response->getStatusCode());
 
         $data = [
-            'course' => $course->getId(),
-            'tips' => [
-                'Tip 1',
-                'Tip 2',
-                'Tip 3',
+            'lesson' => [
+                'type' => (string) CourseType::fromValue('Beginner'),
+                'name' => $name,
+                'learningOrder' => rand(0, 999),
+                'description' => $this->faker->sentence(20),
             ],
-            'lessonTexts' => [
-                'Lesson text 1',
-                'Lesson text 2',
-                'Lesson text 3',
-            ],
-            'name' => $name,
-            'learningOrder' => rand(0, 999),
-            'description' => $this->faker->sentence(20),
         ];
 
-        $lessonMiddleware = new LessonMiddleware();
-        $data = $lessonMiddleware->createNewLessonMiddleware(
-            $data,
-            $this->courseImplementation,
-            $this->lessonImplementation,
-            $this->deserializer,
-            $this->modelValidator
-        );
+        /** @var LessonView $lessonView */
+        $lessonView = $this->deserializer->create($data['lesson'], LessonView::class);
 
-        $data['lessonView']->setUuid(Uuid::uuid4());
-
-        $response = $this->lessonImplementation->newLesson(
-            $data['course'],
-            $data['lessonView']
-        );
+        $response = $this->lessonController->newAction($lessonView);
 
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(400, $response->getStatusCode());
@@ -254,64 +160,42 @@ class LessonBusinessImplementationTest extends ContainerAwareTest
 
     public function test_edit_lesson()
     {
-        /** @var Course $course */
-        $course = $this->courseDataProvider->createDefault($this->faker);
-
-        $this->courseDataProvider->getRepository()->persistAndFlush($course);
-
         $name = 'name-'.Uuid::uuid4()->toString();
 
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
         $initialData = [
-            'course' => $course->getId(),
-            'tips' => [
-                'Tip 1',
-                'Tip 2',
-                'Tip 3',
+            'lesson' => [
+                'type' => (string) CourseType::fromValue('Beginner'),
+                'name' => $name,
+                'learningOrder' => rand(0, 999),
+                'description' => $this->faker->sentence(20),
             ],
-            'lessonTexts' => [
-                'Lesson text 1',
-                'Lesson text 2',
-                'Lesson text 3',
-            ],
-            'name' => $name,
-            'learningOrder' => rand(0, 999),
-            'description' => $this->faker->sentence(20),
         ];
 
-        $lessonMiddleware = new LessonMiddleware();
-        $data = $lessonMiddleware->createNewLessonMiddleware(
-            $initialData,
-            $this->courseImplementation,
-            $this->lessonImplementation,
-            $this->deserializer,
-            $this->modelValidator
-        );
+        /** @var LessonView $lessonView */
+        $lessonView = $this->deserializer->create($initialData['lesson'], LessonView::class);
 
-        $data['lessonView']->setUuid(Uuid::uuid4());
+        $lessonView->setLanguage($language);
 
-        $response = $this->lessonImplementation->newLesson(
-            $data['course'],
-            $data['lessonView']
-        );
+        $response = $this->lessonController->newAction($lessonView);
+
+        /** @var Lesson $lesson */
+        $lesson = $this->lessonDataProvider->getRepository()->findOneBy([
+            'name' => $name,
+        ]);
 
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(201, $response->getStatusCode());
 
-        $initialData['id'] = $course->getLessons()[0]->getId();
+        $initialData['id'] = $lesson->getId();
         $initialData['name'] = 'name-'.Uuid::uuid4()->toString();
 
-        $lessonMiddleware = new LessonMiddleware();
-        $updatedData = $lessonMiddleware->createExistingLessonMiddleware(
-            $initialData,
-            $this->lessonImplementation,
-            $this->deserializer,
-            $this->modelValidator
-        );
+        $lessonView = $this->deserializer->create($initialData['lesson'], LessonView::class);
 
-        $response = $this->lessonImplementation->updateLesson(
-            $updatedData['lessonView'],
-            $updatedData['lesson']
-        );
+        $lessonView->setLanguage($language);
+
+        $response = $this->lessonController->updateAction($lessonView);
 
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertEquals(201, $response->getStatusCode());

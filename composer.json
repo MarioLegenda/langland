@@ -53,7 +53,7 @@
     "require-dev": {
         "fabpot/goutte": "^3.2",
         "fzaninotto/faker": "^1.6",
-        "ramunasd/symfony-container-mocks": "^0.4.1",
+        "ramunasd/symfony-container-mocks": "*",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
     },

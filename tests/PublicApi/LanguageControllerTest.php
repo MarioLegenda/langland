@@ -4,27 +4,19 @@ namespace Tests\PublicApi;
 
 use AdminBundle\Command\Helper\FakerTrait;
 use PublicApi\Language\Business\Controller\LanguageController;
+use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\HttpFoundation\Response;
 use TestLibrary\DataProvider\LanguageInfoDataProvider;
-use TestLibrary\DataProvider\UserDataProvider;
-use TestLibrary\LanglandAdminTestCase;
-use Tests\TestLibrary\DataProvider\LanguageDataProvider;
+use TestLibrary\PublicApiTestCase;
+use TestLibrary\TestBuilder\AppTestBuilder;
 
-class LanguageControllerTest extends LanglandAdminTestCase
+class LanguageControllerTest extends PublicApiTestCase
 {
     use FakerTrait;
     /**
      * @var LanguageController $languageController
      */
     private $languageController;
-    /**
-     * @var LanguageDataProvider $languageDataProvider
-     */
-    private $languageDataProvider;
-    /**
-     * @var UserDataProvider $userDataProvider
-     */
-    private $userDataProvider;
     /**
      * @var LanguageInfoDataProvider $languageInfoDataProvider
      */
@@ -37,17 +29,24 @@ class LanguageControllerTest extends LanglandAdminTestCase
         parent::setUp();
 
         $this->languageController = $this->container->get('public_api.controller.language');
-        $this->languageDataProvider = $this->container->get('data_provider.language');
-        $this->userDataProvider = $this->container->get('data_provider.user');
         $this->languageInfoDataProvider = $this->container->get('data_provider.language_info');
     }
 
     public function test_find_all_languages()
     {
-        $user = $this->userDataProvider->createDefaultDb($this->getFaker());
         $this->languageDataProvider->createDefaultDb($this->getFaker());
         $this->languageDataProvider->createDefaultDb($this->getFaker());
-        $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
+
+        $appBuilder = new AppTestBuilder($this->container);
+
+        $user = $appBuilder->createAppUser();
+
+        /** @var LearningUser $user */
+        $learningUser = $appBuilder->createLearningUser($language);
+        $user->setCurrentLearningUser($learningUser);
+        $this->userDataProvider->getRepository()->persistAndFlush($user);
+        $appBuilder->mockProviders($user);
 
         $response = $this->languageController->getAll($user);
 

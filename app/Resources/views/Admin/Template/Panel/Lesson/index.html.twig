@@ -3,7 +3,7 @@
     <div class="row" style="margin-bottom: 15px;">
         <div class="col-sm-12">
             <div class="dataTables_length" id="dataTables-example_length">
-                <a class="btn btn-success" style="float: right" href="{{ path('admin_lesson_create', {courseId: course.id}) }}">Create</a>
+                <a class="btn btn-success" style="float: right" href="{{ path('admin_lesson_create') }}">Create</a>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                             <tr class="gradeA odd" role="row">
                                 <td class="sorting_1">{{ lesson.jsonLesson.name }}</td>
                                 <td class="sorting_1">
-                                    <a class="btn btn-primary" style="float: right" href="{{ path('admin_lesson_update_view', {courseId: course.id, lessonId: lesson.id}) }}">Edit</a>
+                                    <a class="btn btn-primary" style="float: right" href="{{ path('admin_lesson_update_view', {lessonId: lesson.id}) }}">Edit</a>
                                 </td>
                             </tr>
                         {% endfor %}

@@ -70,29 +70,16 @@
         </service>
 
         <service
-                id="learning_metadata.business.implementation.course"
-                class="LearningMetadata\Business\Implementation\CourseImplementation" public="true">
-
-            <argument type="service" id="learning_metadata.repository.course" />
-            <argument type="service" id="learning_metadata.form.form_builder" />
-            <argument type="service" id="learning_metadata.presentation.template_wrapper" />
-            <argument type="service" id="router" />
-            <argument type="service" id="event_dispatcher" />
-            <argument type="service" id="session" />
-        </service>
-
-        <service
                 id="learning_metadata.business.implementation.lesson"
-                class="LearningMetadata\Business\Implementation\CourseManagment\LessonImplementation" public="true">
+                class="LearningMetadata\Business\Implementation\LessonImplementation" public="true">
 
             <argument type="service" id="learning_metadata.repository.lesson" />
-            <argument type="service" id="learning_metadata.repository.course" />
             <argument type="service" id="learning_metadata.form.form_builder" />
             <argument type="service" id="learning_metadata.presentation.template_wrapper" />
             <argument type="service" id="router" />
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="session" />
-            <argument type="service" id="library.deserializer" />
+            <argument type="service" id="library.serializer_wrapper" />
             <argument type="service" id="logger" />
         </service>
     </services>

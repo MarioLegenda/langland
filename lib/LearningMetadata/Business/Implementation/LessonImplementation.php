@@ -1,18 +1,19 @@
 <?php
 
-namespace LearningMetadata\Business\Implementation\CourseManagment;
+namespace LearningMetadata\Business\Implementation;
 
 use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Lesson;
-use Library\Infrastructure\Helper\Deserializer;
 use LearningMetadata\Business\ViewModel\Lesson\LessonView;
+use Library\Infrastructure\Helper\SerializerWrapper;
 use Library\Presentation\Template\TemplateWrapper;
 use Library\Infrastructure\Form\FormBuilderInterface;
-use LearningMetadata\Repository\Implementation\CourseManagment\LessonRepository;
+use LearningMetadata\Repository\Implementation\LessonRepository;
 use LearningMetadata\Repository\Implementation\CourseRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -27,10 +28,6 @@ class LessonImplementation
      * @var LessonRepository $lessonRepository
      */
     private $lessonRepository;
-    /**
-     * @var CourseRepository $courseRepository
-     */
-    private $courseRepository;
     /**
      * @var FormBuilderInterface $formBuilder
      */
@@ -48,9 +45,9 @@ class LessonImplementation
      */
     private $session;
     /**
-     * @var Deserializer $deserializer
+     * @var SerializerWrapper $serializerWrapper
      */
-    private $deserializer;
+    private $serializerWrapper;
     /**
      * @var LoggerInterface $logger
      */
@@ -58,23 +55,21 @@ class LessonImplementation
     /**
      * CategoryImplementation constructor.
      * @param LessonRepository $lessonRepository
-     * @param CourseRepository $courseRepository
      * @param FormBuilderInterface $formBuilder
      * @param TemplateWrapper $templateWrapper
      * @param Router $router
      * @param Session $session
-     * @param Deserializer $deserializer
+     * @param SerializerWrapper $serializerWrapper
      * @param LoggerInterface $logger
      */
     public function __construct(
         LessonRepository $lessonRepository,
-        CourseRepository $courseRepository,
         FormBuilderInterface $formBuilder,
         TemplateWrapper $templateWrapper,
         Router $router,
         TraceableEventDispatcher $eventDispatcher,
         Session $session,
-        Deserializer $deserializer,
+        SerializerWrapper $serializerWrapper,
         LoggerInterface $logger
     ) {
         $this->lessonRepository = $lessonRepository;
@@ -83,9 +78,8 @@ class LessonImplementation
         $this->router = $router;
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
-        $this->deserializer = $deserializer;
+        $this->serializerWrapper = $serializerWrapper;
         $this->logger = $logger;
-        $this->courseRepository = $courseRepository;
     }
     /**
      * @param int $id
@@ -123,6 +117,10 @@ class LessonImplementation
             'name' => $name,
         ]);
 
+        if (!$lesson instanceof Lesson) {
+            return null;
+        }
+
         return $lesson;
     }
     /**
@@ -133,15 +131,13 @@ class LessonImplementation
         return $this->lessonRepository->findAll();
     }
     /**
-     * @param Course $course
      * @return Response
      */
-    public function getListPresentation(Course $course) : Response
+    public function getListPresentation() : Response
     {
-        $template = '::Admin/Template/Panel/CourseManager/_listing.html.twig';
+        $template = '::Admin/Template/Panel/_listing.html.twig';
         $data = [
             'listing_title' => 'Lessons',
-            'course' => $course,
             'lessons' => $this->getLessons(),
             'template' => '/Lesson/index.html.twig',
         ];
@@ -149,31 +145,27 @@ class LessonImplementation
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
     }
     /**
-     * @param Course $course
      * @return Response
      */
-    public function createLesson(Course $course): Response
+    public function createLesson(): Response
     {
-        $template = '::Admin/Template/Panel/CourseManager/_action.html.twig';
+        $template = '::Admin/Template/Panel/_action.html.twig';
         $data = [
             'listing_title' => 'Create lesson',
-            'course' => $course,
             'template' => '/Lesson/create.html.twig',
         ];
 
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
     }
     /**
-     * @param Course $course
      * @param Lesson $lesson
      * @return Response
      */
-    public function editLessonView(Course $course, Lesson $lesson): Response
+    public function editLessonView(Lesson $lesson): Response
     {
-        $template = '::Admin/Template/Panel/CourseManager/_action.html.twig';
+        $template = '::Admin/Template/Panel/_action.html.twig';
         $data = [
             'listing_title' => sprintf('Edit lesson | %s', $lesson->getJsonLesson()['name']),
-            'course' => $course,
             'lesson' => $lesson,
             'template' => '/Lesson/edit.html.twig',
         ];
@@ -181,43 +173,63 @@ class LessonImplementation
         return new Response($this->templateWrapper->getTemplate($template, $data), 200);
     }
     /**
-     * @param Course $course
      * @param LessonView $lessonView
      * @return JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function newLesson(Course $course, LessonView $lessonView)
+    public function newLesson(LessonView $lessonView)
     {
+        if ($this->tryFindByName($lessonView->getName())) {
+            throw new BadRequestHttpException(sprintf('Lesson with name \'%s\' already exists', $lessonView->getName()));
+        }
+
         $lesson = new Lesson(
             $lessonView->getName(),
-            $lessonView->getUuid(),
+            $lessonView->getType(),
             $lessonView->getLearningOrder(),
-            $lessonView->toArray(),
-            $course,
-            $lessonView->getDescription()
+            $lessonView->getDescription(),
+            $lessonView->getLanguage()
         );
-
-        $course->addLesson($lesson);
 
         $lesson->setName($lessonView->getName());
 
-        $this->courseRepository->persistAndFlush($course);
+        $this->lessonRepository->persistAndFlush($lesson);
 
         return new JsonResponse(null, 201);
     }
     /**
      * @param LessonView $lessonView
-     * @param Lesson $lesson
      * @return JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function updateLesson(LessonView $lessonView, Lesson $lesson)
+    public function updateLesson(LessonView $lessonView)
     {
-        $lesson->setJsonLesson($lessonView->toArray());
+        $lesson = $this->tryFindByName($lessonView->getName());
+
+        if (!$lesson instanceof Lesson) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Lesson with name \'%s\' not found',
+                    $lessonView->getName()
+                )
+            );
+        }
+
+        $lesson->setType($lesson->getType());
         $lesson->setLearningOrder($lessonView->getLearningOrder());
         $lesson->setDescription($lessonView->getDescription());
+        $lesson->setLanguage($lessonView->getLanguage());
 
         $this->lessonRepository->persistAndFlush($lesson);
 
         return new JsonResponse(null, 201);
+    }
+    /**
+     * @return SerializerWrapper
+     */
+    public function getSerializerWrapper(): SerializerWrapper
+    {
+        return $this->serializerWrapper;
     }
     /**
      * @param int $statusCode

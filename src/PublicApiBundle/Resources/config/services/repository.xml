@@ -55,21 +55,14 @@
                 class="PublicApi\Infrastructure\Communication\RepositoryCommunicator"
                 public="true">
 
+            <argument type="service" id="public_api.learning_user_provider" />
             <argument type="service" id="public_api.repository.language" />
             <argument type="service" id="public_api.repository.learning_user" />
-            <argument type="service" id="public_api.repository.lesson" />
+            <argument type="service" id="learning_metadata.repository.lesson" />
             <argument type="service" id="public_api.repository.learning_system.learning_lesson" />
             <argument type="service" id="public_api.repository.word" />
             <argument type="service" id="library.serializer_wrapper" />
 
-        </service>
-
-        <service
-                id="public_api.repository.blue_dot.lesson"
-                class="PublicApi\Lesson\Repository\BlueDot\LessonRepository" public="true">
-
-            <argument type="service" id="common.blue_dot" />
-            <argument>public_api_lesson</argument>
         </service>
 
         <service

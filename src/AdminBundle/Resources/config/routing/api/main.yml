@@ -28,14 +28,7 @@ admin_sound:
   prefix: /
   host: '%host%'
 
-admin_course:
-  resource: "@AdminBundle/Resources/config/routing/api/course.yml"
+admin_lesson:
+  resource: "@AdminBundle/Resources/config/routing/api/lesson.yml"
   prefix: /
-  host: '%host%'
-
-# API #
-
-lesson_api:
-  resource: "@AdminBundle/Resources/config/routing/api/course_managment/lessonApi.yml"
-  prefix: /api/v1
   host: '%host%'

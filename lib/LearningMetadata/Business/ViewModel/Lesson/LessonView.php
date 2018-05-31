@@ -2,17 +2,24 @@
 
 namespace LearningMetadata\Business\ViewModel\Lesson;
 
+use AdminBundle\Entity\Language;
 use JMS\Serializer\Annotation as Serializer;
-use Library\Infrastructure\Notation\ArrayNotationInterface;
-use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as ValidationAssert;
 
 class LessonView implements \JsonSerializable
 {
     /**
-     * @var UuidInterface $uuid
+     * @var Language $language
+     * @Serializer\Exclude()
+     * @ValidationAssert\NotBlank(message="Name cannot be empty")
      */
-    protected $uuid;
+    private $language;
+    /**
+     * @var string $type
+     * @Serializer\Type("string")
+     * @ValidationAssert\NotBlank(message="Type cannot be empty")
+     */
+    private $type;
     /**
      * @var string $name
      * @Serializer\Type("string")
@@ -34,42 +41,22 @@ class LessonView implements \JsonSerializable
      */
     protected $learningOrder;
     /**
-     * @var array $tips
-     * @Serializer\Type("array")
-     * @Serializer\Accessor(setter="setTips")
-     */
-    protected $tips = [];
-    /**
-     * @var LessonText[] $lessonTexts
-     * @Serializer\Type("array")
-     * @Serializer\Accessor(setter="setLessonTexts")
-     * @Serializer\SerializedName("lessonTexts")
-     * @ValidationAssert\NotBlank(message="There has to be at least one lesson text")
-     */
-    protected $lessonTexts = [];
-    /**
      * LessonView constructor.
-     * @param UuidInterface $uuid
      * @param string $name
+     * @param string $type
      * @param int $learningOrder
-     * @param array $tips
-     * @param array $lessonTexts
      * @param string $description
      */
     public function __construct(
-        UuidInterface $uuid,
         string $name,
+        string $type,
         int $learningOrder,
-        array $tips,
-        array $lessonTexts,
         string $description
     ) {
-        $this->uuid = $uuid;
         $this->setLearningOrder($learningOrder);
         $this->setName($name);
-        $this->setTips($tips);
-        $this->setLessonTexts($lessonTexts);
         $this->setDescription($description);
+        $this->setType($type);
     }
     /**
      * @return string
@@ -103,76 +90,32 @@ class LessonView implements \JsonSerializable
         return $this;
     }
     /**
-     * @return UuidInterface
+     * @param Language $language
      */
-    public function getUuid(): UuidInterface
+    public function setLanguage(Language $language): void
     {
-        return $this->uuid;
+        $this->language = $language;
     }
     /**
-     * @param UuidInterface $uuid
+     * @return Language
      */
-    public function setUuid(UuidInterface $uuid)
+    public function getLanguage(): Language
     {
-        $this->uuid = $uuid;
+        return $this->language;
     }
     /**
-     * @param Tip $tip
-     * @return LessonView
+     * @return string
      */
-    public function addTip(Tip $tip): LessonView
+    public function getType(): string
     {
-        $this->tips[] = $tip;
-
-        return $this;
+        return $this->type;
     }
     /**
-     * @return Tip[]
+     * @param string $type
      */
-    public function getTips(): array
+    public function setType(string $type): void
     {
-        return $this->tips;
-    }
-    /**
-     * @param Tip[] $tips
-     * @return LessonView
-     */
-    public function setTips($tips): LessonView
-    {
-        foreach ($tips as $tip) {
-            $this->addTip(new Tip($tip));
-        }
-
-        return $this;
-    }
-    /**
-     * @return LessonText[]
-     */
-    public function getLessonTexts(): array
-    {
-        return $this->lessonTexts;
-    }
-    /**
-     * @param LessonText[] $lessonTexts
-     * @return LessonView
-     */
-    public function setLessonTexts(array $lessonTexts): LessonView
-    {
-        foreach ($lessonTexts as $lessonText) {
-            $this->addLessonText(new LessonText($lessonText));
-        }
-
-        return $this;
-    }
-    /**
-     * @param LessonText $lessonText
-     * @return LessonView
-     */
-    public function addLessonText(LessonText $lessonText): LessonView
-    {
-        $this->lessonTexts[] = $lessonText;
-
-        return $this;
+        $this->type = $type;
     }
     /**
      * @return array
@@ -180,27 +123,11 @@ class LessonView implements \JsonSerializable
     public function toArray(): array
     {
         $array = [
+            'type' => $this->getType(),
             'name' => $this->getName(),
-            'tips' => [],
             'learningOrder' => $this->getLearningOrder(),
-            'lessonTexts' => [],
             'description' => $this->getDescription(),
         ];
-
-        $tips = [];
-        foreach ($this->getTips() as $tip) {
-            $tips[] = (string) $tip;
-        }
-
-        $array['tips'] = $tips;
-
-        $lessonTexts = [];
-        /** @var ArrayNotationInterface $text */
-        foreach ($this->getLessonTexts() as $text) {
-            $lessonTexts[] = (string) $text;
-        }
-
-        $array['lessonTexts'] = $lessonTexts;
 
         return $array;
     }

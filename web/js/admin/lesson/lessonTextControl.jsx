@@ -53,10 +53,10 @@ export class LessonTextControl extends React.Component {
     }
 
     addLessonText() {
-        this.setState(function(prevState) {
+        this.setState((prevState) => {
             const len = prevState.lessonTexts.length;
 
-            return prevState.lessonTexts.push(<RemovableTextarea
+            prevState.lessonTexts.push(<RemovableTextarea
                 key={len}
                 controlKey={len}
                 remove={this.removeLessonText}
@@ -65,6 +65,11 @@ export class LessonTextControl extends React.Component {
                 buttonText={"Remove lesson text"}
                 dataCollector={this.dataCollector}
             />);
+
+            return {
+                lessonTexts: prevState.lessonTexts,
+                textValues: prevState.textValues
+            };
         });
     }
 
@@ -89,6 +94,8 @@ export class LessonTextControl extends React.Component {
 
     render() {
         const lessonTexts = this.state.lessonTexts;
+
+        console.log(lessonTexts);
 
         return <div className="col-xs-12 no-padding margin-top-10">
             <div className={"col-xs-12 no-padding bottom-line margin-bottom-10"}>

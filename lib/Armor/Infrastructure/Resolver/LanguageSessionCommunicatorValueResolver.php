@@ -1,31 +1,26 @@
 <?php
 
-namespace PublicApi\Infrastructure\Resolver;
+namespace Armor\Infrastructure\Resolver;
 
-use AdminBundle\Entity\Language;
-use PublicApi\Language\Repository\LanguageRepository;
+use Armor\Infrastructure\Communicator\Session\LanguageSessionCommunicator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
-class LanguageValueResolver implements ArgumentValueResolverInterface
+class LanguageSessionCommunicatorValueResolver implements ArgumentValueResolverInterface
 {
     /**
-     * @var LanguageRepository $languageRepository
+     * @var LanguageSessionCommunicator $languageSessionCommunicator
      */
-    private $languageRepository;
+    private $languageSessionCommunicator;
     /**
-     * @var Language $language
-     */
-    private $language;
-    /**
-     * PostMethodLanguageValueResolver constructor.
-     * @param LanguageRepository $languageRepository
+     * LanguageValueResolver constructor.
+     * @param LanguageSessionCommunicator $languageSessionCommunicator
      */
     public function __construct(
-        LanguageRepository $languageRepository
+        LanguageSessionCommunicator $languageSessionCommunicator
     ) {
-        $this->languageRepository = $languageRepository;
+        $this->languageSessionCommunicator = $languageSessionCommunicator;
     }
     /**
      * @param Request $request
@@ -34,11 +29,9 @@ class LanguageValueResolver implements ArgumentValueResolverInterface
      */
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        if (Language::class !== $argument->getType()) {
+        if (LanguageSessionCommunicator::class !== $argument->getType()) {
             return false;
         }
-
-        die("mile");
 
         $languageId = $request->request->get('languageId');
 
@@ -54,13 +47,7 @@ class LanguageValueResolver implements ArgumentValueResolverInterface
             $languageId = (int) $languageId;
         }
 
-        $language = $this->languageRepository->find($languageId);
-
-        if (!$language instanceof Language) {
-            return false;
-        }
-
-        $this->language = $language;
+        $this->languageSessionCommunicator->initializeSession($languageId);
 
         return true;
     }
@@ -71,6 +58,6 @@ class LanguageValueResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator
     {
-        yield $this->language;
+        yield $this->languageSessionCommunicator;
     }
 }

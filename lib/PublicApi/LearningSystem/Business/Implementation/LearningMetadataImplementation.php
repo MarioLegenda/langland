@@ -48,12 +48,12 @@ class LearningMetadataImplementation
     /**
      * @return LearningLesson
      */
-    public function createLearningMetadata(): LearningLesson
+    public function createLearningLessons(): LearningLesson
     {
         $learningUser = $this->learningUserProvider->getLearningUser();
         $language = $this->languageProvider->getLanguage();
 
-        return $this->learningMetadataRepository->createLearningMetadataForAllLessonsByLanguage(
+        return $this->learningMetadataRepository->createAllLearningLessonsForLearningUser(
             $language,
             $learningUser
         );

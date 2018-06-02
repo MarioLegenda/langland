@@ -9,8 +9,6 @@
       <generator strategy="AUTO"/>
     </id>
 
-    <field name="createdAt" type="datetime" column="created_at"/>
-    <field name="updatedAt" type="datetime" column="updated_at"/>
     <field name="isLanguageInfoLooked" type="boolean" column="is_language_info_looked"/>
     <field name="areQuestionsLooked" type="boolean" column="are_questions_looked"/>
     <field name="answeredQuestions" type="json_array" column="answered_questions" nullable="true"/>
@@ -18,6 +16,9 @@
     <many-to-one field="user" target-entity="ArmorBundle\Entity\User" />
 
     <many-to-one field="language" target-entity="AdminBundle\Entity\Language" />
+
+    <field name="createdAt" type="datetime" column="created_at"/>
+    <field name="updatedAt" type="datetime" column="updated_at"/>
 
     <lifecycle-callbacks>
       <lifecycle-callback type="prePersist" method="updateTimestamps" />

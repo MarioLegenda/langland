@@ -71,7 +71,7 @@ class LearningMetadataRepository extends CommonRepository
      * @param LearningUser $learningUser
      * @return LearningLesson
      */
-    public function createLearningMetadataForAllLessonsByLanguage(
+    public function createAllLearningLessonsForLearningUser(
         Language $language,
         LearningUser $learningUser
     ): LearningLesson {

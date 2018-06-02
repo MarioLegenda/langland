@@ -18,7 +18,7 @@
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 
-        <one-to-one field="currentLearningUser" target-entity="PublicApiBundle\Entity\LearningUser" />
+        <many-to-one target-entity="ArmorBundle\Entity\LanguageSession" field="currentLanguageSession" />
 
         <one-to-many field="roles" target-entity="ArmorBundle\Entity\Role" mapped-by="user">
             <cascade>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service
+                id="armor.repository.language_session"
+                class="Armor\Repository\LanguageSessionRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>ArmorBundle\Entity\LanguageSession</argument>
+        </service>
+
+        <service class="Armor\Repository\LanguageRepository" id="armor.repository.language_repository">
+
+            <argument id="doctrine.orm.default_entity_manager" type="service"/>
+            <argument>AdminBundle\Entity\Language</argument>
+        </service>
+
+
+    </services>
+</container>

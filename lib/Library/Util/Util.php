@@ -14,4 +14,23 @@ class Util
             yield ['key' => $key, 'item' => $item];
         }
     }
+    /**
+     * @param \DateTime|string $dateTime
+     * @return \DateTime
+     */
+    public static function toDateTime($dateTime): \DateTime
+    {
+        if ($dateTime instanceof \DateTime) {
+            return $dateTime;
+        }
+
+        $dateTime = \DateTime::createFromFormat('Y-m-d H:m:s', $dateTime);
+
+        if (!$dateTime instanceof \DateTime) {
+            $message = sprintf('Invalid date time in %s', Lesson::class);
+            throw new \RuntimeException($message);
+        }
+
+        return $dateTime;
+    }
 }

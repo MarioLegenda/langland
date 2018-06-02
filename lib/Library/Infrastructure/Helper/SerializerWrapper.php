@@ -63,6 +63,22 @@ class SerializerWrapper
         return json_encode($arrayed);
     }
     /**
+     * @param object $object
+     * @param array $groups
+     * @param string $class
+     * @return object
+     */
+    public function convertFromTo(object $object, array $groups, string $class): object
+    {
+        $serialized = $this->serialize($object, $groups);
+
+        $created = $this->getDeserializer()->create($serialized, $class);
+
+        $this->modelValidator->validate($created);
+
+        return $created;
+    }
+    /**
      * @return Deserializer
      */
     public function getDeserializer(): Deserializer

@@ -29,27 +29,14 @@ class LearningUserController
         $this->learningUserImplementation = $learningUserImplementation;
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param Language $language
      * @param User $user
      * @return JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function registerLearningUser(Language $language, User $user): JsonResponse
+    public function registerLanguageSession(Language $language, User $user): JsonResponse
     {
-        $learningUser = $this->learningUserImplementation->findExact($language, $user);
-
-        if ($learningUser instanceof LearningUser) {
-            $data = $this->learningUserImplementation->updateLearningUser(
-                $learningUser,
-                $language,
-                $user
-            );
-
-            return new JsonResponse($data, 200);
-        }
-
-        $responseData = $this->learningUserImplementation->registerLearningUser($language, $user);
+        $responseData = $this->learningUserImplementation->registerLanguageSession ($language, $user);
 
         return new JsonResponse(
             $responseData['response'],

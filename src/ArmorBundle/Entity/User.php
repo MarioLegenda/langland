@@ -13,6 +13,10 @@ class User implements UserInterface
      */
     private $id;
     /**
+     * @var LanguageSession $currentLanguageSession
+     */
+    private $currentLanguageSession;
+    /**
      * @var string $name
      */
     private $name;
@@ -41,10 +45,6 @@ class User implements UserInterface
      */
     private $roles;
     /**
-     * @var LearningUser $currentLearningUser
-     */
-    private $currentLearningUser;
-    /**
      * @var string $confirmHash
      */
     private $confirmHash;
@@ -67,6 +67,20 @@ class User implements UserInterface
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * @return LanguageSession
+     */
+    public function getCurrentLanguageSession(): LanguageSession
+    {
+        return $this->currentLanguageSession;
+    }
+    /**
+     * @param LanguageSession $currentLanguageSession
+     */
+    public function setCurrentLanguageSession(LanguageSession $currentLanguageSession): void
+    {
+        $this->currentLanguageSession = $currentLanguageSession;
     }
     /**
      * @return mixed
@@ -239,23 +253,6 @@ class User implements UserInterface
                 $this->addRole($role);
             }
         }
-    }
-    /**
-     * @return LearningUser
-     */
-    public function getCurrentLearningUser(): LearningUser
-    {
-        return $this->currentLearningUser;
-    }
-    /**
-     * @param LearningUser $currentLearningUser
-     * @return User
-     */
-    public function setCurrentLearningUser(LearningUser $currentLearningUser): User
-    {
-        $this->currentLearningUser = $currentLearningUser;
-
-        return $this;
     }
     /**
      * @return mixed

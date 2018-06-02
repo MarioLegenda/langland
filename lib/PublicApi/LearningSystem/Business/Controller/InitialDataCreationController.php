@@ -34,7 +34,7 @@ class InitialDataCreationController
      */
     public function makeInitialDataCreation(): Response
     {
-        $learningLesson = $this->learningMetadataImplementation->createLearningMetadata();
+        $learningLesson = $this->learningMetadataImplementation->createLearningLessons();
 
         return new JsonResponse(
             $this->initialDataCreationImplementation->createInitialData(

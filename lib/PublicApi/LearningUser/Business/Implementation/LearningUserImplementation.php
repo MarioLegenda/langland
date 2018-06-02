@@ -4,7 +4,10 @@ namespace PublicApi\LearningUser\Business\Implementation;
 
 use AdminBundle\Entity\Language;
 use ApiSDK\ApiSDK;
+use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
+use ArmorBundle\Manager\LanguageSessionImplementation;
+use ArmorBundle\Repository\LanguageSessionRepository;
 use ArmorBundle\Repository\UserRepository;
 use LearningSystem\Infrastructure\Questions;
 use PublicApi\Language\Repository\LanguageRepository;
@@ -106,25 +109,33 @@ class LearningUserImplementation
      * @param User $user
      * @return array
      */
-    public function registerLearningUser(Language $language, User $user): array
+    public function registerLanguageSession(Language $language, User $user): array
     {
         $learningUser = new LearningUser();
         $learningUser->setLanguage($language);
         $learningUser->setUser($user);
 
-        $user->setCurrentLearningUser($learningUser);
-        $learningUser = $this->learningUserRepository->persistAndFlush($learningUser);
+        $languageSession = $this->languageSessionManager->createAndRegisterLanguageSession(
+            $learningUser,
+            $user
+        );
 
-        $this->userRepository->persistAndFlush($user);
+        $learningUserId = $languageSession->getLearningUser()->getId();
+        $languageId = $language->getId();
+        $languageName = $language->getName();
+        $createdAt = $languageSession
+            ->getLearningUser()
+            ->getCreatedAt()
+            ->format('Y-m-d H-m-s');
 
         $data = [
-            'id' => $learningUser->getId(),
+            'id' => $languageSession->getLearningUser()->getId(),
             'language' => [
-                'id' => $learningUser->getLanguage()->getId(),
-                'name' => $learningUser->getLanguage()->getName(),
+                'id' => $language->getId(),
+                'name' => $language->getName(),
             ],
-            'createdAt' => $learningUser->getCreatedAt()->format('Y-m-d H-m-s'),
-            'updatedAt' => $learningUser->getUpdatedAt()->format('Y-m-d H-m-s'),
+            'createdAt' => $languageSession->getLearningUser()->getCreatedAt()->format('Y-m-d H-m-s'),
+            'updatedAt' => $languageSession->getLearningUser()->getUpdatedAt()->format('Y-m-d H-m-s'),
         ];
 
         $response = $this->apiSdk
@@ -151,9 +162,9 @@ class LearningUserImplementation
         Language $language,
         User $user
     ): array {
-        $user->setCurrentLearningUser($learningUser);
+        $languageSession = $this->languageSessionManager->updateLanguageSessionIfUpdateable($language, $user);
 
-        $this->userRepository->persistAndFlush($user);
+
 
         $data = [
             'id' => $learningUser->getId(),

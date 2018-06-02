@@ -31,14 +31,12 @@ class InitialWordDataProviderTest extends PublicApiTestCase
 
             $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 
-            $learningMetadata = $learningMetadataImplementation->createLearningMetadata();
-
-            $learningMetadataId = $learningMetadata['learningMetadataId'];
+            $learningLesson = $learningMetadataImplementation->createLearningLessons();
 
             $initialWordDataProvider = $this->container->get('public_api.learning_system.data_provider.word_data_provider');
 
             $wordNumber = 20;
-            $providedData = $initialWordDataProvider->getData($learningMetadataId, [
+            $providedData = $initialWordDataProvider->getData($learningLesson, [
                 'word_number' => $wordNumber,
                 'word_level' => $i+1
             ]);

@@ -3,14 +3,21 @@ AdminBundle\Entity\Language:
     properties:
         id:
             expose: true
-            groups: [viewable]
+            groups: [viewable, communication_model]
+
         name:
             expose: true
-            groups: [viewable]
+            groups: [viewable, communication_model]
+
         listDescription:
             expose: true
-            groups: [viewable]
-            serialized_name: desc
+            groups: [viewable, communication_model]
+
+        showOnPage:
+            expose: true
+            groups: [viewable, communication_model]
+
         images:
             expose: true
             groups: [viewable]
+

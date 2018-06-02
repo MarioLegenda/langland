@@ -6,6 +6,7 @@
         "psr-0": {
             "LearningMetadata": "lib/",
             "PublicApi": "lib/",
+            "Armor": "lib/",
             "LearningSystem": "lib/",
             "ApiSDK": "lib/",
             "Library": "lib/",

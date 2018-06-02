@@ -2,31 +2,23 @@
 
 namespace TestLibrary;
 
-use AdminBundle\Entity\Language;
-use AdminBundle\Command\Helper\FakerTrait;
-use AdminBundle\Entity\Lesson;
-use ArmorBundle\Entity\User;
-use PublicApi\Infrastructure\Type\CourseType;
-use PublicApi\Language\Infrastructure\LanguageProvider;
-use PublicApi\LearningSystem\QuestionAnswersApplicationProvider;
-use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
+use Faker\Factory;
+use Faker\Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\BrowserKit\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TestLibrary\DataProvider\LearningUserDataProvider;
 use TestLibrary\DataProvider\UserDataProvider;
 use TestLibrary\DataProvider\WordDataProvider;
-use Tests\TestLibrary\DataProvider\CourseDataProvider;
 use Tests\TestLibrary\DataProvider\LanguageDataProvider;
 use Tests\TestLibrary\DataProvider\LessonDataProvider;
-use PublicApi\LearningSystem\Infrastructure\DataProvider\InitialWordDataProvider;
-use PublicApi\LearningSystem\Business\Implementation\LearningMetadataImplementation;
 
 class PublicApiTestCase extends WebTestCase
 {
-    use FakerTrait;
+    /**
+     * @var Generator $faker
+     */
+    protected $faker;
     /**
      * @var LanguageDataProvider $languageDataProvider
      */
@@ -59,6 +51,8 @@ class PublicApiTestCase extends WebTestCase
     public function setUp()
     {
         parent::setUp();
+
+        $this->faker = Factory::create();
 
         $this->client = static::createClient();
 

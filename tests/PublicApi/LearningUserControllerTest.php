@@ -4,6 +4,7 @@ namespace Tests\PublicApi;
 
 use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
+use Armor\Controller\LanguageSessionController;
 use ArmorBundle\Entity\User;
 use ArmorBundle\Repository\UserRepository;
 use LearningSystem\Infrastructure\Questions;
@@ -94,8 +95,8 @@ class LearningUserControllerTest extends PublicApiTestCase
         $user = $this->userDataProvider->getRepository()->find($user->getId());
 
         static::assertInstanceOf(User::class, $user);
-        static::assertInstanceOf(LearningUser::class, $user->getCurrentLearningUser());
-        static::assertEquals($learningUser->getId(), $user->getCurrentLearningUser()->getId());
+        static::assertInstanceOf(LearningUser::class, $user->getCurrentLanguageSession()->getLearningUser());
+        static::assertEquals($learningUser->getId(), $user->getCurrentLanguageSession()->getLearningUser()->getId());
     }
 
     public function test_create_new_learning_user()

@@ -3,6 +3,7 @@
 namespace PublicApi\LearningUser\Repository;
 
 use Library\Infrastructure\Repository\CommonRepository;
+use PublicApi\Infrastructure\Model\Language;
 use PublicApiBundle\Entity\LearningUser;
 use PublicApiBundle\Entity\Question;
 

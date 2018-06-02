@@ -2,7 +2,6 @@
 
 namespace PublicApi\Implementation;
 
-use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
 use PublicApiBundle\Entity\LearningLesson;
@@ -13,8 +12,6 @@ use TestLibrary\TestBuilder\AppTestBuilder;
 
 class LearningMetadataImplementationTest extends PublicApiTestCase
 {
-    use FakerTrait;
-
     public function test_createLearningMetadata()
     {
         $adminBuilder = new AdminTestBuilder($this->container);

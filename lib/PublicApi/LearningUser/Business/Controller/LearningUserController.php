@@ -29,21 +29,6 @@ class LearningUserController
         $this->learningUserImplementation = $learningUserImplementation;
     }
     /**
-     * @param Language $language
-     * @param User $user
-     * @return JsonResponse
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function registerLanguageSession(Language $language, User $user): JsonResponse
-    {
-        $responseData = $this->learningUserImplementation->registerLanguageSession ($language, $user);
-
-        return new JsonResponse(
-            $responseData['response'],
-            201
-        );
-    }
-    /**
      * @Security("has_role('ROLE_PUBLIC_API_USER')")
      *
      * @param User $user

@@ -1,8 +1,3 @@
-register_learning_user:
-    path: /register-learning-user
-    defaults: { _controller: public_api.controller.learning_user:registerLanguageSession }
-    methods: [POST, PUT]
-
 get_current_learning_user:
     path: /get-current-learning-user
     defaults: { _controller: public_api.controller.learning_user:getCurrentLearningUser }

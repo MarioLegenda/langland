@@ -129,7 +129,6 @@ class LanguageSessionTest extends PublicApiTestCase
                 $languageSession->getId()
             );
         }
-
     }
     /**
      * @param array $data

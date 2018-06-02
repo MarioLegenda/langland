@@ -12,7 +12,6 @@ use TestLibrary\TestBuilder\AppTestBuilder;
 
 class LanguageControllerTest extends PublicApiTestCase
 {
-    use FakerTrait;
     /**
      * @var LanguageController $languageController
      */
@@ -34,9 +33,9 @@ class LanguageControllerTest extends PublicApiTestCase
 
     public function test_find_all_languages()
     {
-        $this->languageDataProvider->createDefaultDb($this->getFaker());
-        $this->languageDataProvider->createDefaultDb($this->getFaker());
-        $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $this->languageDataProvider->createDefaultDb($this->faker);
+        $this->languageDataProvider->createDefaultDb($this->faker);
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
 
         $appBuilder = new AppTestBuilder($this->container);
 
@@ -74,9 +73,9 @@ class LanguageControllerTest extends PublicApiTestCase
 
     public function test_find_language_info()
     {
-        $language = $this->languageDataProvider->createDefaultDb($this->getFaker());
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
 
-        $this->languageInfoDataProvider->createDefaultDb($this->getFaker(), $language, 10);
+        $this->languageInfoDataProvider->createDefaultDb($this->faker, $language, 10);
 
         $response = $this->languageController->getLanguageInfo($language);
 

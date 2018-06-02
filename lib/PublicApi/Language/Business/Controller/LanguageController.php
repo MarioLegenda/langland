@@ -25,8 +25,6 @@ class LanguageController
         $this->languageImplementation = $languageImplementation;
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param User $user
      * @return Response
      */
@@ -38,8 +36,6 @@ class LanguageController
         );
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param Language $language
      * @return Response
      */

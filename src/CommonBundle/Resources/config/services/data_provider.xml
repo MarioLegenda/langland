@@ -64,5 +64,14 @@
             <argument type="service" id="data_provider.lesson" />
         </service>
 
+        <service
+                id="data_provider.language_session"
+                class="TestLibrary\DataProvider\LanguageSessionDataProvider" public="true">
+
+            <argument type="service" id="data_provider.learning_user" />
+            <argument type="service" id="data_provider.language" />
+            <argument type="service" id="armor.repository.language_session" />
+        </service>
+
     </services>
 </container>

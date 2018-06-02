@@ -83,8 +83,6 @@ class LessonController
         return $this->lessonImplementation->newLesson($lessonView);
     }
     /**
-     * @Security("has_role('ROLE_ALLOWED_MODIFY')")
-     *
      * @param LessonView $lessonView
      * @return JsonResponse
      */
@@ -93,7 +91,6 @@ class LessonController
         return $this->lessonImplementation->updateLesson($lessonView);
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
      * @param Lesson $lesson
      * @return Response
      */

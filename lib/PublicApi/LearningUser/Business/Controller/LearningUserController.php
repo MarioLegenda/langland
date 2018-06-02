@@ -29,8 +29,6 @@ class LearningUserController
         $this->learningUserImplementation = $learningUserImplementation;
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param User $user
      * @return Response
      */
@@ -42,8 +40,6 @@ class LearningUserController
         );
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param User $user
      * @return Response
      */
@@ -55,8 +51,6 @@ class LearningUserController
         );
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param User $user
      * @return Response
      */
@@ -68,8 +62,6 @@ class LearningUserController
         );
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param User $user
      * @return Response
      */
@@ -81,8 +73,6 @@ class LearningUserController
         );
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @return Response
      */
     public function getQuestions(): Response
@@ -93,8 +83,6 @@ class LearningUserController
         );
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param QuestionAnswers $questionAnswers
      * @return Response
      */
@@ -108,8 +96,6 @@ class LearningUserController
         );
     }
     /**
-     * @Security("has_role('ROLE_PUBLIC_API_USER')")
-     *
      * @param User $user
      * @param QuestionAnswers $questionAnswers
      * @return Response

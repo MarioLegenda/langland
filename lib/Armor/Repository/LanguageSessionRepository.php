@@ -2,6 +2,7 @@
 
 namespace Armor\Repository;
 
+use Armor\Infrastructure\Model\Language;
 use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
 use Library\Infrastructure\Repository\CommonRepository;
@@ -31,6 +32,30 @@ class LanguageSessionRepository extends CommonRepository
             'learningUser' => $learningUser,
             'user' => $user,
         ]);
+
+        return $languageSession;
+    }
+    /**
+     * @param Language $language
+     * @param User $user
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function tryFindByLanguageAndUser(Language $language, User $user)
+    {
+        $qb = $this->createQueryBuilderFromClass('ls');
+
+        $languageSession = $qb
+            ->innerJoin('ls.learningUser', 'lu')
+            ->where('lu.language = :language_id')
+            ->andWhere('ls.learningUser = lu.id')
+            ->andWhere('ls.user = :user')
+            ->setParameters([
+                ':language_id' => $language->getId(),
+                ':user' => $user,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
 
         return $languageSession;
     }

@@ -17,6 +17,10 @@ class User implements UserInterface
      */
     private $currentLanguageSession;
     /**
+     * @var LanguageSession[] $languageSessions
+     */
+    private $languageSessions;
+    /**
      * @var string $name
      */
     private $name;
@@ -60,6 +64,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->roles = new ArrayCollection();
+        $this->languageSessions = new ArrayCollection();
     }
     /**
      * @return mixed
@@ -81,6 +86,27 @@ class User implements UserInterface
     public function setCurrentLanguageSession(LanguageSession $currentLanguageSession): void
     {
         $this->currentLanguageSession = $currentLanguageSession;
+    }
+    /**
+     * @return LanguageSession[]
+     */
+    public function getLanguageSessions()
+    {
+        return $this->languageSessions;
+    }
+    /**
+     * @param LanguageSession[] $languageSessions
+     */
+    public function setLanguageSessions(array $languageSessions): void
+    {
+        $this->languageSessions = $languageSessions;
+    }
+    /**
+     * @param LanguageSession $languageSession
+     */
+    public function addLanguageSession(LanguageSession $languageSession): void
+    {
+        $this->languageSessions->add($languageSession);
     }
     /**
      * @return mixed

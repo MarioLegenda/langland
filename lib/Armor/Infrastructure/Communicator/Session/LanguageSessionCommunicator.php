@@ -50,20 +50,17 @@ class LanguageSessionCommunicator implements DomainCommunicatorInterface
     public function initializeSession(int $id): void
     {
         $this->id = $id;
+
+        $this->foreignDomainModel = null;
+        $this->domainModel = null;
     }
     /**
      * @return object
      */
     public function getForeignDomainModel(): object
     {
-        if (!$this->foreignDomainModel instanceof ArmorLanguageModel) {
-            $domainModel = $this->getDomainModel();
-
-            $this->foreignDomainModel = $this->serializerWrapper->convertFromTo(
-                $domainModel,
-                ['communication_model'],
-                ArmorLanguageModel::class
-            );
+        if (!$this->foreignDomainModel instanceof Language) {
+            $this->foreignDomainModel = $this->getLanguage();
         }
 
         return $this->foreignDomainModel;
@@ -73,8 +70,14 @@ class LanguageSessionCommunicator implements DomainCommunicatorInterface
      */
     public function getDomainModel(): object
     {
-        if (!$this->domainModel instanceof Language) {
-            $this->domainModel = $this->getLanguage();
+        if (!$this->domainModel instanceof ArmorLanguageModel) {
+            $foreignDomainModel = $this->getForeignDomainModel();
+
+            $this->domainModel = $this->serializerWrapper->convertFromTo(
+                $foreignDomainModel,
+                ['communication_model'],
+                ArmorLanguageModel::class
+            );
         }
 
         return $this->domainModel;

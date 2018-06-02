@@ -33,4 +33,27 @@ class Util
 
         return $dateTime;
     }
+    /**
+     * @param object $object
+     * @param string $field
+     * @return mixed
+     */
+    public static function extractFieldFromObject(object $object, string $field)
+    {
+        return $object->{'get'.ucfirst($field)}();
+    }
+    /**
+     * @param array|iterable $objects
+     * @param string $field
+     * @return array
+     */
+    public static function extractFieldFromObjects(iterable $objects, string $field): array
+    {
+        $fields = [];
+        foreach ($objects as $object) {
+            $fields[] = Util::extractFieldFromObject($object, $field);
+        }
+
+        return $fields;
+    }
 }

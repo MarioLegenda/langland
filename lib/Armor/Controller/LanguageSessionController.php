@@ -4,10 +4,10 @@ namespace Armor\Controller;
 
 use ApiSDK\ApiSDK;
 use Armor\Infrastructure\Communicator\Session\LanguageSessionCommunicator;
-use Armor\Infrastructure\Model\Language;
 use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
 use Armor\Domain\LanguageSessionLogic;
+use Library\Util\Util;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class LanguageSessionController
@@ -32,17 +32,51 @@ class LanguageSessionController
         $this->languageSessionLogic = $languageSessionLogic;
         $this->apiSdk = $apiSDK;
     }
-
+    /**
+     * @param LanguageSessionCommunicator $languageSessionCommunicator
+     * @param User $user
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function registerLanguageSession(
-        LanguageSessionCommunicator $languageSessionCommunicatorUser,
+        LanguageSessionCommunicator $languageSessionCommunicator,
         User $user
     ): JsonResponse {
         /** @var LanguageSession $languageSession */
         $languageSession = $this->languageSessionLogic->createAndRegisterLanguageSession(
-            $languageSessionCommunicatorUser,
+            $languageSessionCommunicator,
             $user
         );
 
+        return new JsonResponse(
+            $this->getResourceDataResponse($languageSession, $user),
+            201
+        );
+    }
+    /**
+     * @param LanguageSession $languageSession
+     * @param User $user
+     * @return JsonResponse
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function changeLanguageSession(LanguageSession $languageSession, User $user)
+    {
+        $languageSession = $this->languageSessionLogic->changeLanguageSession($languageSession, $user);
+
+        return new JsonResponse(
+            $this->getResourceDataResponse($languageSession, $user),
+            201
+        );
+    }
+    /**
+     * @param LanguageSession $languageSession
+     * @param User $user
+     * @return array
+     */
+    private function getResourceDataResponse(
+        LanguageSession $languageSession,
+        User $user
+    ): array {
         $languageSessionId = $languageSession->getLearningUser()->getId();
         $languageId = $languageSession->getLearningUser()->getLanguage()->getId();
         $languageName = $languageSession->getLearningUser()->getLanguage()->getName();
@@ -57,6 +91,10 @@ class LanguageSessionController
                 'id' => $languageId,
                 'name' => $languageName,
             ],
+            'languageSessions' => Util::extractFieldFromObjects(
+                $user->getLanguageSessions(),
+                'id'
+            ),
             'learningUserId' => $learningUserId,
             'createdAt' => $createdAt,
             'updatedAt' => $updatedAt,
@@ -69,14 +107,6 @@ class LanguageSessionController
             ->setStatusCode(201)
             ->build();
 
-        return new JsonResponse(
-            $response,
-            201
-        );
-    }
-
-    public function updateLanguageSession(Language $language, User $user)
-    {
-
+        return $response;
     }
 }

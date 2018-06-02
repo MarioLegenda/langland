@@ -50,8 +50,19 @@ class LanguageSessionLogic
         DomainCommunicatorInterface $domainCommunicator,
         User $user
     ): LanguageSession {
+        $language = $domainCommunicator->getForeignDomainModel();
+        /** @var Language $domainLanguage */
+        $domainLanguage = $domainCommunicator->getDomainModel();
 
-        $language = $domainCommunicator->getDomainModel();
+        /** @var LanguageSession $languageSession */
+        $languageSession = $this->languageSessionRepository->tryFindByLanguageAndUser(
+            $domainLanguage,
+            $user
+        );
+
+        if ($languageSession instanceof LanguageSession) {
+            throw new \RuntimeException('Language session already exists');
+        }
 
         $learningUser = new LearningUser();
         $learningUser->setLanguage($language);
@@ -61,33 +72,21 @@ class LanguageSessionLogic
 
         $languageSession = LanguageSession::create($learningUser, $user);
 
-        $this->languageSessionRepository->persistAndFlush($languageSession);
-
         $user->setCurrentLanguageSession($languageSession);
+        $user->addLanguageSession($languageSession);
+
         $this->userRepository->persistAndFlush($user);
 
         return $languageSession;
     }
     /**
-     * @param Language $language
+     * @param LanguageSession $languageSession
      * @param User $user
-     * @return LanguageSession|null
+     * @return LanguageSession
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function updateLanguageSessionIfUpdateable(Language $language, User $user): ?LanguageSession
+    public function changeLanguageSession(LanguageSession $languageSession, User $user): LanguageSession
     {
-        /** @var LearningUser $learningUser */
-        $learningUser = $this->learningUserRepository->findOneBy([
-            'language' => $language,
-            'user' => $user,
-        ]);
-
-        if (!$learningUser instanceof LearningUser) {
-            return null;
-        }
-
-        $languageSession = $this->languageSessionRepository->findByLearningUserAndUser($learningUser, $user);
-
         $user->setCurrentLanguageSession($languageSession);
 
         $this->userRepository->persistAndFlush($user);

@@ -20,6 +20,12 @@
 
         <many-to-one target-entity="ArmorBundle\Entity\LanguageSession" field="currentLanguageSession" />
 
+        <one-to-many target-entity="ArmorBundle\Entity\LanguageSession" mapped-by="user" field="languageSessions">
+            <cascade>
+                <cascade-persist/>
+            </cascade>
+        </one-to-many>
+
         <one-to-many field="roles" target-entity="ArmorBundle\Entity\Role" mapped-by="user">
             <cascade>
                 <cascade-persist/>

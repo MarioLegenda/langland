@@ -2,7 +2,9 @@
 
 namespace PublicApi\Infrastructure\Resolver;
 
-use ArmorBundle\Entity\User;
+use ArmorBundle\Entity\User as ArmorUser;
+use Library\Infrastructure\Helper\SerializerWrapper;
+use PublicApi\Infrastructure\Model\User as PublicApiUser;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -16,12 +18,23 @@ class UserValueResolver implements ArgumentValueResolverInterface
      */
     private $tokenStorage;
     /**
+     * @var SerializerWrapper $serializerWrapper
+     */
+    private $serializerWrapper;
+    /**
+     * @var PublicApiUser $user
+     */
+    private $user;
+    /**
      * UserValueResolver constructor.
      * @param TokenStorageInterface $tokenStorage
+     * @param SerializerWrapper $serializerWrapper
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        SerializerWrapper $serializerWrapper
     ) {
+        $this->serializerWrapper = $serializerWrapper;
         $this->tokenStorage = $tokenStorage;
     }
     /**
@@ -31,7 +44,7 @@ class UserValueResolver implements ArgumentValueResolverInterface
      */
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        if (User::class !== $argument->getType()) {
+        if (PublicApiUser::class !== $argument->getType()) {
             return false;
         }
 
@@ -41,7 +54,20 @@ class UserValueResolver implements ArgumentValueResolverInterface
             return false;
         }
 
-        return $token->getUser() instanceof User;
+        $supports = $token->getUser() instanceof PublicApiUser;
+
+        if ($supports) {
+            /** @var PublicApiUser $publicApiUser */
+            $publicApiUser = $this->serializerWrapper->convertFromTo(
+                $token->getUser(),
+                ['communication_model'],
+                PublicApiUser::class
+            );
+
+            $this->user = $publicApiUser;
+        }
+
+        return $supports;
     }
     /**
      * @param Request $request

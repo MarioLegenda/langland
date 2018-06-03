@@ -52,6 +52,8 @@ class LessonControllerTest extends LanglandAdminTestCase
 
     public function test_lesson_implementation()
     {
+        $this->markTestSkipped("This will be implemented when working on lesson learning metadata");
+
         /** @var string $serialized */
         $serialized = $this->lessonImplementation->findAndSerialize($lesson, ['public_api'], 'json');
 
@@ -64,6 +66,8 @@ class LessonControllerTest extends LanglandAdminTestCase
 
     public function test_get_lesson_by_id()
     {
+        $this->markTestSkipped("This will be implemented when working on lesson learning metadata");
+
         $language = $this->languageDataProvider->createDefaultDb($this->faker);
 
         $lesson = $this->lessonDataProvider->createDefaultDb($language, $this->faker);

@@ -4,10 +4,10 @@ namespace PublicApi\Infrastructure\Communication;
 
 use AdminBundle\Entity\Language as MetadataLanguage;
 use AdminBundle\Entity\Lesson;
+use AdminBundle\Entity\Word;
 use ArmorBundle\Entity\User;
 use LearningMetadata\Repository\Implementation\LessonRepository;
 use Library\Infrastructure\Helper\SerializerWrapper;
-use PublicApi\Infrastructure\Model\Word\InitialCreationWord;
 use PublicApi\Infrastructure\Repository\WordRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningSystem\Repository\LearningLessonRepository;
@@ -96,7 +96,7 @@ class RepositoryCommunicator
      * @param Language $language
      * @param Lesson $lesson
      * @param int $level
-     * @return array
+     * @return Word[]
      */
     public function getWordsByLevelAndLesson(
         Language $language,
@@ -106,22 +106,18 @@ class RepositoryCommunicator
         $qb = $this->wordRepository->createQueryBuilderFromClass('w');
 
         $words = $qb
-            ->where('w.language = :language_id')
+            ->where('w.language = :language')
             ->andWhere('w.level = :level')
-            ->andWhere('w.lesson = :lesson_id')
+            ->andWhere('w.lesson = :lesson')
             ->setParameters([
-                'language_id' => $language->getId(),
-                'lesson_id' => $lesson->getId(),
+                'language' => $language,
+                'lesson' => $lesson,
                 'level' => $level,
             ])
             ->getQuery()
             ->getResult();
 
-        return $this->createModelsFromMetadata(
-            $words,
-            InitialCreationWord::class,
-            ['initial_creation_word']
-        );
+        return $words;
     }
     /**
      * @param Language $language
@@ -135,7 +131,7 @@ class RepositoryCommunicator
      * @param Language $language
      * @param int $wordLevel
      * @param array $wordIds
-     * @return array
+     * @return Word[]
      */
     public function getWordsByLevelAndLessonByExactIds(
         Language $language,
@@ -145,22 +141,18 @@ class RepositoryCommunicator
         $qb = $this->wordRepository->createQueryBuilderFromClass('w');
 
         $words = $qb
-            ->where('w.language = :language_id')
+            ->where('w.language = :language')
             ->andWhere('w.level = :level')
             ->andWhere('w.id IN (:word_ids)')
             ->setParameters([
-                'language_id' => $language->getId(),
+                'language' => $language,
                 'level' => $wordLevel,
                 'word_ids' => $wordIds
             ])
             ->getQuery()
             ->getResult();
 
-        return $this->createModelsFromMetadata(
-            $words,
-            InitialCreationWord::class,
-            ['initial_creation_word']
-        );
+        return $words;
     }
     /**
      * @param User $user

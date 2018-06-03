@@ -24,10 +24,7 @@ class InitialWordDataProviderTest extends PublicApiTestCase
         $user = $appBuilder->createAppUser();
 
         for ($i = 0; $i < 5; $i++) {
-            /** @var LearningUser $user */
-            $learningUser = $appBuilder->createLearningUser($language);
-            $user->setCurrentLearningUser($learningUser);
-            $appBuilder->mockProviders($user);
+            $appBuilder->registerLanguageSession($user, $language);
 
             $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 

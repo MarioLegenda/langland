@@ -2,26 +2,21 @@
 
 namespace PublicApi\LearningSystem\Infrastructure\DataProvider;
 
+use Armor\Infrastructure\Provider\LanguageSessionProvider;
 use BlueDot\BlueDot;
 use LearningSystem\Library\DataProviderInterface;
 use LearningSystem\Library\ProvidedDataInterface;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
-use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Repository\WordDataRepository;
-use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApi\LearningSystem\Infrastructure\DataProvider\Word\ProvidedWordDataCollection;
 use PublicApiBundle\Entity\LearningLesson;
 
 class InitialWordDataProvider extends BaseBlueDotRepository implements DataProviderInterface
 {
     /**
-     * @var LanguageProvider $languageProvider
+     * @var LanguageSessionProvider $languageSessionProvider
      */
-    private $languageProvider;
-    /**
-     * @var LearningUserProvider $learningUserProvider
-     */
-    private $learningUserProvider;
+    private $languageSessionProvider;
     /**
      * @var WordDataRepository $wordDataRepository
      */
@@ -30,31 +25,30 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
      * WordDataProvider constructor.
      * @param BlueDot $blueDot
      * @param string $apiName
-     * @param LanguageProvider $languageProvider
-     * @param LearningUserProvider $learningUserProvider
+     * @param LanguageSessionProvider $languageSessionProvider
      * @param WordDataRepository $wordDataRepository
      */
     public function __construct(
         BlueDot $blueDot,
         string $apiName,
-        LanguageProvider $languageProvider,
-        LearningUserProvider $learningUserProvider,
+        LanguageSessionProvider $languageSessionProvider,
         WordDataRepository $wordDataRepository
     ) {
         parent::__construct($blueDot, $apiName);
 
-        $this->languageProvider = $languageProvider;
-        $this->learningUserProvider = $learningUserProvider;
         $this->wordDataRepository = $wordDataRepository;
+        $this->languageSessionProvider = $languageSessionProvider;
     }
     /**
      * @inheritdoc
      */
     public function getData(LearningLesson $learningLesson, array $rules): ProvidedDataInterface
     {
+        $language = $this->languageSessionProvider->getLanguage();
+
         $initialWords = $this->wordDataRepository->getWordsFromLessons(
             $learningLesson,
-            $this->languageProvider->getLanguage(),
+            $language,
             $rules['word_level']
         );
 
@@ -63,13 +57,13 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
         $wordIds = null;
         if (empty($initialWords)) {
             $wordIds = $this->wordDataRepository->getWordsIds(
-                $this->languageProvider->getLanguage(),
+                $language,
                 $rules['word_level']
             );
         } else if (!empty($initialWords)) {
             $wordIds = $this->wordDataRepository->getWordsIdsWithExcludedLesson(
-                $this->languageProvider->getLanguage(),
-                $learningLesson->getLessonObject()->getId(),
+                $language,
+                $learningLesson->getLesson(),
                 $rules['word_level']
             );
         }
@@ -78,7 +72,7 @@ class InitialWordDataProvider extends BaseBlueDotRepository implements DataProvi
             $wordNumber,
             $wordIds,
             $rules['word_level'],
-            $this->languageProvider->getLanguage()
+            $language
         );
 
         $finalWords = array_merge($initialWords, $restOfTheWords);

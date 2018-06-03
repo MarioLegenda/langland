@@ -22,8 +22,7 @@
 
             <argument type="service" id="common.blue_dot" />
             <argument>learning_user_metadata</argument>
-            <argument type="service" id="public_api.provider.language_provider" />
-            <argument type="service" id="public_api.learning_user_provider" />
+            <argument type="service" id="armor.provider.language_session" />
             <argument type="service" id="public_api.repository.learning_system.word_data_repository" />
 
         </service>

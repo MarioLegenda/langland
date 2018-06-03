@@ -2,11 +2,12 @@
 
 namespace PublicApi\LearningSystem\Repository;
 
+use AdminBundle\Entity\Lesson;
 use BlueDot\BlueDot;
 use Library\Infrastructure\BlueDot\BaseBlueDotRepository;
 use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
 use PublicApiBundle\Entity\LearningLesson;
-use PublicApi\Infrastructure\Model\Language;
+use AdminBundle\Entity\Language;
 
 class WordDataRepository extends BaseBlueDotRepository
 {
@@ -42,7 +43,7 @@ class WordDataRepository extends BaseBlueDotRepository
     ): array {
         return $this->repositoryCommunicator->getWordsByLevelAndLesson(
             $language,
-            $learningLesson->getLessonObject(),
+            $learningLesson->getLesson(),
             $wordLevel
         );
     }
@@ -66,7 +67,7 @@ class WordDataRepository extends BaseBlueDotRepository
     }
     /**
      * @param Language $language
-     * @param int $lessonId
+     * @param Lesson $lesson
      * @param int $wordLevel
      * @return array
      * @throws \BlueDot\Exception\ConfigurationException
@@ -76,7 +77,7 @@ class WordDataRepository extends BaseBlueDotRepository
      */
     public function getWordsIdsWithExcludedLesson(
         Language $language,
-        int $lessonId,
+        Lesson $lesson,
         int $wordLevel
     ): array {
 
@@ -84,7 +85,7 @@ class WordDataRepository extends BaseBlueDotRepository
 
         $promise = $this->blueDot->execute('simple.select.get_words_count_with_lesson_excluded', [
             'language_id' => $language->getId(),
-            'lesson_id' => $lessonId,
+            'lesson_id' => $lesson->getId(),
             'word_level' => $wordLevel,
         ]);
 

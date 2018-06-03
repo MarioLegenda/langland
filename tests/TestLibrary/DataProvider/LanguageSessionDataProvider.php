@@ -92,4 +92,11 @@ class LanguageSessionDataProvider implements DefaultDataProviderInterface
             $learningUser
         );
     }
+    /**
+     * @return LanguageSessionRepository
+     */
+    public function getRepository(): LanguageSessionRepository
+    {
+        return $this->languageSessionRepository;
+    }
 }

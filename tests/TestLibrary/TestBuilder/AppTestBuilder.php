@@ -4,6 +4,7 @@ namespace TestLibrary\TestBuilder;
 
 use AdminBundle\Command\Helper\FakerTrait;
 use AdminBundle\Entity\Language;
+use Armor\Infrastructure\Provider\LanguageSessionProvider;
 use ArmorBundle\Entity\User;
 use PublicApi\Infrastructure\Type\CourseType;
 use PublicApi\Language\Infrastructure\LanguageProvider;
@@ -14,6 +15,7 @@ use RDV\SymfonyContainerMocks\DependencyInjection\TestContainer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use TestLibrary\DataProvider\LanguageSessionDataProvider;
 use TestLibrary\DataProvider\LearningUserDataProvider;
 use TestLibrary\DataProvider\UserDataProvider;
 
@@ -33,6 +35,10 @@ class AppTestBuilder
      */
     private $userDataProvider;
     /**
+     * @var LanguageSessionDataProvider $languageSessionDataProvider
+     */
+    private $languageSessionDataProvider;
+    /**
      * AppBuilder constructor.
      * @param ContainerInterface $container
      */
@@ -43,6 +49,34 @@ class AppTestBuilder
 
         $this->learningUserDataProvider = $container->get('data_provider.learning_user');
         $this->userDataProvider = $container->get('data_provider.user');
+        $this->languageSessionDataProvider = $container->get('data_provider.language_session');
+    }
+    /**
+     * @param User $user
+     * @param Language $language
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function registerLanguageSession(User $user, Language $language): void
+    {
+        $learningUser = $this->createLearningUser($language);
+        $learningUser->setUser($user);
+
+        $this->learningUserDataProvider->getRepository()->persistAndFlush($learningUser);
+
+        $languageSession = $this->languageSessionDataProvider->createDefaultDb(
+            $this->getFaker(),
+            $user,
+            $learningUser
+        );
+
+        $this->languageSessionDataProvider->getRepository()->persistAndFlush($languageSession);
+
+        $user->setCurrentLanguageSession($languageSession);
+        $user->addLanguageSession($languageSession);
+
+        $this->userDataProvider->getRepository()->persistAndFlush($user);
+
+        $this->mockLanguageSessionProvider($user);
     }
     /**
      * @param Language $language
@@ -67,8 +101,6 @@ class AppTestBuilder
      */
     public function makeInitialDataCreation(User $user)
     {
-        $this->mockProviders($user);
-
         $controller = $this->container->get('public_api.controller.initial_data_creation_controller');
 
         $controller->makeInitialDataCreation();
@@ -80,8 +112,6 @@ class AppTestBuilder
     public function createLearningMetadata(
         User $user
     ): int {
-        $this->mockProviders($user);
-
         $learningMetadataImplementation = $this->container->get('public_api.business.implementation.learning_metadata');
 
         $learningMetadata = $learningMetadataImplementation->createLearningMetadata();
@@ -90,26 +120,17 @@ class AppTestBuilder
     }
     /**
      * @param User $user
-     * @return array
      */
-    public function mockProviders(User $user): array
+    public function mockLanguageSessionProvider(User $user): void
     {
         $token = new UsernamePasswordToken($user, 'root', 'admin', ['ROLE_PUBLIC_API_USER']);
         $tokenStorage = new TokenStorage();
         $tokenStorage->setToken($token);
 
-        $learningUserProvider = new LearningUserProvider($tokenStorage);
-        $languageProvider = new LanguageProvider($learningUserProvider);
-        $questionAnswersProvider = new QuestionAnswersApplicationProvider($learningUserProvider);
+        $languageSessionProvider = new LanguageSessionProvider(
+            $tokenStorage
+        );
 
-        $this->container->set('public_api.provider.language_provider', $languageProvider);
-        $this->container->set('public_api.learning_user_provider', $learningUserProvider);
-        $this->container->set('public_api.provider.question_answers_application_provider', $questionAnswersProvider);
-
-        return [
-            'languageProvider' => $languageProvider,
-            'learningUserProvider' => $learningUserProvider,
-            'questionAnswersProvider' => $questionAnswersProvider,
-        ];
+        $this->container->set('armor.provider.language_session', $languageSessionProvider);
     }
 }

@@ -5,13 +5,14 @@ namespace PublicApi\LearningSystem\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Library\Infrastructure\Repository\CommonRepository;
 use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
+use PublicApi\Infrastructure\Repository\LessonRepository;
 use PublicApiBundle\Entity\LearningLesson;
 use PublicApiBundle\Entity\LearningMetadata;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Routing\Router;
 use PublicApiBundle\Entity\DataCollector;
-use PublicApi\Infrastructure\Model\Lesson;
-use PublicApi\Infrastructure\Model\Language;
+use AdminBundle\Entity\Language;
+use AdminBundle\Entity\Lesson;
 
 class LearningMetadataRepository extends CommonRepository
 {
@@ -32,10 +33,15 @@ class LearningMetadataRepository extends CommonRepository
      */
     private $dataCollectorRepository;
     /**
+     * @var LessonRepository $lessonRepository
+     */
+    private $lessonRepository;
+    /**
      * LearningMetadataRepository constructor.
      * @param EntityManagerInterface $em
      * @param string $class
      * @param Router $router
+     * @param LessonRepository $lessonRepository
      * @param RepositoryCommunicator $repositoryCommunicator
      * @param LearningLessonRepository $learningLessonRepository
      * @param DataCollectorRepository $dataCollectorRepository
@@ -44,6 +50,7 @@ class LearningMetadataRepository extends CommonRepository
         EntityManagerInterface $em,
         string $class,
         Router $router,
+        LessonRepository $lessonRepository,
         RepositoryCommunicator $repositoryCommunicator,
         LearningLessonRepository $learningLessonRepository,
         DataCollectorRepository $dataCollectorRepository
@@ -54,6 +61,7 @@ class LearningMetadataRepository extends CommonRepository
         $this->repositoryCommunicator = $repositoryCommunicator;
         $this->learningLessonRepository = $learningLessonRepository;
         $this->dataCollectorRepository = $dataCollectorRepository;
+        $this->lessonRepository = $lessonRepository;
     }
     /**
      * @param LearningMetadata $learningMetadata
@@ -76,7 +84,7 @@ class LearningMetadataRepository extends CommonRepository
         LearningUser $learningUser
     ): LearningLesson {
 
-        $lessons = $this->repositoryCommunicator->getLessonsByLanguage($language);
+        $lessons = $this->lessonRepository->getLessonsByLanguage($language);
 
         $isFirst = true;
         $firstLearningLesson = null;

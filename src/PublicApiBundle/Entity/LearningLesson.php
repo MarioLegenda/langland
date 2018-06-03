@@ -2,7 +2,7 @@
 
 namespace PublicApiBundle\Entity;
 
-use PublicApi\Infrastructure\Model\Lesson;
+use AdminBundle\Entity\Lesson;
 use PublicApiBundle\Entity\Contract\CollectibleDataContainerInterface;
 
 class LearningLesson implements CollectibleDataContainerInterface
@@ -16,13 +16,9 @@ class LearningLesson implements CollectibleDataContainerInterface
      */
     private $learningUser;
     /**
-     * @var int|Lesson $lesson
+     * @var Lesson $lesson
      */
     private $lesson;
-    /**
-     * @var Lesson $lessonObject
-     */
-    private $lessonObject;
     /**
      * @var LearningMetadata $learningMetadata
      */
@@ -59,8 +55,7 @@ class LearningLesson implements CollectibleDataContainerInterface
         bool $isAvailable
     ) {
         $this->learningUser = $learningUser;
-        $this->lesson = $lesson->getId();
-        $this->lessonObject = $lesson;
+        $this->lesson = $lesson;
         $this->learningMetadata = $learningMetadata;
         $this->hasCompleted = $hasCompleted;
         $this->isAvailable = $isAvailable;
@@ -104,9 +99,9 @@ class LearningLesson implements CollectibleDataContainerInterface
         return $this;
     }
     /**
-     * @return int
+     * @return Lesson
      */
-    public function getLesson(): int
+    public function getLesson(): Lesson
     {
         return $this->lesson;
     }
@@ -119,13 +114,6 @@ class LearningLesson implements CollectibleDataContainerInterface
         $this->lesson = $lesson;
 
         return $this;
-    }
-    /**
-     * @return Lesson
-     */
-    public function getLessonObject(): Lesson
-    {
-        return $this->lessonObject;
     }
     /**
      * @return LearningMetadata

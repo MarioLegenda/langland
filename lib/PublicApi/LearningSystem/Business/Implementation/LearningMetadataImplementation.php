@@ -3,6 +3,8 @@
 namespace PublicApi\LearningSystem\Business\Implementation;
 
 use ApiSDK\ApiSDK;
+use Armor\Infrastructure\Provider\LanguageSessionProvider;
+use ArmorBundle\Entity\User;
 use PublicApi\Language\Infrastructure\LanguageProvider;
 use PublicApi\LearningSystem\Repository\LearningMetadataRepository;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
@@ -20,38 +22,31 @@ class LearningMetadataImplementation
      */
     private $learningMetadataRepository;
     /**
-     * @var LearningUserProvider $learningUserProvider
+     * @var LanguageSessionProvider $languageSessionProvider
      */
-    private $learningUserProvider;
-    /**
-     * @var LanguageProvider $languageProvider
-     */
-    private $languageProvider;
+    private $languageSessionProvider;
     /**
      * LearningMetadataImplementation constructor.
      * @param ApiSDK $apiSDK
-     * @param LanguageProvider $languageProvider
-     * @param LearningUserProvider $learningUserProvider
+     * @param LanguageSessionProvider $languageSessionProvider
      * @param LearningMetadataRepository $learningMetadataRepository
      */
     public function __construct(
         ApiSDK $apiSDK,
-        LanguageProvider $languageProvider,
-        LearningUserProvider $learningUserProvider,
+        LanguageSessionProvider $languageSessionProvider,
         LearningMetadataRepository $learningMetadataRepository
     ) {
         $this->apiSdk = $apiSDK;
         $this->learningMetadataRepository = $learningMetadataRepository;
-        $this->learningUserProvider = $learningUserProvider;
-        $this->languageProvider = $languageProvider;
+        $this->languageSessionProvider = $languageSessionProvider;
     }
     /**
      * @return LearningLesson
      */
     public function createLearningLessons(): LearningLesson
     {
-        $learningUser = $this->learningUserProvider->getLearningUser();
-        $language = $this->languageProvider->getLanguage();
+        $learningUser = $this->languageSessionProvider->getLearningUser();
+        $language = $this->languageSessionProvider->getLanguage();
 
         return $this->learningMetadataRepository->createAllLearningLessonsForLearningUser(
             $language,

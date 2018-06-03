@@ -7,7 +7,7 @@
     <services>
         <service
                 id="public_api.repository.lesson"
-                class="PublicApi\Lesson\Repository\LessonRepository"
+                class="PublicApi\Infrastructure\Repository\LessonRepository"
                 public="true">
 
             <argument type="service" id="doctrine.orm.default_entity_manager" />
@@ -80,6 +80,7 @@
             <argument type="service" id="doctrine.orm.default_entity_manager" />
             <argument>PublicApiBundle\Entity\LearningMetadata</argument>
             <argument type="service" id="router" />
+            <argument type="service" id="public_api.repository.lesson" />
             <argument type="service" id="public_api.repository.repository_communicator" />
             <argument type="service" id="public_api.repository.learning_system.learning_lesson" />
             <argument type="service" id="public_api.repository.learning_system.data_collector" />

@@ -2,6 +2,7 @@
 
 namespace LearningMetadata\Repository\Implementation;
 
+use AdminBundle\Entity\Language;
 use AdminBundle\Entity\Lesson;
 use Doctrine\ORM\EntityRepository;
 

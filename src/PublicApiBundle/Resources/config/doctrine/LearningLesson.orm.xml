@@ -11,7 +11,7 @@
         <field name="createdAt" type="datetime" column="created_at"/>
         <field name="updatedAt" type="datetime" column="updated_at"/>
 
-        <field name="lesson" type="integer" column="lesson_id" nullable="false" />
+        <many-to-one target-entity="AdminBundle\Entity\Lesson" field="lesson" />
 
         <!-- Learning metadata dependency, has to be removed -->
         <many-to-one field="learningUser" target-entity="PublicApiBundle\Entity\LearningUser" />

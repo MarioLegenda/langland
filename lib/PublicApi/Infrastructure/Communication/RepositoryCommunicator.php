@@ -3,6 +3,7 @@
 namespace PublicApi\Infrastructure\Communication;
 
 use AdminBundle\Entity\Language as MetadataLanguage;
+use AdminBundle\Entity\Lesson;
 use ArmorBundle\Entity\User;
 use LearningMetadata\Repository\Implementation\LessonRepository;
 use Library\Infrastructure\Helper\SerializerWrapper;
@@ -12,9 +13,8 @@ use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningSystem\Repository\LearningLessonRepository;
 use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
-use PublicApi\Infrastructure\Model\Language;
-use PublicApi\Infrastructure\Model\Lesson;
 use PublicApiBundle\Entity\LearningUser;
+use AdminBundle\Entity\Language;
 
 class RepositoryCommunicator
 {
@@ -72,26 +72,6 @@ class RepositoryCommunicator
         $this->serializerWrapper = $serializerWrapper;
         $this->learningLessonRepository = $learningLessonRepository;
         $this->learningUserProvider = $learningUserProvider;
-    }
-    /**
-     * @param Language $language
-     * @return Lesson[]
-     */
-    public function getLessonsByLanguage(Language $language): array
-    {
-        $qb = $this->lessonRepository->createQueryBuilder('l');
-
-        $metadataLessons = $qb
-            ->andWhere('l.language = :language_id')
-            ->setParameter(':language_id', $language->getId())
-            ->getQuery()
-            ->getResult();
-
-        return $this->createModelsFromMetadata(
-            $metadataLessons,
-            Lesson::class,
-            ['internal_model']
-        );
     }
     /**
      * @param LearningUser $learningUser

@@ -35,8 +35,7 @@
                 public="true">
 
             <argument type="service" id="library.api_sdk" />
-            <argument type="service" id="public_api.provider.language_provider" />
-            <argument type="service" id="public_api.learning_user_provider" />
+            <argument type="service" id="armor.provider.language_session" />
             <argument type="service" id="public_api.repository.learning_system.learning_metadata" />
         </service>
 

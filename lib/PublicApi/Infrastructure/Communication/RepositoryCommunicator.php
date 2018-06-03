@@ -5,13 +5,14 @@ namespace PublicApi\Infrastructure\Communication;
 use AdminBundle\Entity\Language as MetadataLanguage;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Word;
+use Armor\Infrastructure\Provider\LanguageSessionProvider;
+use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
 use LearningMetadata\Repository\Implementation\LessonRepository;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Repository\WordRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 use PublicApi\LearningSystem\Repository\LearningLessonRepository;
-use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApi\LearningUser\Repository\LearningUserRepository;
 use PublicApiBundle\Entity\LearningUser;
 use AdminBundle\Entity\Language;
@@ -43,12 +44,12 @@ class RepositoryCommunicator
      */
     private $serializerWrapper;
     /**
-     * @var LearningUserProvider $learningUserProvider
+     * @var LanguageSessionProvider $languageSessionProvider
      */
-    private $learningUserProvider;
+    private $languageSessionProvider;
     /**
      * RepositoryCommunicator constructor.
-     * @param LearningUserProvider $learningUserProvider
+     * @param LanguageSessionProvider $languageSessionProvider
      * @param LanguageRepository $languageRepository
      * @param LearningUserRepository $learningUserRepository
      * @param LessonRepository $lessonRepository
@@ -57,7 +58,7 @@ class RepositoryCommunicator
      * @param SerializerWrapper $serializerWrapper
      */
     public function __construct(
-        LearningUserProvider $learningUserProvider,
+        LanguageSessionProvider $languageSessionProvider,
         LanguageRepository $languageRepository,
         LearningUserRepository $learningUserRepository,
         LessonRepository $lessonRepository,
@@ -71,7 +72,7 @@ class RepositoryCommunicator
         $this->wordRepository = $wordRepository;
         $this->serializerWrapper = $serializerWrapper;
         $this->learningLessonRepository = $learningLessonRepository;
-        $this->learningUserProvider = $learningUserProvider;
+        $this->languageSessionProvider = $languageSessionProvider;
     }
     /**
      * @param LearningUser $learningUser
@@ -121,14 +122,6 @@ class RepositoryCommunicator
     }
     /**
      * @param Language $language
-     * @return MetadataLanguage
-     */
-    public function getMetadataLanguageByLanguageModel(Language $language): MetadataLanguage
-    {
-        return $this->languageRepository->find($language->getId());
-    }
-    /**
-     * @param Language $language
      * @param int $wordLevel
      * @param array $wordIds
      * @return Word[]
@@ -158,18 +151,40 @@ class RepositoryCommunicator
      * @param User $user
      * @return array
      */
-    public function getAllAlreadyLearningLanguages(User $user): array
+    public function getSortedLanguages(User $user): array
     {
-        /** @var LearningUser[] $learningUsers */
-        $learningUsers = $this->learningUserRepository->findBy([
-            'user' => $user,
+        $learningMetadataLanguages = $this->languageRepository->findBy([
+            'showOnPage' => true,
         ]);
 
-        $languages = [];
-        /** @var LearningUser $learningUser */
-        foreach ($learningUsers as $learningUser) {
-            $languages[] = $learningUser->getLanguage();
+        $alreadyLearningLanguages = $user->getLanguageSessionLanguages();
+        $notLearningLanguages = array_filter($learningMetadataLanguages, function(Language $language) use ($alreadyLearningLanguages) {
+            /** @var Language $alreadyLearningLanguage */
+            foreach ($alreadyLearningLanguages as $alreadyLearningLanguage) {
+                if ($alreadyLearningLanguage->getId() !== $language->getId()) {
+                    return true;
+                }
+            }
+        }, ARRAY_FILTER_USE_BOTH);
+
+        $returnData = [
+            'alreadyLearning' => $alreadyLearningLanguages,
+            'notLearning' => $notLearningLanguages,
+        ];
+
+        return $returnData;
+
+        $languageSessions = $user->getLanguageSessions();
+
+        foreach ($languageSessions as $languageSession) {
+            $sessionLanguage = $languageSession
+                ->getLearningUser()
+                ->getLanguage();
+
+            $returnData['alreadyLearning'][] = $sessionLanguage;
         }
+
+        return $languages;
 
         /** @var \AdminBundle\Entity\Language $language */
         foreach ($languages as $language) {
@@ -220,15 +235,6 @@ class RepositoryCommunicator
         return $viewable;
     }
     /**
-     * @param Language $language1
-     * @param Language $language2
-     * @return bool
-     */
-    private function equalsLanguage(Language $language1, Language $language2): bool
-    {
-        return (int) $language1->getId() === (int) $language2->getId();
-    }
-    /**
      * @param array $images
      * @return array
      */
@@ -248,34 +254,5 @@ class RepositoryCommunicator
         );
 
         return $parsed;
-    }
-    /**
-     * @param array $metadata
-     * @param string $class
-     * @param array $groups
-     * @return array
-     */
-    private function createModelsFromMetadata(
-        array $metadata,
-        string $class,
-        array $groups
-    ) : array {
-        $models = [];
-
-        foreach ($metadata as $m) {
-
-            $serialized = $this->serializerWrapper->serialize($m, $groups);
-
-            $model = $this->serializerWrapper->getDeserializer()->create(
-                $serialized,
-                $class
-            );
-
-            $this->serializerWrapper->getModelValidator()->validate($model);
-
-            $models[] = $model;
-        }
-
-        return $models;
     }
 }

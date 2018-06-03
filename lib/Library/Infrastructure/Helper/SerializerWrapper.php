@@ -66,15 +66,22 @@ class SerializerWrapper
      * @param object $object
      * @param array $groups
      * @param string $class
+     * @param bool $validate
      * @return object
      */
-    public function convertFromTo(object $object, array $groups, string $class): object
-    {
+    public function convertFromTo(
+        object $object,
+        array $groups,
+        string $class,
+        bool $validate = true
+    ): object {
         $serialized = $this->serialize($object, $groups);
 
         $created = $this->getDeserializer()->create($serialized, $class);
 
-        $this->modelValidator->validate($created);
+        if ($validate) {
+            $this->modelValidator->validate($created);
+        }
 
         return $created;
     }

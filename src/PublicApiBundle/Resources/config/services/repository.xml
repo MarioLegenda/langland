@@ -55,7 +55,7 @@
                 class="PublicApi\Infrastructure\Communication\RepositoryCommunicator"
                 public="true">
 
-            <argument type="service" id="public_api.learning_user_provider" />
+            <argument type="service" id="armor.provider.language_session" />
             <argument type="service" id="public_api.repository.language" />
             <argument type="service" id="public_api.repository.learning_user" />
             <argument type="service" id="learning_metadata.repository.lesson" />

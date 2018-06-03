@@ -2,6 +2,7 @@
 
 namespace ArmorBundle\Entity;
 
+use AdminBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -330,6 +331,22 @@ class User implements UserInterface
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+    /**
+     * @return Language[]
+     */
+    public function getLanguageSessionLanguages(): array
+    {
+        /** @var LanguageSession[] $languageSessions */
+        $languageSessions = $this->getLanguageSessions();
+
+        $languages = [];
+        /** @var LanguageSession $languageSession */
+        foreach ($languageSessions as $languageSession) {
+            $languages[] = $languageSession->getLearningUser()->getLanguage();
+        }
+
+        return $languages;
     }
     /**
      * @return string

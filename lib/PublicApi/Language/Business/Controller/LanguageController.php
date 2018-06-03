@@ -28,10 +28,10 @@ class LanguageController
      * @param User $user
      * @return Response
      */
-    public function getAll(User $user): Response
+    public function getAllShowableLanguages(User $user): Response
     {
         return new JsonResponse(
-            $this->languageImplementation->findAllWithAlreadyLearning($user),
+            $this->languageImplementation->createLanguagePresentation($user),
             200
         );
     }

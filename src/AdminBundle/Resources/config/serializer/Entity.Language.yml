@@ -12,6 +12,7 @@ AdminBundle\Entity\Language:
         listDescription:
             expose: true
             groups: [viewable, communication_model]
+            serialized_name: description
 
         showOnPage:
             expose: true

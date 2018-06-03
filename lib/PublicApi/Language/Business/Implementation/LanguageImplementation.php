@@ -8,6 +8,7 @@ use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
+use PublicApi\Language\Infrastructure\Model\LanguagePresentation;
 use PublicApi\Language\Repository\LanguageInfoRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 
@@ -65,12 +66,22 @@ class LanguageImplementation
      * @param User $user
      * @return array
      */
-    public function findAllWithAlreadyLearning(User $user): array
+    public function createLanguagePresentation(User $user): array
     {
-        $languages = $this->repositoryCommunicator->getAllAlreadyLearningLanguages($user);
+        $sortedLanguages = $this->repositoryCommunicator->getSortedLanguages($user);
+
+        /** @var LanguagePresentation[] $data */
+        $languagePresentations = $this->createLanguagePresentationModels($sortedLanguages);
+
+        $serialized = $this->serializerWrapper->serializeMany(
+            $languagePresentations,
+            ['language_presentation']
+        );
+
+        $presentationLanguagesArray = json_decode($serialized, true);
 
         $response = $this->apiSDK
-            ->create($languages)
+            ->create($presentationLanguagesArray)
             ->isCollection()
             ->setStatusCode(200)
             ->method('GET')
@@ -99,5 +110,51 @@ class LanguageImplementation
             ->build();
 
         return $data;
+    }
+
+    /**
+     * @param Language[] $sortedLanguages
+     * @return LanguagePresentation[]
+     */
+    private function createLanguagePresentationModels(array $sortedLanguages): array
+    {
+        $languagePresentations = [];
+
+        /** @var Language $language */
+        foreach ($sortedLanguages['alreadyLearning'] as $language) {
+            /** @var LanguagePresentation $languagePresentation */
+            $languagePresentation = $this->serializerWrapper->convertFromTo(
+                $language,
+                ['viewable'],
+                LanguagePresentation::class,
+                false
+            );
+
+            $languagePresentation->parseUrls();
+            $languagePresentation->setAlreadyLearning();
+
+            $this->serializerWrapper->getModelValidator()->validate($languagePresentation);
+
+            $languagePresentations[] = $languagePresentation;
+        }
+
+        /** @var Language $language */
+        foreach ($sortedLanguages['notLearning'] as $language) {
+            /** @var LanguagePresentation $languagePresentation */
+            $languagePresentation = $this->serializerWrapper->convertFromTo(
+                $language,
+                ['viewable'],
+                LanguagePresentation::class,
+                false
+            );
+
+            $languagePresentation->parseUrls();
+
+            $this->serializerWrapper->getModelValidator()->validate($languagePresentation);
+
+            $languagePresentations[] = $languagePresentation;
+        }
+
+        return $languagePresentations;
     }
 }

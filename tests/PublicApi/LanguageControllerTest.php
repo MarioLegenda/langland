@@ -43,7 +43,7 @@ class LanguageControllerTest extends PublicApiTestCase
 
         $appBuilder->registerLanguageSession($user, $language);
 
-        $response = $this->languageController->getAll($user);
+        $response = $this->languageController->getAllShowableLanguages($user);
 
         static::assertInstanceOf(Response::class, $response);
 
@@ -64,6 +64,9 @@ class LanguageControllerTest extends PublicApiTestCase
         foreach ($languages as $language) {
             static::assertArrayHasKey('images', $language);
             static::assertCount(2, $language['images']);
+
+            static::assertArrayHasKey('urls', $language);
+            static::assertNotEmpty($language['urls']);
         }
     }
 

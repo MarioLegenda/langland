@@ -2,12 +2,9 @@
 
 namespace PublicApi\Infrastructure\Communication;
 
-use AdminBundle\Entity\Language as MetadataLanguage;
 use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Word;
 use Armor\Infrastructure\Provider\LanguageSessionProvider;
-use ArmorBundle\Entity\LanguageSession;
-use ArmorBundle\Entity\User;
 use LearningMetadata\Repository\Implementation\LessonRepository;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Repository\WordRepository;
@@ -146,113 +143,5 @@ class RepositoryCommunicator
             ->getResult();
 
         return $words;
-    }
-    /**
-     * @param User $user
-     * @return array
-     */
-    public function getSortedLanguages(User $user): array
-    {
-        $learningMetadataLanguages = $this->languageRepository->findBy([
-            'showOnPage' => true,
-        ]);
-
-        $alreadyLearningLanguages = $user->getLanguageSessionLanguages();
-        $notLearningLanguages = array_filter($learningMetadataLanguages, function(Language $language) use ($alreadyLearningLanguages) {
-            /** @var Language $alreadyLearningLanguage */
-            foreach ($alreadyLearningLanguages as $alreadyLearningLanguage) {
-                if ($alreadyLearningLanguage->getId() !== $language->getId()) {
-                    return true;
-                }
-            }
-        }, ARRAY_FILTER_USE_BOTH);
-
-        $returnData = [
-            'alreadyLearning' => $alreadyLearningLanguages,
-            'notLearning' => $notLearningLanguages,
-        ];
-
-        return $returnData;
-
-        $languageSessions = $user->getLanguageSessions();
-
-        foreach ($languageSessions as $languageSession) {
-            $sessionLanguage = $languageSession
-                ->getLearningUser()
-                ->getLanguage();
-
-            $returnData['alreadyLearning'][] = $sessionLanguage;
-        }
-
-        return $languages;
-
-        /** @var \AdminBundle\Entity\Language $language */
-        foreach ($languages as $language) {
-            $temp = [];
-            $temp['id'] = $language->getId();
-            $temp['name'] = $language->getName();
-            $temp['desc'] = $language->getListDescription();
-            $temp['images'] = $this->parseImages($language->getImages());
-            $temp['alreadyLearning'] = false;
-            $temp['urls'] = [
-                'backend_url' => null,
-                'frontend_url' => sprintf('language/%s/%d', $language->getName(), $language->getId())
-            ];
-
-            foreach ($learningUsers as $learningUser) {
-                $learningUserLanguage = $learningUser->getLanguage();
-
-                if ($language->getId() === $learningUserLanguage->getId()) {
-                    $temp['alreadyLearning'] = true;
-                }
-            }
-
-            $viewable[] = $temp;
-        }
-
-        $languageIds = [];
-
-        /** @var MetadataLanguage $language */
-        foreach ($languages as $language) {
-            $languageIds[] = $language->getId();
-        }
-
-        $qb = $this->learningUserRepository->createQueryBuilderFromClass('lu');
-
-        $learningUsers = $qb
-            ->andwhere('lu.language IN (:languageIds)')
-            ->andWhere('lu.user = :userId')
-            ->setParameter(':languageIds', $languageIds)
-            ->setParameter(':userId', $user->getId())
-            ->getQuery()
-            ->getResult();
-
-        $viewable = [];
-        foreach ($languages as $language) {
-
-        }
-
-        return $viewable;
-    }
-    /**
-     * @param array $images
-     * @return array
-     */
-    private function parseImages(array $images): array
-    {
-        $parsed = [];
-        $parsed['cover'] = sprintf(
-            '%s/%s',
-            $images['cover_image']['relativePath'],
-            $images['cover_image']['originalName']
-        );
-
-        $parsed['icon'] = sprintf(
-            '%s/%s',
-            $images['icon']['relativePath'],
-            $images['icon']['originalName']
-        );
-
-        return $parsed;
     }
 }

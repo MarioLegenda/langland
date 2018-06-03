@@ -2,6 +2,7 @@
 
 namespace Armor\Infrastructure\Model;
 
+use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -35,6 +36,7 @@ class Language implements ArmorModelInterface
     /**
      * @var string $listDescription
      * @Type("string")
+     * @Serializer\SerializedName("description")
      * @Assert\NotBlank(message="listDescription cannot be blank")
      */
     private $listDescription;

@@ -5,9 +5,9 @@ namespace PublicApi\Language\Business\Controller;
 use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\User;
 use PublicApi\Language\Business\Implementation\LanguageImplementation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use PublicApi\Infrastructure\Domain\Communicator\DomainUserCommunicator;
 
 class LanguageController
 {
@@ -42,7 +42,7 @@ class LanguageController
     public function getLanguageInfo(Language $language): Response
     {
         return new JsonResponse(
-            $this->languageImplementation->findLanguageInfo($language),
+            $this->languageImplementation->createLanguageInfoPresentation($language),
             200
         );
     }

@@ -68,7 +68,7 @@ class LanguageImplementation
      */
     public function createLanguagePresentation(User $user): array
     {
-        $sortedLanguages = $this->repositoryCommunicator->getSortedLanguages($user);
+        $sortedLanguages = $this->languageRepository->getSortedLanguages($user);
 
         /** @var LanguagePresentation[] $data */
         $languagePresentations = $this->createLanguagePresentationModels($sortedLanguages);
@@ -93,7 +93,7 @@ class LanguageImplementation
      * @param Language $language
      * @return array
      */
-    public function findLanguageInfo(Language $language): array
+    public function createLanguageInfoPresentation(Language $language): array
     {
         /** @var LanguageInfo $languageInfo */
         $languageInfo = $this->languageInfoRepository->findOneBy([

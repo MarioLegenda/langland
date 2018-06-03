@@ -1,0 +1,16 @@
+ArmorBundle\Entity\LanguageSession:
+    exclusion_policy: all
+    properties:
+        id:
+            expose: true
+            groups: [communication_model]
+
+        createdAt:
+            expose: true
+            groups: [communication_model]
+            type: DateTime<'Y-m-d H:m:s'>
+
+        updatedAt:
+            expose: true
+            groups: [communication_model]
+            type: DateTime<'Y-m-d H:m:s'>

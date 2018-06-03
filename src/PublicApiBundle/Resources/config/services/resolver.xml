@@ -15,8 +15,8 @@
         </service>
 
         <service
-                id="public_api.user_value_resolver"
-                class="PublicApi\Infrastructure\Resolver\UserValueResolver" public="true">
+                id="public_api.domain_user_resolver"
+                class="PublicApi\Infrastructure\Resolver\DomainUserResolver" public="true">
 
             <argument type="service" id="security.token_storage" />
 

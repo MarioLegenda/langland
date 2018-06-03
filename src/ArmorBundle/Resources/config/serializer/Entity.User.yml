@@ -1,12 +1,37 @@
 ArmorBundle\Entity\User:
     exclusion_policy: all
     properties:
+        id:
+            expose: true
+            type: int
+            groups: [exposed_user, communication_model]
+
         name:
             expose: true
-            groups: [exposed_user]
+            type: string
+            groups: [exposed_user, communication_model]
+
         lastname:
             expose: true
-            groups: [exposed_user]
+            type: string
+            groups: [exposed_user, communication_model]
+
         username:
             expose: true
-            groups: [exposed_user]
+            type: string
+            groups: [exposed_user, communication_model]
+
+        enabled:
+            expose: true
+            type: bool
+            groups: [exposed_user, communication_model]
+
+        createdAt:
+            expose: true
+            groups: [exposed_user, communication_model]
+            type: DateTime<'Y-m-d H:m:s'>
+
+        updatedAt:
+            expose: true
+            groups: [exposed_user, communication_model]
+            type: DateTime<'Y-m-d H:m:s'>

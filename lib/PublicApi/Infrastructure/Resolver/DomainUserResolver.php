@@ -2,39 +2,28 @@
 
 namespace PublicApi\Infrastructure\Resolver;
 
-use ArmorBundle\Entity\User as ArmorUser;
-use Library\Infrastructure\Helper\SerializerWrapper;
+use ArmorBundle\Entity\User;
 use PublicApi\Infrastructure\Model\User as PublicApiUser;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class UserValueResolver implements ArgumentValueResolverInterface
+class DomainUserResolver implements ArgumentValueResolverInterface
 {
     /**
-     * @var TokenStorageInterface $tokenStorage
+     * @var TokenStorage $tokenStorage
      */
     private $tokenStorage;
     /**
-     * @var SerializerWrapper $serializerWrapper
-     */
-    private $serializerWrapper;
-    /**
-     * @var PublicApiUser $user
-     */
-    private $user;
-    /**
-     * UserValueResolver constructor.
+     * DomainUserResolver constructor.
      * @param TokenStorageInterface $tokenStorage
-     * @param SerializerWrapper $serializerWrapper
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        SerializerWrapper $serializerWrapper
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->serializerWrapper = $serializerWrapper;
         $this->tokenStorage = $tokenStorage;
     }
     /**
@@ -44,7 +33,7 @@ class UserValueResolver implements ArgumentValueResolverInterface
      */
     public function supports(Request $request, ArgumentMetadata $argument): bool
     {
-        if (PublicApiUser::class !== $argument->getType()) {
+        if (User::class !== $argument->getType()) {
             return false;
         }
 
@@ -54,20 +43,7 @@ class UserValueResolver implements ArgumentValueResolverInterface
             return false;
         }
 
-        $supports = $token->getUser() instanceof PublicApiUser;
-
-        if ($supports) {
-            /** @var PublicApiUser $publicApiUser */
-            $publicApiUser = $this->serializerWrapper->convertFromTo(
-                $token->getUser(),
-                ['communication_model'],
-                PublicApiUser::class
-            );
-
-            $this->user = $publicApiUser;
-        }
-
-        return $supports;
+        return $token->getUser() instanceof PublicApiUser;
     }
     /**
      * @param Request $request
@@ -76,6 +52,6 @@ class UserValueResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator
     {
-        yield $this->tokenStorage->getToken()->getUser();
+        yield $this->domainUserCommunicator;
     }
 }

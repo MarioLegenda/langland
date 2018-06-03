@@ -43,8 +43,9 @@ class LanguageSessionLogic
     /**
      * @param DomainCommunicatorInterface $domainCommunicator
      * @param User $user
-     * @throws \Doctrine\ORM\OptimisticLockException
      * @return LanguageSession
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function createAndRegisterLanguageSession(
         DomainCommunicatorInterface $domainCommunicator,

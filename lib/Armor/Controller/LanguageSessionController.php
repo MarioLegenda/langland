@@ -32,10 +32,12 @@ class LanguageSessionController
         $this->languageSessionLogic = $languageSessionLogic;
         $this->apiSdk = $apiSDK;
     }
+
     /**
      * @param LanguageSessionCommunicator $languageSessionCommunicator
      * @param User $user
      * @return JsonResponse
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function registerLanguageSession(

@@ -4,7 +4,6 @@ namespace ArmorBundle\Entity;
 
 use AdminBundle\Entity\Language;
 use Doctrine\Common\Collections\ArrayCollection;
-use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class User implements UserInterface

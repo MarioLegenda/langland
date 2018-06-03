@@ -2,9 +2,8 @@
 
 namespace Tests\PublicApi;
 
-use AdminBundle\Command\Helper\FakerTrait;
 use PublicApi\Language\Business\Controller\LanguageController;
-use PublicApiBundle\Entity\LearningUser;
+use PublicApi\Infrastructure\Domain\Communicator\DomainUserCommunicator;
 use Symfony\Component\HttpFoundation\Response;
 use TestLibrary\DataProvider\LanguageInfoDataProvider;
 use TestLibrary\PublicApiTestCase;

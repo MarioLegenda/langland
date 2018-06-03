@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service
+                id="public_api.repository.lesson"
+                class="PublicApi\Infrastructure\Repository\LessonRepository"
+                public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\Lesson</argument>
+        </service>
+
+        <service
+                id="public_api.repository.language"
+                class="PublicApi\Language\Repository\LanguageRepository"
+                public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\Language</argument>
+        </service>
+
+        <service
+                id="public_api.repository.language_info"
+                class="PublicApi\Language\Repository\LanguageInfoRepository"
+                public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\LanguageInfo</argument>
+        </service>
+
+        <service
+                id="public_api.repository.word"
+                class="PublicApi\Infrastructure\Repository\WordRepository"
+                public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>AdminBundle\Entity\Word</argument>
+        </service>
+
+    </services>
+</container>

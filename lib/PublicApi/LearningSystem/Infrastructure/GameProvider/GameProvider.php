@@ -2,31 +2,31 @@
 
 namespace PublicApi\LearningSystem\Infrastructure\GameProvider;
 
+use Armor\Infrastructure\Provider\LanguageSessionProvider;
 use LearningSystem\Business\GameDatabaseCreator;
 use LearningSystem\Library\Game\Implementation\GameInterface;
-use PublicApi\LearningUser\Infrastructure\Provider\LearningUserProvider;
 use PublicApiBundle\Entity\LearningLesson;
 
 class GameProvider
 {
     /**
-     * @var LearningUserProvider $learningUserProvider
+     * @var LanguageSessionProvider $languageSessionProvider
      */
-    private $learningUserProvider;
+    private $languageSessionProvider;
     /**
      * @var GameDatabaseCreator $gameDatabaseCreator
      */
     private $gameDatabaseCreator;
     /**
      * GameProvider constructor.
-     * @param LearningUserProvider $learningUserProvider
+     * @param LanguageSessionProvider $languageSessionProvider
      * @param GameDatabaseCreator $gameDatabaseCreator
      */
     public function __construct(
-        LearningUserProvider $learningUserProvider,
+        LanguageSessionProvider $languageSessionProvider,
         GameDatabaseCreator $gameDatabaseCreator
     ) {
-        $this->learningUserProvider = $learningUserProvider;
+        $this->languageSessionProvider = $languageSessionProvider;
         $this->gameDatabaseCreator = $gameDatabaseCreator;
     }
     /**
@@ -37,7 +37,7 @@ class GameProvider
         GameInterface $game,
         LearningLesson $learningLesson
     ) {
-        $learningUser  = $this->learningUserProvider->getLearningUser();
+        $learningUser  = $this->languageSessionProvider->getLearningUser();
 
         $this->gameDatabaseCreator->createGame(
             $game,

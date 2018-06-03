@@ -2,6 +2,7 @@
 
 namespace PublicApi\LearningSystem\Infrastructure\DataDecider;
 
+use Armor\Infrastructure\Provider\LanguageSessionProvider;
 use LearningSystem\Infrastructure\Type\ChallengesType;
 use LearningSystem\Infrastructure\Type\FreeTimeType;
 use LearningSystem\Infrastructure\Type\GameType\BasicGameType;
@@ -20,23 +21,23 @@ use PublicApiBundle\Entity\LearningMetadata;
 class InitialDataDecider implements DataDeciderInterface
 {
     /**
-     * @var QuestionAnswersApplicationProvider $questionAnswersApplicationResolver
+     * @var LanguageSessionProvider $languageSessionProvider
      */
-    private $questionAnswersApplicationResolver;
+    private $languageSessionProvider;
     /**
      * @var DataProviderInterface $wordDataProvider
      */
     private $wordDataProvider;
     /**
      * InitialDataDecider constructor.
-     * @param QuestionAnswersApplicationProvider $questionAnswersApplicationResolver
+     * @param LanguageSessionProvider $languageSessionProvider
      * @param DataProviderInterface $wordDataProvider
      */
     public function __construct(
-        QuestionAnswersApplicationProvider $questionAnswersApplicationResolver,
+        LanguageSessionProvider $languageSessionProvider,
         DataProviderInterface $wordDataProvider
     ) {
-        $this->questionAnswersApplicationResolver = $questionAnswersApplicationResolver;
+        $this->languageSessionProvider = $languageSessionProvider;
         $this->wordDataProvider = $wordDataProvider;
     }
     /**
@@ -44,7 +45,7 @@ class InitialDataDecider implements DataDeciderInterface
      */
     public function getData(LearningLesson $learningLesson): array
     {
-        $questionAnswers = $this->questionAnswersApplicationResolver->resolve();
+        $questionAnswers = $this->languageSessionProvider->getQuestionAnswers();
 
         $wordNumber = $this->resolveWordNumber($questionAnswers);
         $wordLevel = 1;

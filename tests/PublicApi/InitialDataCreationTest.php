@@ -37,10 +37,7 @@ class InitialDataCreationTest extends PublicApiTestCase
 
         /** @var Language $language */
         foreach ($languages as $language) {
-            /** @var LearningUser $user */
-            $learningUser = $appBuilder->createLearningUser($language);
-            $user->setCurrentLearningUser($learningUser);
-            $appBuilder->mockProviders($user);
+            $appBuilder->registerLanguageSession($user, $language);
 
             /** @var InitialDataCreationController $controller */
             $controller = $this->container->get('public_api.controller.initial_data_creation_controller');

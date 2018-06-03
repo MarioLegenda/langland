@@ -5,6 +5,9 @@ namespace Armor\Infrastructure\Provider;
 use AdminBundle\Entity\Language;
 use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
+use LearningSystem\Infrastructure\Questions;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswers;
+use PublicApi\LearningUser\Infrastructure\Request\QuestionAnswersValidator;
 use PublicApiBundle\Entity\LearningUser;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -61,5 +64,29 @@ class LanguageSessionProvider
         }
 
         return $this->languageSession;
+    }
+    /**
+     * @return QuestionAnswers
+     */
+    public function getQuestionAnswers(): QuestionAnswers
+    {
+        return $this->resolveQuestionAnswers();
+    }
+    /**
+     * @return QuestionAnswers
+     */
+    private function resolveQuestionAnswers(): QuestionAnswers
+    {
+        $questionAnswers = $this
+            ->getLearningUser()
+            ->getAnsweredQuestions();
+
+        $questionAnswers = new QuestionAnswers($questionAnswers);
+
+        $validator = new QuestionAnswersValidator($questionAnswers, new Questions());
+
+        $validator->validate();
+
+        return $questionAnswers;
     }
 }

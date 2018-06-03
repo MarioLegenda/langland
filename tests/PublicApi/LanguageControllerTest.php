@@ -41,11 +41,7 @@ class LanguageControllerTest extends PublicApiTestCase
 
         $user = $appBuilder->createAppUser();
 
-        /** @var LearningUser $user */
-        $learningUser = $appBuilder->createLearningUser($language);
-        $user->setCurrentLearningUser($learningUser);
-        $this->userDataProvider->getRepository()->persistAndFlush($user);
-        $appBuilder->mockProviders($user);
+        $appBuilder->registerLanguageSession($user, $language);
 
         $response = $this->languageController->getAll($user);
 

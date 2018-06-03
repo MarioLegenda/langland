@@ -11,7 +11,7 @@
                 class="PublicApi\LearningSystem\Infrastructure\DataDecider\InitialDataDecider"
                 public="true">
 
-            <argument type="service" id="public_api.provider.question_answers_application_provider" />
+            <argument type="service" id="armor.provider.language_session" />
             <argument type="service" id="public_api.learning_system.data_provider.word_data_provider" />
         </service>
 
@@ -32,7 +32,7 @@
                 class="PublicApi\LearningSystem\Infrastructure\GameProvider\GameProvider"
                 public="true">
 
-            <argument type="service" id="public_api.learning_user_provider" />
+            <argument type="service" id="armor.provider.language_session" />
             <argument type="service" id="learning_system.business.game_database_creator" />
         </service>
 

@@ -16,13 +16,13 @@ class Item extends React.Component {
     constructor(props) {
         super(props);
 
-        this.registerLanguage = this.registerLanguage.bind(this);
+        this.registerLanguageSession = this.registerLanguageSession.bind(this);
     }
 
-    registerLanguage(e) {
+    registerLanguageSession(e) {
         e.preventDefault();
 
-        this.props.registerLanguage(this.props.language);
+        this.props.registerLanguageSession(this.props.language);
 
         return false;
     }
@@ -47,12 +47,12 @@ class Item extends React.Component {
                 </div>
 
                 <div className="description-wrapper">
-                    <p>{language.desc}</p>
+                    <p>{language.description}</p>
                 </div>
 
                 <div className="button-wrapper">
                     {isInsideRegistration && <CenterLoading/>}
-                    {!isInsideRegistration && <Link className="language-link" onClick={this.registerLanguage} to={""}>{alreadyLearningButtonText}</Link>}
+                    {!isInsideRegistration && <Link className="language-link" onClick={this.registerLanguageSession} to={""}>{alreadyLearningButtonText}</Link>}
                 </div>
             </div>
     }
@@ -63,9 +63,9 @@ export class LanguageList extends React.Component{
         super(props);
 
         this.languageRepository = repoFactory('language');
-        this.learningUserRepository = repoFactory('learning-user');
+        this.languageSessionRepository = repoFactory('language-session');
 
-        this.registerLanguage = this.registerLanguage.bind(this);
+        this.registerLanguageSession = this.registerLanguageSession.bind(this);
 
         this.state = {
             items: null,
@@ -77,9 +77,9 @@ export class LanguageList extends React.Component{
         this._getLanguages();
     }
 
-    registerLanguage(language) {
+    registerLanguageSession(language) {
         this._updateItems(language.id);
-        this.learningUserRepository.registerLearningUser(language.id, $.proxy(function() {
+        this.languageSessionRepository.registerLanguageSession(language.id, $.proxy(function() {
             UrlRecorder.record('language-list', language.urls.frontend_url);
 
             this.props.match.history.push(language.urls.frontend_url);
@@ -93,7 +93,7 @@ export class LanguageList extends React.Component{
                     key={i}
                     language={language}
                     history={this.props.match.history}
-                    registerLanguage={this.registerLanguage}
+                    registerLanguageSession={this.registerLanguageSession}
                 />;
             });
 
@@ -120,7 +120,7 @@ export class LanguageList extends React.Component{
                         language={language}
                         isInsideRegistration={true}
                         history={this.props.match.history}
-                        registerLanguage={this.registerLanguage}
+                        registerLanguageSession={this.registerLanguageSession}
                     />;
                 }
 
@@ -129,7 +129,7 @@ export class LanguageList extends React.Component{
                     language={language}
                     isInsideRegistration={false}
                     history={this.props.match.history}
-                    registerLanguage={this.registerLanguage}
+                    registerLanguageSession={this.registerLanguageSession}
                 />;
             });
 

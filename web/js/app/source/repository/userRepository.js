@@ -3,7 +3,7 @@ import {user, env} from "../../../global/constants.js";
 export class UserRepository {
     constructor() {
         this.routes = {
-            armor_get_logged_in_user: env.current + 'langland/get-logged-in-user',
+            armor_get_logged_in_public_api_user: env.current + 'langland/get-logged-in-public-user',
         };
 
         this.loggedInUser = null;
@@ -11,7 +11,7 @@ export class UserRepository {
 
     getLoggedInUser(success, failure) {
         $.ajax({
-            url: this.routes.armor_get_logged_in_user,
+            url: this.routes.armor_get_logged_in_public_api_user,
             method: 'GET',
             contentType: 'application/json'
         }).done($.proxy(function(data) {

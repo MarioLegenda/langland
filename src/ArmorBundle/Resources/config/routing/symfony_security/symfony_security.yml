@@ -1,0 +1,9 @@
+armor_admin_security:
+  resource: "@ArmorBundle/Resources/config/routing/symfony_security/admin.yml"
+  prefix: /admin
+  host: '%host%'
+
+armor_langland_security:
+  resource: "@ArmorBundle/Resources/config/routing/symfony_security/langland.yml"
+  prefix: /langland
+  host: '%host%'

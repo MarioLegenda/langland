@@ -1,0 +1,20 @@
+armor_user_login:
+    path: /login
+    defaults: { _controller: ArmorBundle:UserSecurity:userLogin }
+    methods: [POST, GET]
+
+armor_user_logout:
+    path: /logout
+    defaults: { _controller: ArmorBundle:UserSecurity:userLogout }
+    methods: [GET]
+
+armor_user_register:
+    path: /register
+    defaults: { _controller: ArmorBundle:UserSecurity:register }
+    methods: [GET, POST]
+
+armor_user_confirm:
+    path: /register
+    defaults: { _controller: ArmorBundle:UserSecurity:confirmUser }
+    methods: [GET, POST]
+

@@ -9,6 +9,7 @@ use ArmorBundle\Entity\User;
 use Armor\Domain\LanguageSessionLogic;
 use Library\Util\Util;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class LanguageSessionController
 {
@@ -51,7 +52,7 @@ class LanguageSessionController
         );
 
         return new JsonResponse(
-            $this->getResourceDataResponse($languageSession, $user),
+            $this->createDataResponseForSessionRegistration($languageSession, $user),
             201
         );
     }
@@ -66,7 +67,7 @@ class LanguageSessionController
         $languageSession = $this->languageSessionLogic->changeLanguageSession($languageSession, $user);
 
         return new JsonResponse(
-            $this->getResourceDataResponse($languageSession, $user),
+            $this->createDataResponseForSessionRegistration($languageSession, $user),
             201
         );
     }
@@ -75,7 +76,7 @@ class LanguageSessionController
      * @param User $user
      * @return array
      */
-    private function getResourceDataResponse(
+    private function createDataResponseForSessionRegistration(
         LanguageSession $languageSession,
         User $user
     ): array {

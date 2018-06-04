@@ -1,0 +1,10 @@
+armor_admin_login:
+    path: /login
+    defaults: { _controller: ArmorBundle:AdminSecurity:adminLogin }
+    methods: [POST, GET]
+
+armor_admin_logout:
+    path: /logout
+    defaults: { _controller: ArmorBundle:AdminSecurity:adminLogout }
+    methods: [POST]
+

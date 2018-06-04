@@ -1,0 +1,21 @@
+armor_api:
+  resource: "@ArmorBundle/Resources/config/routing/armor_api/armor_api.yml"
+  prefix: /api/v1/armor/
+  host: '%host%'
+
+symfony_security:
+  resource: "@ArmorBundle/Resources/config/routing/symfony_security/symfony_security.yml"
+  prefix: /
+  host: '%host%'
+
+armor_get_logged_in_user:
+    path: /admin/get-logged-in-user
+    defaults: { _controller: ArmorBundle:AdminSecurity:getLoggedInUser }
+    methods: [GET]
+
+armor_get_logged_in_public_api_user:
+    path: /langland/get-logged-in-public-user
+    defaults: { _controller: ArmorBundle:UserSecurity:getLoggedInPublicUser }
+    methods: [GET]
+    requirements:
+        _format: json

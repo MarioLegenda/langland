@@ -3,7 +3,7 @@ import {global, user} from "../../../global/constants.js";
 export class LearningUserRepository {
     constructor() {
         this.routes = {
-            register_learning_user: global.base_url + 'api/v1/learning-user/register-learning-user',
+            armor_register_language_session: global.base_url + 'api/v1/language-session/register-language-session',
             mark_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/mark-language-info-looked',
             is_language_info_looked: global.base_url + 'api/v1/learning-user/language-info/is-language-info-looked',
             get_dynamic_components_status: global.base_url + 'api/v1/learning-user/get-dynamic-components-status',
@@ -15,7 +15,7 @@ export class LearningUserRepository {
         this.currentLearningUser = null;
     }
 
-    registerLearningUser(languageId, success, failure) {
+    registerLanguageSession(languageId, success, failure) {
         if (this.currentLearningUser !== null) {
             success(this.currentLearningUser);
 

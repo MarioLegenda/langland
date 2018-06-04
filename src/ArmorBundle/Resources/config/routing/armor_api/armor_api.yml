@@ -1,0 +1,4 @@
+armor_register_language_session:
+    path: /language-session/register-language-session
+    defaults: { _controller: armor.controller.language_session:registerLanguageSession }
+    methods: [POST]

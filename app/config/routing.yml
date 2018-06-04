@@ -11,7 +11,7 @@ public:
     prefix:   /
 
 armor:
-    resource: "@ArmorBundle/Resources/config/routing/routing.xml"
+    resource: "@ArmorBundle/Resources/config/routing/routing.yml"
     prefix:   /
 
 admin:

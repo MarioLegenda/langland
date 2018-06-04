@@ -3,7 +3,7 @@ import {global, user} from "../../../global/constants.js";
 export class LanguageRepository {
     constructor(cache) {
         this.routes = {
-            get_all_languages: global.base_url + 'api/v1/language',
+            get_all_languages: global.base_url + 'api/v1/language/',
             get_language_info: global.base_url + 'api/v1/language/language-info/'
         };
 

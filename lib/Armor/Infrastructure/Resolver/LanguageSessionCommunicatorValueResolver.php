@@ -2,7 +2,7 @@
 
 namespace Armor\Infrastructure\Resolver;
 
-use Armor\Infrastructure\Communicator\Session\LanguageSessionCommunicator;
+use Armor\Infrastructure\Communication\LanguageSessionCommunicator;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;

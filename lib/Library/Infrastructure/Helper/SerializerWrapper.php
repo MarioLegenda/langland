@@ -36,16 +36,28 @@ class SerializerWrapper
     }
     /**
      * @param $object
-     * @param array $groups
+     * @param array|string $groups
      * @param string $type
      * @return string
      */
-    public function serialize($object, array $groups, $type = 'json'): string
+    public function serialize($object, $groups, $type = 'json'): string
     {
         $context = new SerializationContext();
-        $context->setGroups($groups);
+        $context->setGroups($this->normalizeGroups($groups));
 
         return $this->serializer->serialize($object, $type, $context);
+    }
+    /**
+     * @param object $object
+     * @param array|string $groups
+     * @param string $type
+     * @return array
+     */
+    public function normalize(object $object, $groups, $type = 'json'): array
+    {
+        $serialized = $this->serialize($object, $groups, $type);
+
+        return json_decode($serialized, true);
     }
     /**
      * @param array $objectsArray
@@ -98,5 +110,27 @@ class SerializerWrapper
     public function getModelValidator(): ModelValidator
     {
         return $this->modelValidator;
+    }
+    /**
+     * @param array|string $groups
+     * @return array
+     */
+    private function normalizeGroups($groups): array
+    {
+        if (!is_array($groups) and !is_string($groups)) {
+            $message = sprintf(
+                '$groups can only be an array or a string'
+            );
+
+            throw new \RuntimeException($message);
+        }
+
+        if (is_array($groups)) {
+            return $groups;
+        }
+
+        if (is_string($groups)) {
+            return [$groups];
+        }
     }
 }

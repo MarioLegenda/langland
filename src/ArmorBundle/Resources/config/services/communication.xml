@@ -8,7 +8,7 @@
 
         <service
                 id="armor.communicator_session.language_session"
-                class="Armor\Infrastructure\Communicator\Session\LanguageSessionCommunicator" public="true">
+                class="Armor\Infrastructure\Communication\LanguageSessionCommunicator" public="true">
 
             <argument type="service" id="armor.repository.language_repository" />
             <argument type="service" id="library.serializer_wrapper" />

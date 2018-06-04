@@ -3,14 +3,13 @@
 namespace Armor\Controller;
 
 use ApiSDK\ApiSDK;
-use Armor\Infrastructure\Communicator\Session\LanguageSessionCommunicator;
+use Armor\Infrastructure\Communication\LanguageSessionCommunicator;
 use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
 use Armor\Domain\LanguageSessionLogic;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use Library\Util\Util;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class LanguageSessionController
 {
@@ -87,9 +86,7 @@ class LanguageSessionController
     {
         $languageSession = $user->getCurrentLanguageSession();
 
-        $serialized = $this->serializerWrapper->serialize($languageSession, ['default']);
-
-        $data = json_decode($serialized, true);
+        $data = $this->serializerWrapper->normalize($languageSession, 'default');
 
         $response = $this->apiSdk
             ->create($data)

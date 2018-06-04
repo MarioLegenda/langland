@@ -4,7 +4,7 @@ namespace Armor;
 
 use AdminBundle\Entity\Language;
 use Armor\Controller\LanguageSessionController;
-use Armor\Infrastructure\Communicator\Session\LanguageSessionCommunicator;
+use Armor\Infrastructure\Communication\LanguageSessionCommunicator;
 use Armor\Repository\LanguageSessionRepository;
 use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;

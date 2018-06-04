@@ -1,6 +1,6 @@
 <?php
 
-namespace Armor\Infrastructure\Communicator\Session;
+namespace Armor\Infrastructure\Communication;
 
 use AdminBundle\Entity\Language as ForeignDomainModel;
 use AdminBundle\Entity\Language;

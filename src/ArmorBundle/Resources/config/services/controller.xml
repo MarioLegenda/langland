@@ -15,5 +15,14 @@
             <argument type="service" id="library.serializer_wrapper" />
         </service>
 
+        <service
+                id="armor.controller.user"
+                class="Armor\Controller\UserController" public="true">
+
+            <argument type="service" id="armor.domain.user"/>
+            <argument type="service" id="library.serializer_wrapper" />
+            <argument type="service" id="library.api_sdk" />
+        </service>
+
     </services>
 </container>

@@ -15,7 +15,7 @@ armor_get_logged_in_user:
 
 armor_get_logged_in_public_api_user:
     path: /langland/get-logged-in-public-user
-    defaults: { _controller: ArmorBundle:UserSecurity:getLoggedInPublicUser }
+    defaults: { _controller: armor.controller.user:getLoggedInPublicUserAction }
     methods: [GET]
     requirements:
         _format: json

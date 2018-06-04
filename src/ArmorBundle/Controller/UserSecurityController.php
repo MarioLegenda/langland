@@ -217,19 +217,4 @@ class UserSecurityController extends Controller implements UserLoggedInInterface
 
         return false;
     }
-    /**
-     * @return JsonResponse
-     */
-    public function getLoggedInPublicUserAction()
-    {
-        $user = $this->getUser();
-
-        $context = SerializationContext::create();
-        $context->setGroups(['exposed_user']);
-
-        return new JsonResponse(
-            $this->get('jms_serializer')->serialize($user, 'json', $context),
-            200
-        );
-    }
 }

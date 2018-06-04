@@ -10,7 +10,7 @@ export class LanguageRepository {
         this.cache = cache;
     }
 
-    getAllAlreadyLearning(success, failure) {
+    getAllShowableLanguges(success, failure) {
         $.ajax({
             url: this.routes.get_all_languages,
             method: 'GET',

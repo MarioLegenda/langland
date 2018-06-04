@@ -32,7 +32,6 @@ class ArmorExtension extends Extension
         $loader->load('domain.xml');
         $loader->load('repository.xml');
         $loader->load('communicator.xml');
-        $loader->load('resolver.xml');
         $loader->load('provider.xml');
     }
 }

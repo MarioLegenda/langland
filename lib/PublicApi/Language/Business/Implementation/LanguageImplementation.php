@@ -8,7 +8,7 @@ use ApiSDK\ApiSDK;
 use ArmorBundle\Entity\User;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use PublicApi\Infrastructure\Communication\RepositoryCommunicator;
-use PublicApi\Language\Infrastructure\Model\LanguagePresentation;
+use PublicApi\Infrastructure\Model\LanguagePresentation;
 use PublicApi\Language\Repository\LanguageInfoRepository;
 use PublicApi\Language\Repository\LanguageRepository;
 

@@ -26,6 +26,5 @@ class PublicApiExtension extends Extension
         $loader->load('repository.xml');
         $loader->load('domain_repository.xml');
         $loader->load('learning_system.xml');
-        $loader->load('provider.xml');
     }
 }

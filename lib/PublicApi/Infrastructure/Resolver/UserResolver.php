@@ -3,7 +3,6 @@
 namespace PublicApi\Infrastructure\Resolver;
 
 use ArmorBundle\Entity\User;
-use PublicApi\Infrastructure\Model\User as PublicApiUser;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -11,14 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class DomainUserResolver implements ArgumentValueResolverInterface
+class UserResolver implements ArgumentValueResolverInterface
 {
     /**
      * @var TokenStorage $tokenStorage
      */
     private $tokenStorage;
     /**
-     * DomainUserResolver constructor.
+     * UserResolver constructor.
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
@@ -43,7 +42,7 @@ class DomainUserResolver implements ArgumentValueResolverInterface
             return false;
         }
 
-        return $token->getUser() instanceof PublicApiUser;
+        return $token->getUser() instanceof User;
     }
     /**
      * @param Request $request
@@ -52,6 +51,6 @@ class DomainUserResolver implements ArgumentValueResolverInterface
      */
     public function resolve(Request $request, ArgumentMetadata $argument): \Generator
     {
-        yield $this->domainUserCommunicator;
+        yield $this->tokenStorage->getToken()->getUser();
     }
 }

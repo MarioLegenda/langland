@@ -1,6 +1,6 @@
 get_all_languages:
     path: /
-    defaults: { _controller: public_api.controller.language:getAll }
+    defaults: { _controller: public_api.controller.language:getAllShowableLanguages }
     methods: [GET]
     requirements:
         _format: json

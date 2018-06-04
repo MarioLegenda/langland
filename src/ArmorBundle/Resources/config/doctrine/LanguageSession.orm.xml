@@ -9,7 +9,7 @@
             <generator strategy="AUTO" />
         </id>
 
-        <many-to-one field="user" target-entity="ArmorBundle\Entity\User" />
+        <many-to-one field="user" target-entity="ArmorBundle\Entity\User" inversed-by="languageSessions"/>
 
         <many-to-one target-entity="PublicApiBundle\Entity\LearningUser" field="learningUser" />
 

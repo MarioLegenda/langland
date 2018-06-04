@@ -30,8 +30,43 @@ class LanguageControllerTest extends PublicApiTestCase
         $this->languageInfoDataProvider = $this->container->get('data_provider.language_info');
     }
 
+    public function test_no_register_languages()
+    {
+        $this->languageDataProvider->createDefaultDb($this->faker);
+        $this->languageDataProvider->createDefaultDb($this->faker);
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
+        $appBuilder = new AppTestBuilder($this->container);
+
+        $user = $appBuilder->createAppUser();
+
+        $response = $this->languageController->getAllShowableLanguages($user);
+
+        static::assertInstanceOf(Response::class, $response);
+
+        $content = $response->getContent();
+
+        static::assertNotEmpty($content);
+
+        $content = json_decode($content, true);
+
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+
+        static::assertEquals(3, $content['collection']['totalItems']);
+        static::assertNotEmpty($content['collection']['data']);
+
+        $languages = $content['collection']['data'];
+
+        foreach ($languages as $language) {
+            static::assertFalse($language['already_learning']);
+        }
+    }
+
     public function test_find_all_languages()
     {
+        $this->manualReset();
+
         $this->languageDataProvider->createDefaultDb($this->faker);
         $this->languageDataProvider->createDefaultDb($this->faker);
         $language = $this->languageDataProvider->createDefaultDb($this->faker);

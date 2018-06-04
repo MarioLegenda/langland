@@ -20,18 +20,21 @@ class LanguageRepository extends CommonRepository
 
         $alreadyLearningLanguages = $user->getLanguageSessionLanguages();
 
-        $notLearningLanguages = array_filter($learningMetadataLanguages, function(Language $language) use ($alreadyLearningLanguages) {
-            /** @var Language $alreadyLearningLanguage */
-            foreach ($alreadyLearningLanguages as $alreadyLearningLanguage) {
-                if ($alreadyLearningLanguage->getId() !== $language->getId()) {
-                    return true;
+        $notLearningLanguages = [];
+        if (!empty($alreadyLearningLanguages)) {
+            $notLearningLanguages = array_filter($learningMetadataLanguages, function(Language $language) use ($alreadyLearningLanguages) {
+                /** @var Language $alreadyLearningLanguage */
+                foreach ($alreadyLearningLanguages as $alreadyLearningLanguage) {
+                    if ($alreadyLearningLanguage->getId() !== $language->getId()) {
+                        return true;
+                    }
                 }
-            }
-        }, ARRAY_FILTER_USE_BOTH);
+            }, ARRAY_FILTER_USE_BOTH);
+        }
 
         $returnData = [
             'alreadyLearning' => $alreadyLearningLanguages,
-            'notLearning' => $notLearningLanguages,
+            'notLearning' => (empty($notLearningLanguages)) ? $learningMetadataLanguages : $notLearningLanguages,
         ];
 
         return $returnData;

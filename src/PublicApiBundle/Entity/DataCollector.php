@@ -2,6 +2,8 @@
 
 namespace PublicApiBundle\Entity;
 
+use Library\Util\Util;
+
 class DataCollector
 {
     /**
@@ -173,7 +175,7 @@ class DataCollector
      */
     public function setCreatedAt(\DateTime $createdAt): void
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = Util::toDateTime($createdAt);
     }
     /**
      * @return \DateTime
@@ -187,7 +189,7 @@ class DataCollector
      */
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
-        $this->updatedAt = $updatedAt;
+        $this->updatedAt = Util::toDateTime($updatedAt);
     }
 
     public function updateTimestamps(): void

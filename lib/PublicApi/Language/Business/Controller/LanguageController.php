@@ -7,7 +7,6 @@ use ArmorBundle\Entity\User;
 use PublicApi\Language\Business\Implementation\LanguageImplementation;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use PublicApi\Infrastructure\Domain\Communicator\DomainUserCommunicator;
 
 class LanguageController
 {

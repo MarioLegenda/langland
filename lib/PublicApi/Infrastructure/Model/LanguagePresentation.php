@@ -1,6 +1,6 @@
 <?php
 
-namespace PublicApi\Language\Infrastructure\Model;
+namespace PublicApi\Infrastructure\Model;
 
 use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\Type;

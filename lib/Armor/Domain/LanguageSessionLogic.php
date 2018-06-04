@@ -94,4 +94,11 @@ class LanguageSessionLogic
 
         return $languageSession;
     }
+
+    public function getCurrentLanguageSession(User $user)
+    {
+        $languageSession = $user->getCurrentLanguageSession();
+
+
+    }
 }

@@ -130,6 +130,57 @@ class LanguageSessionTest extends PublicApiTestCase
             );
         }
     }
+
+    public function test_get_current_language_session()
+    {
+        $user = $this->userDataProvider->createDefaultDb($this->faker);
+
+        $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
+        /** @var LanguageSessionCommunicator $languageSessionCommunicator */
+        $languageSessionCommunicator = $this->container->get('armor.communicator_session.language_session');
+
+        $languageSessionCommunicator->initializeSession($language->getId());
+
+        $jsonResponse = $this->languageSessionController->registerLanguageSession($languageSessionCommunicator, $user);
+
+        static::assertInstanceOf(JsonResponse::class, $jsonResponse);
+
+        $data = json_decode($jsonResponse->getContent(), true)['resource']['data'];
+
+        $this->assertLanguageSessionCreationResponse($data);
+
+        $languageSessionExistsException = false;
+
+        try {
+            $this->languageSessionController->registerLanguageSession($languageSessionCommunicator, $user);
+        } catch (\RuntimeException $e) {
+            $languageSessionExistsException = true;
+        }
+
+        static::assertTrue($languageSessionExistsException);
+
+        $jsonResponse = $this->languageSessionController->getCurrentLanguageSession($user);
+
+        static::assertInstanceOf(JsonResponse::class, $jsonResponse);
+
+        $data = json_decode($jsonResponse->getContent(), true)['resource']['data'];
+
+        static::assertArrayHasKey('id', $data);
+        static::assertArrayHasKey('learning_user', $data);
+        static::assertNotEmpty($data['learning_user']);
+        static::assertArrayHasKey('language', $data['learning_user']);
+        static::assertNotEmpty($data['learning_user']['language']);
+
+        static::assertInternalType('bool', $data['learning_user']['is_language_info_looked']);
+        static::assertInternalType('bool', $data['learning_user']['are_questions_looked']);
+        static::assertInternalType('string', $data['learning_user']['created_at']);
+        static::assertInternalType('string', $data['learning_user']['updated_at']);
+
+        static::assertInternalType('string', $data['created_at']);
+        static::assertInternalType('string', $data['updated_at']);
+
+    }
     /**
      * @param array $data
      */

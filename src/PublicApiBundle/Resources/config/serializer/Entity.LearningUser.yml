@@ -1,0 +1,29 @@
+PublicApiBundle\Entity\LearningUser:
+    exclusion_policy: all
+    properties:
+        id:
+            expose: true
+            groups: [default,]
+
+        language:
+            type: AdminBundle\Entity\Language
+            expose: true
+            groups: [default]
+
+        isLanguageInfoLooked:
+            expose: true
+            groups: [default]
+
+        areQuestionsLooked:
+            expose: true
+            groups: [default]
+
+        createdAt:
+            expose: true
+            groups: [default, communication_model]
+            type: DateTime<'Y-m-d H:m:s'>
+
+        updatedAt:
+            expose: true
+            groups: [default, communication_model]
+            type: DateTime<'Y-m-d H:m:s'>

@@ -3,22 +3,32 @@ AdminBundle\Entity\Language:
     properties:
         id:
             expose: true
-            groups: [viewable, communication_model]
+            groups: [default, viewable, communication_model]
 
         name:
             expose: true
-            groups: [viewable, communication_model]
+            groups: [default, viewable, communication_model]
 
         listDescription:
             expose: true
-            groups: [viewable, communication_model]
+            groups: [default, viewable, communication_model]
             serialized_name: description
 
         showOnPage:
             expose: true
-            groups: [viewable, communication_model]
+            groups: [default, viewable, communication_model]
 
         images:
             expose: true
             groups: [viewable]
+
+        createdAt:
+            expose: true
+            groups: [default, communication_model]
+            type: DateTime<'Y-m-d H:m:s'>
+
+        updatedAt:
+            expose: true
+            groups: [default, communication_model]
+            type: DateTime<'Y-m-d H:m:s'>
 

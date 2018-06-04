@@ -3,14 +3,19 @@ ArmorBundle\Entity\LanguageSession:
     properties:
         id:
             expose: true
-            groups: [communication_model]
+            groups: [default, communication_model]
 
         createdAt:
             expose: true
-            groups: [communication_model]
+            groups: [default, communication_model]
             type: DateTime<'Y-m-d H:m:s'>
 
         updatedAt:
             expose: true
-            groups: [communication_model]
+            groups: [default, communication_model]
             type: DateTime<'Y-m-d H:m:s'>
+
+        learningUser:
+            type: PublicApiBundle\Entity\LearningUser
+            expose: true
+            groups: [default]

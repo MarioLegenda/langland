@@ -12,6 +12,7 @@
 
             <argument type="service" id="armor.domain.language_session" />
             <argument type="service" id="library.api_sdk" />
+            <argument type="service" id="library.serializer_wrapper" />
         </service>
 
     </services>

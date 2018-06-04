@@ -7,6 +7,7 @@ use Armor\Infrastructure\Communicator\Session\LanguageSessionCommunicator;
 use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
 use Armor\Domain\LanguageSessionLogic;
+use Library\Infrastructure\Helper\SerializerWrapper;
 use Library\Util\Util;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,16 +23,23 @@ class LanguageSessionController
      */
     private $apiSdk;
     /**
+     * @var SerializerWrapper $serializerWrapper
+     */
+    private $serializerWrapper;
+    /**
      * LearningUserController constructor.
      * @param LanguageSessionLogic $languageSessionLogic
      * @param ApiSDK $apiSDK
+     * @param SerializerWrapper $serializerWrapper
      */
     public function __construct(
         LanguageSessionLogic $languageSessionLogic,
-        ApiSDK $apiSDK
+        ApiSDK $apiSDK,
+        SerializerWrapper $serializerWrapper
     ) {
         $this->languageSessionLogic = $languageSessionLogic;
         $this->apiSdk = $apiSDK;
+        $this->serializerWrapper = $serializerWrapper;
     }
 
     /**
@@ -68,6 +76,30 @@ class LanguageSessionController
 
         return new JsonResponse(
             $this->createDataResponseForSessionRegistration($languageSession, $user),
+            201
+        );
+    }
+    /**
+     * @param User $user
+     * @return JsonResponse
+     */
+    public function getCurrentLanguageSession(User $user)
+    {
+        $languageSession = $user->getCurrentLanguageSession();
+
+        $serialized = $this->serializerWrapper->serialize($languageSession, ['default']);
+
+        $data = json_decode($serialized, true);
+
+        $response = $this->apiSdk
+            ->create($data)
+            ->isResource()
+            ->method('GET')
+            ->setStatusCode(200)
+            ->build();
+
+        return new JsonResponse(
+            $response,
             201
         );
     }

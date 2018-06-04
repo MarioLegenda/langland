@@ -3,7 +3,7 @@ import {global, user} from "../../../global/constants.js";
 export class LanguageSessionRepository {
     constructor() {
         this.routes = {
-            armor_register_language_session: global.base_url + 'api/v1/language-session/register-language-session',
+            armor_register_language_session: global.base_url + 'api/v1/armor/language-session/register-language-session',
         };
 
         this.currentLearningUser = null;

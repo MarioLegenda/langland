@@ -27,7 +27,7 @@ class Util
         $dateTime = \DateTime::createFromFormat('Y-m-d H:m:s', $dateTime);
 
         if (!$dateTime instanceof \DateTime) {
-            $message = sprintf('Invalid date time in %s', Lesson::class);
+            $message = sprintf('Invalid date time');
             throw new \RuntimeException($message);
         }
 
@@ -50,8 +50,10 @@ class Util
     public static function extractFieldFromObjects(iterable $objects, string $field): array
     {
         $fields = [];
-        foreach ($objects as $object) {
-            $fields[] = Util::extractFieldFromObject($object, $field);
+        $objectsGenerator = static::createGenerator($objects);
+
+        foreach ($objectsGenerator as $object) {
+            $fields[] = Util::extractFieldFromObject($object['item'], $field);
         }
 
         return $fields;

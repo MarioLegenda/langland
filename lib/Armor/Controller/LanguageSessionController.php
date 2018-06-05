@@ -8,7 +8,6 @@ use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
 use Armor\Domain\LanguageSessionLogic;
 use Library\Infrastructure\Helper\SerializerWrapper;
-use Library\Util\Util;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class LanguageSessionController
@@ -58,10 +57,8 @@ class LanguageSessionController
             $user
         );
 
-
-
         return new JsonResponse(
-            $this->createDataResponseForSessionRegistration($languageSession, $user),
+            $this->createDataResponseForSessionRegistration($languageSession),
             201
         );
     }
@@ -76,7 +73,7 @@ class LanguageSessionController
         $languageSession = $this->languageSessionLogic->changeLanguageSession($languageSession, $user);
 
         return new JsonResponse(
-            $this->createDataResponseForSessionRegistration($languageSession, $user),
+            $this->createDataResponseForSessionRegistration($languageSession),
             201
         );
     }
@@ -104,12 +101,10 @@ class LanguageSessionController
     }
     /**
      * @param LanguageSession $languageSession
-     * @param User $user
      * @return array
      */
     private function createDataResponseForSessionRegistration(
-        LanguageSession $languageSession,
-        User $user
+        LanguageSession $languageSession
     ): array {
         $data = $this->serializerWrapper->normalize($languageSession, 'default');
 

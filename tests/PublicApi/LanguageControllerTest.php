@@ -32,9 +32,9 @@ class LanguageControllerTest extends PublicApiTestCase
 
     public function test_no_register_languages()
     {
-        $this->languageDataProvider->createDefaultDb($this->faker);
-        $this->languageDataProvider->createDefaultDb($this->faker);
-        $language = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language1 = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language2 = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language3 = $this->languageDataProvider->createDefaultDb($this->faker);
 
         $appBuilder = new AppTestBuilder($this->container);
 
@@ -67,15 +67,15 @@ class LanguageControllerTest extends PublicApiTestCase
     {
         $this->manualReset();
 
-        $this->languageDataProvider->createDefaultDb($this->faker);
-        $this->languageDataProvider->createDefaultDb($this->faker);
-        $language = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language1 = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language2 = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language3 = $this->languageDataProvider->createDefaultDb($this->faker);
 
         $appBuilder = new AppTestBuilder($this->container);
 
         $user = $appBuilder->createAppUser();
 
-        $appBuilder->registerLanguageSession($user, $language);
+        $appBuilder->registerLanguageSession($user, $language1);
 
         $response = $this->languageController->getAllShowableLanguages($user);
 
@@ -102,6 +102,38 @@ class LanguageControllerTest extends PublicApiTestCase
             static::assertArrayHasKey('urls', $language);
             static::assertNotEmpty($language['urls']);
         }
+    }
+
+    public function test_get_find_all_languages_with_multiple_registered()
+    {
+        $this->manualReset();
+
+        $language1 = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language2 = $this->languageDataProvider->createDefaultDb($this->faker);
+        $language3 = $this->languageDataProvider->createDefaultDb($this->faker);
+
+        $appBuilder = new AppTestBuilder($this->container);
+
+        $user = $appBuilder->createAppUser();
+
+        $appBuilder->registerLanguageSession($user, $language1);
+        $appBuilder->registerLanguageSession($user, $language3);
+        $appBuilder->registerLanguageSession($user, $language2);
+
+        $response = $this->languageController->getAllShowableLanguages($user);
+
+        static::assertInstanceOf(Response::class, $response);
+
+        $content = $response->getContent();
+
+        static::assertNotEmpty($content);
+
+        $content = json_decode($content, true);
+
+        static::assertNotEmpty($content);
+        static::assertInternalType('array', $content);
+
+        static::assertEquals(6, $content['collection']['totalItems']);
     }
 
     public function test_find_language_info()

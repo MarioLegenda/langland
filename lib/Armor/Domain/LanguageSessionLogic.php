@@ -78,8 +78,6 @@ class LanguageSessionLogic
 
         $this->userRepository->persistAndFlush($user);
 
-        die("mile");
-
         return $languageSession;
     }
     /**

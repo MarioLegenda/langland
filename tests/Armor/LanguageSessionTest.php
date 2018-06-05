@@ -166,7 +166,6 @@ class LanguageSessionTest extends PublicApiTestCase
 
         $data = json_decode($jsonResponse->getContent(), true)['resource']['data'];
 
-        static::assertArrayHasKey('id', $data);
         static::assertArrayHasKey('learning_user', $data);
         static::assertNotEmpty($data['learning_user']);
         static::assertArrayHasKey('language', $data['learning_user']);
@@ -187,21 +186,17 @@ class LanguageSessionTest extends PublicApiTestCase
     private function assertLanguageSessionCreationResponse(array $data)
     {
         static::assertArrayHasKey('id', $data);
-        static::assertNotEmpty($data['id']);
+        static::assertArrayHasKey('learning_user', $data);
+        static::assertNotEmpty($data['learning_user']);
+        static::assertArrayHasKey('language', $data['learning_user']);
+        static::assertNotEmpty($data['learning_user']['language']);
 
-        static::assertArrayHasKey('language', $data);
-        static::assertNotEmpty($data['language']);
+        static::assertInternalType('bool', $data['learning_user']['is_language_info_looked']);
+        static::assertInternalType('bool', $data['learning_user']['are_questions_looked']);
+        static::assertInternalType('string', $data['learning_user']['created_at']);
+        static::assertInternalType('string', $data['learning_user']['updated_at']);
 
-        static::assertArrayHasKey('learningUserId', $data);
-        static::assertNotEmpty($data['learningUserId']);
-
-        static::assertArrayHasKey('languageSessions', $data);
-        static::assertNotEmpty($data['languageSessions']);
-
-        static::assertArrayHasKey('createdAt', $data);
-        static::assertNotEmpty($data['createdAt']);
-
-        static::assertArrayHasKey('updatedAt', $data);
-        static::assertNotEmpty($data['updatedAt']);
+        static::assertInternalType('string', $data['created_at']);
+        static::assertInternalType('string', $data['updated_at']);
     }
 }

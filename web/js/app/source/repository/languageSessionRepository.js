@@ -28,7 +28,9 @@ export class LanguageSessionRepository {
         }).done($.proxy(function(data) {
             success(data);
 
-            this.currentLearningUser = data.resource.data;
+            user.current.current_language_session = data.resource.data;
+
+            console.log(user);
         }, this)).fail(failure);
     }
 }

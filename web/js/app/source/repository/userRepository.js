@@ -15,7 +15,6 @@ export class UserRepository {
             method: 'GET',
             contentType: 'application/json'
         }).done($.proxy(function(data) {
-            console.log(data.resource.data);
             user.current = data.resource.data;
 
             success(data);

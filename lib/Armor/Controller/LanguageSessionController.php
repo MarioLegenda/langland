@@ -58,6 +58,8 @@ class LanguageSessionController
             $user
         );
 
+
+
         return new JsonResponse(
             $this->createDataResponseForSessionRegistration($languageSession, $user),
             201
@@ -109,28 +111,7 @@ class LanguageSessionController
         LanguageSession $languageSession,
         User $user
     ): array {
-        $languageSessionId = $languageSession->getLearningUser()->getId();
-        $languageId = $languageSession->getLearningUser()->getLanguage()->getId();
-        $languageName = $languageSession->getLearningUser()->getLanguage()->getName();
-        $learningUserId = $languageSession->getLearningUser()->getId();
-
-        $createdAt = $languageSession->getCreatedAt()->format('Y-m-d H:m:s');
-        $updatedAt = $languageSession->getUpdatedAt()->format('Y-m-d H:m:s');
-
-        $data = [
-            'id' => $languageSessionId,
-            'language' => [
-                'id' => $languageId,
-                'name' => $languageName,
-            ],
-            'languageSessions' => Util::extractFieldFromObjects(
-                $user->getLanguageSessions(),
-                'id'
-            ),
-            'learningUserId' => $learningUserId,
-            'createdAt' => $createdAt,
-            'updatedAt' => $updatedAt,
-        ];
+        $data = $this->serializerWrapper->normalize($languageSession, 'default');
 
         $response = $this->apiSdk
             ->create($data)

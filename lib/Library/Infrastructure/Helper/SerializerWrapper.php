@@ -76,18 +76,18 @@ class SerializerWrapper
     }
     /**
      * @param object $object
-     * @param array $groups
+     * @param array|string $groups
      * @param string $class
      * @param bool $validate
      * @return object
      */
     public function convertFromTo(
         object $object,
-        array $groups,
+        $groups,
         string $class,
         bool $validate = true
     ): object {
-        $serialized = $this->serialize($object, $groups);
+        $serialized = $this->serialize($object, $this->normalizeGroups($groups));
 
         $created = $this->getDeserializer()->create($serialized, $class);
 

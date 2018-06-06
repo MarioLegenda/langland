@@ -30,5 +30,6 @@ class AdminExtension extends Extension
         $loader->load('repository.xml');
         $loader->load('resolver.xml');
         $loader->load('infrastructure.xml');
+        $loader->load('communication.xml');
     }
 }

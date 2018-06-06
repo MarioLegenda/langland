@@ -13,12 +13,12 @@
             <argument type="service" id="armor.repository.user" />
             <argument type="service" id="public_api.repository.learning_user" />
             <argument type="service" id="armor.repository.language_session" />
+            <argument type="service" id="armor.communication.public_api_language_communicator" />
         </service>
 
         <service
                 id="armor.domain.user"
                 class="Armor\Domain\UserLogic" public="true">
-
 
         </service>
 

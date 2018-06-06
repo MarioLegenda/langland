@@ -5,6 +5,7 @@ namespace Armor;
 use AdminBundle\Entity\Language;
 use Armor\Controller\LanguageSessionController;
 use Armor\Infrastructure\Communication\LanguageSessionCommunicator;
+use LearningMetadata\Infrastructure\Communication\PublicApiLanguageCommunicator;
 use Armor\Repository\LanguageSessionRepository;
 use ArmorBundle\Entity\LanguageSession;
 use ArmorBundle\Entity\User;
@@ -26,6 +27,10 @@ class LanguageSessionTest extends PublicApiTestCase
      * @var SerializerWrapper $serializerWrapper
      */
     private $serializerWrapper;
+    /**
+     * @var PublicApiLanguageCommunicator $armorPublicApiLanguageCommunicator
+     */
+    private $learningMetadataPublicApiLanguageCommunicator;
 
     public function setUp()
     {
@@ -34,6 +39,7 @@ class LanguageSessionTest extends PublicApiTestCase
         $this->languageSessionController = $this->container->get('armor.controller.language_session');
         $this->serializerWrapper = $this->container->get('library.serializer_wrapper');
         $this->languageSessionRepository = $this->container->get('armor.repository.language_session');
+        $this->learningMetadataPublicApiLanguageCommunicator = $this->container->get('learning_metadata.communication.public_api_language');
     }
 
     public function test_register_language_session()
@@ -41,6 +47,10 @@ class LanguageSessionTest extends PublicApiTestCase
         $user = $this->userDataProvider->createDefaultDb($this->faker);
 
         $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
+        $this->learningMetadataPublicApiLanguageCommunicator->createPublicApiLanguageFromLanguage($language, [
+            'alreadyLearning' => false,
+        ]);
 
         /** @var LanguageSessionCommunicator $languageSessionCommunicator */
         $languageSessionCommunicator = $this->container->get('armor.communicator_session.language_session');
@@ -73,7 +83,14 @@ class LanguageSessionTest extends PublicApiTestCase
         /** @var Language[] $languages */
         $languages = [];
         for ($i = 0; $i < 10; $i++) {
-            $languages[] = $this->languageDataProvider->createDefaultDb($this->faker);
+            /** @var Language $language */
+            $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
+            $this->learningMetadataPublicApiLanguageCommunicator->createPublicApiLanguageFromLanguage($language, [
+                'alreadyLearning' => false,
+            ]);
+
+            $languages[] = $language;
         }
 
         /** @var LanguageSessionCommunicator $languageSessionCommunicator */
@@ -97,7 +114,13 @@ class LanguageSessionTest extends PublicApiTestCase
         /** @var Language[] $languages */
         $languages = [];
         for ($i = 0; $i < 10; $i++) {
-            $languages[] = $this->languageDataProvider->createDefaultDb($this->faker);
+            $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
+            $this->learningMetadataPublicApiLanguageCommunicator->createPublicApiLanguageFromLanguage($language, [
+                'alreadyLearning' => false,
+            ]);
+
+            $languages[] = $language;
         }
 
         /** @var LanguageSessionCommunicator $languageSessionCommunicator */
@@ -136,6 +159,10 @@ class LanguageSessionTest extends PublicApiTestCase
         $user = $this->userDataProvider->createDefaultDb($this->faker);
 
         $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
+        $this->learningMetadataPublicApiLanguageCommunicator->createPublicApiLanguageFromLanguage($language, [
+            'alreadyLearning' => false,
+        ]);
 
         /** @var LanguageSessionCommunicator $languageSessionCommunicator */
         $languageSessionCommunicator = $this->container->get('armor.communicator_session.language_session');

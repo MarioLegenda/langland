@@ -3,6 +3,7 @@
 namespace LearningMetadata\Business\Implementation;
 
 use AdminBundle\Entity\Language;
+use LearningMetadata\Infrastructure\Communication\PublicApiLanguageCommunicator;
 use Library\Infrastructure\Form\FormBuilderInterface;
 use LearningMetadata\Infrastructure\Form\Type\LanguageType;
 use Library\Presentation\Template\TemplateWrapper;
@@ -49,12 +50,17 @@ class LanguageImplementation
      */
     private $session;
     /**
+     * @var PublicApiLanguageCommunicator $publicApiLanguageCommunication
+     */
+    private $publicApiLanguageCommunication;
+    /**
      * LanguageImplementation constructor.
      * @param LanguageRepository $languageRepository
      * @param FormBuilderInterface $formBuilder
      * @param TemplateWrapper $templateWrapper
      * @param Router $router
      * @param Session $session
+     * @param PublicApiLanguageCommunicator $publicApiLanguageCommunicator
      */
     public function __construct(
         LanguageRepository $languageRepository,
@@ -63,7 +69,8 @@ class LanguageImplementation
         TemplateWrapper $templateWrapper,
         Router $router,
         TraceableEventDispatcher $eventDispatcher,
-        Session $session
+        Session $session,
+        PublicApiLanguageCommunicator $publicApiLanguageCommunicator
     ) {
         $this->languageRepository = $languageRepository;
         $this->imageRepository = $imageRepository;
@@ -72,6 +79,7 @@ class LanguageImplementation
         $this->router = $router;
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
+        $this->publicApiLanguageCommunication = $publicApiLanguageCommunicator;
     }
     /**
      * @return Language[]
@@ -133,6 +141,10 @@ class LanguageImplementation
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             $this->languageRepository->persistAndFlush($language);
 
+            $this->publicApiLanguageCommunication->createPublicApiLanguageFromLanguage($language, [
+                'alreadyLearning' => false,
+            ]);
+
             $this->session->getFlashBag()->add(
                 'notice',
                 sprintf('Language created successfully')
@@ -174,6 +186,10 @@ class LanguageImplementation
 
         if ($request->getMethod() === 'POST' and $form->isSubmitted() and $form->isValid()) {
             $this->languageRepository->persistAndFlush($language);
+
+            $this->publicApiLanguageCommunication->updatePublicApiLanguageFromLanguage($language, [
+                'alreadyLearning' => false,
+            ]);
 
             $this->session->getFlashBag()->add(
                 'notice',

@@ -3,7 +3,6 @@
 namespace Tests\PublicApi;
 
 use PublicApi\Language\Business\Controller\LanguageController;
-use PublicApi\Infrastructure\Domain\Communicator\DomainUserCommunicator;
 use Symfony\Component\HttpFoundation\Response;
 use TestLibrary\DataProvider\LanguageInfoDataProvider;
 use TestLibrary\PublicApiTestCase;

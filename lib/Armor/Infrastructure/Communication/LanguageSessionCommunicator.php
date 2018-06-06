@@ -3,7 +3,6 @@
 namespace Armor\Infrastructure\Communication;
 
 use AdminBundle\Entity\Language as ForeignDomainModel;
-use AdminBundle\Entity\Language;
 use Armor\Infrastructure\Model\Language as DomainModel;
 use Armor\Repository\LanguageRepository;
 use Library\Infrastructure\Helper\SerializerWrapper;
@@ -59,7 +58,7 @@ class LanguageSessionCommunicator implements DomainCommunicatorInterface
      */
     public function getForeignDomainModel(): object
     {
-        if (!$this->foreignDomainModel instanceof Language) {
+        if (!$this->foreignDomainModel instanceof ForeignDomainModel) {
             $this->foreignDomainModel = $this->getLanguage();
         }
 
@@ -83,11 +82,11 @@ class LanguageSessionCommunicator implements DomainCommunicatorInterface
         return $this->domainModel;
     }
     /**
-     * @return Language
+     * @return ForeignDomainModel
      */
-    private function getLanguage(): Language
+    private function getLanguage(): ForeignDomainModel
     {
-        /** @var Language $language */
+        /** @var ForeignDomainModel $language */
         $language = $this->languageRepository->find($this->id);
 
         return $language;

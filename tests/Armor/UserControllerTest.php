@@ -6,6 +6,7 @@ use Armor\Controller\LanguageSessionController;
 use Armor\Controller\UserController;
 use Armor\Infrastructure\Communication\LanguageSessionCommunicator;
 use Armor\Repository\LanguageSessionRepository;
+use LearningMetadata\Infrastructure\Communication\PublicApiLanguageCommunicator;
 use Library\Infrastructure\Helper\SerializerWrapper;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use TestLibrary\PublicApiTestCase;
@@ -28,6 +29,10 @@ class UserControllerTest extends PublicApiTestCase
      * @var UserController $userController
      */
     private $userController;
+    /**
+     * @var PublicApiLanguageCommunicator $armorPublicApiLanguageCommunicator
+     */
+    private $learningMetadataPublicApiLanguageCommunicator;
 
     public function setUp()
     {
@@ -37,6 +42,7 @@ class UserControllerTest extends PublicApiTestCase
         $this->serializerWrapper = $this->container->get('library.serializer_wrapper');
         $this->languageSessionRepository = $this->container->get('armor.repository.language_session');
         $this->userController = $this->container->get('armor.controller.user');
+        $this->learningMetadataPublicApiLanguageCommunicator = $this->container->get('learning_metadata.communication.public_api_language');
     }
 
     public function test_get_logged_in_public_user()
@@ -44,6 +50,10 @@ class UserControllerTest extends PublicApiTestCase
         $user = $this->userDataProvider->createDefaultDb($this->faker);
 
         $language = $this->languageDataProvider->createDefaultDb($this->faker);
+
+        $this->learningMetadataPublicApiLanguageCommunicator->createPublicApiLanguageFromLanguage($language, [
+            'alreadyLearning' => false,
+        ]);
 
         /** @var LanguageSessionCommunicator $languageSessionCommunicator */
         $languageSessionCommunicator = $this->container->get('armor.communicator_session.language_session');

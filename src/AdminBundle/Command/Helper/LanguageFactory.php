@@ -5,6 +5,7 @@ namespace AdminBundle\Command\Helper;
 use AdminBundle\Entity\Image;
 use Doctrine\ORM\EntityManager;
 use AdminBundle\Entity\Language;
+use LearningMetadata\Infrastructure\Communication\PublicApiLanguageCommunicator;
 
 class LanguageFactory
 {
@@ -18,11 +19,19 @@ class LanguageFactory
      */
     private $em;
     /**
+     * @var PublicApiLanguageCommunicator $publicApiLanguageCommunication
+     */
+    private $publicApiLanguageCommunication;
+    /**
      * LanguageFactory constructor.
      * @param EntityManager $em
+     * @param PublicApiLanguageCommunicator $publicApiLanguageCommunicator
      */
-    public function __construct(EntityManager $em)
-    {
+    public function __construct(
+        EntityManager $em,
+        PublicApiLanguageCommunicator $publicApiLanguageCommunicator
+    ) {
+        $this->publicApiLanguageCommunication = $publicApiLanguageCommunicator;
         $this->em = $em;
     }
     /**
@@ -42,12 +51,17 @@ class LanguageFactory
 
             $this->em->persist($language);
 
+            $this->publicApiLanguageCommunication->createPublicApiLanguageFromLanguage($language, [
+                'alreadyLearning' => false
+            ]);
+
             $languageObjects[] = $language;
         }
 
         if ($save) {
             $this->languageObjects = $languageObjects;
         }
+
 
         $this->em->flush();
 

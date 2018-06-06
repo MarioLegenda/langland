@@ -14,5 +14,11 @@
             <argument type="service" id="library.serializer_wrapper" />
         </service>
 
+        <service id="armor.communication.public_api_language_communicator"
+                 class="Armor\Infrastructure\Communication\PublicApiLanguageCommunicator">
+
+            <argument type="service" id="armor.repository.public_api_language" />
+        </service>
+
     </services>
 </container>

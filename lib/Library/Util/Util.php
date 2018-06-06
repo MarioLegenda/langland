@@ -58,4 +58,14 @@ class Util
 
         return $fields;
     }
+    /**
+     * @param object $object
+     * @param array $fields
+     */
+    public static function setObjectFieldsByConvention(object $object, array $fields)
+    {
+        foreach ($fields as $fieldName => $fieldValue) {
+            $object->{'set'.ucfirst($fieldName)}($fieldValue);
+        }
+    }
 }

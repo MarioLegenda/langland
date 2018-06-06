@@ -3,19 +3,15 @@
 namespace AdminBundle\Command;
 
 use AdminBundle\Command\Helper\CategoryFactory;
-use AdminBundle\Command\Helper\CourseFactory;
 use AdminBundle\Command\Helper\LanguageFactory;
 use AdminBundle\Command\Helper\LanguageInfoFactory;
 use AdminBundle\Command\Helper\LessonFactory;
 use AdminBundle\Command\Helper\QuestionFactory;
 use AdminBundle\Command\Helper\WordFactory;
 use AdminBundle\Command\Helper\WordTranslationFactory;
-use AdminBundle\Entity\Course;
 use AdminBundle\Entity\Language;
-use AdminBundle\Entity\Lesson;
 use AdminBundle\Entity\Word;
 use Doctrine\ORM\EntityManager;
-use Library\Util\Util;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -58,7 +54,7 @@ class SeedCommand extends ContainerAwareCommand
         $languages = array('French', 'Spanish', 'Italian');
         $categories = array('nature', 'body', 'soul', 'love');
 
-        $languageFactory = new LanguageFactory($em);
+        $languageFactory = new LanguageFactory($em, $this->getContainer()->get('learning_metadata.communication.public_api_language'));
         $languageInfoFactory = new LanguageInfoFactory($em);
         $categoryFactory = new CategoryFactory($em);
         $lessonFactory = new LessonFactory($em);

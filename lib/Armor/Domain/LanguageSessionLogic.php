@@ -2,7 +2,9 @@
 
 namespace Armor\Domain;
 
-use Armor\Infrastructure\Model\Language;
+use Armor\Infrastructure\Communication\PublicApiLanguageCommunicator;
+use Armor\Infrastructure\Model\Language as ArmorLanguage;
+use AdminBundle\Entity\Language as LearningMetadataLanguage;
 use Armor\Repository\LanguageSessionRepository;
 use ArmorBundle\Entity\LanguageSession;
 use Library\Infrastructure\Logic\DomainCommunicatorInterface;
@@ -26,19 +28,26 @@ class LanguageSessionLogic
      */
     private $languageSessionRepository;
     /**
+     * @var PublicApiLanguageCommunicator $publicApiLanguageCommunicator
+     */
+    private $publicApiLanguageCommunicator;
+    /**
      * LanguageSessionLogic constructor.
      * @param UserRepository $userRepository
      * @param LearningUserRepository $learningUserRepository
      * @param LanguageSessionRepository $languageSessionRepository
+     * @param PublicApiLanguageCommunicator $publicApiLanguageCommunicator
      */
     public function __construct(
         UserRepository $userRepository,
         LearningUserRepository $learningUserRepository,
-        LanguageSessionRepository $languageSessionRepository
+        LanguageSessionRepository $languageSessionRepository,
+        PublicApiLanguageCommunicator $publicApiLanguageCommunicator
     ) {
         $this->userRepository = $userRepository;
         $this->learningUserRepository = $learningUserRepository;
         $this->languageSessionRepository = $languageSessionRepository;
+        $this->publicApiLanguageCommunicator = $publicApiLanguageCommunicator;
     }
     /**
      * @param DomainCommunicatorInterface $domainCommunicator
@@ -51,9 +60,14 @@ class LanguageSessionLogic
         DomainCommunicatorInterface $domainCommunicator,
         User $user
     ): LanguageSession {
+        /** @var LearningMetadataLanguage $language */
         $language = $domainCommunicator->getForeignDomainModel();
-        /** @var Language $domainLanguage */
+        /** @var ArmorLanguage $domainLanguage */
         $domainLanguage = $domainCommunicator->getDomainModel();
+
+        $this->publicApiLanguageCommunicator->updatePublicApiLanguageFromLanguage($domainLanguage, [
+            'alreadyLearning' => true,
+        ]);
 
         /** @var LanguageSession $languageSession */
         $languageSession = $this->languageSessionRepository->tryFindByLanguageAndUser(

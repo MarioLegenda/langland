@@ -1,22 +1,27 @@
-AdminBundle\Entity\Language:
+PublicApiBundle\Entity\PublicApiLanguage:
     exclusion_policy: ALL
     properties:
         id:
             expose: true
-            groups: [default, viewable, communication_model]
+            groups: [default, communication_model]
 
         name:
             expose: true
-            groups: [default, viewable, communication_model]
+            groups: [default, communication_model]
 
         listDescription:
             expose: true
-            groups: [default, viewable, communication_model]
+            groups: [default, communication_model]
+            serialized_name: description
+
+        alreadyLearning:
+            expose: true
+            groups: [default, communication_model]
             serialized_name: description
 
         showOnPage:
             expose: true
-            groups: [default, viewable, communication_model]
+            groups: [default, communication_model]
 
         images:
             expose: true
@@ -31,4 +36,3 @@ AdminBundle\Entity\Language:
             expose: true
             groups: [default, communication_model]
             type: DateTime<'Y-m-d H:m:s'>
-

@@ -95,5 +95,14 @@
 
         </service>
 
+        <service
+                id="public_api.repository.public_api_language"
+                class="PublicApi\Language\Repository\PublicApiLanguageRepository" public="true">
+
+            <argument type="service" id="doctrine.orm.default_entity_manager" />
+            <argument>PublicApiBundle\Entity\PublicApiLanguage</argument>
+
+        </service>
+
     </services>
 </container>

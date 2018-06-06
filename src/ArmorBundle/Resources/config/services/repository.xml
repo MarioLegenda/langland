@@ -20,6 +20,12 @@
             <argument>AdminBundle\Entity\Language</argument>
         </service>
 
+        <service class="Armor\Repository\PublicApiLanguageRepository"
+                 id="armor.repository.public_api_language">
+
+            <argument id="doctrine.orm.default_entity_manager" type="service"/>
+            <argument>PublicApiBundle\Entity\PublicApiLanguage</argument>
+        </service>
 
     </services>
 </container>
